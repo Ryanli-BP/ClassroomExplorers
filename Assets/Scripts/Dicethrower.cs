@@ -1,42 +1,57 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using UnityEngine.Events;
 
-public class Dicethrower : MonoBehaviour
+public class DiceThrower : MonoBehaviour
 {
-    public Dice DiceToThrow;  
-    public int numDice = 1;
+    public Dice DiceToThrow;
+    public int numDice = 3;
     public float throwForce = 5f;
     public float rollForce = 10f;
 
-    private List<GameObject> liveDice = new List<GameObject>();
+    private List<Dice> liveDice = new List<Dice>();
+    private int remainingDice;  // Tracks remaining dice to finish rolling
+
+    public static UnityAction OnAllDiceFinished;  // Event triggered when all dice finish rolling
+
+    private void OnEnable()
+    {
+        remainingDice = numDice;  // Initialize remaining dice count
+    }
 
     private void Update()
     {
-        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             RollDice();
         }
     }
 
-    private async void RollDice()
+    private void RollDice()
     {
-        if (DiceToThrow == null) return;
-
+        // Clear any existing dice
         foreach (var die in liveDice)
         {
-            Destroy(die);
+            Destroy(die.gameObject);
         }
-        liveDice.Clear();  
+        liveDice.Clear();
 
+        // Instantiate and roll new dice
         for (int i = 0; i < numDice; i++)
         {
             Dice diceLive = Instantiate(DiceToThrow, transform.position, transform.rotation);
-            liveDice.Add(diceLive.gameObject);  
+            liveDice.Add(diceLive);
             diceLive.RollDice(throwForce, rollForce, i);
-            await Task.Yield();
+            diceLive.OnDiceFinishedRolling += HandleDiceFinishedRolling;  // Subscribe to dice finish event
+        }
+    }
+
+    private void HandleDiceFinishedRolling()
+    {
+        remainingDice--; 
+        if (remainingDice <= 0)
+        {
+            OnAllDiceFinished?.Invoke();
         }
     }
 }
