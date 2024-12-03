@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public class Dice : MonoBehaviour
 {
-    public Transform[] dicefaces;   
+    public Transform[] dicefaces;
     public Rigidbody rb;
 
     public int diceNum = -1;
@@ -21,8 +21,8 @@ public class Dice : MonoBehaviour
     private void Update()
     {
         if (!delayfin) return;
-        
-        if (!rollfin && rb.linearVelocity.sqrMagnitude == 0f) 
+
+        if (!rollfin && rb.linearVelocity.sqrMagnitude == 0f)
         {
             rollfin = true;
             GetRes();
@@ -30,48 +30,51 @@ public class Dice : MonoBehaviour
     }
 
     [ContextMenu(itemName: "Dice Result")]
-
     private int GetRes()
     {
-        if (dicefaces == null) return -1;
+        if (dicefaces == null || dicefaces.Length == 0) return -1;
 
         var topFace = 0;
-        var lastY = dicefaces[0].position.y;
+        var highestY = dicefaces[0].position.y;
 
-        for (int i = 0; i < dicefaces.Length; i++)
+        for (int i = 1; i < dicefaces.Length; i++)
         {
-            if (dicefaces[i].position.y > lastY)
+            if (dicefaces[i].position.y > highestY)
             {
-                lastY = dicefaces[i].position.y;
+                highestY = dicefaces[i].position.y;
                 topFace = i;
             }
         }
 
-        Debug.Log($"dice result {topFace + 1}");
+        int diceResult = topFace + 1; 
+        Debug.Log($"Dice result: {diceResult}");
 
-        OnDiceResult?.Invoke(diceNum, topFace + 1);
+        // Invoke the event with dice number and the result.
+        OnDiceResult?.Invoke(diceNum, diceResult);
 
-        return topFace + 1;
+        return diceResult;
     }
 
     public void RollDice(float throwForce, float rollForce, int i)
     {
-        int diceIndex = i;
+        diceNum = i;  
+
         var randomVar = Random.Range(-1f, 1f);
         rb.AddForce(transform.forward * (throwForce + randomVar), ForceMode.Impulse);
 
-        var randY = Random.Range(-1f, 1f);
-        var randX = Random.Range(-1f, 1f);
-        var randZ = Random.Range(-1f, 1f);
-
-        rb.AddTorque(new Vector3(randX, randY, randZ) * (rollForce + randomVar), ForceMode.Impulse);
+        var randTorque = new Vector3(
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f)
+        );
+        rb.AddTorque(randTorque * (rollForce + randomVar), ForceMode.Impulse);
 
         DelayResult();
     }
 
     private async void DelayResult()
     {
-        await Task.Delay(1000);
+        await Task.Delay(1000);  // Wait before checking the result
         delayfin = true;
     }
 }
