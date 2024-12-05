@@ -9,14 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/AR scene.unity
-    guid: b8938c5548d664cf6b9a1fff1b211085
-  - enabled: 1
     path: Assets/Scenes/Mobile Menu Scene.unity
     guid: bd564095f88f346119160c815a543b13
   - enabled: 1
     path: Assets/Scenes/Select Avatar Scene.unity
     guid: 80bf339ccb1744f70808b2faebadb54b
+  - enabled: 1
+    path: Assets/Scenes/AR scene.unity
+    guid: b8938c5548d664cf6b9a1fff1b211085
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: c85ac66da12d10147a3230b4e64ea87b, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 7c1c5e6b210b7a14ba85ddd75f85ceef, type: 2}

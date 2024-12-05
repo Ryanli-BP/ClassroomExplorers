@@ -840,7 +840,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 529217984}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114140534}
+        m_TargetAssemblyTypeName: AvatarMenu, Assembly-CSharp
+        m_MethodName: OnSubmit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &529217984
 MonoBehaviour:
   m_ObjectHideFlags: 0
