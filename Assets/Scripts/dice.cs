@@ -11,11 +11,10 @@ public class Dice : MonoBehaviour
     public bool rollfin;
     public bool delayfin;
 
-    public static UnityAction<int, int> OnDiceResult;
+    public static UnityAction<int> OnDiceResult; //Event for individual dice results
 
     public delegate void DiceFinishedRolling(); // Event for dice finished rolling
-    public event DiceFinishedRolling OnDiceFinishedRolling;  // Event for signaling the finish of rolling
-
+    public event DiceFinishedRolling OnDiceFinishedRolling; 
     private void Update()
     {
         if (!delayfin) return;
@@ -48,7 +47,7 @@ public class Dice : MonoBehaviour
         int diceResult = topFace + 1;
         Debug.Log($"Dice {diceNum} result: {diceResult}");
 
-        OnDiceResult?.Invoke(diceNum, diceResult);
+        OnDiceResult?.Invoke(diceResult);
         return diceResult;
     }
 

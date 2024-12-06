@@ -1,11 +1,14 @@
 using UnityEngine;
 using TMPro;
 using System.Threading.Tasks;
+using UnityEngine.Events;
 
 public class DiceDisplay : MonoBehaviour
 {
     public TextMeshProUGUI diceResultText; 
     private int totalResult = 0;          // Tracks the total sum of dice rolls
+
+    public static UnityAction<int> OnDiceTotal; // Event for dice total calculated + 2s delay
 
     private void OnEnable()
     {
@@ -19,7 +22,7 @@ public class DiceDisplay : MonoBehaviour
         DiceThrower.OnAllDiceFinished -= DisplayTotalResult;
     }
 
-    private void HandleDiceResult(int diceNum, int diceResult)
+    private void HandleDiceResult(int diceResult)
     {
         totalResult += diceResult;
     }
@@ -35,7 +38,10 @@ public class DiceDisplay : MonoBehaviour
 
     private void ResetDisplay()
     {
+        OnDiceTotal?.Invoke(totalResult);   //Notify playermovement of dice result
         totalResult = 0;
         diceResultText?.SetText("");
+
+        
     }
 }

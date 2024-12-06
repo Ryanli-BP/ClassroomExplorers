@@ -29,9 +29,12 @@ public class DiceThrower : MonoBehaviour
 
     private void RollDice()
     {
-        // Clear any existing dice
+        remainingDice = numDice;  // Reset remaining dice count to the total number of dice
+
+        // Unsubscribe from previous dice finish events before destroying old dice
         foreach (var die in liveDice)
         {
+            die.OnDiceFinishedRolling -= HandleDiceFinishedRolling;
             Destroy(die.gameObject);
         }
         liveDice.Clear();
@@ -48,7 +51,8 @@ public class DiceThrower : MonoBehaviour
 
     private void HandleDiceFinishedRolling()
     {
-        remainingDice--; 
+        remainingDice--;
+
         if (remainingDice <= 0)
         {
             OnAllDiceFinished?.Invoke();
