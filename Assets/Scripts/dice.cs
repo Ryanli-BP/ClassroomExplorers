@@ -4,32 +4,29 @@ using System.Threading.Tasks;
 
 public class Dice : MonoBehaviour
 {
-    public Transform[] dicefaces;   
+    public Transform[] dicefaces;
     public Rigidbody rb;
 
     public int diceNum = -1;
     public bool rollfin;
     public bool delayfin;
 
-    public static UnityAction<int, int> OnDiceResult;
+    public static UnityAction<int> OnDiceResult; //Event for individual dice results
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
-
+    public delegate void DiceFinishedRolling(); // Event for dice finished rolling
+    public event DiceFinishedRolling OnDiceFinishedRolling; 
     private void Update()
     {
         if (!delayfin) return;
-        
-        if (!rollfin && rb.linearVelocity.sqrMagnitude == 0f) 
+
+        if (!rollfin && rb.linearVelocity.sqrMagnitude == 0f)
         {
             rollfin = true;
             GetRes();
+
+            OnDiceFinishedRolling?.Invoke();
         }
     }
-
-    [ContextMenu(itemName: "Dice Result")]
 
     private int GetRes()
     {
@@ -47,23 +44,25 @@ public class Dice : MonoBehaviour
             }
         }
 
-        Debug.Log($"dice result {topFace + 1}");
+        int diceResult = topFace + 1;
+        Debug.Log($"Dice {diceNum} result: {diceResult}");
 
-        OnDiceResult?.Invoke(diceNum, topFace + 1);
-
-        return topFace + 1;
+        OnDiceResult?.Invoke(diceResult);
+        return diceResult;
     }
 
     public void RollDice(float throwForce, float rollForce, int i)
     {
-        int diceIndex = i;
+        diceNum = i;
+        rollfin = false;
+        delayfin = false;
+
         var randomVar = Random.Range(-1f, 1f);
         rb.AddForce(transform.forward * (throwForce + randomVar), ForceMode.Impulse);
 
-        var randY = Random.Range(-1f, 1f);
         var randX = Random.Range(-1f, 1f);
+        var randY = Random.Range(-1f, 1f);
         var randZ = Random.Range(-1f, 1f);
-
         rb.AddTorque(new Vector3(randX, randY, randZ) * (rollForce + randomVar), ForceMode.Impulse);
 
         DelayResult();
