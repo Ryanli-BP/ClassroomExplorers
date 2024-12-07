@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using UnityEngine.InputSystem; // Required for the new Input System
 
 public class DiceThrower : MonoBehaviour
 {
@@ -14,17 +15,28 @@ public class DiceThrower : MonoBehaviour
 
     public static UnityAction OnAllDiceFinished;  // Event triggered when all dice finish rolling
 
+    private InputAction rollDiceAction; // New InputAction for rolling dice
+
     private void OnEnable()
     {
         remainingDice = numDice;  // Initialize remaining dice count
+
+        // Get and enable the InputAction for rolling the dice
+        rollDiceAction = new InputAction(type: InputActionType.Button, binding: "<Keyboard>/space");
+        rollDiceAction.Enable();
+        rollDiceAction.performed += OnRollDicePerformed;
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            RollDice();
-        }
+        // Disable the InputAction and unsubscribe from the event
+        rollDiceAction.performed -= OnRollDicePerformed;
+        rollDiceAction.Disable();
+    }
+
+    private void OnRollDicePerformed(InputAction.CallbackContext context)
+    {
+        RollDice(); // Trigger the dice roll when the action is performed
     }
 
     private void RollDice()

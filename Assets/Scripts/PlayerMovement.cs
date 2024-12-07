@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             remainingSteps--;
-            yield return new WaitForSeconds(0.5f); // Optional delay for smoother movement
+            yield return new WaitForSeconds(0.25f); // Optional delay for smoother movement
         }
 
         isMoving = false;
@@ -81,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         Tile chosenTile = null;
 
         // Display available directions (e.g., show UI buttons for each neighbor)
-        // Example: Assume we display directions through a UI Manager
         UIManager.Instance.ShowDirectionChoices(neighbors, (tile) => {
             chosenTile = tile;
         });
