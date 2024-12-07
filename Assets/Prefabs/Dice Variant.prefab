@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: rb
       value: 
-      objectReference: {fileID: 8815660648597565945}
+      objectReference: {fileID: 0}
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: dicefaces.Array.size
       value: 6
@@ -59,27 +59,43 @@ PrefabInstance:
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: 'dicefaces.Array.data[0]'
       value: 
-      objectReference: {fileID: 1698420236125176423}
+      objectReference: {fileID: 0}
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: 'dicefaces.Array.data[1]'
       value: 
-      objectReference: {fileID: 657250228384008997}
+      objectReference: {fileID: 0}
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: 'dicefaces.Array.data[2]'
       value: 
-      objectReference: {fileID: 364776003410321842}
+      objectReference: {fileID: 0}
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: 'dicefaces.Array.data[3]'
       value: 
-      objectReference: {fileID: 1767582239517747007}
+      objectReference: {fileID: 0}
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: 'dicefaces.Array.data[4]'
       value: 
-      objectReference: {fileID: 8633117893676801312}
+      objectReference: {fileID: 0}
     - target: {fileID: 2841680434444505954, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: 'dicefaces.Array.data[5]'
       value: 
-      objectReference: {fileID: 1568158251203643609}
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581772608036417176, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
+      propertyPath: m_Name
+      value: Dice Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 6064959223152188570, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6064959223152188570, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6064959223152188570, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7567059568694119130, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
       propertyPath: m_Name
       value: Dice Variant
@@ -89,38 +105,3 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
---- !u!4 &364776003410321842 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6753546178167309808, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
-  m_PrefabInstance: {fileID: 6392467833435448386}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &657250228384008997 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5884408358023753575, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
-  m_PrefabInstance: {fileID: 6392467833435448386}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1568158251203643609 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5581556698848472219, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
-  m_PrefabInstance: {fileID: 6392467833435448386}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1698420236125176423 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5702854092269053477, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
-  m_PrefabInstance: {fileID: 6392467833435448386}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1767582239517747007 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4625527833588482941, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
-  m_PrefabInstance: {fileID: 6392467833435448386}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8633117893676801312 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3420595362240100706, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
-  m_PrefabInstance: {fileID: 6392467833435448386}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &8815660648597565945 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 2513324183015642555, guid: 40b711dc43038c440a95f5b97aa226cc, type: 3}
-  m_PrefabInstance: {fileID: 6392467833435448386}
-  m_PrefabAsset: {fileID: 0}

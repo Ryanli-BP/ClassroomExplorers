@@ -13,12 +13,12 @@ public class QuestionGenerate : MonoBehaviour
         if (displayingQuestion == false )
         {
             displayingQuestion = true;
-            QuestionDisplay.newQuestion = "Dean Mohammedally?";
-            QuestionDisplay.newA = "A. Dean Mohammedally";
-            QuestionDisplay.newB = "B. Mohammedallyy";
-            QuestionDisplay.newC = "C. Dean";
-            QuestionDisplay.newD = "D. Dean Mo";
-            ActualAnswer = "A";
+            QuestionDisplay.newQuestion = "What's 1 + 2";
+            QuestionDisplay.newA = "A. 1";
+            QuestionDisplay.newB = "B. 2";
+            QuestionDisplay.newC = "C. 3";
+            QuestionDisplay.newD = "D. 4";
+            ActualAnswer = "C";
         }
     }
 }
