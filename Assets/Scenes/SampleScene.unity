@@ -290,8 +290,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1514497552}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1001 &179523260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -428,8 +431,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1243763815}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 1
+  hasWest: 0
 --- !u!1 &217416943
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,8 +526,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1341553745}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,8 +896,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 401811657}
+  tileName: 
+  hasNorth: 1
+  hasEast: 0
+  hasSouth: 1
+  hasWest: 0
 --- !u!1 &401811655
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,8 +945,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1235857679}
+  tileName: 
+  hasNorth: 1
+  hasEast: 0
+  hasSouth: 1
+  hasWest: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,8 +1757,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1060057656}
+  tileName: 
+  hasNorth: 1
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 0
 --- !u!1 &967765572
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,8 +1806,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 207251804}
+  tileName: 
+  hasNorth: 1
+  hasEast: 0
+  hasSouth: 1
+  hasWest: 0
 --- !u!1 &989211279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1937,8 +1958,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1319847629}
+  tileName: 
+  hasNorth: 1
+  hasEast: 0
+  hasSouth: 1
+  hasWest: 0
 --- !u!1001 &1098993489
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2123,6 +2147,52 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &1191676191
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1191676193}
+  - component: {fileID: 1191676192}
+  m_Layer: 0
+  m_Name: TileManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1191676192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191676191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41c841d747bebc4dbfca5f9dd2cb1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileContainer: {fileID: 1230113820}
+  allTiles: []
+--- !u!4 &1191676193
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191676191}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.5400925, y: 2.4243636, z: -2.484955}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1218891184 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 328409505970683906, guid: 464cc7c4f7ea10b47a36d7848aa9ca9a, type: 3}
@@ -2268,8 +2338,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1826945209}
+  tileName: 
+  hasNorth: 1
+  hasEast: 0
+  hasSouth: 1
+  hasWest: 0
 --- !u!1 &1243763813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2314,8 +2387,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1588317942}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1 &1319847627
 GameObject:
   m_ObjectHideFlags: 0
@@ -2360,9 +2436,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 967765574}
-  - {fileID: 1699352940}
+  tileName: 
+  hasNorth: 1
+  hasEast: 1
+  hasSouth: 1
+  hasWest: 0
 --- !u!1 &1341553743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2407,8 +2485,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 397379754}
+  tileName: 
+  hasNorth: 0
+  hasEast: 0
+  hasSouth: 1
+  hasWest: 1
 --- !u!1 &1350251172
 GameObject:
   m_ObjectHideFlags: 0
@@ -2453,8 +2534,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1581292733}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1001 &1351295216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2591,8 +2675,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1350251174}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1 &1449754206 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
@@ -2751,8 +2838,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 401811657}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1 &1579840710
 GameObject:
   m_ObjectHideFlags: 0
@@ -2906,8 +2996,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 893495413}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1 &1588317940
 GameObject:
   m_ObjectHideFlags: 0
@@ -2952,8 +3045,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 272222125}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1001 &1601033086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3417,8 +3513,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 61774731}
+  tileName: 
+  hasNorth: 0
+  hasEast: 1
+  hasSouth: 0
+  hasWest: 1
 --- !u!1001 &1728794643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3555,8 +3654,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1415499905}
+  tileName: 
+  hasNorth: 0
+  hasEast: 0
+  hasSouth: 0
+  hasWest: 1
 --- !u!1 &1873486642
 GameObject:
   m_ObjectHideFlags: 0
@@ -4304,3 +4406,4 @@ SceneRoots:
   - {fileID: 666191105}
   - {fileID: 543564495}
   - {fileID: 1230113820}
+  - {fileID: 1191676193}
