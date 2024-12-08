@@ -11,7 +11,7 @@ public class UIManager : MonoBehaviour
     private GameObject directionPanel; // Panel that contains direction buttons
 
     [SerializeField]
-    private Button directionButtonPrefab; // Prefab for a direction button
+    private Button directionButtonPrefab;
 
     private void Awake()
     {
@@ -22,28 +22,27 @@ public class UIManager : MonoBehaviour
     }
 
     // Show direction choices at a crossroad
-    public void ShowDirectionChoices(List<Tile> neighbors, Action<Tile> onDirectionChosen)
+    public void ShowDirectionChoices(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
     {
-        // Activate the panel
+
         directionPanel.SetActive(true);
 
-        // Clear any existing buttons
+        // Clear any existing buttons before showing again
         foreach (Transform child in directionPanel.transform)
         {
             Destroy(child.gameObject);
         }
 
-        // Create a button for each neighbor
-        foreach (Tile neighbor in neighbors)
+        foreach (Direction direction in availableDirections)
         {
             Button newButton = Instantiate(directionButtonPrefab, directionPanel.transform);
-            newButton.GetComponentInChildren<Text>().text = neighbor.name; // Set button label
+            newButton.GetComponentInChildren<Text>().text = direction.ToString();
 
             // Add click listener to notify when this direction is chosen
             newButton.onClick.AddListener(() =>
             {
-                directionPanel.SetActive(false); // Hide the panel
-                onDirectionChosen(neighbor); // Notify the PlayerMovement script
+                directionPanel.SetActive(false);
+                onDirectionChosen(direction); // Notify the PlayerMovement script
             });
         }
     }

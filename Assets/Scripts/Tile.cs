@@ -1,26 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Direction { North, East, South, West }
+
 public class Tile : MonoBehaviour
 {
-    [SerializeField]
-    private List<Tile> neighbors = new List<Tile>();
+    public string tileName;
 
-    public List<Tile> GetNeighbors()
-    {
-        return neighbors;
-    }
+    // Boolean flags to indicate available directions
+    public bool hasNorth;
+    public bool hasEast;
+    public bool hasSouth;
+    public bool hasWest;
 
-    private void OnDrawGizmos()
+    // Return all valid directions (used for crossroads)
+    public List<Direction> GetAllAvailableDirections(Direction fromDirection)
     {
-        // Optional: Visualize neighbors in the editor
-        Gizmos.color = Color.green;
-        foreach (var neighbor in neighbors)
-        {
-            if (neighbor != null)
-            {
-                Gizmos.DrawLine(transform.position, neighbor.transform.position);
-            }
-        }
+        List<Direction> validDirections = new List<Direction>();
+
+        if (hasNorth && fromDirection != Direction.South) validDirections.Add(Direction.North);
+        if (hasEast && fromDirection != Direction.West) validDirections.Add(Direction.East);
+        if (hasSouth && fromDirection != Direction.North) validDirections.Add(Direction.South);
+        if (hasWest && fromDirection != Direction.East) validDirections.Add(Direction.West);
+
+        return validDirections;
     }
 }
+
