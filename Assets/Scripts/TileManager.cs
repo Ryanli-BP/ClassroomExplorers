@@ -3,13 +3,10 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    // Singleton instance
     public static TileManager Instance { get; private set; }
 
-    // Container object that holds all the tiles (Drag this container into the inspector)
     public Transform tileContainer;
 
-    // A list to store all tiles in the game
     public List<Tile> allTiles = new List<Tile>();
 
     private void Awake()

@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Tile currentTile; // Assign the starting tile in the Inspector
 
     private bool isMoving = false;
-    private int remainingSteps = 0; // Tracks steps left to move
+    private int remainingSteps = 0;
     private Direction lastDirection; // To track the direction the player came from
 
     private void OnEnable()
@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        // Find the tile at the new position (grid-based system)
+        // Find the tile at the new position
         currentTile = TileManager.Instance.GetTileAtPosition(targetPosition);
 
         if (currentTile != null)
@@ -110,14 +110,13 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator WaitForPlayerInput(List<Direction> availableDirections)
     {
-        Direction? chosenDirection = null; // Nullable Direction, starts as null
+        Direction? chosenDirection = null; 
 
-        // Display available directions (e.g., show UI buttons for each direction)
         UIManager.Instance.ShowDirectionChoices(availableDirections, (direction) => {
             chosenDirection = direction;
         });
 
-        // Wait until the player makes a choice (chosenDirection is not null)
+        // Wait until the player makes a choice 
         yield return new WaitUntil(() => chosenDirection != null);
 
         Debug.Log($"Player chose to move in the direction: {chosenDirection}");
