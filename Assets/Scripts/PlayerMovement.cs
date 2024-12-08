@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isMoving = false;
     private int remainingSteps = 0; // Tracks steps left to move
+    private Direction lastDirection; // To track the direction the player came from
 
     private void OnEnable()
     {
@@ -38,26 +39,27 @@ public class PlayerMovement : MonoBehaviour
 
         while (remainingSteps > 0)
         {
-            List<Tile> neighbors = currentTile.GetNeighbors();
+            // Get valid directions based on the last direction
+            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(lastDirection);
 
-            if (neighbors.Count == 0)
+            if (availableDirections.Count == 0)
             {
-                Debug.LogError("No neighbors found! Player cannot move.");
+                Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
 
             // If at a crossroads, stop and wait for player input
-            if (neighbors.Count > 1)
+            if (availableDirections.Count > 1)
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
-                yield return StartCoroutine(WaitForPlayerInput(neighbors));
+                yield return StartCoroutine(WaitForPlayerInput(availableDirections));
             }
             else
             {
-                // Move to the only available neighbor
-                Tile nextTile = neighbors[0];
-                Debug.Log($"Moving to tile: {nextTile.name}");
-                MoveToTile(nextTile);
+                // Move in the only available direction
+                Direction nextDirection = availableDirections[0];
+                Debug.Log($"Moving in the direction: {nextDirection}");
+                MoveToNextTile(nextDirection);
             }
 
             remainingSteps--;
@@ -67,28 +69,60 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
     }
 
-    private void MoveToTile(Tile tile)
+    private void MoveToNextTile(Direction direction)
     {
-        Vector3 targetPosition = tile.transform.position;
-        targetPosition.y += 0.5f; // Adjust Y offset
-        transform.position = targetPosition;
+        // Update last direction based on the current movement direction
+        lastDirection = direction;
 
-        currentTile = tile;
+        Vector3 targetPosition = currentTile.transform.position;
+
+        // Move the player in the chosen direction (assumes tiles are spaced 1 unit apart)
+        switch (direction)
+        {
+            case Direction.North:
+                targetPosition += new Vector3(0, 0, 1);
+                break;
+            case Direction.East:
+                targetPosition += new Vector3(1, 0, 0);
+                break;
+            case Direction.South:
+                targetPosition += new Vector3(0, 0, -1);
+                break;
+            case Direction.West:
+                targetPosition += new Vector3(-1, 0, 0);
+                break;
+        }
+
+        // Find the tile at the new position (grid-based system)
+        currentTile = TileManager.Instance.GetTileAtPosition(targetPosition);
+
+        if (currentTile != null)
+        {
+            // Apply movement and update the current tile
+            transform.position = targetPosition;
+        }
+        else
+        {
+            Debug.LogError("Tile not found at position: " + targetPosition);
+        }
     }
 
-    private IEnumerator WaitForPlayerInput(List<Tile> neighbors)
-    {
-        Tile chosenTile = null;
 
-        // Display available directions (e.g., show UI buttons for each neighbor)
-        UIManager.Instance.ShowDirectionChoices(neighbors, (tile) => {
-            chosenTile = tile;
+    private IEnumerator WaitForPlayerInput(List<Direction> availableDirections)
+    {
+        Direction? chosenDirection = null; // Nullable Direction, starts as null
+
+        // Display available directions (e.g., show UI buttons for each direction)
+        UIManager.Instance.ShowDirectionChoices(availableDirections, (direction) => {
+            chosenDirection = direction;
         });
 
-        // Wait until the player makes a choice
-        yield return new WaitUntil(() => chosenTile != null);
+        // Wait until the player makes a choice (chosenDirection is not null)
+        yield return new WaitUntil(() => chosenDirection != null);
 
-        Debug.Log($"Player chose to move to: {chosenTile.name}");
-        MoveToTile(chosenTile);
+        Debug.Log($"Player chose to move in the direction: {chosenDirection}");
+
+        // Move to the next tile in the chosen direction
+        MoveToNextTile(chosenDirection.Value);
     }
 }

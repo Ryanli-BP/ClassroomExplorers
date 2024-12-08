@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     }
 
     // Show direction choices at a crossroad
-    public void ShowDirectionChoices(List<Tile> neighbors, Action<Tile> onDirectionChosen)
+    public void ShowDirectionChoices(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
     {
         // Activate the panel
         directionPanel.SetActive(true);
@@ -33,17 +33,17 @@ public class UIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // Create a button for each neighbor
-        foreach (Tile neighbor in neighbors)
+        // Create a button for each available direction
+        foreach (Direction direction in availableDirections)
         {
             Button newButton = Instantiate(directionButtonPrefab, directionPanel.transform);
-            newButton.GetComponentInChildren<Text>().text = neighbor.name; // Set button label
+            newButton.GetComponentInChildren<Text>().text = direction.ToString(); // Set button label to direction name
 
             // Add click listener to notify when this direction is chosen
             newButton.onClick.AddListener(() =>
             {
                 directionPanel.SetActive(false); // Hide the panel
-                onDirectionChosen(neighbor); // Notify the PlayerMovement script
+                onDirectionChosen(direction); // Notify the PlayerMovement script
             });
         }
     }
