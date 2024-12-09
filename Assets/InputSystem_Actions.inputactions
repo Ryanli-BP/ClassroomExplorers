@@ -94,6 +94,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DragStart",
+                    "type": "Button",
+                    "id": "66bbb8c1-b3a6-4ab9-b32b-683baf1034ef",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DragMove",
+                    "type": "Button",
+                    "id": "9a132822-4f90-4612-bb8a-6702e44e45e3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DragEnd",
+                    "type": "Button",
+                    "id": "a91cbea8-0da4-4ef6-b428-ed41bedd0754",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -490,6 +517,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "diceroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4421eb71-b948-476d-b71b-c7472a910924",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragStart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4c7d2e03-c5ee-4467-b39b-b69d709fff32",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aee4fc5c-8a53-4c34-b0bc-3c4904fa02c3",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragEnd",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
