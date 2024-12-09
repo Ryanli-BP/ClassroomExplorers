@@ -7,6 +7,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Tile currentTile; // Assign the starting tile in the Inspector
 
+    [SerializeField]
+    private int playerID;
+
     private bool isMoving = false;
     private int remainingSteps = 0;
     private Direction lastDirection; // To track the direction the player came from
@@ -22,6 +25,34 @@ public class PlayerMovement : MonoBehaviour
         // Unsubscribe when the object is disabled to avoid memory leaks
         DiceDisplay.OnDiceTotal -= MovePlayer;
     }
+
+    private void Start()
+    {
+        SpawnAtHome();
+    }
+
+    public void SpawnAtHome()
+    {
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile =>
+        {
+            Home homeComponent = tile.GetComponent<Home>();
+            return homeComponent != null && homeComponent.playerID == playerID;
+        });
+
+        if (homeTile != null)
+        {
+            Vector3 homePosition = homeTile.transform.position;
+            homePosition.y += 0.5f; // Adjust Y offset
+            transform.position = homePosition;
+            currentTile = homeTile;
+            Debug.Log($"Player {playerID} spawned at their home.");
+        }
+        else
+        {
+            Debug.LogError($"No home tile found for player {playerID}!");
+        }
+    }
+
 
     public void MovePlayer(int diceroll)
     {
@@ -98,6 +129,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentTile != null)
         {
+            Home homeComponent = currentTile.GetComponent<Home>();
+
+            // Stop if the player reaches their home tile
+            if (homeComponent != null && homeComponent.playerID == playerID)
+            {
+                Debug.Log("Reached home tile. Stopping movement.");
+                remainingSteps = 0; // Force movement to stop
+            }
+
             // Apply movement and update the current tile
             transform.position = targetPosition;
         }
