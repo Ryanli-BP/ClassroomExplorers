@@ -2,34 +2,42 @@ using UnityEngine;
 
 public class AvatarSelector : MonoBehaviour
 {
-    public GameObject selectionBorder; // Reference to the border GameObject
-    private static AvatarSelector currentlySelected; // Tracks the currently selected avatar
+    public GameObject selectionBorder;
+    private static AvatarSelector currentlySelected;
 
     void Start()
     {
-        // Ensure the selection border is initially disabled
-        selectionBorder.SetActive(false);
+        selectionBorder.SetActive(false); // Hide selection border initially
     }
 
-    // Called when the avatar is clicked
     public void OnAvatarSelected()
     {
-        // Deselect the previously selected avatar
+        // Log the name of the selected avatar
+        Debug.Log("Avatar selected: " + gameObject.name);  // This will log the name of the avatar GameObject, which will be used as the avatarId
+
+        // Deselect the currently selected avatar (if any)
         if (currentlySelected != null)
         {
             currentlySelected.Deselect();
         }
 
-        // Select this avatar
+        // Set this avatar as the currently selected avatar
         currentlySelected = this;
-        selectionBorder.SetActive(true);
+        selectionBorder.SetActive(true); // Show the selection border
 
-        Debug.Log("Avatar selected: " + gameObject.name); // For debugging purposes
+        // Use the GameObject's name as its unique ID (avatarId)
+        string avatarId = gameObject.name; 
+
+        // Save the selected avatar's name (ID) to PlayerPrefs
+        PlayerPrefs.SetString("SelectedAvatar", avatarId);
+        PlayerPrefs.Save(); // Save the changes
+
+        // Log the avatarId for debugging
+        Debug.Log("Selected Avatar ID saved: " + avatarId); // This will log the avatar ID
     }
 
-    // Deselects this avatar
     public void Deselect()
     {
-        selectionBorder.SetActive(false);
+        selectionBorder.SetActive(false); // Hide the selection border when deselected
     }
 }
