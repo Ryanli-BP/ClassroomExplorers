@@ -53,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     public void MovePlayer(int diceroll)
     {
         if (isMoving || currentTile == null)
@@ -79,8 +78,19 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
 
-            // If at a crossroads, stop and wait for player input
-            if (availableDirections.Count > 1)
+            Home homeComponent = currentTile.GetComponent<Home>();
+
+            // Prompt the player if they reach their home tile
+            if (homeComponent != null && homeComponent.playerID == playerID)
+            {
+                Debug.Log("Reached home tile. Prompting player to choose.");
+                yield return StartCoroutine(HandleHomeTilePrompt());
+            }
+
+            if (!isMoving) { yield break; } //if player chooses to stop
+
+                // If at a crossroads, stop and wait for player input
+                if (availableDirections.Count > 1)
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
                 yield return StartCoroutine(WaitForPlayerInput(availableDirections));
@@ -129,15 +139,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentTile != null)
         {
-            Home homeComponent = currentTile.GetComponent<Home>();
-
-            // Stop if the player reaches their home tile
-            if (homeComponent != null && homeComponent.playerID == playerID)
-            {
-                Debug.Log("Reached home tile. Stopping movement.");
-                remainingSteps = 0; // Force movement to stop
-            }
-
             // Apply movement and update the current tile
             transform.position = targetPosition;
         }
@@ -147,10 +148,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     private IEnumerator WaitForPlayerInput(List<Direction> availableDirections)
     {
-        Direction? chosenDirection = null; 
+        Direction? chosenDirection = null;
 
         UIManager.Instance.ShowDirectionChoices(availableDirections, (direction) => {
             chosenDirection = direction;
@@ -164,4 +164,26 @@ public class PlayerMovement : MonoBehaviour
         // Move to the next tile in the chosen direction
         MoveToNextTile(chosenDirection.Value);
     }
+
+    private IEnumerator HandleHomeTilePrompt()
+    {
+        bool? playerChoice = null;
+
+        UIManager.Instance.ShowHomeTilePrompt((choice) => {
+            playerChoice = choice;
+        });
+
+        yield return new WaitUntil(() => playerChoice != null);
+
+        if (playerChoice == true)
+        {
+            Debug.Log("Player chose to stay on the home tile.");
+            isMoving = false;
+        }
+        else
+        {
+            Debug.Log("Player chose to continue moving.");
+        }
+    }
 }
+
