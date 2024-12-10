@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MoveStepByStep()
     {
         isMoving = true;
+        bool initialOnHome = true; //one time flag
 
         while (remainingSteps > 0)
         {
@@ -81,16 +82,18 @@ public class PlayerMovement : MonoBehaviour
             Home homeComponent = currentTile.GetComponent<Home>();
 
             // Prompt the player if they reach their home tile
-            if (homeComponent != null && homeComponent.playerID == playerID)
+            if (homeComponent != null && homeComponent.playerID == playerID && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTilePrompt());
             }
 
+            initialOnHome = false;
+
             if (!isMoving) { yield break; } //if player chooses to stop
 
-                // If at a crossroads, stop and wait for player input
-                if (availableDirections.Count > 1)
+            // If at a crossroads, stop and wait for player input
+            if (availableDirections.Count > 1)
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
                 yield return StartCoroutine(WaitForPlayerInput(availableDirections));
