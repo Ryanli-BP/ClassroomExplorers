@@ -13,6 +13,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button directionButtonPrefab;
 
+    [SerializeField]
+    private GameObject homePromptPanel; // Panel for home tile prompt
+
+    [SerializeField]
+    private Button stayButton;
+
+    [SerializeField]
+    private Button continueButton;
+
     private void Awake()
     {
         if (Instance == null)
@@ -24,7 +33,6 @@ public class UIManager : MonoBehaviour
     // Show direction choices at a crossroad
     public void ShowDirectionChoices(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
     {
-
         directionPanel.SetActive(true);
 
         // Clear any existing buttons before showing again
@@ -45,5 +53,24 @@ public class UIManager : MonoBehaviour
                 onDirectionChosen(direction); // Notify the PlayerMovement script
             });
         }
+    }
+
+    // Show prompt when player reaches a home tile
+    public void ShowHomeTilePrompt(Action<bool> onPlayerChoice)
+    {
+        homePromptPanel.SetActive(true);
+
+        stayButton.onClick.RemoveAllListeners();
+        continueButton.onClick.RemoveAllListeners();
+
+        stayButton.onClick.AddListener(() => {
+            homePromptPanel.SetActive(false);
+            onPlayerChoice(true);
+        });
+
+        continueButton.onClick.AddListener(() => {
+            homePromptPanel.SetActive(false);
+            onPlayerChoice(false);
+        });
     }
 }
