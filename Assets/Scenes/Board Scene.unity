@@ -2560,6 +2560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTile: {fileID: 1826945209}
   playerID: 1
+  lastDirection: 2
 --- !u!1 &1230113819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3972,7 +3973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: 
-  hasNorth: 0
+  hasNorth: 1
   hasEast: 0
   hasSouth: 0
   hasWest: 1

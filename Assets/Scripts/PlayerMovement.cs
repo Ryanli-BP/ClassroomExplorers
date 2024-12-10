@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    private Tile currentTile; // Assign the starting tile in the Inspector
+    [SerializeField]  private Tile currentTile; // Assign the starting tile in the Inspector
 
-    [SerializeField]
-    private int playerID;
+    [SerializeField]  private int playerID;
+
+    [SerializeField] private Direction lastDirection; // To track the direction the player came from
 
     private bool isMoving = false;
     private int remainingSteps = 0;
-    private Direction lastDirection; // To track the direction the player came from
+    
 
     private void OnEnable()
     {
@@ -102,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 // Move in the only available direction
                 Direction nextDirection = availableDirections[0];
-                Debug.Log($"Moving in the direction: {nextDirection}");
+                //Debug.Log($"Moving in the direction: {nextDirection}");
                 MoveToNextTile(nextDirection);
             }
 
