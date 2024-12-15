@@ -13,12 +13,12 @@ public class QuestionGenerate : MonoBehaviour
         if (displayingQuestion == false )
         {
             displayingQuestion = true;
-            QuestionDisplay.newQuestion = "What's 1 + 2";
-            QuestionDisplay.newA = "A. 1";
-            QuestionDisplay.newB = "B. 2";
-            QuestionDisplay.newC = "C. 3";
-            QuestionDisplay.newD = "D. 4";
-            ActualAnswer = "C";
+            QuestionDisplay.newQuestion = "Which one is a strawberry";
+            QuestionDisplay.newA = "A. [image of orange]";
+            QuestionDisplay.newB = "B. [image of apple]";
+            QuestionDisplay.newC = "C. [image of banna]";
+            QuestionDisplay.newD = "D. [image of strawberry]";
+            ActualAnswer = "D";
         }
     }
 }

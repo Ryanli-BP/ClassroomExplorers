@@ -32,7 +32,7 @@ public class DiceDisplay : MonoBehaviour
         diceResultText?.SetText($"{totalResult}");
 
         // Reset the display after 2 seconds
-        await Task.Delay(2000);
+        await Task.Delay(1000);
         ResetDisplay();
     }
 
