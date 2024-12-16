@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Direction { North, East, South, West }
+public enum Direction { North, East, South, West, None }
 
 public class Tile : MonoBehaviour
 {
@@ -17,7 +17,6 @@ public class Tile : MonoBehaviour
     public List<Direction> GetAllAvailableDirections(Direction fromDirection)
     {
         List<Direction> validDirections = new List<Direction>();
-
         if (hasNorth && fromDirection != Direction.South) validDirections.Add(Direction.North);
         if (hasEast && fromDirection != Direction.West) validDirections.Add(Direction.East);
         if (hasSouth && fromDirection != Direction.North) validDirections.Add(Direction.South);

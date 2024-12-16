@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    private Tile currentTile; // Assign the starting tile in the Inspector
+    [SerializeField]  private Tile currentTile; // Assign the starting tile in the Inspector
+
+    [SerializeField]  private int playerID;
+
+    [SerializeField] private Direction lastDirection; // To track the direction the player came from
 
     private bool isMoving = false;
     private int remainingSteps = 0;
-    private Direction lastDirection; // To track the direction the player came from
+    
 
     private void OnEnable()
     {
@@ -21,6 +24,33 @@ public class PlayerMovement : MonoBehaviour
     {
         // Unsubscribe when the object is disabled to avoid memory leaks
         DiceDisplay.OnDiceTotal -= MovePlayer;
+    }
+
+    private void Start()
+    {
+        SpawnAtHome();
+    }
+
+    public void SpawnAtHome()
+    {
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile =>
+        {
+            Home homeComponent = tile.GetComponent<Home>();
+            return homeComponent != null && homeComponent.playerID == playerID;
+        });
+
+        if (homeTile != null)
+        {
+            Vector3 homePosition = homeTile.transform.position;
+            homePosition.y += 0.5f; // Adjust Y offset
+            transform.position = homePosition;
+            currentTile = homeTile;
+            Debug.Log($"Player {playerID} spawned at their home.");
+        }
+        else
+        {
+            Debug.LogError($"No home tile found for player {playerID}!");
+        }
     }
 
     public void MovePlayer(int diceroll)
@@ -36,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MoveStepByStep()
     {
         isMoving = true;
+        bool initialOnHome = true; //one time flag
 
         while (remainingSteps > 0)
         {
@@ -48,6 +79,19 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
 
+            Home homeComponent = currentTile.GetComponent<Home>();
+
+            // Prompt the player if they reach their home tile
+            if (homeComponent != null && homeComponent.playerID == playerID && !initialOnHome)
+            {
+                Debug.Log("Reached home tile. Prompting player to choose.");
+                yield return StartCoroutine(HandleHomeTilePrompt());
+            }
+
+            initialOnHome = false;
+
+            if (!isMoving) { yield break; } //if player chooses to stop
+
             // If at a crossroads, stop and wait for player input
             if (availableDirections.Count > 1)
             {
@@ -58,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 // Move in the only available direction
                 Direction nextDirection = availableDirections[0];
-                Debug.Log($"Moving in the direction: {nextDirection}");
+                //Debug.Log($"Moving in the direction: {nextDirection}");
                 MoveToNextTile(nextDirection);
             }
 
@@ -107,10 +151,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     private IEnumerator WaitForPlayerInput(List<Direction> availableDirections)
     {
-        Direction? chosenDirection = null; 
+        Direction? chosenDirection = null;
 
         UIManager.Instance.ShowDirectionChoices(availableDirections, (direction) => {
             chosenDirection = direction;
@@ -124,4 +167,26 @@ public class PlayerMovement : MonoBehaviour
         // Move to the next tile in the chosen direction
         MoveToNextTile(chosenDirection.Value);
     }
+
+    private IEnumerator HandleHomeTilePrompt()
+    {
+        bool? playerChoice = null;
+
+        UIManager.Instance.ShowHomeTilePrompt((choice) => {
+            playerChoice = choice;
+        });
+
+        yield return new WaitUntil(() => playerChoice != null);
+
+        if (playerChoice == true)
+        {
+            Debug.Log("Player chose to stay on the home tile.");
+            isMoving = false;
+        }
+        else
+        {
+            Debug.Log("Player chose to continue moving.");
+        }
+    }
 }
+
