@@ -6,26 +6,62 @@ using System.Collections;
 public class QuestionDisplay : MonoBehaviour
 {
 
-    public GameObject ScreenQuestion;
-    public GameObject AnswerA;
-    public GameObject AnswerB;
-    public GameObject AnswerC;
-    public GameObject AnswerD;
-    public static string newQuestion;
-    public static string newA;
-    public static string newB;
-    public static string newC;
-    public static string newD;
+    [SerializeField] private GameObject ScreenQuestion;
+    [SerializeField] private GameObject AnswerA;
+    [SerializeField] private GameObject AnswerB;
+    [SerializeField] private GameObject AnswerC;
+    [SerializeField] private GameObject AnswerD;
+    [SerializeField] private static string newQuestion;
+    [SerializeField] private static string newA;
+    [SerializeField] private static string newB;
+    [SerializeField] private static string newC;
+    [SerializeField] private static string newD;
 
-    void Start()
+    [SerializeField] private static bool updateNow = false;
+
+    public static string NewQuestion
     {
-        StartCoroutine(PushTextOnScreen());
+        get { return newQuestion; }
+        set { newQuestion = value; }
+    }
+
+    public static string NewA
+    {
+        get { return newA; }
+        set { newA = value; }
+    }
+
+    public static string NewB
+    {
+        get { return newB; }
+        set { newB = value; }
+    }
+
+    public static string NewC
+    {
+        get { return newC; }
+        set { newC = value; }
+    }
+
+    public static string NewD
+    {
+        get { return newD; }
+        set { newD = value; }
+    }
+    public static bool UpdateNow
+    {
+        get { return updateNow; }
+        set { updateNow = value; }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (updateNow == false)
+        {
+            updateNow = true;
+            StartCoroutine(PushTextOnScreen());
+        }
     }
 
     IEnumerator PushTextOnScreen()

@@ -1,94 +1,84 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AnswerButtons : MonoBehaviour
 {
-    public GameObject answerAbackBlue, answerAbackGreen, answerAbackRed; //Blue is default, Green is Correct, Red is wrong
-    public GameObject answerBbackBlue, answerBbackGreen, answerBbackRed;
-    public GameObject answerCbackBlue, answerCbackGreen, answerCbackRed;
-    public GameObject answerDbackBlue, answerDbackGreen, answerDbackRed;
+    // Arrays for button backgrounds
+    [SerializeField] private GameObject[] answerBackBlue; // Default backgrounds
+    [SerializeField] private GameObject[] answerBackGreen; // Green for correct answers
+    [SerializeField] private GameObject[] answerBackRed; // Red for incorrect answers
 
-    public GameObject answerA, answerB, answerC, answerD;
+    [SerializeField] private GameObject[] answerButtons; // The buttons themselves
 
-    public AudioSource CorrectFX, WrongFX;
+    [SerializeField] private AudioSource CorrectFX, WrongFX;
 
-    public void AnswerA()
+    // Called when an answer is selected
+    public void SelectAnswer(int answerIndex)
     {
-        if (QuestionGenerate.ActualAnswer == "A")
+
+        Debug.Log(answerIndex);
+        Debug.Log(QuestionGenerate.ActualAnswer);
+        // Check if the selected answer is correct
+        if (QuestionGenerate.ActualAnswer == GetAnswerLabel(answerIndex))
         {
-            answerAbackGreen.SetActive(true);
-            answerAbackBlue.SetActive(false);
+            answerBackGreen[answerIndex].SetActive(true);
+            answerBackBlue[answerIndex].SetActive(false);
             CorrectFX.Play();
         }
         else
         {
-            answerAbackRed.SetActive(true);
-            answerAbackBlue.SetActive(false);
+            answerBackRed[answerIndex].SetActive(true);
+            answerBackBlue[answerIndex].SetActive(false);
             WrongFX.Play();
         }
-        answerA.GetComponent<Button>().enabled = false;
-        answerB.GetComponent<Button>().enabled = false;
-        answerC.GetComponent<Button>().enabled = false;
-        answerD.GetComponent<Button>().enabled = false;
+
+        // Disable all buttons after an answer is selected
+        DisableAllButtons();
+        StartCoroutine(NextQuestion());
     }
 
-    public void AnswerB()
+    private string GetAnswerLabel(int index)
     {
-        if (QuestionGenerate.ActualAnswer == "B")
-        {
-            answerBbackGreen.SetActive(true);
-            answerBbackBlue.SetActive(false);
-            CorrectFX.Play();
-        }
-        else
-        {
-            answerBbackRed.SetActive(true);
-            answerBbackBlue.SetActive(false);
-            WrongFX.Play();
-        }
-        answerA.GetComponent<Button>().enabled = false;
-        answerB.GetComponent<Button>().enabled = false;
-        answerC.GetComponent<Button>().enabled = false;
-        answerD.GetComponent<Button>().enabled = false;
+        // Convert 0, 1, 2, 3 to "A", "B", "C", "D"
+        return ((char)('A' + index)).ToString();
     }
 
-    public void AnswerC()
+    private void DisableAllButtons()
     {
-        if (QuestionGenerate.ActualAnswer == "C")
+        foreach (GameObject button in answerButtons)
         {
-            answerCbackGreen.SetActive(true);
-            answerCbackBlue.SetActive(false);
-            CorrectFX.Play();
+            button.GetComponent<Button>().enabled = false;
         }
-        else
-        {
-            answerCbackRed.SetActive(true);
-            answerCbackBlue.SetActive(false);
-            WrongFX.Play();
-        }
-        answerA.GetComponent<Button>().enabled = false;
-        answerB.GetComponent<Button>().enabled = false;
-        answerC.GetComponent<Button>().enabled = false;
-        answerD.GetComponent<Button>().enabled = false;
     }
 
-    public void AnswerD()
+    IEnumerator NextQuestion()
     {
-        if (QuestionGenerate.ActualAnswer == "D")
+        yield return new WaitForSeconds(2.0f);
+
+        // Reset the button backgrounds
+        foreach (GameObject button in answerBackBlue)
         {
-            answerDbackGreen.SetActive(true);
-            answerDbackBlue.SetActive(false);
-            CorrectFX.Play();
+            button.SetActive(true);
         }
-        else
+
+        foreach (GameObject button in answerBackGreen)
         {
-            answerDbackRed.SetActive(true);
-            answerDbackBlue.SetActive(false);
-            WrongFX.Play();
+            button.SetActive(false);
         }
-        answerA.GetComponent<Button>().enabled = false;
-        answerB.GetComponent<Button>().enabled = false;
-        answerC.GetComponent<Button>().enabled = false;
-        answerD.GetComponent<Button>().enabled = false;
+
+        foreach (GameObject button in answerBackRed)
+        {
+            button.SetActive(false);
+        }
+
+        // Enable all buttons
+        foreach (GameObject button in answerButtons)
+        {
+            button.GetComponent<Button>().enabled = true;
+        }
+
+        // Display the next question
+        QuestionGenerate.displayingQuestion = false;
     }
 }
