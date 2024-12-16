@@ -1,4 +1,4 @@
-Question,Answer A,Answer B,Answer C,Answer D,
+question,optionA,optionB,optionC,optionD,answer
 Which one is a strawberry,[image of orange],[image of apple],[image of banana],[image of strawberry],D
 what's 4 + 3,2,6,7,15,C
 Which of the following is a country,Asia,Bulgaria,London,John,B

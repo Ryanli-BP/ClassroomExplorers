@@ -1,76 +1,37 @@
-using JetBrains.Annotations;
 using UnityEngine;
 using TMPro;
-using System.Collections;
 
 public class QuestionDisplay : MonoBehaviour
 {
+    public static QuestionDisplay Instance { get; private set; }
 
     [SerializeField] private GameObject ScreenQuestion;
     [SerializeField] private GameObject AnswerA;
     [SerializeField] private GameObject AnswerB;
     [SerializeField] private GameObject AnswerC;
     [SerializeField] private GameObject AnswerD;
-    [SerializeField] private static string newQuestion;
-    [SerializeField] private static string newA;
-    [SerializeField] private static string newB;
-    [SerializeField] private static string newC;
-    [SerializeField] private static string newD;
+    [SerializeField] private GameObject QuestionIndexText; 
 
-    [SerializeField] private static bool updateNow = false;
-
-    public static string NewQuestion
+    private void Awake()
     {
-        get { return newQuestion; }
-        set { newQuestion = value; }
-    }
-
-    public static string NewA
-    {
-        get { return newA; }
-        set { newA = value; }
-    }
-
-    public static string NewB
-    {
-        get { return newB; }
-        set { newB = value; }
-    }
-
-    public static string NewC
-    {
-        get { return newC; }
-        set { newC = value; }
-    }
-
-    public static string NewD
-    {
-        get { return newD; }
-        set { newD = value; }
-    }
-    public static bool UpdateNow
-    {
-        get { return updateNow; }
-        set { updateNow = value; }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (updateNow == false)
+        if (Instance == null)
         {
-            updateNow = true;
-            StartCoroutine(PushTextOnScreen());
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
-    IEnumerator PushTextOnScreen()
+    public void DisplayQuestion(Question question, int currentIndex, int totalQuestions)
     {
-        yield return new WaitForSeconds(0.25f);
-        ScreenQuestion.GetComponent<TextMeshProUGUI>().text = newQuestion;
-        AnswerA.GetComponent<TextMeshProUGUI>().text = newA;
-        AnswerB.GetComponent<TextMeshProUGUI>().text = newB;
-        AnswerC.GetComponent<TextMeshProUGUI>().text = newC;
-        AnswerD.GetComponent<TextMeshProUGUI>().text = newD;
+        ScreenQuestion.GetComponent<TextMeshProUGUI>().text = question.question;
+        AnswerA.GetComponent<TextMeshProUGUI>().text = $"A. {question.optionA}";
+        AnswerB.GetComponent<TextMeshProUGUI>().text = $"B. {question.optionB}";
+        AnswerC.GetComponent<TextMeshProUGUI>().text = $"C. {question.optionC}";
+        AnswerD.GetComponent<TextMeshProUGUI>().text = $"D. {question.optionD}";
+        QuestionIndexText.GetComponent<TextMeshProUGUI>().text = $"{currentIndex + 1}/{totalQuestions}"; // Display the index
     }
 }
