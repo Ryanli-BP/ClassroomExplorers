@@ -12,6 +12,8 @@ public class AnswerButtons : MonoBehaviour
 
     public void SelectAnswer(int answerIndex)
     {
+        if (!QuizManager.Instance.IsQuizActive()) return;
+
         bool isCorrect = QuizManager.Instance.CheckAnswer(answerIndex);
 
         if (isCorrect)
