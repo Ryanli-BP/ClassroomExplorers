@@ -2,6 +2,8 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+
+# Unity generated folders
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -9,12 +11,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
-
-# MemoryCaptures can get excessive in size.
-# They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
-
-# Recordings can get excessive in size
 /[Rr]ecordings/
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
@@ -70,6 +67,52 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-.plastic/plastic.changes
-.plastic/plastic.wktree
+
+
+# TextMesh Pro example files
 Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials/Roboto-Bold SDF.asset.meta
+
+# Additional Unity generated folders
+[Bb]uilds/
+[Mm]emoryCaptures/
+
+# Visual Studio / MonoDevelop generated files
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+
+# Unity auto-generated files
+*.pidb.meta
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Exclude crash reports and other large files
+sysinfo.txt
+*.stacktrace
+
+# Exclude files created by Unity Editor
+*.unitypackage
+*.assetstoretools*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Version control settings
+.vscode/
+.idea/
+.plastic/
+.utmp/
+board_BurstDebugInformation_DoNotShip/
+.vsconfig
+*.iml
