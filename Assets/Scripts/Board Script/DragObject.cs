@@ -9,7 +9,7 @@ public class DragObject : MonoBehaviour
 
     private Vector3 curScreenPos;
 
-    Camera camera;
+    new Camera camera;
     private bool isDragging;
 
     private Vector3 WorldPos

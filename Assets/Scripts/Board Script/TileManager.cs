@@ -5,7 +5,7 @@ public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
 
-    public Transform tileContainer;
+    [SerializeField] private Transform tileContainer;
 
     public List<Tile> allTiles = new List<Tile>();
 
