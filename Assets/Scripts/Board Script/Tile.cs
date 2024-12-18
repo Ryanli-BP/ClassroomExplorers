@@ -6,7 +6,7 @@ public enum Direction { North, East, South, West, None }
 public class Tile : MonoBehaviour
 {
     public string tileName;
-
+    
     // Boolean flags to indicate available directions
     public bool hasNorth;
     public bool hasEast;

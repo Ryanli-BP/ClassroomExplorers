@@ -59,9 +59,10 @@ public class UIManager : MonoBehaviour
     public void ShowHomeTilePrompt(Action<bool> onPlayerChoice)
     {
         homePromptPanel.SetActive(true);
-
         stayButton.onClick.RemoveAllListeners();
         continueButton.onClick.RemoveAllListeners();
+
+        
 
         stayButton.onClick.AddListener(() => {
             homePromptPanel.SetActive(false);

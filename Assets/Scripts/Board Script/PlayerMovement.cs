@@ -8,12 +8,14 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]  private int playerID;
 
-    [SerializeField] private Direction lastDirection; // To track the direction the player came from
+    public Direction FacingDirection; // To track the direction the player came from
+    
+    [SerializeField] private Direction _lastDirection; // To track the direction the player came from
 
     private bool isMoving = false;
     private int remainingSteps = 0;
     
-
+    public static bool initialOnHome = true; //one time flag
     private void OnEnable()
     {
         // Subscribe to the OnDiceTotal event
@@ -66,13 +68,16 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MoveStepByStep()
     {
         isMoving = true;
-        bool initialOnHome = true; //one time flag
+      
 
         while (remainingSteps > 0)
         {
             // Get valid directions based on the last direction
-            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(lastDirection);
-
+            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(FacingDirection);
+            
+            
+            List<Direction> _availableDirections = currentTile.GetAllAvailableDirections(_lastDirection);
+            
             if (availableDirections.Count == 0)
             {
                 Debug.LogError("No valid directions found! Player cannot move.");
@@ -116,7 +121,8 @@ public class PlayerMovement : MonoBehaviour
     private void MoveToNextTile(Direction direction)
     {
         // Update last direction based on the current movement direction
-        lastDirection = direction;
+        FacingDirection = direction;
+        _lastDirection = direction;
 
         Vector3 targetPosition = currentTile.transform.position;
 
