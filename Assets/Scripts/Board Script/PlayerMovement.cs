@@ -14,8 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isMoving = false;
     private int remainingSteps = 0;
-    
-    public static bool initialOnHome = true; //one time flag
+
     private void OnEnable()
     {
         // Subscribe to the OnDiceTotal event
@@ -68,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MoveStepByStep()
     {
         isMoving = true;
-      
+        bool initialOnHome = true; //one time flag
 
         while (remainingSteps > 0)
         {
