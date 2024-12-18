@@ -68,20 +68,14 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < playerPrefabs.Count; i++)
         {
-            
             Tile homeTile = TileManager.Instance.allTiles.Find(tile =>
-            {
-                Home homeComponent = tile.GetComponent<Home>();
-                return homeComponent != null && homeComponent.playerID == i;
-            });
+                tile.GetComponent<Home>()?.playerID == i);
 
             if (homeTile != null)
             {
                 GameObject newPlayer = Instantiate(playerPrefabs[i], playerParent);
-
                 PlayerMovement playerMovement = newPlayer.GetComponent<PlayerMovement>();
                 playerMovement.Initialize(homeTile, i);
-
                 players.Add(playerMovement);
             }
             else
