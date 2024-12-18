@@ -11,6 +11,8 @@ public class Dice : MonoBehaviour
     public bool rollfin;
     public bool delayfin;
 
+    private int diceResult;
+
     public static UnityAction<int> OnDiceResult; //Event for individual dice results
 
     public delegate void DiceFinishedRolling(); // Event for dice finished rolling
@@ -22,7 +24,7 @@ public class Dice : MonoBehaviour
         if (!rollfin && rb.linearVelocity.sqrMagnitude == 0f)
         {
             rollfin = true;
-            GetRes();
+            diceResult = GetRes();
 
             OnDiceFinishedRolling?.Invoke();
         }
@@ -72,5 +74,10 @@ public class Dice : MonoBehaviour
     {
         await Task.Delay(1000);
         delayfin = true;
+    }
+
+    public int GetResult()
+    {
+        return diceResult;
     }
 }

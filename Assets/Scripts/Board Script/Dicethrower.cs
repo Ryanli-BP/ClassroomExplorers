@@ -12,6 +12,7 @@ public class DiceThrower : MonoBehaviour
 
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
+    public int totalResult = 0;
 
     public static UnityAction OnAllDiceFinished;  // Event triggered when all dice finish rolling
 
@@ -42,7 +43,7 @@ public class DiceThrower : MonoBehaviour
     private void RollDice()
     {
         remainingDice = numDice;  // Reset remaining dice count to the total number of dice
-
+        totalResult = 0; 
         // Unsubscribe from previous dice finish events before destroying old dice
         foreach (var die in liveDice)
         {
@@ -64,10 +65,18 @@ public class DiceThrower : MonoBehaviour
     private void HandleDiceFinishedRolling()
     {
         remainingDice--;
-
+        foreach (var die in liveDice)
+        {
+            totalResult += die.GetResult();
+        }
         if (remainingDice <= 0)
         {
             OnAllDiceFinished?.Invoke();
         }
+    }
+
+    public int GetDiceTotal()
+    {
+        return totalResult;
     }
 }
