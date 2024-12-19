@@ -45,4 +45,9 @@ public class PlayerManager : MonoBehaviour
             Debug.LogError($"No home tile found for player {player.getPlayerID()}!");
         }
     }
+
+    public void StartPlayerTurn(Player player)
+    {
+        Debug.Log($"Player {player.getPlayerID()}'s turn.");
+    }
 }

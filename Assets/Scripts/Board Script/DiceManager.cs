@@ -5,10 +5,10 @@ using UnityEngine.InputSystem; // Required for the new Input System
 
 public class DiceThrower : MonoBehaviour
 {
-    public Dice DiceToThrow;
-    public int numDice = 3;
-    public float throwForce = 5f;
-    public float rollForce = 10f;
+    [SerializeField] private Dice DiceToThrow;
+    [SerializeField] private int numDice = 3;
+    [SerializeField] private float throwForce = 5f;
+    [SerializeField] private float rollForce = 10f;
 
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling

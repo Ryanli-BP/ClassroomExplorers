@@ -1,7 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine.Events;
 
 public class UIManager : MonoBehaviour
 {
@@ -22,12 +25,45 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button continueButton;
 
+    [SerializeField]
+    private TextMeshProUGUI diceResultText; // Text to display dice result
+
+    private int totalResult = 0; // Tracks the total sum of dice rolls
+
+    public static UnityAction<int> OnDiceTotal; // Event for dice total calculated + 2s delay
+
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        Dice.OnDiceResult += HandleDiceResult; // For getting results of dice rolls
+        DiceThrower.OnAllDiceFinished += DisplayTotalResult; // For the bool of when all dice finish rolling
+    }
+
+    private void OnDisable()
+    {
+        Dice.OnDiceResult -= HandleDiceResult;
+        DiceThrower.OnAllDiceFinished -= DisplayTotalResult;
+    }
+
+    private void HandleDiceResult(int diceResult)
+    {
+        totalResult += diceResult;
+    }
+
+    private async void DisplayTotalResult()
+    {
+        diceResultText?.SetText($"{totalResult}");
+        await Task.Delay(1000);
+        OnDiceTotal?.Invoke(totalResult);
+        totalResult = 0; // Reset total result for next roll
+        diceResultText?.SetText("");
     }
 
     // Show direction choices at a crossroad
@@ -61,8 +97,6 @@ public class UIManager : MonoBehaviour
         homePromptPanel.SetActive(true);
         stayButton.onClick.RemoveAllListeners();
         continueButton.onClick.RemoveAllListeners();
-
-        
 
         stayButton.onClick.AddListener(() => {
             homePromptPanel.SetActive(false);

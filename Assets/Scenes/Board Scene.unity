@@ -564,6 +564,7 @@ MonoBehaviour:
   homePromptPanel: {fileID: 553760742}
   stayButton: {fileID: 2145224993}
   continueButton: {fileID: 1940893186}
+  diceResultText: {fileID: 1604395191}
 --- !u!4 &217416945
 Transform:
   m_ObjectHideFlags: 0
@@ -4649,7 +4650,6 @@ GameObject:
   - component: {fileID: 1604395189}
   - component: {fileID: 1604395192}
   - component: {fileID: 1604395191}
-  - component: {fileID: 1604395190}
   m_Layer: 5
   m_Name: diceResultDisplay
   m_TagString: Untagged
@@ -4676,19 +4676,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1604395190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604395188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59e5603dc606d244ab583bb5b5c321bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  diceResultText: {fileID: 1604395191}
 --- !u!114 &1604395191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6237,12 +6224,12 @@ SceneRoots:
   - {fileID: 217416945}
   - {fileID: 1191676193}
   - {fileID: 2124179900}
+  - {fileID: 2310173}
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1471103828}
   - {fileID: 1579840714}
-  - {fileID: 2310173}
   - {fileID: 666191105}
   - {fileID: 543564495}
   - {fileID: 1230113820}

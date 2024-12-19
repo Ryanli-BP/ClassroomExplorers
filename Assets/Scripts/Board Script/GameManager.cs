@@ -33,10 +33,6 @@ public class GameManager : MonoBehaviour
                 StartPlayerTurn();
                 break;
 
-            case GameState.PlayerRollingDice:
-                EnableDiceRoll();
-                break;
-
             case GameState.PlayerMoving:
                 break;
 

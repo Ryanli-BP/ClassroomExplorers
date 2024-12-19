@@ -16,13 +16,13 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         // Subscribe to the OnDiceTotal event
-        DiceDisplay.OnDiceTotal += MovePlayer;
+        UIManager.OnDiceTotal += MovePlayer;
     }
 
     private void OnDisable()
     {
         // Unsubscribe when the object is disabled to avoid memory leaks
-        DiceDisplay.OnDiceTotal -= MovePlayer;
+        UIManager.OnDiceTotal -= MovePlayer;
     }
 
     public void SetCurrentTile(Tile tile)
