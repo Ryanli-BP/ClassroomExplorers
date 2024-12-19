@@ -6,6 +6,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
+
+    private int totalDiceResult = 0;
+
     private void Awake()
     {
         if (Instance == null)
@@ -33,6 +36,10 @@ public class GameManager : MonoBehaviour
                 StartPlayerTurn();
                 break;
 
+            case GameState.PlayerRollingDice:
+                EnableDiceRoll();
+                break;
+
             case GameState.PlayerMoving:
                 break;
 
@@ -45,43 +52,46 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        OnGameStateChanged?.Invoke(currentState); //is this needed?
+        OnGameStateChanged?.Invoke(currentState);
     }
 
     private void SetupGame()
     {
-        SpawnPlayers();
-        ChangeState(GameState.PlayerTurnStart);
-    }
-
-    private void SpawnPlayers()
-    {
         PlayerManager.Instance.SpawnAllPlayersAtHome();
+        ChangeState(GameState.PlayerTurnStart);
     }
 
     private void StartPlayerTurn()
     {
-
+        ChangeState(GameState.PlayerRollingDice);
     }
 
     private void EnableDiceRoll()
     {
+        totalDiceResult = 0; // Reset total dice result
+        DiceManager.Instance.EnableDiceRoll();
+        DiceManager.OnAllDiceFinished += OnDiceRollComplete;
+    }
 
+    public void HandleDiceResult(int diceResult)
+    {
+        totalDiceResult += diceResult;
     }
 
     private void OnDiceRollComplete()
     {
-
+        DiceManager.OnAllDiceFinished -= OnDiceRollComplete;
+        UIManager.Instance.DisplayTotalResult(totalDiceResult);
     }
 
     private void StartPlayerMovement(int diceTotal)
     {
-
+        // Implement player movement start logic here
     }
 
     private void EndPlayerTurn()
     {
-
+        // Implement player turn end logic here
     }
 
     private void EndGame()

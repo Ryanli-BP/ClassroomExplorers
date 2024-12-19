@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor.VisionOS;
+using UnityEditor.PackageManager;
 
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
     [SerializeField] private List<Player> players;
+
+    private int currentPlayerID = 0;
 
     private void Awake()
     {
@@ -18,6 +21,11 @@ public class PlayerManager : MonoBehaviour
     public List<Player> getPlayerList()
     {
         return players;
+    }
+
+    public Player getCurrentPlayer()
+    {
+        return players[currentPlayerID];
     }
 
     public void SpawnAllPlayersAtHome()

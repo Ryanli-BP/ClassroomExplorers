@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 2310173}
   - component: {fileID: 2310172}
   m_Layer: 0
-  m_Name: DiceThrower
+  m_Name: DiceManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
