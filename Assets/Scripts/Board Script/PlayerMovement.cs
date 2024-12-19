@@ -34,11 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void SpawnAtHome()
     {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile =>
-        {
-            Home homeComponent = tile.GetComponent<Home>();
-            return homeComponent != null && homeComponent.playerID == playerID;
-        });
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.isHome);
 
         if (homeTile != null)
         {
@@ -82,11 +78,8 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-
-            Home homeComponent = currentTile.GetComponent<Home>();
-
             // Prompt the player if they reach their home tile
-            if (homeComponent != null && homeComponent.playerID == playerID && !initialOnHome)
+            if (currentTile.isHome && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTilePrompt());

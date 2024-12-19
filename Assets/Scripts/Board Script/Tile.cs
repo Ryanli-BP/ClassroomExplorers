@@ -5,13 +5,18 @@ public enum Direction { North, East, South, West, None }
 
 public class Tile : MonoBehaviour
 {
-    public string tileName;
-    
     // Boolean flags to indicate available directions
-    public bool hasNorth;
-    public bool hasEast;
-    public bool hasSouth;
-    public bool hasWest;
+    [SerializeField] private bool hasNorth;
+    [SerializeField] private bool hasEast;
+    [SerializeField] private bool hasSouth;
+    [SerializeField] private bool hasWest;
+
+
+    // Boolean flag for tile propertiers
+    public bool isHome;
+
+    public int playerID;
+
 
     // Return all valid directions (used for crossroads)
     public List<Direction> GetAllAvailableDirections(Direction fromDirection)
@@ -23,6 +28,11 @@ public class Tile : MonoBehaviour
         if (hasWest && fromDirection != Direction.East) validDirections.Add(Direction.West);
 
         return validDirections;
+    }
+
+    public bool IsHome()
+    {
+        return isHome;
     }
 }
 
