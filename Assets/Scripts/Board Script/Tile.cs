@@ -14,8 +14,8 @@ public class Tile : MonoBehaviour
 
     // Boolean flag for tile propertiers
     public bool isHome;
+    public int playerID; //for home
 
-    public int playerID;
 
 
     // Return all valid directions (used for crossroads)

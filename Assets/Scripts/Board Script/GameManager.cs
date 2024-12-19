@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        OnGameStateChanged?.Invoke(currentState);
+        OnGameStateChanged?.Invoke(currentState); //is this needed?
     }
 
     private void SetupGame()
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnPlayers()
     {
-        
+        PlayerManager.Instance.SpawnPlayerAtHome(PlayerManager.Instance.players[0]);
     }
 
     private void StartPlayerTurn()

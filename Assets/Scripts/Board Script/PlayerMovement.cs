@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]  private Tile currentTile; // Assign the starting tile in the Inspector
-
-    [SerializeField]  private int playerID;
+    private Tile currentTile; // Assign the starting tile in the Inspector
 
     public Direction FacingDirection; // To track the direction the player came from
     
@@ -27,29 +25,10 @@ public class PlayerMovement : MonoBehaviour
         DiceDisplay.OnDiceTotal -= MovePlayer;
     }
 
-    private void Start()
+    public void SetCurrentTile(Tile tile)
     {
-        SpawnAtHome();
+        currentTile = tile;
     }
-
-    public void SpawnAtHome()
-    {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.isHome);
-
-        if (homeTile != null)
-        {
-            Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += 0.5f; // Adjust Y offset
-            transform.position = homePosition;
-            currentTile = homeTile;
-            Debug.Log($"Player {playerID} spawned at their home.");
-        }
-        else
-        {
-            Debug.LogError($"No home tile found for player {playerID}!");
-        }
-    }
-
     public void MovePlayer(int diceroll)
     {
         if (isMoving || currentTile == null)
