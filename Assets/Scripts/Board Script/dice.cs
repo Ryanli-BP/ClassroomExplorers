@@ -22,7 +22,7 @@ public class Dice : MonoBehaviour
         {
             rollfin = true;
             int result = GetRes();
-            GameManager.Instance.HandleDiceResult(result); // Send result to GameManager
+            DiceManager.Instance.HandleDiceResult(result); // Send result to GameManager
 
             OnDiceFinishedRolling?.Invoke();
         }

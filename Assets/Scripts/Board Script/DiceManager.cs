@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class DiceManager : MonoBehaviour
 {
-
     public static DiceManager Instance;
     [SerializeField] private Dice DiceToThrow;
     [SerializeField] private int numDice = 3;
@@ -14,13 +13,14 @@ public class DiceManager : MonoBehaviour
 
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
+    private int totalDiceResult; // Tracks the total sum of dice rolls
 
     public static UnityAction OnAllDiceFinished;  // Event triggered when all dice finish rolling
 
     private InputAction rollDiceAction; // New InputAction for rolling dice
     private bool canRollDice = false; // Flag to control dice rolling
 
-        private void Awake()
+    private void Awake()
     {
         if (Instance == null)
             Instance = this;
@@ -55,6 +55,7 @@ public class DiceManager : MonoBehaviour
 
     public void EnableDiceRoll()
     {
+        totalDiceResult = 0; // Reset total dice result
         canRollDice = true; // Allow dice rolling
     }
 
@@ -89,5 +90,15 @@ public class DiceManager : MonoBehaviour
         {
             OnAllDiceFinished?.Invoke();
         }
+    }
+
+    public void HandleDiceResult(int diceResult)
+    {
+        totalDiceResult += diceResult;
+    }
+
+    public int GetTotalDiceResult()
+    {
+        return totalDiceResult;
     }
 }

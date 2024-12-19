@@ -1,13 +1,12 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
-
-    private int totalDiceResult = 0;
 
     private void Awake()
     {
@@ -68,19 +67,14 @@ public class GameManager : MonoBehaviour
 
     private void EnableDiceRoll()
     {
-        totalDiceResult = 0; // Reset total dice result
         DiceManager.Instance.EnableDiceRoll();
         DiceManager.OnAllDiceFinished += OnDiceRollComplete;
-    }
-
-    public void HandleDiceResult(int diceResult)
-    {
-        totalDiceResult += diceResult;
     }
 
     private void OnDiceRollComplete()
     {
         DiceManager.OnAllDiceFinished -= OnDiceRollComplete;
+        int totalDiceResult = DiceManager.Instance.GetTotalDiceResult();
         UIManager.Instance.DisplayTotalResult(totalDiceResult);
     }
 
