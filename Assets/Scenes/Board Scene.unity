@@ -3141,7 +3141,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7830ba51b4505374c86b084b64190713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FacingDirection: 0
   _lastDirection: 2
 --- !u!114 &1218891191
 MonoBehaviour:

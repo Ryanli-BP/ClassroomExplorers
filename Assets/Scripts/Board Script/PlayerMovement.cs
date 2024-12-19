@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Tile currentTile; // Assign the starting tile in the Inspector
 
-    public Direction FacingDirection; // To track the direction the player came from
+    private Direction FacingDirection; // To track the direction the player came from
     
     [SerializeField] private Direction _lastDirection; // To track the direction the player came from
 
@@ -46,11 +46,8 @@ public class PlayerMovement : MonoBehaviour
 
         while (remainingSteps > 0)
         {
-            // Get valid directions based on the last direction
-            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(FacingDirection);
-            
-            
-            List<Direction> _availableDirections = currentTile.GetAllAvailableDirections(_lastDirection);
+            // Get valid directions based on the last direction         
+            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(_lastDirection);
             
             if (availableDirections.Count == 0)
             {
@@ -92,7 +89,6 @@ public class PlayerMovement : MonoBehaviour
     private void MoveToNextTile(Direction direction)
     {
         // Update last direction based on the current movement direction
-        FacingDirection = direction;
         _lastDirection = direction;
 
         Vector3 targetPosition = currentTile.transform.position;

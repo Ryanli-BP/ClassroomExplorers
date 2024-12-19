@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System;
 
 public class GameManager : MonoBehaviour
@@ -61,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnPlayers()
     {
-        PlayerManager.Instance.SpawnPlayerAtHome(PlayerManager.Instance.players[0]);
+        PlayerManager.Instance.SpawnAllPlayersAtHome();
     }
 
     private void StartPlayerTurn()

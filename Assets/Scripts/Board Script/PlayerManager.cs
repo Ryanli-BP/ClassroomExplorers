@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.VisionOS;
 
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
-    public List<Player> players;
+    [SerializeField] private List<Player> players;
 
     private void Awake()
     {
@@ -14,18 +15,22 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void Start()
+    public List<Player> getPlayerList()
     {
-        // For now, spawn only the first player
-        if (players.Count > 0)
+        return players;
+    }
+
+    public void SpawnAllPlayersAtHome()
+    {
+        foreach (var player in players)
         {
-            SpawnPlayerAtHome(players[0]);
+            SpawnPlayerAtHome(player);
         }
     }
 
     public void SpawnPlayerAtHome(Player player)
     {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.isHome && tile.playerID == player.playerID);
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.isHome && tile.getPlayerID() == player.getPlayerID());
 
         if (homeTile != null)
         {
@@ -33,11 +38,11 @@ public class PlayerManager : MonoBehaviour
             homePosition.y += 0.5f; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().SetCurrentTile(homeTile);
-            Debug.Log($"Player {player.playerID} spawned at their home.");
+            Debug.Log($"Player {player.getPlayerID()} spawned at their home.");
         }
         else
         {
-            Debug.LogError($"No home tile found for player {player.playerID}!");
+            Debug.LogError($"No home tile found for player {player.getPlayerID()}!");
         }
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int playerID;
+    [SerializeField] private int playerID;
     private int points;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -12,7 +12,10 @@ public class Player : MonoBehaviour
         points = 0;
     }
 
-    // Method to add points to the player
+    public int getPlayerID()
+    {
+        return playerID;
+    }
     public void AddPoints(int amount)
     {
         points += amount;
