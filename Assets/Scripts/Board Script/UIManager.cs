@@ -1,26 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine.Events;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [SerializeField]
-    private GameObject directionPanel; // Panel that contains direction buttons
+    [SerializeField] private GameObject directionPanel; // Panel that contains direction buttons
+    [SerializeField] private Button directionButtonPrefab;
 
-    [SerializeField]
-    private Button directionButtonPrefab;
+    [SerializeField] private GameObject homePromptPanel; // Panel for home tile prompt
+    [SerializeField] private Button stayButton;
+    [SerializeField] private Button continueButton;
 
-    [SerializeField]
-    private GameObject homePromptPanel; // Panel for home tile prompt
+    [SerializeField] private TextMeshProUGUI diceResultText; // Text to display dice result
 
-    [SerializeField]
-    private Button stayButton;
-
-    [SerializeField]
-    private Button continueButton;
+    public static event Action OnDiceResultDisplayFinished; // Event to notify when dice result display is finished
 
     private void Awake()
     {
@@ -28,6 +27,14 @@ public class UIManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    public async void DisplayTotalResult(int totalResult)
+    {
+        diceResultText.text = $"{totalResult}";
+        await Task.Delay(1000); 
+        diceResultText.text = "";
+        OnDiceResultDisplayFinished?.Invoke(); // Trigger the event
     }
 
     // Show direction choices at a crossroad
@@ -61,8 +68,6 @@ public class UIManager : MonoBehaviour
         homePromptPanel.SetActive(true);
         stayButton.onClick.RemoveAllListeners();
         continueButton.onClick.RemoveAllListeners();
-
-        
 
         stayButton.onClick.AddListener(() => {
             homePromptPanel.SetActive(false);

@@ -23,7 +23,7 @@ public class AudioManager : MonoBehaviour
     {
         foreach (AudioClip clip in clipsofAudio)
         {
-            if (clip.name == "SFX_Wrong") ;
+            if (clip.name == "SFX_Wrong")
             {
                 PlayAudio(clip);
             }

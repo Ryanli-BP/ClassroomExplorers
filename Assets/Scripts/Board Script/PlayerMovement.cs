@@ -4,55 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]  private Tile currentTile; // Assign the starting tile in the Inspector
+    private Tile currentTile; // Assign the starting tile in the Inspector
 
-    [SerializeField]  private int playerID;
-
-    public Direction FacingDirection; // To track the direction the player came from
+    private Direction FacingDirection; // To track the direction the player came from
     
     [SerializeField] private Direction _lastDirection; // To track the direction the player came from
 
     private bool isMoving = false;
     private int remainingSteps = 0;
-    
-    public static bool initialOnHome = true; //one time flag
-    private void OnEnable()
-    {
-        // Subscribe to the OnDiceTotal event
-        DiceDisplay.OnDiceTotal += MovePlayer;
-    }
 
-    private void OnDisable()
+    public void SetCurrentTile(Tile tile)
     {
-        // Unsubscribe when the object is disabled to avoid memory leaks
-        DiceDisplay.OnDiceTotal -= MovePlayer;
-    }
-
-    private void Start()
-    {
-        SpawnAtHome();
-    }
-
-    public void SpawnAtHome()
-    {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile =>
-        {
-            Home homeComponent = tile.GetComponent<Home>();
-            return homeComponent != null && homeComponent.playerID == playerID;
-        });
-
-        if (homeTile != null)
-        {
-            Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += 0.5f; // Adjust Y offset
-            transform.position = homePosition;
-            currentTile = homeTile;
-            Debug.Log($"Player {playerID} spawned at their home.");
-        }
-        else
-        {
-            Debug.LogError($"No home tile found for player {playerID}!");
-        }
+        currentTile = tile;
     }
 
     public void MovePlayer(int diceroll)
@@ -68,26 +31,20 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MoveStepByStep()
     {
         isMoving = true;
-      
+        bool initialOnHome = true; //one time flag
 
         while (remainingSteps > 0)
         {
-            // Get valid directions based on the last direction
-            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(FacingDirection);
-            
-            
-            List<Direction> _availableDirections = currentTile.GetAllAvailableDirections(_lastDirection);
+            // Get valid directions based on the last direction         
+            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(_lastDirection);
             
             if (availableDirections.Count == 0)
             {
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-
-            Home homeComponent = currentTile.GetComponent<Home>();
-
             // Prompt the player if they reach their home tile
-            if (homeComponent != null && homeComponent.playerID == playerID && !initialOnHome)
+            if (currentTile.isHome && currentTile.getPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTilePrompt());
@@ -121,7 +78,6 @@ public class PlayerMovement : MonoBehaviour
     private void MoveToNextTile(Direction direction)
     {
         // Update last direction based on the current movement direction
-        FacingDirection = direction;
         _lastDirection = direction;
 
         Vector3 targetPosition = currentTile.transform.position;

@@ -4,27 +4,32 @@ using UnityEngine;
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
-
-    [SerializeField] private Transform tileContainer;
-
+    public GameObject tileContainer;
     public List<Tile> allTiles = new List<Tile>();
+    private Dictionary<Vector3, Tile> tileDictionary = new Dictionary<Vector3, Tile>();
 
-    private void Awake()
+    void Awake()
     {
-        // Ensure there is only one instance of TileManager
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
+    }
 
-        // Populate the allTiles list by getting all Tile components in the tileContainer
+    void Start()
+    {
         if (tileContainer != null)
         {
             allTiles.AddRange(tileContainer.GetComponentsInChildren<Tile>());
+            foreach (var tile in allTiles)
+            {
+                tileDictionary[tile.transform.position] = tile;
+            }
         }
         else
         {
@@ -35,14 +40,7 @@ public class TileManager : MonoBehaviour
     // This method finds a tile based on a position (rounded to the nearest grid position)
     public Tile GetTileAtPosition(Vector3 position)
     {
-        foreach (var tile in allTiles)
-        {
-            if (tile.transform.position == position)
-            {
-                return tile;
-            }
-        }
-
-        return null; // Return null if no tile is found at the given position
+        tileDictionary.TryGetValue(position, out Tile tile);
+        return tile;
     }
 }

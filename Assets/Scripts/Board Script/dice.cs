@@ -11,10 +11,9 @@ public class Dice : MonoBehaviour
     public bool rollfin;
     public bool delayfin;
 
-    public static UnityAction<int> OnDiceResult; //Event for individual dice results
-
     public delegate void DiceFinishedRolling(); // Event for dice finished rolling
     public event DiceFinishedRolling OnDiceFinishedRolling; 
+
     private void Update()
     {
         if (!delayfin) return;
@@ -22,7 +21,8 @@ public class Dice : MonoBehaviour
         if (!rollfin && rb.linearVelocity.sqrMagnitude == 0f)
         {
             rollfin = true;
-            GetRes();
+            int result = GetRes();
+            DiceManager.Instance.HandleDiceResult(result); // Send result to GameManager
 
             OnDiceFinishedRolling?.Invoke();
         }
@@ -47,7 +47,6 @@ public class Dice : MonoBehaviour
         int diceResult = topFace + 1;
         Debug.Log($"Dice {diceNum} result: {diceResult}");
 
-        OnDiceResult?.Invoke(diceResult);
         return diceResult;
     }
 

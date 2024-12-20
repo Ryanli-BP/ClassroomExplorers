@@ -1,21 +1,32 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using UnityEngine.InputSystem; // Required for the new Input System
+using UnityEngine.InputSystem;
 
-public class DiceThrower : MonoBehaviour
+public class DiceManager : MonoBehaviour
 {
-    public Dice DiceToThrow;
-    public int numDice = 3;
-    public float throwForce = 5f;
-    public float rollForce = 10f;
+    public static DiceManager Instance;
+    [SerializeField] private Dice DiceToThrow;
+    [SerializeField] private int numDice = 3;
+    [SerializeField] private float throwForce = 5f;
+    [SerializeField] private float rollForce = 10f;
 
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
+    private int totalDiceResult; // Tracks the total sum of dice rolls
 
     public static UnityAction OnAllDiceFinished;  // Event triggered when all dice finish rolling
 
     private InputAction rollDiceAction; // New InputAction for rolling dice
+    private bool canRollDice = false; // Flag to control dice rolling
+
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     private void OnEnable()
     {
@@ -36,12 +47,23 @@ public class DiceThrower : MonoBehaviour
 
     private void OnRollDicePerformed(InputAction.CallbackContext context)
     {
-        RollDice(); // Trigger the dice roll when the action is performed
+        if (canRollDice)
+        {
+            Debug.Log("IT IS POSSOBLE TO ROLL DICE");
+            RollDice(); // Trigger the dice roll when the action is performed
+        }
+    }
+
+    public void EnableDiceRoll()
+    {
+        totalDiceResult = 0; // Reset total dice result
+        canRollDice = true; // Allow dice rolling
     }
 
     private void RollDice()
     {
         remainingDice = numDice;  // Reset remaining dice count to the total number of dice
+        canRollDice = false; // Disable further dice rolls until enabled again
 
         // Unsubscribe from previous dice finish events before destroying old dice
         foreach (var die in liveDice)
@@ -69,5 +91,15 @@ public class DiceThrower : MonoBehaviour
         {
             OnAllDiceFinished?.Invoke();
         }
+    }
+
+    public void HandleDiceResult(int diceResult)
+    {
+        totalDiceResult += diceResult;
+    }
+
+    public int GetTotalDiceResult()
+    {
+        return totalDiceResult;
     }
 }
