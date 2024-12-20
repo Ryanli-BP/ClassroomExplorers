@@ -308,7 +308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 690041606357937042, guid: 437ad4dccfddbb64b9b2bb88be07abe4, type: 3}
       propertyPath: m_Name
-      value: Item Heart
+      value: player 2 home icon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1494,7 +1494,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1348174882345252545, guid: c2ec4bfd1a6491c49a0c34b8dc3a7639, type: 3}
       propertyPath: m_Name
-      value: Weapon Hammer
+      value: player 1 home icon
       objectReference: {fileID: 0}
     - target: {fileID: 1873072230472789115, guid: c2ec4bfd1a6491c49a0c34b8dc3a7639, type: 3}
       propertyPath: m_LocalScale.x
@@ -6297,6 +6297,7 @@ SceneRoots:
   - {fileID: 1191676193}
   - {fileID: 2124179900}
   - {fileID: 2310173}
+  - {fileID: 13076168}
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
@@ -6306,5 +6307,4 @@ SceneRoots:
   - {fileID: 543564495}
   - {fileID: 1230113820}
   - {fileID: 475291220}
-  - {fileID: 13076168}
   - {fileID: 58715270}
