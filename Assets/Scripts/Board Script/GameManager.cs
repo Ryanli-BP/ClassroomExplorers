@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -40,6 +39,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.PlayerMoving:
+                StartPlayerMovement();
                 break;
 
             case GameState.PlayerTurnEnd:
@@ -54,6 +54,11 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(currentState);
     }
 
+    public GameState GetCurrentState()
+    {
+        return currentState;
+    }
+
     private void SetupGame()
     {
         PlayerManager.Instance.SpawnAllPlayersAtHome();
@@ -62,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     private void StartPlayerTurn()
     {
+        Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn.");
         ChangeState(GameState.PlayerRollingDice);
     }
 
@@ -76,16 +82,26 @@ public class GameManager : MonoBehaviour
         DiceManager.OnAllDiceFinished -= OnDiceRollComplete;
         int totalDiceResult = DiceManager.Instance.GetTotalDiceResult();
         UIManager.Instance.DisplayTotalResult(totalDiceResult);
+        UIManager.OnDiceResultDisplayFinished += HandleDiceResultDisplayFinished; // Subscribe to the event
     }
 
-    private void StartPlayerMovement(int diceTotal)
+    private void HandleDiceResultDisplayFinished()
     {
-        // Implement player movement start logic here
+        UIManager.OnDiceResultDisplayFinished -= HandleDiceResultDisplayFinished; // Unsubscribe from the event
+        ChangeState(GameState.PlayerMoving);
+    }
+
+    private void StartPlayerMovement()
+    {
+        PlayerManager.Instance.StartPlayerMovement(DiceManager.Instance.GetTotalDiceResult());
+        ChangeState(GameState.PlayerTurnEnd);
     }
 
     private void EndPlayerTurn()
     {
-        // Implement player turn end logic here
+        Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn ended.");
+        PlayerManager.Instance.GetNextPlayer();
+        ChangeState(GameState.PlayerTurnStart);
     }
 
     private void EndGame()

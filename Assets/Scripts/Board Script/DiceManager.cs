@@ -49,6 +49,7 @@ public class DiceManager : MonoBehaviour
     {
         if (canRollDice)
         {
+            Debug.Log("IT IS POSSOBLE TO ROLL DICE");
             RollDice(); // Trigger the dice roll when the action is performed
         }
     }

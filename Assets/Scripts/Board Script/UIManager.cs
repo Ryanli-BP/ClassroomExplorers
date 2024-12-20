@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI diceResultText; // Text to display dice result
 
+    public static event Action OnDiceResultDisplayFinished; // Event to notify when dice result display is finished
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,6 +34,7 @@ public class UIManager : MonoBehaviour
         diceResultText.text = $"{totalResult}";
         await Task.Delay(1000); 
         diceResultText.text = "";
+        OnDiceResultDisplayFinished?.Invoke(); // Trigger the event
     }
 
     // Show direction choices at a crossroad

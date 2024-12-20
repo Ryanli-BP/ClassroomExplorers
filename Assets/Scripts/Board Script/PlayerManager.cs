@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor.VisionOS;
-using UnityEditor.PackageManager;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -18,14 +16,25 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public List<Player> getPlayerList()
+    public List<Player> GetPlayerList()
     {
         return players;
     }
 
-    public Player getCurrentPlayer()
+    public int getCurrentPlayerID()
+    {
+        return currentPlayerID;
+    }
+
+    public Player GetCurrentPlayer()
     {
         return players[currentPlayerID];
+    }
+
+    public Player GetNextPlayer()
+    {
+        currentPlayerID = (currentPlayerID + 1) % players.Count;
+        return GetCurrentPlayer();
     }
 
     public void SpawnAllPlayersAtHome()
@@ -54,8 +63,9 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void StartPlayerTurn(Player player)
+    public void StartPlayerMovement(int diceTotal)
     {
-        Debug.Log($"Player {player.getPlayerID()}'s turn.");
+        Player currentPlayer = GetCurrentPlayer();
+        currentPlayer.GetComponent<PlayerMovement>().MovePlayer(diceTotal);
     }
 }

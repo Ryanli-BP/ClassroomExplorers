@@ -13,22 +13,11 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving = false;
     private int remainingSteps = 0;
 
-    private void OnEnable()
-    {
-        // Subscribe to the OnDiceTotal event
-        //UIManager.OnDiceTotal += MovePlayer;
-    }
-
-    private void OnDisable()
-    {
-        // Unsubscribe when the object is disabled to avoid memory leaks
-        //UIManager.OnDiceTotal -= MovePlayer;
-    }
-
     public void SetCurrentTile(Tile tile)
     {
         currentTile = tile;
     }
+
     public void MovePlayer(int diceroll)
     {
         if (isMoving || currentTile == null)
@@ -55,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             // Prompt the player if they reach their home tile
-            if (currentTile.isHome && !initialOnHome)
+            if (currentTile.isHome && currentTile.getPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTilePrompt());
