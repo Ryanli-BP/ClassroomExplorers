@@ -13,9 +13,10 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving = false;
     private int remainingSteps = 0;
 
-    public void SetCurrentTile(Tile tile)
+    public Tile CurrentTile
     {
-        currentTile = tile;
+        get { return currentTile; }
+        set { currentTile = value; }
     }
 
     public void MovePlayer(int diceroll)
@@ -44,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             // Prompt the player if they reach their home tile
-            if (currentTile.isHome && currentTile.getPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
+            if (currentTile.IsHome() && currentTile.GetPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTilePrompt());

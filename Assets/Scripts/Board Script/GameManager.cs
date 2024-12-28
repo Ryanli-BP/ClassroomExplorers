@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private void ChangeState(GameState newState)
     {
         currentState = newState;
+        Debug.Log($"Changing state to: {newState}");
 
         switch (currentState)
         {
@@ -40,6 +41,11 @@ public class GameManager : MonoBehaviour
 
             case GameState.PlayerMoving:
                 StartPlayerMovement();
+                break;
+
+            case GameState.PlayerFinishedMoving:
+                Debug.Log("IN PLAYER FINISHED MOVING STATE");
+                StartTileAction();
                 break;
 
             case GameState.PlayerTurnEnd:
@@ -94,6 +100,14 @@ public class GameManager : MonoBehaviour
     private void StartPlayerMovement()
     {
         PlayerManager.Instance.StartPlayerMovement(DiceManager.Instance.GetTotalDiceResult());
+        ChangeState(GameState.PlayerFinishedMoving);
+        Debug.Log("CHANGING TO PLAYER FINISHED MOVING STATE");
+    }
+
+    private void StartTileAction()
+    {
+        Debug.Log("IN TILE ACTION STATE");
+        TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
         ChangeState(GameState.PlayerTurnEnd);
     }
 
@@ -116,6 +130,7 @@ public enum GameState
     PlayerTurnStart,
     PlayerRollingDice,
     PlayerMoving,
+    PlayerFinishedMoving,
     PlayerTurnEnd,
     GameEnd
 }

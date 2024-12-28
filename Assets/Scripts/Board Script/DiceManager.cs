@@ -7,7 +7,7 @@ public class DiceManager : MonoBehaviour
 {
     public static DiceManager Instance;
     [SerializeField] private Dice DiceToThrow;
-    [SerializeField] private int numDice = 3;
+    [SerializeField] private int numDice = 1;
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
 

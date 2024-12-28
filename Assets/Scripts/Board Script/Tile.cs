@@ -3,6 +3,8 @@ using UnityEngine;
 
 public enum Direction { North, East, South, West, None }
 
+public enum TileType { Normal, GainPoint, DropPoint, Home }
+
 public class Tile : MonoBehaviour
 {
     // Boolean flags to indicate available directions
@@ -13,10 +15,15 @@ public class Tile : MonoBehaviour
 
 
     // Boolean flag for tile propertiers
-    public bool isHome;
+    [SerializeField] private bool isHome;
     [SerializeField] private int playerID; //for home
 
-    public int getPlayerID()
+    // special tile attributes, normal by default
+    [SerializeField] private TileType tileType = TileType.Normal;
+
+    
+
+    public int GetPlayerID()
     {
         return playerID;
     }
@@ -37,5 +44,12 @@ public class Tile : MonoBehaviour
     {
         return isHome;
     }
+
+    public TileType GetTileType()
+    {
+        return tileType;
+    }
+
+
 }
 
