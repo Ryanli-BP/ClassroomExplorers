@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isMoving = false;
     private int remainingSteps = 0;
+
+    public event Action OnMovementComplete;
 
     public Tile CurrentTile
     {
@@ -74,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         isMoving = false;
+        OnMovementComplete?.Invoke();
     }
 
     private void MoveToNextTile(Direction direction)
