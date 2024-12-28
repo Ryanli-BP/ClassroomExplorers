@@ -149,6 +149,7 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Player chose to stay on the home tile.");
             isMoving = false;
+            OnMovementComplete?.Invoke();
         }
         else
         {
