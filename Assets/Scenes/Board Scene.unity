@@ -364,7 +364,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 2
 --- !u!114 &61774732
@@ -618,9 +617,8 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 1
   hasWest: 1
-  isHome: 1
   playerID: 2
-  tileType: 0
+  tileType: 3
 --- !u!114 &207251805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,7 +735,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 1
 --- !u!114 &217628406
@@ -895,7 +892,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &272222126
@@ -1283,7 +1279,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 1
 --- !u!114 &352180614
@@ -1349,7 +1344,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &397379755
@@ -1415,7 +1409,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &401811658
@@ -1602,7 +1595,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &471338504
@@ -2342,7 +2334,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &705109966
@@ -2689,7 +2680,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &893495414
@@ -2755,7 +2745,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &967765575
@@ -2971,7 +2960,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1060057657
@@ -3485,7 +3473,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1228114923
@@ -3608,7 +3595,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1235857680
@@ -3674,7 +3660,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1243763816
@@ -3836,7 +3821,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1319847630
@@ -3902,7 +3886,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1341553746
@@ -3968,7 +3951,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 1
 --- !u!114 &1350251175
@@ -4130,7 +4112,6 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 1
   hasWest: 0
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1355610828
@@ -4196,7 +4177,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 2
 --- !u!114 &1415499906
@@ -4611,7 +4591,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 2
 --- !u!114 &1505826898
@@ -4677,7 +4656,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1514497553
@@ -4852,7 +4830,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1581292734
@@ -4918,7 +4895,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 2
 --- !u!114 &1588317943
@@ -5483,7 +5459,6 @@ MonoBehaviour:
   hasEast: 1
   hasSouth: 0
   hasWest: 1
-  isHome: 0
   playerID: 0
   tileType: 1
 --- !u!114 &1699352941
@@ -5777,9 +5752,8 @@ MonoBehaviour:
   hasEast: 0
   hasSouth: 0
   hasWest: 1
-  isHome: 1
   playerID: 1
-  tileType: 0
+  tileType: 3
 --- !u!114 &1826945210
 MonoBehaviour:
   m_ObjectHideFlags: 0

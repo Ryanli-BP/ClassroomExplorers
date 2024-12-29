@@ -15,7 +15,6 @@ public class Tile : MonoBehaviour
 
 
     // Boolean flag for tile propertiers
-    [SerializeField] private bool isHome;
     [SerializeField] private int playerID; //for home
 
     // special tile attributes, normal by default
@@ -38,11 +37,6 @@ public class Tile : MonoBehaviour
         if (hasWest && fromDirection != Direction.East) validDirections.Add(Direction.West);
 
         return validDirections;
-    }
-
-    public bool IsHome()
-    {
-        return isHome;
     }
 
     public TileType GetTileType()

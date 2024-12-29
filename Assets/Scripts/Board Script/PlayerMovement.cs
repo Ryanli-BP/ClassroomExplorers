@@ -48,10 +48,10 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             // Prompt the player if they reach their home tile
-            if (currentTile.IsHome() && currentTile.GetPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
+            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
-                yield return StartCoroutine(HandleHomeTilePrompt());
+                yield return StartCoroutine(HandleHomeTile());
             }
 
             initialOnHome = false;
@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
             if (availableDirections.Count > 1)
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
-                yield return StartCoroutine(WaitForPlayerInput(availableDirections));
+                yield return StartCoroutine(HandleDirections(availableDirections));
             }
             else
             {
@@ -118,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForPlayerInput(List<Direction> availableDirections)
+    private IEnumerator HandleDirections(List<Direction> availableDirections)
     {
         Direction? chosenDirection = null;
 
@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
         MoveToNextTile(chosenDirection.Value);
     }
 
-    private IEnumerator HandleHomeTilePrompt()
+    private IEnumerator HandleHomeTile()
     {
         bool? playerChoice = null;
 
