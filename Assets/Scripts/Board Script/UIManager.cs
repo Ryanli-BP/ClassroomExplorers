@@ -18,8 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button continueButton;
 
     [SerializeField] private TextMeshProUGUI diceResultText; // Text to display dice result
-
-    public static event Action OnDiceResultDisplayFinished; // Event to notify when dice result display is finished
+    [SerializeField] private List<TextMeshProUGUI> playerPointsTexts; // List of Texts to display each player's points
 
     private void Awake()
     {
@@ -34,7 +33,15 @@ public class UIManager : MonoBehaviour
         diceResultText.text = $"{totalResult}";
         await Task.Delay(1000); 
         diceResultText.text = "";
-        OnDiceResultDisplayFinished?.Invoke(); // Trigger the event
+        GameManager.Instance.HandleDiceResultDisplayFinished();
+    }
+
+    public void UpdatePlayerPoints(int playerID, int points)
+    {
+        if (playerID > 0 && playerID <= playerPointsTexts.Count)
+        {
+            playerPointsTexts[playerID - 1].text = $"Player {playerID}: {points} Points";
+        }
     }
 
     // Show direction choices at a crossroad

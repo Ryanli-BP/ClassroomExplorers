@@ -6,7 +6,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     [SerializeField] private List<Player> players;
 
-    private int currentPlayerID = 0;
+    private int currentPlayerID = 1;
 
     private void Awake()
     {
@@ -28,12 +28,12 @@ public class PlayerManager : MonoBehaviour
 
     public Player GetCurrentPlayer()
     {
-        return players[currentPlayerID];
+        return players[currentPlayerID - 1];
     }
 
     public Player GetNextPlayer()
     {
-        currentPlayerID = (currentPlayerID + 1) % players.Count;
+        currentPlayerID = (currentPlayerID % players.Count) + 1; // Adjust for 1-based index
         return GetCurrentPlayer();
     }
 
@@ -47,14 +47,14 @@ public class PlayerManager : MonoBehaviour
 
     public void SpawnPlayerAtHome(Player player)
     {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.isHome && tile.getPlayerID() == player.getPlayerID());
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetPlayerID() == player.getPlayerID());
 
         if (homeTile != null)
         {
             Vector3 homePosition = homeTile.transform.position;
             homePosition.y += 0.5f; // Adjust Y offset
             player.transform.position = homePosition;
-            player.GetComponent<PlayerMovement>().SetCurrentTile(homeTile);
+            player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");
         }
         else

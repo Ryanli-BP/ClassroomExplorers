@@ -43,4 +43,28 @@ public class TileManager : MonoBehaviour
         tileDictionary.TryGetValue(position, out Tile tile);
         return tile;
     }
+
+    public void getTileAction(Tile tile)
+    {
+        switch (tile.GetTileType())
+        {
+            case TileType.Normal:
+                Debug.Log("Normal tile");
+                break;
+            case TileType.GainPoint:
+                Debug.Log("Gain point tile");
+                PlayerManager.Instance.GetCurrentPlayer().AddPoints(Random.Range(3, 6));
+                break; 
+            case TileType.DropPoint:
+                Debug.Log("Drop point tile");
+                PlayerManager.Instance.GetCurrentPlayer().AddPoints(-1);
+                break;
+            case TileType.Home:
+                Debug.Log("Home tile");
+                break;
+            default:
+                Debug.LogError("Unknown tile type");
+                break;
+        }
+    }
 }

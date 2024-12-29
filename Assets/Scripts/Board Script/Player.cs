@@ -10,16 +10,19 @@ public class Player : MonoBehaviour
     {
         // Initialize player points
         points = 0;
+        UIManager.Instance.UpdatePlayerPoints(playerID, points);
     }
 
     public int getPlayerID()
     {
         return playerID;
     }
+
     public void AddPoints(int amount)
     {
         points += amount;
         Debug.Log($"Player {playerID} now has {points} points.");
+        UIManager.Instance.UpdatePlayerPoints(playerID, points);
     }
 
     // Method to reset player points
@@ -27,5 +30,6 @@ public class Player : MonoBehaviour
     {
         points = 0;
         Debug.Log($"Player {playerID}'s points have been reset.");
+        UIManager.Instance.UpdatePlayerPoints(playerID, points);
     }
 }

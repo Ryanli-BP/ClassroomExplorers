@@ -7,15 +7,13 @@ public class DiceManager : MonoBehaviour
 {
     public static DiceManager Instance;
     [SerializeField] private Dice DiceToThrow;
-    [SerializeField] private int numDice = 3;
+    [SerializeField] private int numDice = 1;
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
 
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
     private int totalDiceResult; // Tracks the total sum of dice rolls
-
-    public static UnityAction OnAllDiceFinished;  // Event triggered when all dice finish rolling
 
     private InputAction rollDiceAction; // New InputAction for rolling dice
     private bool canRollDice = false; // Flag to control dice rolling
@@ -56,6 +54,7 @@ public class DiceManager : MonoBehaviour
 
     public void EnableDiceRoll()
     {
+        Debug.Log("ENABLED DICE ROLL");
         totalDiceResult = 0; // Reset total dice result
         canRollDice = true; // Allow dice rolling
     }
@@ -89,7 +88,7 @@ public class DiceManager : MonoBehaviour
 
         if (remainingDice <= 0)
         {
-            OnAllDiceFinished?.Invoke();
+            GameManager.Instance.OnDiceRollComplete(); // Directly call the GameManager method
         }
     }
 
