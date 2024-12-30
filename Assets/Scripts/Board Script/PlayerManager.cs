@@ -78,8 +78,9 @@ public class PlayerManager : MonoBehaviour
             int currentPoints = currentPlayer.Points;
             int currentLevel = currentPlayer.Level;
 
-            if (currentLevel < levelUpPoints.Count && currentPoints >= levelUpPoints[currentLevel - 1])
+            if (currentLevel < levelUpPoints.Count + 1 && currentPoints >= levelUpPoints[currentLevel - 1])
             {
+                Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {levelUpPoints[currentLevel - 1]}");
                 currentPlayer.LevelUp();
 
                 if (currentPlayer.Level > CurrentHighLevel)
@@ -88,7 +89,7 @@ public class PlayerManager : MonoBehaviour
                 }
 
                 // Check if the player has reached the last level
-                if (currentPlayer.Level == levelUpPoints.Count)
+                if (currentPlayer.Level == levelUpPoints.Count + 1)
                 {
                     GameManager.Instance.FinalLevelAchieved();
                     Debug.Log("Game End: Player has reached the maximum level.");

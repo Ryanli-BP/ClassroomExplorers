@@ -128,11 +128,17 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void StartTileAction()
+private void StartTileAction()
+{
+    TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
+
+    if (currentState == GameState.GameEnd)
     {
-        TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
-        ChangeState(GameState.PlayerTurnEnd);
+        return;
     }
+
+    ChangeState(GameState.PlayerTurnEnd);
+}
 
     private void EndPlayerTurn()
     {
