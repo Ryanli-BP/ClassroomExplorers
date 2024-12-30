@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             // Prompt the player if they reach their home tile
-            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
+            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetPlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTile());
@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             remainingSteps--;
-            yield return new WaitForSeconds(0.15f); // Optional delay for smoother movement
+            yield return new WaitForSeconds(0.05f); // Optional delay for smoother movement
         }
 
         isMoving = false;

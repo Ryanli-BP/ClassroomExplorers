@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,6 +38,10 @@ public class GameManager : MonoBehaviour
                 SetupGame();
                 break;
 
+            case GameState.RoundStart:
+                RoundEvent();
+                break;
+
             case GameState.PlayerTurnStart:
                 StartPlayerTurn();
                 break;
@@ -50,7 +55,6 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.PlayerFinishedMoving:
-                Debug.Log("IN PLAYER FINISHED MOVING STATE");
                 StartTileAction();
                 break;
 
@@ -74,6 +78,14 @@ public class GameManager : MonoBehaviour
     private void SetupGame()
     {
         PlayerManager.Instance.SpawnAllPlayersAtHome();
+        ChangeState(GameState.RoundStart);
+    }
+
+    private void RoundEvent()
+    {
+        Debug.Log("Starting new round.");
+        RoundManager.Instance.IncrementRound();
+        RoundManager.Instance.GiveRoundPoints();
         ChangeState(GameState.PlayerTurnStart);
     }
 
@@ -91,7 +103,7 @@ public class GameManager : MonoBehaviour
     public void OnDiceRollComplete()
     {
         int totalDiceResult = DiceManager.Instance.GetTotalDiceResult();
-        UIManager.Instance.DisplayTotalResult(totalDiceResult);
+        UIManager.Instance.DisplayDiceTotalResult(totalDiceResult);
     }
 
     public void HandleDiceResultDisplayFinished()
@@ -116,20 +128,38 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void StartTileAction()
+private void StartTileAction()
+{
+    TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
+
+    if (currentState == GameState.GameEnd)
     {
-        Debug.Log("IN TILE ACTION STATE");
-        TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
-        ChangeState(GameState.PlayerTurnEnd);
+        return;
     }
+
+    ChangeState(GameState.PlayerTurnEnd);
+}
 
     private void EndPlayerTurn()
     {
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn ended.");
-        PlayerManager.Instance.GetNextPlayer();
-        ChangeState(GameState.PlayerTurnStart);
+        PlayerManager.Instance.GoNextPlayer();
+        RoundManager.Instance.IncrementTurn();
+
+        if (RoundManager.Instance.Turn == 1)
+        {
+            ChangeState(GameState.RoundStart);
+        }
+        else
+        {
+            ChangeState(GameState.PlayerTurnStart);
+        }
     }
 
+    public void FinalLevelAchieved()
+    {
+        ChangeState(GameState.GameEnd);
+    }
     private void EndGame()
     {
         Debug.Log("Game Over! Implement end-game logic here.");
@@ -139,6 +169,7 @@ public class GameManager : MonoBehaviour
 public enum GameState
 {
     GameSetup,
+    RoundStart,
     PlayerTurnStart,
     PlayerRollingDice,
     PlayerMoving,

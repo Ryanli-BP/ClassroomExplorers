@@ -3,14 +3,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private int playerID;
-    private int points;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int Points { get; set; }
+    public int Level { get; set; }
+
     void Start()
     {
-        // Initialize player points
-        points = 0;
-        UIManager.Instance.UpdatePlayerPoints(playerID, points);
+        Points = 0;
+        Level = 1;
+        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level);
     }
 
     public int getPlayerID()
@@ -20,16 +21,15 @@ public class Player : MonoBehaviour
 
     public void AddPoints(int amount)
     {
-        points += amount;
-        Debug.Log($"Player {playerID} now has {points} points.");
-        UIManager.Instance.UpdatePlayerPoints(playerID, points);
+        Points += amount;
+        Debug.Log($"Player {playerID} now has {Points} points.");
+        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level);
     }
 
-    // Method to reset player points
-    public void ResetPoints()
+    public void LevelUp()
     {
-        points = 0;
-        Debug.Log($"Player {playerID}'s points have been reset.");
-        UIManager.Instance.UpdatePlayerPoints(playerID, points);
+        Level += 1;
+        Debug.Log($"Player {playerID} leveled up to level {Level}.");
+        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level);
     }
 }

@@ -18,7 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button continueButton;
 
     [SerializeField] private TextMeshProUGUI diceResultText; // Text to display dice result
-    [SerializeField] private List<TextMeshProUGUI> playerPointsTexts; // List of Texts to display each player's points
+    [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
+    [SerializeField] private TextMeshProUGUI roundDisplayText; // Text to display the current round
 
     private void Awake()
     {
@@ -28,20 +29,25 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public async void DisplayTotalResult(int totalResult)
+    public async void DisplayDiceTotalResult(int totalResult)
     {
         diceResultText.text = $"{totalResult}";
-        await Task.Delay(1000); 
+        await Task.Delay(500); 
         diceResultText.text = "";
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
-    public void UpdatePlayerPoints(int playerID, int points)
+    public void UpdatePlayerStats(int playerID, int points, int level)
     {
-        if (playerID > 0 && playerID <= playerPointsTexts.Count)
+        if (playerID > 0 && playerID <= playerStatsTexts.Count)
         {
-            playerPointsTexts[playerID - 1].text = $"Player {playerID}: {points} Points";
+            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points, Level {level}";
         }
+    }
+
+    public void UpdateRound(int roundNumber)
+    {
+        roundDisplayText.text = $"Round {roundNumber}";
     }
 
     // Show direction choices at a crossroad
