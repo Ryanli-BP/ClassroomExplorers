@@ -57,12 +57,24 @@ public class Dice : MonoBehaviour
         delayfin = false;
 
         var randomVar = Random.Range(-1f, 1f);
+        rb.linearDamping = 0.1f; // Reduce linear damping
+        rb.angularDamping = 0.1f; // Reduce angular damping
         rb.AddForce(transform.forward * (throwForce + randomVar), ForceMode.Impulse);
 
         var randX = Random.Range(-1f, 1f);
         var randY = Random.Range(-1f, 1f);
         var randZ = Random.Range(-1f, 1f);
         rb.AddTorque(new Vector3(randX, randY, randZ) * (rollForce + randomVar), ForceMode.Impulse);
+
+            // Add initial random movement if it's the only die
+    if (DiceManager.Instance.GetNumDice() == 1)
+    {
+        var initialRandomForce = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * throwForce;
+        rb.AddForce(initialRandomForce, ForceMode.Impulse);
+
+        var initialRandomTorque = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * rollForce;
+        rb.AddTorque(initialRandomTorque, ForceMode.Impulse);
+    }
 
         DelayResult();
     }

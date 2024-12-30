@@ -43,6 +43,11 @@ public class DiceManager : MonoBehaviour
         rollDiceAction.Disable();
     }
 
+    public int GetNumDice()
+    {
+        return numDice;
+    }
+
     private void OnRollDicePerformed(InputAction.CallbackContext context)
     {
         if (canRollDice)
@@ -59,10 +64,16 @@ public class DiceManager : MonoBehaviour
         canRollDice = true; // Allow dice rolling
     }
 
+    private Vector3 originalGravity;
+
     private void RollDice()
     {
         remainingDice = numDice;  // Reset remaining dice count to the total number of dice
         canRollDice = false; // Disable further dice rolls until enabled again
+
+        // Save the original gravity and increase it
+        originalGravity = Physics.gravity;
+        Physics.gravity = new Vector3(0, -20f, 0); // Increase gravity
 
         // Unsubscribe from previous dice finish events before destroying old dice
         foreach (var die in liveDice)
@@ -88,6 +99,8 @@ public class DiceManager : MonoBehaviour
 
         if (remainingDice <= 0)
         {
+            // Reset the gravity to its original value
+            Physics.gravity = originalGravity;
             GameManager.Instance.OnDiceRollComplete(); // Directly call the GameManager method
         }
     }

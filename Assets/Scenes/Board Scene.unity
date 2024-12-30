@@ -149,9 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DiceToThrow: {fileID: 2841680434444505954, guid: 7349b706ad5a069488b23f52a43ab841, type: 3}
-  numDice: 3
-  throwForce: 5
-  rollForce: 10
+  numDice: 2
+  throwForce: 4
+  rollForce: 4
 --- !u!4 &2310173
 Transform:
   m_ObjectHideFlags: 0
@@ -668,7 +668,7 @@ MonoBehaviour:
   stayButton: {fileID: 2145224993}
   continueButton: {fileID: 1940893186}
   diceResultText: {fileID: 1604395191}
-  playerPointsTexts:
+  playerStatsTexts:
   - {fileID: 2032150351}
   - {fileID: 1763416632}
 --- !u!4 &217416945
@@ -998,8 +998,7 @@ Transform:
   m_LocalPosition: {x: 0.76, y: 7.24, z: -6.24}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 989211283}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 59.118, y: 0, z: 0}
 --- !u!114 &330585547
@@ -2859,7 +2858,7 @@ RectTransform:
   - {fileID: 1034160847}
   - {fileID: 553760743}
   - {fileID: 2079053246}
-  m_Father: {fileID: 330585546}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5624,7 +5623,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5651,7 +5650,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.75
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6343,7 +6342,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6370,7 +6369,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.75
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6766,6 +6765,7 @@ MonoBehaviour:
   players:
   - {fileID: 1218891191}
   - {fileID: 2094211948}
+  levelUpPoints: 050000000f00000014000000
 --- !u!4 &2124179900
 Transform:
   m_ObjectHideFlags: 0
@@ -7103,6 +7103,7 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 989211283}
   - {fileID: 1471103828}
   - {fileID: 1579840714}
   - {fileID: 666191105}

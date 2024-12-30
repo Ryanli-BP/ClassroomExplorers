@@ -130,6 +130,10 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.PlayerTurnStart);
     }
 
+    public void FinalLevelAchieved()
+    {
+        ChangeState(GameState.GameEnd);
+    }
     private void EndGame()
     {
         Debug.Log("Game Over! Implement end-game logic here.");

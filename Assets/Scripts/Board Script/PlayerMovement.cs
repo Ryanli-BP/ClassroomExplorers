@@ -73,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             remainingSteps--;
-            yield return new WaitForSeconds(0.15f); // Optional delay for smoother movement
+            yield return new WaitForSeconds(0.05f); // Optional delay for smoother movement
         }
 
         isMoving = false;

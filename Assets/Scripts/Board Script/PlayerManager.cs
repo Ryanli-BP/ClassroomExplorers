@@ -6,6 +6,8 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     [SerializeField] private List<Player> players;
 
+    [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 20 };
+
     private int currentPlayerID = 1;
 
     private void Awake()
@@ -68,4 +70,28 @@ public class PlayerManager : MonoBehaviour
         Player currentPlayer = GetCurrentPlayer();
         currentPlayer.GetComponent<PlayerMovement>().MovePlayer(diceTotal);
     }
+
+    public void LevelUpPlayer()
+        {
+            Player currentPlayer = GetCurrentPlayer();
+            int currentPoints = currentPlayer.Points;
+            int currentLevel = currentPlayer.Level;
+
+            if (currentLevel < levelUpPoints.Count && currentPoints >= levelUpPoints[currentLevel])
+            {
+                currentPlayer.LevelUp();
+                Debug.Log($"Player {currentPlayer.getPlayerID()} leveled up to level {currentPlayer.Level}.");
+
+                // Check if the player has reached the last level
+                if (currentPlayer.Level == levelUpPoints.Count)
+                {
+                    GameManager.Instance.FinalLevelAchieved();
+                    Debug.Log("Game End: Player has reached the maximum level.");
+                }
+            }
+            else
+            {
+                Debug.Log($"Player {currentPlayer.getPlayerID()} does not have enough points to level up.");
+            }
+        }
 }
