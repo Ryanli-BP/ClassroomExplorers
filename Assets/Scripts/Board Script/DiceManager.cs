@@ -52,14 +52,12 @@ public class DiceManager : MonoBehaviour
     {
         if (canRollDice)
         {
-            Debug.Log("IT IS POSSOBLE TO ROLL DICE");
             RollDice(); // Trigger the dice roll when the action is performed
         }
     }
 
     public void EnableDiceRoll()
     {
-        Debug.Log("ENABLED DICE ROLL");
         totalDiceResult = 0; // Reset total dice result
         canRollDice = true; // Allow dice rolling
     }

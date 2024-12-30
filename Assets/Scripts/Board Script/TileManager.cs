@@ -61,6 +61,7 @@ public class TileManager : MonoBehaviour
                 break;
             case TileType.Home:
                 Debug.Log("Home tile");
+                PlayerManager.Instance.LevelUpPlayer();
                 break;
             default:
                 Debug.LogError("Unknown tile type");

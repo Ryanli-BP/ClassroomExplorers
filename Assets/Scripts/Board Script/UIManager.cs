@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI diceResultText; // Text to display dice result
     [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
+    [SerializeField] private TextMeshProUGUI roundDisplayText; // Text to display the current round
 
     private void Awake()
     {
@@ -28,7 +29,7 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public async void DisplayTotalResult(int totalResult)
+    public async void DisplayDiceTotalResult(int totalResult)
     {
         diceResultText.text = $"{totalResult}";
         await Task.Delay(500); 
@@ -42,6 +43,11 @@ public class UIManager : MonoBehaviour
         {
             playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points, Level {level}";
         }
+    }
+
+    public void UpdateRound(int roundNumber)
+    {
+        roundDisplayText.text = $"Round {roundNumber}";
     }
 
     // Show direction choices at a crossroad

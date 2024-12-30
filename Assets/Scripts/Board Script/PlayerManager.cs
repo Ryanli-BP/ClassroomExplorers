@@ -6,9 +6,11 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     [SerializeField] private List<Player> players;
 
-    [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 20 };
+    [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 40 };
 
-    private int currentPlayerID = 1;
+    public int CurrentPlayerID { get; set; } = 1;
+
+    public int CurrentHighLevel { get; set; } = 1; //needed to determine RoundPoints
 
     private void Awake()
     {
@@ -23,20 +25,19 @@ public class PlayerManager : MonoBehaviour
         return players;
     }
 
-    public int getCurrentPlayerID()
-    {
-        return currentPlayerID;
-    }
-
     public Player GetCurrentPlayer()
     {
-        return players[currentPlayerID - 1];
+        return players[CurrentPlayerID - 1];
     }
 
-    public Player GetNextPlayer()
+    public void GoNextPlayer() //We can implement this to player being based on a list of playerID in mutable order later
     {
-        currentPlayerID = (currentPlayerID % players.Count) + 1; // Adjust for 1-based index
-        return GetCurrentPlayer();
+        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1; // Adjust for 1-based index
+    }
+
+    public int GetNumOfPlayers()
+    {
+        return players.Count;
     }
 
     public void SpawnAllPlayersAtHome()
@@ -77,10 +78,14 @@ public class PlayerManager : MonoBehaviour
             int currentPoints = currentPlayer.Points;
             int currentLevel = currentPlayer.Level;
 
-            if (currentLevel < levelUpPoints.Count && currentPoints >= levelUpPoints[currentLevel])
+            if (currentLevel < levelUpPoints.Count && currentPoints >= levelUpPoints[currentLevel - 1])
             {
                 currentPlayer.LevelUp();
-                Debug.Log($"Player {currentPlayer.getPlayerID()} leveled up to level {currentPlayer.Level}.");
+
+                if (currentPlayer.Level > CurrentHighLevel)
+                {
+                    CurrentHighLevel = currentPlayer.Level;
+                }
 
                 // Check if the player has reached the last level
                 if (currentPlayer.Level == levelUpPoints.Count)

@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             // Prompt the player if they reach their home tile
-            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetPlayerID() == PlayerManager.Instance.getCurrentPlayerID() && !initialOnHome)
+            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetPlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTile());
