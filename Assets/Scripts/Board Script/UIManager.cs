@@ -21,12 +21,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
     [SerializeField] private TextMeshProUGUI roundDisplayText; // Text to display the current round
 
+    [SerializeField] private Button rollDiceButton; // Button to roll the dice
+
+
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
+    }
+
+    private void OnRollDiceButtonClicked()
+    {
+        DiceManager.Instance.RollDice();
     }
 
     public async void DisplayDiceTotalResult(int totalResult)
