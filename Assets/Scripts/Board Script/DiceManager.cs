@@ -14,8 +14,6 @@ public class DiceManager : MonoBehaviour
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
     private int totalDiceResult; // Tracks the total sum of dice rolls
-
-    private InputAction rollDiceAction; // New InputAction for rolling dice
     private bool canRollDice = false; // Flag to control dice rolling
 
     private void Awake()
@@ -29,66 +27,52 @@ public class DiceManager : MonoBehaviour
     private void OnEnable()
     {
         remainingDice = numDice;  // Initialize remaining dice count
-
-        // Get and enable the InputAction for rolling the dice
-        rollDiceAction = new InputAction(type: InputActionType.Button, binding: "<Keyboard>/space");
-        rollDiceAction.Enable();
-        rollDiceAction.performed += OnRollDicePerformed;
     }
 
-    private void OnDisable()
-    {
-        // Disable the InputAction and unsubscribe from the event
-        rollDiceAction.performed -= OnRollDicePerformed;
-        rollDiceAction.Disable();
-    }
 
     public int GetNumDice()
     {
         return numDice;
     }
 
-    private void OnRollDicePerformed(InputAction.CallbackContext context)
-    {
-        if (canRollDice)
-        {
-            RollDice(); // Trigger the dice roll when the action is performed
-        }
-    }
-
     public void EnableDiceRoll()
     {
-        totalDiceResult = 0; // Reset total dice result
-        canRollDice = true; // Allow dice rolling
+        totalDiceResult = 0;
+        canRollDice = true;
+        UIManager.Instance.SetRollDiceButtonVisibility(true); // Show the roll dice button
     }
 
     private Vector3 originalGravity;
 
-    private void RollDice()
+    public void RollDice()
     {
-        remainingDice = numDice;  // Reset remaining dice count to the total number of dice
-        canRollDice = false; // Disable further dice rolls until enabled again
-
-        // Save the original gravity and increase it
-        originalGravity = Physics.gravity;
-        Physics.gravity = new Vector3(0, -20f, 0); // Increase gravity
-
-        // Unsubscribe from previous dice finish events before destroying old dice
-        foreach (var die in liveDice)
+        if (canRollDice)
         {
-            die.OnDiceFinishedRolling -= HandleDiceFinishedRolling;
-            Destroy(die.gameObject);
-        }
-        liveDice.Clear();
+            remainingDice = numDice;  // Reset remaining dice count to the total number of dice
+            canRollDice = false;
+            UIManager.Instance.SetRollDiceButtonVisibility(false);
 
-        // Instantiate and roll new dice
-        for (int i = 0; i < numDice; i++)
-        {
-            Dice diceLive = Instantiate(DiceToThrow, transform.position, transform.rotation);
-            liveDice.Add(diceLive);
-            diceLive.RollDice(throwForce, rollForce, i);
-            diceLive.OnDiceFinishedRolling += HandleDiceFinishedRolling;  // Subscribe to dice finish event
+            originalGravity = Physics.gravity;
+            Physics.gravity = new Vector3(0, -20f, 0); // Increase gravity
+
+            // Unsubscribe from previous dice finish events before destroying old dice
+            foreach (var die in liveDice)
+            {
+                die.OnDiceFinishedRolling -= HandleDiceFinishedRolling;
+                Destroy(die.gameObject);
+            }
+            liveDice.Clear();
+
+            // Instantiate and roll new dice
+            for (int i = 0; i < numDice; i++)
+            {
+                Dice diceLive = Instantiate(DiceToThrow, transform.position, transform.rotation);
+                liveDice.Add(diceLive);
+                diceLive.RollDice(throwForce, rollForce, i);
+                diceLive.OnDiceFinishedRolling += HandleDiceFinishedRolling;  // Subscribe to dice finish event
+            }
         }
+
     }
 
     private void HandleDiceFinishedRolling()
