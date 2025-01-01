@@ -37,8 +37,9 @@ public class DiceManager : MonoBehaviour
 
     public void EnableDiceRoll()
     {
-        totalDiceResult = 0; // Reset total dice result
-        canRollDice = true; // Allow dice rolling
+        totalDiceResult = 0;
+        canRollDice = true;
+        UIManager.Instance.SetRollDiceButtonVisibility(true); // Show the roll dice button
     }
 
     private Vector3 originalGravity;
@@ -48,9 +49,9 @@ public class DiceManager : MonoBehaviour
         if (canRollDice)
         {
             remainingDice = numDice;  // Reset remaining dice count to the total number of dice
-            canRollDice = false; // Disable further dice rolls until enabled again
+            canRollDice = false;
+            UIManager.Instance.SetRollDiceButtonVisibility(false);
 
-            // Save the original gravity and increase it
             originalGravity = Physics.gravity;
             Physics.gravity = new Vector3(0, -20f, 0); // Increase gravity
 

@@ -11,15 +11,19 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [SerializeField] private GameObject directionPanel; // Panel that contains direction buttons
-    [SerializeField] private Button directionButtonPrefab;
+    [SerializeField] private Button northButton;
+    [SerializeField] private Button eastButton;
+    [SerializeField] private Button southButton;
+    [SerializeField] private Button westButton;
 
     [SerializeField] private GameObject homePromptPanel; // Panel for home tile prompt
     [SerializeField] private Button stayButton;
     [SerializeField] private Button continueButton;
 
-    [SerializeField] private TextMeshProUGUI diceResultText; // Text to display dice result
+    [SerializeField] private TextMeshProUGUI diceResultText;
     [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
-    [SerializeField] private TextMeshProUGUI roundDisplayText; // Text to display the current round
+    [SerializeField] private TextMeshProUGUI roundDisplayText;
+    [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
 
     [SerializeField] private Button rollDiceButton; // Button to roll the dice
 
@@ -35,11 +39,17 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
+        rollDiceButton.gameObject.SetActive(false);
     }
 
     private void OnRollDiceButtonClicked()
     {
         DiceManager.Instance.RollDice();
+    }
+
+    public void SetRollDiceButtonVisibility(bool isVisible)
+    {
+        rollDiceButton.gameObject.SetActive(isVisible);
     }
 
     public async void DisplayDiceTotalResult(int totalResult)
@@ -54,7 +64,7 @@ public class UIManager : MonoBehaviour
     {
         if (playerID > 0 && playerID <= playerStatsTexts.Count)
         {
-            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points, Level {level}";
+            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points\nLevel {level}";
         }
     }
 
@@ -62,31 +72,54 @@ public class UIManager : MonoBehaviour
     {
         roundDisplayText.text = $"Round {roundNumber}";
     }
+    
+        public void UpdateCurrentPlayerTurn(int playerID)
+    {
+        currentPlayerTurnText.text = $"Player {playerID}'s Turn";
+    }
 
     // Show direction choices at a crossroad
     public void ShowDirectionChoices(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
-    {
-        directionPanel.SetActive(true);
-
-        // Clear any existing buttons before showing again
-        foreach (Transform child in directionPanel.transform)
         {
-            Destroy(child.gameObject);
-        }
+            directionPanel.SetActive(true);
 
-        foreach (Direction direction in availableDirections)
-        {
-            Button newButton = Instantiate(directionButtonPrefab, directionPanel.transform);
-            newButton.GetComponentInChildren<Text>().text = direction.ToString();
+            // Hide all direction buttons initially
+            northButton.gameObject.SetActive(false);
+            eastButton.gameObject.SetActive(false);
+            southButton.gameObject.SetActive(false);
+            westButton.gameObject.SetActive(false);
 
-            // Add click listener to notify when this direction is chosen
-            newButton.onClick.AddListener(() =>
+            // Show only the necessary buttons
+            foreach (Direction direction in availableDirections)
             {
-                directionPanel.SetActive(false);
-                onDirectionChosen(direction); // Notify the PlayerMovement script
-            });
+                Button button = null;
+                switch (direction)
+                {
+                    case Direction.North:
+                        button = northButton;
+                        break;
+                    case Direction.East:
+                        button = eastButton;
+                        break;
+                    case Direction.South:
+                        button = southButton;
+                        break;
+                    case Direction.West:
+                        button = westButton;
+                        break;
+                }
+
+                if (button != null)
+                {
+                    button.gameObject.SetActive(true);
+                    button.onClick.RemoveAllListeners();
+                    button.onClick.AddListener(() => {
+                        directionPanel.SetActive(false);
+                        onDirectionChosen(direction);
+                    });
+                }
+            }
         }
-    }
 
     // Show prompt when player reaches a home tile
     public void ShowHomeTilePrompt(Action<bool> onPlayerChoice)

@@ -14,6 +14,7 @@ public class RoundManager : MonoBehaviour
     {
         round = 0;
         UIManager.Instance.UpdateRound(round);
+        UIManager.Instance.UpdateCurrentPlayerTurn(Turn);
     }
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class RoundManager : MonoBehaviour
     {
         Turn = (Turn % PlayerManager.Instance.GetNumOfPlayers()) + 1;
         Debug.Log($"Turn {Turn}");
+        UIManager.Instance.UpdateCurrentPlayerTurn(Turn);
     }
 
     public void IncrementRound()
