@@ -62,7 +62,9 @@ public class PlayerMovement : MonoBehaviour
             if (availableDirections.Count > 1)
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
+                List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
                 yield return StartCoroutine(HandleDirections(availableDirections));
+                TileManager.Instance.ClearHighlightedTiles();
             }
             else
             {
@@ -157,4 +159,3 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
-
