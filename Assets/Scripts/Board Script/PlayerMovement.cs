@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Direction _lastDirection; // To track the direction the player came from
 
     private bool isMoving = false;
+    private bool initialMove = true; //One time flag for removing TilePlayerID
     private int remainingSteps = 0;
 
     public event Action OnMovementComplete;
@@ -40,6 +41,13 @@ public class PlayerMovement : MonoBehaviour
 
         while (remainingSteps > 0)
         {
+            if (initialMove)
+            {
+                // Reset the TilePlayerID of the current tile
+                currentTile.TilePlayerID = 0;
+                initialMove = false;
+            }
+
             // Get valid directions based on the last direction         
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections(_lastDirection);
             
@@ -49,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
 
-            if (currentTile.TilePlayerID != 0) {
+            if (currentTile.TilePlayerID != 0 && currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID) {
                 Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
                 yield return StartCoroutine(HandlePvP());
             }
@@ -85,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         isMoving = false;
+        initialMove = true;
         OnMovementComplete?.Invoke();
     }
 

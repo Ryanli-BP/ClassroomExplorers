@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Direction { North, East, South, West, None }
@@ -22,6 +23,11 @@ public class Tile : MonoBehaviour
 
     // Player ID of the player currently on the tile
     public int TilePlayerID { get; set; } = 0;
+
+    void Start()
+    {
+        TilePlayerID = HomeplayerID; //This is needed for the combat system to work properly on the 1st round
+    }
 
     
 
