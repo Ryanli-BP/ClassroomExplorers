@@ -15,16 +15,19 @@ public class Tile : MonoBehaviour
 
 
     // Boolean flag for tile propertiers
-    [SerializeField] private int playerID; //for home
+    [SerializeField] private int HomeplayerID; //for home
 
     // special tile attributes, normal by default
     [SerializeField] private TileType tileType = TileType.Normal;
 
+    // Player ID of the player currently on the tile
+    public int TilePlayerID { get; set; } = 0;
+
     
 
-    public int GetPlayerID()
+    public int GetHomePlayerID()
     {
-        return playerID;
+        return HomeplayerID;
     }
 
     // Return all valid directions (used for crossroads)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -47,8 +48,13 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
+
+            if (currentTile.TilePlayerID != 0) {
+                Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
+                yield return StartCoroutine(HandlePvP());
+            }
             // Prompt the player if they reach their home tile
-            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetPlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)
+            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetHomePlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
                 yield return StartCoroutine(HandleHomeTile());
@@ -152,6 +158,26 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Player chose to stay on the home tile.");
             isMoving = false;
             OnMovementComplete?.Invoke();
+        }
+        else
+        {
+            Debug.Log("Player chose to continue moving.");
+        }
+    }
+
+    private IEnumerator HandlePvP()
+    {
+        bool? playerChoice = null;
+
+        UIManager.Instance.ShowPvPPrompt((choice) => {
+            playerChoice = choice;
+        });
+
+        yield return new WaitUntil(() => playerChoice != null);
+
+        if (playerChoice == true)
+        {
+            Debug.Log("Player chose to fight.");
         }
         else
         {

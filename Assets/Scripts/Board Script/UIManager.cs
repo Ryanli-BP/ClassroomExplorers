@@ -20,6 +20,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button stayButton;
     [SerializeField] private Button continueButton;
 
+    [SerializeField] private GameObject pvpPromptPanel; // Panel for PvP prompt
+    [SerializeField] private Button fightButton;
+    [SerializeField] private Button continueMovingButton;
+
     [SerializeField] private TextMeshProUGUI diceResultText;
     [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
     [SerializeField] private TextMeshProUGUI roundDisplayText;
@@ -135,6 +139,23 @@ public class UIManager : MonoBehaviour
 
         continueButton.onClick.AddListener(() => {
             homePromptPanel.SetActive(false);
+            onPlayerChoice(false);
+        });
+    }
+
+    public void ShowPvPPrompt(Action<bool> onPlayerChoice)
+    {
+        pvpPromptPanel.SetActive(true);
+        fightButton.onClick.RemoveAllListeners();
+        continueMovingButton.onClick.RemoveAllListeners();
+
+        fightButton.onClick.AddListener(() => {
+            pvpPromptPanel.SetActive(false);
+            onPlayerChoice(true);
+        });
+
+        continueMovingButton.onClick.AddListener(() => {
+            pvpPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
     }

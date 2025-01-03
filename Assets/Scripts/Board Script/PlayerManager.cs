@@ -50,7 +50,7 @@ public class PlayerManager : MonoBehaviour
 
     public void SpawnPlayerAtHome(Player player)
     {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetPlayerID() == player.getPlayerID());
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetHomePlayerID() == player.getPlayerID());
 
         if (homeTile != null)
         {

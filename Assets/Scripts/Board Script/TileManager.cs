@@ -47,6 +47,8 @@ public class TileManager : MonoBehaviour
 
     public void getTileAction(Tile tile)
     {
+        tile.TilePlayerID = PlayerManager.Instance.CurrentPlayerID;
+        
         switch (tile.GetTileType())
         {
             case TileType.Normal:
