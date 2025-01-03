@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DiceToThrow: {fileID: 2841680434444505954, guid: 7349b706ad5a069488b23f52a43ab841, type: 3}
-  numDice: 2
+  numDice: 3
   throwForce: 4
   rollForce: 4
 --- !u!4 &2310173
@@ -363,7 +363,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 1
   hasSouth: 0
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 2
 --- !u!114 &61774732
@@ -440,7 +440,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -868,7 +868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1223,7 +1223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasNorth: 1
-  hasEast: 1
+  hasEast: 0
   hasSouth: 0
   hasWest: 0
   playerID: 0
@@ -1302,7 +1302,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.35237062, g: 0.3505993, b: 0.3529412, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1503,7 +1503,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 1
   hasSouth: 0
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 0
 --- !u!114 &272222126
@@ -1534,7 +1534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1954,7 +1954,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 1
   hasSouth: 0
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 1
 --- !u!114 &352180614
@@ -2016,7 +2016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasNorth: 1
+  hasNorth: 0
   hasEast: 0
   hasSouth: 1
   hasWest: 0
@@ -2269,7 +2269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasNorth: 0
   hasEast: 1
-  hasSouth: 1
+  hasSouth: 0
   hasWest: 0
   playerID: 0
   tileType: 0
@@ -2370,7 +2370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2890,10 +2890,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 44.75
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -3387,7 +3387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasNorth: 1
   hasEast: 0
-  hasSouth: 1
+  hasSouth: 0
   hasWest: 0
   playerID: 0
   tileType: 0
@@ -3884,7 +3884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasNorth: 1
-  hasEast: 1
+  hasEast: 0
   hasSouth: 0
   hasWest: 1
   playerID: 0
@@ -3950,7 +3950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasNorth: 1
   hasEast: 0
-  hasSouth: 1
+  hasSouth: 0
   hasWest: 0
   playerID: 0
   tileType: 0
@@ -4136,7 +4136,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4256,7 +4256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4351,7 +4351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasNorth: 1
   hasEast: 0
-  hasSouth: 1
+  hasSouth: 0
   hasWest: 0
   playerID: 0
   tileType: 1
@@ -4591,6 +4591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileContainer: {fileID: 1230113819}
+  highlightOverlayPrefab: {fileID: 5145767643627895912, guid: c9b17140ff9fc2f429502e6d8581491c, type: 3}
   allTiles:
   - {fileID: 1826945209}
   - {fileID: 1415499905}
@@ -4868,7 +4869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasNorth: 1
   hasEast: 0
-  hasSouth: 1
+  hasSouth: 0
   hasWest: 0
   playerID: 0
   tileType: 1
@@ -4988,7 +4989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasNorth: 1
+  hasNorth: 0
   hasEast: 0
   hasSouth: 1
   hasWest: 0
@@ -5068,7 +5069,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.3529412, g: 0.3529412, b: 0.3529412, a: 0.78431374}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -5143,7 +5144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5239,7 +5240,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 1
   hasSouth: 0
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 1
 --- !u!114 &1243763816
@@ -5601,7 +5602,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 0
   hasSouth: 1
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1341553746
@@ -5664,7 +5665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasNorth: 0
-  hasEast: 1
+  hasEast: 0
   hasSouth: 0
   hasWest: 1
   playerID: 0
@@ -5826,7 +5827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasNorth: 1
   hasEast: 0
-  hasSouth: 1
+  hasSouth: 0
   hasWest: 0
   playerID: 0
   tileType: 0
@@ -5890,7 +5891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasNorth: 0
-  hasEast: 1
+  hasEast: 0
   hasSouth: 0
   hasWest: 1
   playerID: 0
@@ -6392,7 +6393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasNorth: 0
-  hasEast: 1
+  hasEast: 0
   hasSouth: 0
   hasWest: 1
   playerID: 0
@@ -6459,7 +6460,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 1
   hasSouth: 0
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 0
 --- !u!114 &1514497553
@@ -6851,8 +6852,8 @@ Transform:
   m_GameObject: {fileID: 1579840710}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -1, y: -1, z: 0}
+  m_LocalScale: {x: 1.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -6903,7 +6904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasNorth: 0
-  hasEast: 1
+  hasEast: 0
   hasSouth: 0
   hasWest: 1
   playerID: 0
@@ -6970,7 +6971,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 1
   hasSouth: 0
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 2
 --- !u!114 &1588317943
@@ -7850,7 +7851,7 @@ MonoBehaviour:
   hasNorth: 0
   hasEast: 1
   hasSouth: 0
-  hasWest: 1
+  hasWest: 0
   playerID: 0
   tileType: 1
 --- !u!114 &1699352941
@@ -8140,7 +8141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8ec7f5ed00a6e944a4f9f45f09f6907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasNorth: 1
+  hasNorth: 0
   hasEast: 0
   hasSouth: 0
   hasWest: 1
@@ -9450,7 +9451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 2364634829270590846, guid: 5f4fac7634da03b4ea00d956b66ada83, type: 3}
       propertyPath: m_LocalPosition.z
