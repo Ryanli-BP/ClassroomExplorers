@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DiceToThrow: {fileID: 2841680434444505954, guid: 7349b706ad5a069488b23f52a43ab841, type: 3}
-  numDice: 2
+  numDice: 3
   throwForce: 4
   rollForce: 4
 --- !u!4 &2310173

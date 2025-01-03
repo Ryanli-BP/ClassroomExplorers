@@ -72,18 +72,15 @@ public class TileManager : MonoBehaviour
 
     public List<Tile> HighlightPossibleTiles(Tile startTile, int steps)
     {
-        HashSet<Tile> visited = new HashSet<Tile>();
         List<Tile> highlightedTiles = new List<Tile>();
-        DFSHighlight(startTile, steps, visited, highlightedTiles);
+        DFSHighlight(startTile, steps, highlightedTiles);
         return highlightedTiles;
     }
 
-    private void DFSHighlight(Tile tile, int steps, HashSet<Tile> visited, List<Tile> highlightedTiles)
+    private void DFSHighlight(Tile tile, int steps, List<Tile> highlightedTiles)
     {
-        if (steps < 0 || visited.Contains(tile))
+        if (steps < 0)
             return;
-
-        visited.Add(tile);
 
         if (steps == 0)
         {
@@ -98,7 +95,7 @@ public class TileManager : MonoBehaviour
             Tile nextTile = GetNextTile(tile, direction);
             if (nextTile != null)
             {
-                DFSHighlight(nextTile, steps - 1, visited, highlightedTiles);
+                DFSHighlight(nextTile, steps - 1, highlightedTiles);
             }
         }
     }
