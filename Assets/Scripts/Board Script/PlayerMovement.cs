@@ -57,19 +57,20 @@ public class PlayerMovement : MonoBehaviour
 
                 bool? playerChoice = null; // Use nullable bool to track the choice
 
-                // Start the prompt and wait for the player to choose
                 yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
-                    playerChoice = choice; // Store the player's choice
+                    playerChoice = choice; 
                 }));
 
                 // Wait until the player's choice is resolved
                 while (playerChoice == null) {
-                    yield return null; // Wait for one frame
+                    yield return null;
                 }
 
                 if (playerChoice == true) {
                     Debug.Log("Player chose to fight.");
+                    GameManager.Instance.OnCombatTriggered();
                     yield return StartCoroutine(EventManager.Instance.HandleFight(currentTile.TilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                    GameManager.Instance.IsResumingMovement = false; // needed for states to work correctly after combat
                 } else {
                     Debug.Log("Player chose to continue moving.");
                 }

@@ -8,6 +8,12 @@ public class GameManager : MonoBehaviour
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
 
+    public bool IsResumingMovement { get; set; } = false;
+    public Action<int> OnDiceRollResultForCombat;
+    public Action<bool> OnDiceResultDisplayForCombat; // New action to notify when dice result display finishes.
+
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,11 +28,11 @@ public class GameManager : MonoBehaviour
     }
 
     private void ChangeState(GameState newState)
-{
-    Debug.Log($"Changing state from {currentState} to {newState}");
-    currentState = newState;
-    OnStateChanged(newState);
-}
+    {
+        Debug.Log($"Changing state from {currentState} to {newState}");
+        currentState = newState;
+        OnStateChanged(newState);
+    }
 
     private void OnStateChanged(GameState newState)
     {
@@ -46,12 +52,23 @@ public class GameManager : MonoBehaviour
                 StartPlayerTurn();
                 break;
 
-            case GameState.PlayerRollingDice:
+            case GameState.PlayerRollingMovementDice:
                 EnableDiceRoll();
                 break;
 
-            case GameState.PlayerMoving:
-                StartPlayerMovement();
+            case GameState.PlayerMovement:
+                if (!IsResumingMovement)
+                {
+                    StartPlayerMovement();
+                }
+                else
+                {
+                    Debug.Log("Resuming movement");
+                }
+                break;
+
+            case GameState.PlayerCombat:
+                IsResumingMovement = true;
                 break;
 
             case GameState.PlayerFinishedMoving:
@@ -92,7 +109,7 @@ public class GameManager : MonoBehaviour
     private void StartPlayerTurn()
     {
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn.");
-        ChangeState(GameState.PlayerRollingDice);
+        ChangeState(GameState.PlayerRollingMovementDice);
     }
 
     private void EnableDiceRoll()
@@ -104,41 +121,61 @@ public class GameManager : MonoBehaviour
     {
         int totalDiceResult = DiceManager.Instance.GetTotalDiceResult();
         UIManager.Instance.DisplayDiceTotalResult(totalDiceResult);
+
+        if (currentState == GameState.PlayerCombat && OnDiceRollResultForCombat != null)
+        {
+            OnDiceRollResultForCombat.Invoke(totalDiceResult);
+            OnDiceRollResultForCombat = null; // Clear the callback to prevent multiple invocations.
+        }
     }
 
     public void HandleDiceResultDisplayFinished()
     {
-        ChangeState(GameState.PlayerMoving);
+        if (currentState == GameState.PlayerRollingMovementDice)
+        {
+            ChangeState(GameState.PlayerMovement);
+        }
+        else if (currentState == GameState.PlayerCombat)
+        {
+            OnDiceResultDisplayForCombat?.Invoke(true); // Trigger display completion callback
+            OnDiceResultDisplayForCombat = null; // Reset the callback
+        }
     }
+
 
     private void StartPlayerMovement()
     {
         Debug.Log("Starting player movement");
-        PlayerMovement playerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
-        playerMovement.OnMovementComplete += OnPlayerMovementComplete;
+        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
+        PlayerMovement.OnMovementComplete += OnPlayerMovementComplete;
         PlayerManager.Instance.StartPlayerMovement(DiceManager.Instance.GetTotalDiceResult());
     }
 
     private void OnPlayerMovementComplete()
     {
         Debug.Log("Player movement complete");
-        PlayerMovement playerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
-        playerMovement.OnMovementComplete -= OnPlayerMovementComplete;
+        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
+        PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete;
         ChangeState(GameState.PlayerFinishedMoving);
     }
 
-
-private void StartTileAction()
-{
-    TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
-
-    if (currentState == GameState.GameEnd)
+    public void OnCombatTriggered()
     {
-        return;
+        Debug.Log("Combat triggered! Transitioning to Combat state.");
+        ChangeState(GameState.PlayerCombat);
     }
 
-    ChangeState(GameState.PlayerTurnEnd);
-}
+    private void StartTileAction()
+    {
+        TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
+
+        if (currentState == GameState.GameEnd)
+        {
+            return;
+        }
+
+        ChangeState(GameState.PlayerTurnEnd);
+    }
 
     private void EndPlayerTurn()
     {
@@ -171,8 +208,9 @@ public enum GameState
     GameSetup,
     RoundStart,
     PlayerTurnStart,
-    PlayerRollingDice,
-    PlayerMoving,
+    PlayerRollingMovementDice,
+    PlayerMovement,
+    PlayerCombat,
     PlayerFinishedMoving,
     PlayerTurnEnd,
     GameEnd
