@@ -1,21 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Tile currentTile; // Assign the starting tile in the Inspector
-
     private Direction FacingDirection; // To track the direction the player came from
-    
     [SerializeField] private Direction _lastDirection; // To track the direction the player came from
-
     private bool isMoving = false;
     private bool initialMove = true; //One time flag for removing TilePlayerID
     private int remainingSteps = 0;
-
     public event Action OnMovementComplete;
 
     public Tile CurrentTile
@@ -59,17 +54,27 @@ public class PlayerMovement : MonoBehaviour
             
             if (currentTile.TilePlayerID != 0 && currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID) {
                 Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
+
+                bool? playerChoice = null; // Use nullable bool to track the choice
+
+                // Start the prompt and wait for the player to choose
                 yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
-                    if (choice)
-                    {
-                        Debug.Log("Player chose to fight.");
-                    }
-                    else
-                    {
-                        Debug.Log("Player chose to continue moving.");
-                    }
+                    playerChoice = choice; // Store the player's choice
                 }));
+
+                // Wait until the player's choice is resolved
+                while (playerChoice == null) {
+                    yield return null; // Wait for one frame
+                }
+
+                if (playerChoice == true) {
+                    Debug.Log("Player chose to fight.");
+                    yield return StartCoroutine(EventManager.Instance.HandleFight(currentTile.TilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                } else {
+                    Debug.Log("Player chose to continue moving.");
+                }
             }
+
 
             // Prompt the player if they reach their home tile
             if (currentTile.GetTileType() == TileType.Home  && currentTile.GetHomePlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)

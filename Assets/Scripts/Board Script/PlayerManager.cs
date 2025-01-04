@@ -25,6 +25,11 @@ public class PlayerManager : MonoBehaviour
         return players;
     }
 
+    public Player GetPlayerByID(int playerID)
+    {
+        return players[playerID - 1];
+    }
+
     public Player GetCurrentPlayer()
     {
         return players[CurrentPlayerID - 1];
