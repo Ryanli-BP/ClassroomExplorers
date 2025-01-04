@@ -56,16 +56,37 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-
+            
             if (currentTile.TilePlayerID != 0 && currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID) {
                 Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
-                yield return StartCoroutine(HandlePvP());
+                yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
+                    if (choice)
+                    {
+                        Debug.Log("Player chose to fight.");
+                    }
+                    else
+                    {
+                        Debug.Log("Player chose to continue moving.");
+                    }
+                }));
             }
+
             // Prompt the player if they reach their home tile
             if (currentTile.GetTileType() == TileType.Home  && currentTile.GetHomePlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)
             {
                 Debug.Log("Reached home tile. Prompting player to choose.");
-                yield return StartCoroutine(HandleHomeTile());
+                yield return StartCoroutine(PromptManager.Instance.HandleHomeTile((choice) => {
+                    if (choice)
+                    {
+                        Debug.Log("Player chose to stay on the home tile.");
+                        isMoving = false;
+                        OnMovementComplete?.Invoke();
+                    }
+                    else
+                    {
+                        Debug.Log("Player chose to continue moving.");
+                    }
+                }));
             }
 
             initialOnHome = false;
@@ -77,14 +98,15 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
                 List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
-                yield return StartCoroutine(HandleDirections(availableDirections));
+                yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
+                    MoveToNextTile(direction);
+                }));
                 TileManager.Instance.ClearHighlightedTiles();
             }
             else
             {
                 // Move in the only available direction
                 Direction nextDirection = availableDirections[0];
-                //Debug.Log($"Moving in the direction: {nextDirection}");
                 MoveToNextTile(nextDirection);
             }
 
@@ -132,65 +154,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Debug.LogError("Tile not found at position: " + targetPosition);
-        }
-    }
-
-    private IEnumerator HandleDirections(List<Direction> availableDirections)
-    {
-        Direction? chosenDirection = null;
-
-        UIManager.Instance.ShowDirectionChoices(availableDirections, (direction) => {
-            chosenDirection = direction;
-        });
-
-        // Wait until the player makes a choice 
-        yield return new WaitUntil(() => chosenDirection != null);
-
-        Debug.Log($"Player chose to move in the direction: {chosenDirection}");
-
-        // Move to the next tile in the chosen direction
-        MoveToNextTile(chosenDirection.Value);
-    }
-
-    private IEnumerator HandleHomeTile()
-    {
-        bool? playerChoice = null;
-
-        UIManager.Instance.ShowHomeTilePrompt((choice) => {
-            playerChoice = choice;
-        });
-
-        yield return new WaitUntil(() => playerChoice != null);
-
-        if (playerChoice == true)
-        {
-            Debug.Log("Player chose to stay on the home tile.");
-            isMoving = false;
-            OnMovementComplete?.Invoke();
-        }
-        else
-        {
-            Debug.Log("Player chose to continue moving.");
-        }
-    }
-
-    private IEnumerator HandlePvP()
-    {
-        bool? playerChoice = null;
-
-        UIManager.Instance.ShowPvPPrompt((choice) => {
-            playerChoice = choice;
-        });
-
-        yield return new WaitUntil(() => playerChoice != null);
-
-        if (playerChoice == true)
-        {
-            Debug.Log("Player chose to fight.");
-        }
-        else
-        {
-            Debug.Log("Player chose to continue moving.");
         }
     }
 }
