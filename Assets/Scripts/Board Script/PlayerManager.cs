@@ -12,6 +12,8 @@ public class PlayerManager : MonoBehaviour
 
     public int CurrentHighLevel { get; set; } = 1; //needed to determine RoundPoints
 
+    public List<Player> DeadPlayers { get; set; } = new List<Player>();
+
     private void Awake()
     {
         if (Instance == null)

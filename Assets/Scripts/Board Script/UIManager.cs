@@ -64,11 +64,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
-    public void UpdatePlayerStats(int playerID, int points, int level)
+    public void UpdatePlayerStats(int playerID, int points, int level, int Health)
     {
         if (playerID > 0 && playerID <= playerStatsTexts.Count)
         {
-            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points\nLevel {level}";
+            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points\n" +
+                                                  $"Level {level}\n" +
+                                                  $"Health {Health}";
         }
     }
 

@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+public class CombatManager : MonoBehaviour
 {
-    public static EventManager Instance;
+    public static CombatManager Instance;
 
     [SerializeField] private Camera arCamera; // Reference to the AR camera
 
@@ -44,27 +45,50 @@ public class EventManager : MonoBehaviour
 
     public IEnumerator PlayerCombat(Player currentPlayer, Player opponentPlayer)
     {
+        for (int i = 0; i < 2; i++)
+        {
+            int atkValue = 0;
+            int dfdValue = 0;
+
+            yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
+            yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
+
+            Debug.Log($"Combat result: Attack = {atkValue}, Defense = {dfdValue}");
+
+            Player targetPlayer = (i == 0) ? opponentPlayer : currentPlayer;
+            targetPlayer.LoseHealth(Math.Max(1, atkValue - dfdValue));
+
+            if (currentPlayer.Health <= 0)
+            {
+                currentPlayer.Dies();
+                break;
+            }
+            else if (opponentPlayer.Health <= 0)
+            {
+                opponentPlayer.Dies();
+                break;
+            }
+        }
+    }
+
+    private IEnumerator RollForCombatValue(System.Action<int> callback)
+    {
         bool diceRollComplete = false;
         bool diceDisplayComplete = false;
         int diceResult = 0;
-        int atkValue = 0;
-        int dfdValue = 0;
 
-        // First dice roll for AtkValue
+        // Enable dice roll
         DiceManager.Instance.EnableDiceRoll();
 
-        // Set up the callback to handle the result of the first dice roll
+        // Set up the callback to handle the result of the dice roll
         GameManager.Instance.OnDiceRollResultForCombat = (result) =>
         {
             diceResult = result;
             diceRollComplete = true;
         };
 
-        // Wait for the first dice roll to complete
+        // Wait for the dice roll to complete
         yield return new WaitUntil(() => diceRollComplete);
-
-        atkValue = diceResult;
-        Debug.Log($"Attack Value: {atkValue}");
 
         // Set up the callback to handle the display completion
         GameManager.Instance.OnDiceResultDisplayForCombat = (result) =>
@@ -75,36 +99,7 @@ public class EventManager : MonoBehaviour
         // Wait until the dice result display is finished
         yield return new WaitUntil(() => diceDisplayComplete);
 
-        // Second dice roll for DfdValue
-        diceRollComplete = false; // Reset the dice roll completion flag
-        diceDisplayComplete = false; // Reset the display completion flag
-        DiceManager.Instance.EnableDiceRoll();
-
-        // Set up the callback to handle the result of the second dice roll
-        GameManager.Instance.OnDiceRollResultForCombat = (result) =>
-        {
-            diceResult = result;
-            diceRollComplete = true;
-        };
-
-        // Wait for the second dice roll to complete
-        yield return new WaitUntil(() => diceRollComplete);
-
-        dfdValue = diceResult;
-        Debug.Log($"Defense Value: {dfdValue}");
-
-        // Set up the callback to handle the display completion after the second roll
-        GameManager.Instance.OnDiceResultDisplayForCombat = (result) =>
-        {
-            diceDisplayComplete = result; // Set the flag to true when the display is complete
-        };
-
-        // Wait until the dice result display is finished
-        yield return new WaitUntil(() => diceDisplayComplete);
-
-        // Proceed with combat logic using atkValue and dfdValue
-        Debug.Log($"Combat result: Attack = {atkValue}, Defense = {dfdValue}");
+        // Use the callback to return the dice result
+        callback(diceResult);
     }
-
-
 }

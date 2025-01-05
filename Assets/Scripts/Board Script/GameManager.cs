@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
 
-    public bool IsResumingMovement { get; set; } = false;
+    public bool IsResumingMovement { get; set; } = false; // Flag such that player don't StartPlayerMovement again after combat->moving state change
     public Action<int> OnDiceRollResultForCombat;
     public Action<bool> OnDiceResultDisplayForCombat; // New action to notify when dice result display finishes.
 
@@ -109,7 +109,17 @@ public class GameManager : MonoBehaviour
     private void StartPlayerTurn()
     {
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn.");
-        ChangeState(GameState.PlayerRollingMovementDice);
+        if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
+        {
+            Debug.Log("Player is dead. Skipping turn.");
+            ChangeState(GameState.PlayerTurnEnd);
+            return;
+        }
+        else
+        {
+            ChangeState(GameState.PlayerRollingMovementDice);
+        }
+        
     }
 
     private void EnableDiceRoll()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -34,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
         isMoving = true;
         bool initialOnHome = true; //one time flag
 
-        while (remainingSteps > 0)
+        while (remainingSteps >= 0)
         {
             if (initialMove)
             {
@@ -52,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             
-            if (currentTile.TilePlayerID != 0 && currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID) {
+            if (currentTile.TilePlayerID != 0 && currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID && PlayerManager.Instance.GetPlayerByID(currentTile.TilePlayerID).Status == Status.Alive) {
                 Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
 
                 bool? playerChoice = null; // Use nullable bool to track the choice
@@ -69,11 +70,22 @@ public class PlayerMovement : MonoBehaviour
                 if (playerChoice == true) {
                     Debug.Log("Player chose to fight.");
                     GameManager.Instance.OnCombatTriggered();
-                    yield return StartCoroutine(EventManager.Instance.HandleFight(currentTile.TilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                    yield return StartCoroutine(CombatManager.Instance.HandleFight(currentTile.TilePlayerID, PlayerManager.Instance.CurrentPlayerID));
                     GameManager.Instance.IsResumingMovement = false; // needed for states to work correctly after combat
+                    if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead) 
+                    {
+                        isMoving = false;
+                        break;
+                    }
                 } else {
                     Debug.Log("Player chose to continue moving.");
                 }
+            }
+
+            if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead) 
+            {
+                Debug.Log("Player is dead. Cannot move.");
+                break;
             }
 
 
@@ -86,18 +98,21 @@ public class PlayerMovement : MonoBehaviour
                     {
                         Debug.Log("Player chose to stay on the home tile.");
                         isMoving = false;
-                        OnMovementComplete?.Invoke();
                     }
                     else
                     {
                         Debug.Log("Player chose to continue moving.");
                     }
                 }));
+                if (!isMoving) { break; } // Exit if movement is stopped
             }
 
             initialOnHome = false;
-
-            if (!isMoving) { yield break; } //if player chooses to stop
+            if (remainingSteps == 0)
+            {
+                isMoving = false;
+                break;
+            }
 
             // If at a crossroads, stop and wait for player input
             if (availableDirections.Count > 1)

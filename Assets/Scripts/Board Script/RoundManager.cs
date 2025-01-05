@@ -9,7 +9,6 @@ public class RoundManager : MonoBehaviour
     private int round;
     public int Turn { get; set; } = 1;
     [SerializeField] private List<int> roundPoints = new List<int> { 1, 3, 7 };
-
     void Start()
     {
         round = 0;
@@ -36,7 +35,25 @@ public class RoundManager : MonoBehaviour
         round++;
         Debug.Log($"Round {round}");
         UIManager.Instance.UpdateRound(round);
+
+        if(PlayerManager.Instance.DeadPlayers.Count > 0)
+        {
+            IncrementReviveCounter();
+        }
     }
+public void IncrementReviveCounter()
+{
+    var deadPlayersCopy = new List<Player>(PlayerManager.Instance.DeadPlayers);
+
+    foreach (var player in deadPlayersCopy)
+    {
+        player.IncrementReviveCounter();
+        if (player.ReviveCounter == Player.REVIVAL_COUNT)
+        {
+            player.Revives();
+        }
+    }
+}
 
     public void GiveRoundPoints()
     {
