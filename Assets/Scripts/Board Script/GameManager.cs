@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.PlayerRollingMovementDice:
-                EnableDiceRoll();
+                EnableMovementDiceRoll();
                 break;
 
             case GameState.PlayerMovement:
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void EnableDiceRoll()
+    private void EnableMovementDiceRoll()
     {
         DiceManager.Instance.EnableDiceRoll();
     }

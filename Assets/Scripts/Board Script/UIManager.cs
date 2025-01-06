@@ -32,8 +32,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI reviveCounterText;
     private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
 
-    [SerializeField] private Button rollDiceButton; // Button to roll the dice
-    [SerializeField] private Button evadeButton; // button for evade option
+    [SerializeField] public GameObject rollDiceButtonPanel;
+    [SerializeField] public GameObject evadeButtonPanel;
+    [SerializeField] public Button rollDiceButton; // Button to roll the dice
+    [SerializeField] public Button evadeButton; // button for evade option
 
 
     private void Awake()
@@ -47,8 +49,9 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-        rollDiceButton.gameObject.SetActive(false);
-        evadeButton.gameObject.SetActive(false);
+        evadeButton.onClick.AddListener(OnEvadeButtonClicked);
+        rollDiceButtonPanel.gameObject.SetActive(false);
+        evadeButtonPanel.gameObject.SetActive(false);
     }
 
     private void OnRollDiceButtonClicked()
@@ -56,9 +59,19 @@ public class UIManager : MonoBehaviour
         DiceManager.Instance.RollDice();
     }
 
+    private void OnEvadeButtonClicked()
+    {
+        DiceManager.Instance.RollDice();
+    }
+
     public void SetRollDiceButtonVisibility(bool isVisible)
     {
-        rollDiceButton.gameObject.SetActive(isVisible);
+        rollDiceButtonPanel.gameObject.SetActive(isVisible);
+    }
+
+    public void SetEvadeButtonVisibility(bool isVisible)
+    {
+        evadeButtonPanel.gameObject.SetActive(isVisible);
     }
 
     public void SetRollDiceButtonText(string text)

@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
     {
         ReviveCounter = 0;
         Status = Status.Alive;
-        Health = 5;
+        Health = 30;
         PlayerManager.Instance.DeadPlayers.Remove(this);
         UIManager.Instance.ClearReviveCounter(playerID);
         Debug.Log($"Player {playerID} has revived.");
