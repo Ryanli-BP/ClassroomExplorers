@@ -29,7 +29,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
 
+    [SerializeField] private TextMeshProUGUI reviveCounterText;
+    private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
+
     [SerializeField] private Button rollDiceButton; // Button to roll the dice
+    [SerializeField] private Button evadeButton; // button for evade option
 
 
     private void Awake()
@@ -44,6 +48,7 @@ public class UIManager : MonoBehaviour
     {
         rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
         rollDiceButton.gameObject.SetActive(false);
+        evadeButton.gameObject.SetActive(false);
     }
 
     private void OnRollDiceButtonClicked()
@@ -54,6 +59,11 @@ public class UIManager : MonoBehaviour
     public void SetRollDiceButtonVisibility(bool isVisible)
     {
         rollDiceButton.gameObject.SetActive(isVisible);
+    }
+
+    public void SetRollDiceButtonText(string text)
+    {
+        rollDiceButton.GetComponentInChildren<TextMeshProUGUI>().text = text;
     }
 
     public async void DisplayDiceTotalResult(int totalResult)
@@ -79,9 +89,34 @@ public class UIManager : MonoBehaviour
         roundDisplayText.text = $"Round {roundNumber}";
     }
     
-        public void UpdateCurrentPlayerTurn(int playerID)
+    public void UpdateCurrentPlayerTurn(int playerID)
     {
         currentPlayerTurnText.text = $"Player {playerID}'s Turn";
+    }
+
+    public void UpdateReviveCounter(int playerID, int reviveCounter)
+    {
+        if (reviveCounter > 0)
+        {
+            string message = $"Player {playerID} Revives in: {reviveCounter} Rounds\n";
+            playerReviveMessages[playerID] = message;
+        }
+        else
+        {
+            playerReviveMessages.Remove(playerID);
+        }
+        UpdateReviveCounterText();
+    }
+
+    public void ClearReviveCounter(int playerID)
+    {
+        playerReviveMessages.Remove(playerID);
+        UpdateReviveCounterText();
+    }
+
+    private void UpdateReviveCounterText()
+    {
+        reviveCounterText.text = string.Join("\n", playerReviveMessages.Values);
     }
 
     // Show direction choices at a crossroad

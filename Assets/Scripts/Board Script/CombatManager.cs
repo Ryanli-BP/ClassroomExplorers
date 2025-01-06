@@ -9,6 +9,10 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] private Camera arCamera; // Reference to the AR camera
 
+    private static readonly Vector3 currentPlayerPosition = new Vector3(27, 0.3f, 0);
+    private static readonly Vector3 opponentPlayerPosition = new Vector3(33, 0.3f, 0);
+    private static readonly Vector3 cameraPosition = new Vector3(30, 9, -9);
+
     private void Awake()
     {
         if (Instance == null)
@@ -24,11 +28,17 @@ public class CombatManager : MonoBehaviour
         Player opponentPlayer = PlayerManager.Instance.GetPlayerByID(opponentPlayerID);
         Vector3 originalCurrentPlayerPosition = currentPlayer.gameObject.transform.position;
         Vector3 originalOpponentPlayerPosition = opponentPlayer.gameObject.transform.position;
+        Quaternion originalCurrentPlayerRotation = currentPlayer.gameObject.transform.rotation;
+        Quaternion originalOpponentPlayerRotation = opponentPlayer.gameObject.transform.rotation;
 
         // Teleport to fighting area
-        arCamera.transform.position = new Vector3(30, 9, -9);
-        currentPlayer.transform.position = new Vector3(29, 2, 0);
-        opponentPlayer.transform.position = new Vector3(28, 2, 0);
+        arCamera.transform.position = cameraPosition;
+        currentPlayer.transform.position = currentPlayerPosition;
+        opponentPlayer.transform.position = opponentPlayerPosition;
+        currentPlayer.transform.LookAt(opponentPlayer.transform);
+        currentPlayer.transform.Rotate(0, 180, 0); // offset
+        opponentPlayer.transform.LookAt(currentPlayer.transform);
+        opponentPlayer.transform.Rotate(0, 180, 0);
 
         // Implement fighting logic here
         yield return StartCoroutine(PlayerCombat(currentPlayer, opponentPlayer));
@@ -38,6 +48,8 @@ public class CombatManager : MonoBehaviour
         arCamera.transform.position = new Vector3(0, 9, -9);
         currentPlayer.transform.position = originalCurrentPlayerPosition;
         opponentPlayer.transform.position = originalOpponentPlayerPosition;
+        currentPlayer.transform.rotation = originalCurrentPlayerRotation;
+        opponentPlayer.transform.rotation = originalOpponentPlayerRotation;
 
         // Handle fight result (e.g., update player health, determine winner, etc.)
         Debug.Log("Fight ended. Handle fight result here.");
@@ -50,13 +62,28 @@ public class CombatManager : MonoBehaviour
             int atkValue = 0;
             int dfdValue = 0;
 
+            UIManager.Instance.SetRollDiceButtonText("Attack");
             yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
+
+            UIManager.Instance.SetRollDiceButtonText("Defend");
             yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
 
             Debug.Log($"Combat result: Attack = {atkValue}, Defense = {dfdValue}");
+            if (i==0)
+            {
+                currentPlayer.transform.position = opponentPlayerPosition - new Vector3(1, 0, 0);
+                yield return new WaitForSeconds(0.5f);
+                currentPlayer.transform.position = currentPlayerPosition;
+            }
+            else
+            {
+                opponentPlayer.transform.position = currentPlayerPosition + new Vector3(1, 0, 0);
+                yield return new WaitForSeconds(0.5f);
+                opponentPlayer.transform.position = opponentPlayerPosition;
+            }
 
             Player targetPlayer = (i == 0) ? opponentPlayer : currentPlayer;
-            targetPlayer.LoseHealth(Math.Max(1, atkValue - dfdValue));
+            targetPlayer.LoseHealth(Math.Max(5, atkValue - dfdValue));
 
             if (currentPlayer.Health <= 0)
             {
@@ -69,6 +96,7 @@ public class CombatManager : MonoBehaviour
                 break;
             }
         }
+        UIManager.Instance.SetRollDiceButtonText("Roll Dice");
     }
 
     private IEnumerator RollForCombatValue(System.Action<int> callback)

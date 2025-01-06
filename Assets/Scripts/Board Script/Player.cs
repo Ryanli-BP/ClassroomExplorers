@@ -53,12 +53,14 @@ public class Player : MonoBehaviour
     {
         Status = Status.Dead;
         PlayerManager.Instance.DeadPlayers.Add(this);
+        UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
         Debug.Log($"Player {playerID} has died.");
     }
 
     public void IncrementReviveCounter()
     {
         ReviveCounter++;
+        UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
     }
 
     public void Revives()
@@ -67,6 +69,7 @@ public class Player : MonoBehaviour
         Status = Status.Alive;
         Health = 5;
         PlayerManager.Instance.DeadPlayers.Remove(this);
+        UIManager.Instance.ClearReviveCounter(playerID);
         Debug.Log($"Player {playerID} has revived.");
     }
 }
