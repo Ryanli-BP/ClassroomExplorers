@@ -20,12 +20,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button stayButton;
     [SerializeField] private Button continueButton;
 
+    [SerializeField] private GameObject pvpPromptPanel; // Panel for PvP prompt
+    [SerializeField] private Button fightButton;
+    [SerializeField] private Button continueMovingButton;
+
     [SerializeField] private TextMeshProUGUI diceResultText;
     [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
 
-    [SerializeField] private Button rollDiceButton; // Button to roll the dice
+    [SerializeField] private TextMeshProUGUI reviveCounterText;
+    private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
+
+    [SerializeField] public GameObject rollDiceButtonPanel;
+    [SerializeField] public GameObject evadeButtonPanel;
+    [SerializeField] public Button rollDiceButton; // Button to roll the dice
+    [SerializeField] public Button evadeButton; // button for evade option
 
 
     private void Awake()
@@ -39,7 +49,9 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-        rollDiceButton.gameObject.SetActive(false);
+        evadeButton.onClick.AddListener(OnEvadeButtonClicked);
+        rollDiceButtonPanel.gameObject.SetActive(false);
+        evadeButtonPanel.gameObject.SetActive(false);
     }
 
     private void OnRollDiceButtonClicked()
@@ -47,9 +59,24 @@ public class UIManager : MonoBehaviour
         DiceManager.Instance.RollDice();
     }
 
+    private void OnEvadeButtonClicked()
+    {
+        DiceManager.Instance.RollDice();
+    }
+
     public void SetRollDiceButtonVisibility(bool isVisible)
     {
-        rollDiceButton.gameObject.SetActive(isVisible);
+        rollDiceButtonPanel.gameObject.SetActive(isVisible);
+    }
+
+    public void SetEvadeButtonVisibility(bool isVisible)
+    {
+        evadeButtonPanel.gameObject.SetActive(isVisible);
+    }
+
+    public void SetRollDiceButtonText(string text)
+    {
+        rollDiceButton.GetComponentInChildren<TextMeshProUGUI>().text = text;
     }
 
     public async void DisplayDiceTotalResult(int totalResult)
@@ -60,11 +87,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
-    public void UpdatePlayerStats(int playerID, int points, int level)
+    public void UpdatePlayerStats(int playerID, int points, int level, int Health)
     {
         if (playerID > 0 && playerID <= playerStatsTexts.Count)
         {
-            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points\nLevel {level}";
+            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points\n" +
+                                                  $"Level {level}\n" +
+                                                  $"Health {Health}";
         }
     }
 
@@ -73,9 +102,34 @@ public class UIManager : MonoBehaviour
         roundDisplayText.text = $"Round {roundNumber}";
     }
     
-        public void UpdateCurrentPlayerTurn(int playerID)
+    public void UpdateCurrentPlayerTurn(int playerID)
     {
         currentPlayerTurnText.text = $"Player {playerID}'s Turn";
+    }
+
+    public void UpdateReviveCounter(int playerID, int reviveCounter)
+    {
+        if (reviveCounter > 0)
+        {
+            string message = $"Player {playerID} Revives in: {reviveCounter} Rounds\n";
+            playerReviveMessages[playerID] = message;
+        }
+        else
+        {
+            playerReviveMessages.Remove(playerID);
+        }
+        UpdateReviveCounterText();
+    }
+
+    public void ClearReviveCounter(int playerID)
+    {
+        playerReviveMessages.Remove(playerID);
+        UpdateReviveCounterText();
+    }
+
+    private void UpdateReviveCounterText()
+    {
+        reviveCounterText.text = string.Join("\n", playerReviveMessages.Values);
     }
 
     // Show direction choices at a crossroad
@@ -135,6 +189,23 @@ public class UIManager : MonoBehaviour
 
         continueButton.onClick.AddListener(() => {
             homePromptPanel.SetActive(false);
+            onPlayerChoice(false);
+        });
+    }
+
+    public void ShowPvPPrompt(Action<bool> onPlayerChoice)
+    {
+        pvpPromptPanel.SetActive(true);
+        fightButton.onClick.RemoveAllListeners();
+        continueMovingButton.onClick.RemoveAllListeners();
+
+        fightButton.onClick.AddListener(() => {
+            pvpPromptPanel.SetActive(false);
+            onPlayerChoice(true);
+        });
+
+        continueMovingButton.onClick.AddListener(() => {
+            pvpPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
     }

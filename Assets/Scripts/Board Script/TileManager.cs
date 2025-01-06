@@ -47,6 +47,8 @@ public class TileManager : MonoBehaviour
 
     public void getTileAction(Tile tile)
     {
+        tile.TilePlayerID = PlayerManager.Instance.CurrentPlayerID;
+        
         switch (tile.GetTileType())
         {
             case TileType.Normal:
@@ -63,7 +65,9 @@ public class TileManager : MonoBehaviour
             case TileType.Home:
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
+                PlayerManager.Instance.GetCurrentPlayer().HealPLayer(1);
                 break;
+
             default:
                 Debug.LogError("Unknown tile type");
                 break;

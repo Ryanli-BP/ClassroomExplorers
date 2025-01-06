@@ -12,7 +12,7 @@ public class Dice : MonoBehaviour
     public bool delayfin;
 
     public delegate void DiceFinishedRolling(); // Event for dice finished rolling
-    public event DiceFinishedRolling OnDiceFinishedRolling; 
+    public event DiceFinishedRolling OnDiceFinishedRolling;
 
     private void Update()
     {
@@ -66,15 +66,15 @@ public class Dice : MonoBehaviour
         var randZ = Random.Range(-1f, 1f);
         rb.AddTorque(new Vector3(randX, randY, randZ) * (rollForce + randomVar), ForceMode.Impulse);
 
-            // Add initial random movement if it's the only die
-    if (DiceManager.Instance.GetNumDice() == 1)
-    {
-        var initialRandomForce = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * throwForce;
-        rb.AddForce(initialRandomForce, ForceMode.Impulse);
+        // Add initial random movement if it's the only die
+        if (DiceManager.Instance.GetNumDice() == 1)
+        {
+            var initialRandomForce = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * throwForce;
+            rb.AddForce(initialRandomForce, ForceMode.Impulse);
 
-        var initialRandomTorque = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * rollForce;
-        rb.AddTorque(initialRandomTorque, ForceMode.Impulse);
-    }
+            var initialRandomTorque = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * rollForce;
+            rb.AddTorque(initialRandomTorque, ForceMode.Impulse);
+        }
 
         DelayResult();
     }

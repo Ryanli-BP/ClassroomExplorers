@@ -116,3 +116,4 @@ desktop.ini
 board_BurstDebugInformation_DoNotShip/
 .vsconfig
 *.iml
+Assets/XR/Settings/OpenXR Package Settings.asset

@@ -11,6 +11,8 @@ public class DiceManager : MonoBehaviour
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
 
+    private float dicePositionOffset = 0; // Offset for dice position
+
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
     private int totalDiceResult; // Tracks the total sum of dice rolls
@@ -27,6 +29,28 @@ public class DiceManager : MonoBehaviour
     private void OnEnable()
     {
         remainingDice = numDice;  // Initialize remaining dice count
+        GameManager.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+        private void OnGameStateChanged(GameState newState)
+    {
+        if (newState == GameState.PlayerCombat)
+        {
+            // Apply offset to x-axis for arena
+            dicePositionOffset = 30f;
+            transform.position += new Vector3(dicePositionOffset, 0f, 0f);
+        }
+        else
+        {
+            // Reset dice position offset
+            transform.position -= new Vector3(dicePositionOffset, 0f, 0f);
+            dicePositionOffset = 0;
+        }
     }
 
 

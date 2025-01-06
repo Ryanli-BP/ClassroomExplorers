@@ -12,6 +12,8 @@ public class PlayerManager : MonoBehaviour
 
     public int CurrentHighLevel { get; set; } = 1; //needed to determine RoundPoints
 
+    public List<Player> DeadPlayers { get; set; } = new List<Player>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -23,6 +25,11 @@ public class PlayerManager : MonoBehaviour
     public List<Player> GetPlayerList()
     {
         return players;
+    }
+
+    public Player GetPlayerByID(int playerID)
+    {
+        return players[playerID - 1];
     }
 
     public Player GetCurrentPlayer()
@@ -50,7 +57,7 @@ public class PlayerManager : MonoBehaviour
 
     public void SpawnPlayerAtHome(Player player)
     {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetPlayerID() == player.getPlayerID());
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetHomePlayerID() == player.getPlayerID());
 
         if (homeTile != null)
         {
