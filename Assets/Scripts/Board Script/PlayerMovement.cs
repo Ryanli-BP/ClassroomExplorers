@@ -88,6 +88,11 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
 
+            if (remainingSteps == 0)
+            {
+                isMoving = false;
+                break;
+            }
 
             // Prompt the player if they reach their home tile
             if (currentTile.GetTileType() == TileType.Home  && currentTile.GetHomePlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)
@@ -108,11 +113,6 @@ public class PlayerMovement : MonoBehaviour
             }
 
             initialOnHome = false;
-            if (remainingSteps == 0)
-            {
-                isMoving = false;
-                break;
-            }
 
             // If at a crossroads, stop and wait for player input
             if (availableDirections.Count > 1)

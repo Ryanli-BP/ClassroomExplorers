@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int playerID;
 
     public const int REVIVAL_COUNT = 3;
+    public const int MAX_HEALTH = 10;
 
     public int Points { get; set; }
     public int Level { get; set; }
@@ -18,7 +19,7 @@ public class Player : MonoBehaviour
     {
         Points = 0;
         Level = 1;
-        Health = 5;
+        Health = MAX_HEALTH;
         Status = Status.Alive;
         UIManager.Instance.UpdatePlayerStats(playerID, Points, Level, Health);
     }
@@ -67,9 +68,16 @@ public class Player : MonoBehaviour
     {
         ReviveCounter = 0;
         Status = Status.Alive;
-        Health = 30;
+        Health = MAX_HEALTH;
         PlayerManager.Instance.DeadPlayers.Remove(this);
         UIManager.Instance.ClearReviveCounter(playerID);
         Debug.Log($"Player {playerID} has revived.");
+    }
+
+    public void HealPLayer(int amount)
+    {
+        Health = Math.Min(MAX_HEALTH, Health + amount);
+        Debug.Log($"Player {playerID} now has {Health} health.");
+        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level, Health);
     }
 }
