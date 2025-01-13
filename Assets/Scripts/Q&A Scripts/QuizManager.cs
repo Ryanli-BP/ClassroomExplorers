@@ -14,6 +14,32 @@ public class QuizManager : MonoBehaviour
     private float timeRemaining;
     private bool isQuizActive = false;
 
+
+    private List<Question> originalQuestions;
+
+    public void StartQuizInteraction(bool isBuzzTile)
+    {
+        if (originalQuestions == null)
+        {
+            originalQuestions = new List<Question>(questions); // Backup original questions
+        }
+
+        if (isBuzzTile)
+        {
+            Debug.Log("Buzz tile: Starting single-question interaction.");
+            quizDuration = 10f; // Shorter duration for Buzz
+            questions = new List<Question> { originalQuestions[UnityEngine.Random.Range(0, originalQuestions.Count)] }; // Select one random question
+        }
+        else
+        {
+            Debug.Log("Quiz tile: Starting full quiz interaction.");
+            quizDuration = 60f; // Standard duration for Quiz
+            questions = new List<Question>(originalQuestions); // Restore original questions
+        }
+
+        StartQuiz();
+    }
+
     public static QuizManager Instance { get; private set; }
 
     private void Awake()
@@ -34,6 +60,7 @@ public class QuizManager : MonoBehaviour
         LoadQuestionsFromCSV();
         StartQuiz();
     }
+
 
     private void Update()
     {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TileManager : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class TileManager : MonoBehaviour
     {
         // Save any necessary game state here (e.g., player position, current turn)
         // Load the Quiz scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene("QuizScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Q&A Scene");
     }
 
 
