@@ -4,6 +4,7 @@ using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour
 {
@@ -111,7 +112,18 @@ public class QuizManager : MonoBehaviour
         isQuizActive = false;
         Debug.Log("Quiz has ended!");
         // Additional logic to handle the end of the quiz can be added here
+        
+        ReturnToBoard();
+
     }
+
+
+    private void ReturnToBoard()
+    {
+        Debug.Log("Returning to the board scene...");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("AR Board Scene");
+    }
+
 
     public void DisplayNextQuestion()
     {
