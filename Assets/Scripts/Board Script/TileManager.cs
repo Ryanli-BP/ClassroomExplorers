@@ -44,6 +44,14 @@ public class TileManager : MonoBehaviour
         return tile;
     }
 
+    private void LoadQuizScene()
+    {
+        // Save any necessary game state here (e.g., player position, current turn)
+        // Load the Quiz scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene("QuizScene");
+    }
+
+
     public void getTileAction(Tile tile)
     {
         switch (tile.GetTileType())
@@ -62,6 +70,14 @@ public class TileManager : MonoBehaviour
             case TileType.Home:
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
+                break;
+            case TileType.Quiz:
+                Debug.Log("Quiz tile");
+                LoadQuizScene(); 
+                break;
+            case TileType.Buzz:
+                Debug.Log("Buzz tile");
+                // You can handle Buzz tile here later
                 break;
             default:
                 Debug.LogError("Unknown tile type");

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum Direction { North, East, South, West, None }
 
-public enum TileType { Normal, GainPoint, DropPoint, Home }
+public enum TileType { Normal, GainPoint, DropPoint, Home, Quiz, Buzz }
 
 public class Tile : MonoBehaviour
 {
