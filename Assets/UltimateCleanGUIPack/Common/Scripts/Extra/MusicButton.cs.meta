@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 9eb598a8236924fc791c751ba93d70b7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Scripts/Extra/MusicButton.cs
+  uploadId: 701280

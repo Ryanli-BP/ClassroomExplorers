@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 08204957c09d64507ad5fc5686307cd1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Turquoise.prefab
+  uploadId: 701280

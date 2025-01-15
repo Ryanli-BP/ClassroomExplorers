@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc77bb5b69d654660a9e5005c6a20a2e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Switch/Filled/Switch
+    - Filled - Turquoise.prefab
+  uploadId: 701280

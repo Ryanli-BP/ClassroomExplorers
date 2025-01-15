@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 95104090550774a1e9be70792f3d51bf
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Portrait/Minimalist
+    - Portrait - Trophies.prefab
+  uploadId: 701280

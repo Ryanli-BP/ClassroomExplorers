@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e09c3892490364939a245b4124d8ed01
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Notifications/Notification
+    - Square (Outline) - Error.prefab
+  uploadId: 701280

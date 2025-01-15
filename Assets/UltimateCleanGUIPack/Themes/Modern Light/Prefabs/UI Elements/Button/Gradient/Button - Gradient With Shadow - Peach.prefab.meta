@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f9483a487754a4678b3b91dce5496c97
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient With Shadow - Peach.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 370c75b260f724a62a88da3d4272ce33
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Universal/ModernLight
+    - Video.prefab
+  uploadId: 701280

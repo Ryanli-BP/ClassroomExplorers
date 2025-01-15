@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4f77778f3526d44c79b0ed8627b00109
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Filled
+    - 3D/Button - Filled - 3D - White.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 046ac72167ca842b88b453d1417b1b77
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Slider/Basic/Gradient
+    - Clamped With Lines/Slider - Gradient - Clamped With Lines - Violet.prefab
+  uploadId: 701280

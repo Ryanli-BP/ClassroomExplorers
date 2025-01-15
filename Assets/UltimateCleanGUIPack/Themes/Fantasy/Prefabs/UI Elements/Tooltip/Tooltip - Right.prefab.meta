@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7a3e6af24e8024d7c8add18ba91bdf4a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Tooltip/Tooltip
+    - Right.prefab
+  uploadId: 701280

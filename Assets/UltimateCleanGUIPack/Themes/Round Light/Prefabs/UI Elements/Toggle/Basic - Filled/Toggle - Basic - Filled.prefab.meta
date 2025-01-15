@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3055f787f5d3d4403ad783801129ead6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Toggle/Basic
+    - Filled/Toggle - Basic - Filled.prefab
+  uploadId: 701280

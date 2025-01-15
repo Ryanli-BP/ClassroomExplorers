@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c7fe2b88f2cd146f4b014f550f84308b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Progress
+    Bar/Rectangular/Basic/Progress Bar.prefab
+  uploadId: 701280

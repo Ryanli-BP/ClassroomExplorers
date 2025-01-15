@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d81314453b4614fdca5285b9ec53abbd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Universal/RoundDark
+    - Chat.prefab
+  uploadId: 701280

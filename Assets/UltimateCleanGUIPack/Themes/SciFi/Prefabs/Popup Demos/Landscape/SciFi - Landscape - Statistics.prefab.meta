@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 50bd4485546814790a0fe16a490a3fc8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Landscape/SciFi
+    - Landscape - Statistics.prefab
+  uploadId: 701280

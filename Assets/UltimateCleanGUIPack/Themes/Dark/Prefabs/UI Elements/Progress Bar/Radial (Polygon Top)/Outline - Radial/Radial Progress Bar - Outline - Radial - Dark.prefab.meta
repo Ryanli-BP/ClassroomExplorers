@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 415ef15f094fb43c49ddd7af2dc7c38c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Progress
+    Bar/Radial (Polygon Top)/Outline - Radial/Radial Progress Bar - Outline - Radial
+    - Dark.prefab
+  uploadId: 701280

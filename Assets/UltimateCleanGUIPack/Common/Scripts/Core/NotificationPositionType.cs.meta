@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a19529d8506e641c094f36026d79c6ee
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Scripts/Core/NotificationPositionType.cs
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b7001bddc07534b5aa67848a1be35ab3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Landscape/Fantasy
+    - Landscape - Profile.prefab
+  uploadId: 701280

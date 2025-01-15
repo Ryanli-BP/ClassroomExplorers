@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c156e7db38dd945a588e01cecd4bdf52
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Slider/Basic/Basic
+    - 3D/Slider - Basic - 3d - Orange.prefab
+  uploadId: 701280

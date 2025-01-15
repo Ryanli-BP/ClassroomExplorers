@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fc1b98e1fee8e4da58fd9344cf5fb595
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Portrait/ModernLight
+    - Portrait - CreditShop_Gems.prefab
+  uploadId: 701280

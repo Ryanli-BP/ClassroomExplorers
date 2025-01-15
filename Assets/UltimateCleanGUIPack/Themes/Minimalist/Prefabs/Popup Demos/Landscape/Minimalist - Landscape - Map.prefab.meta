@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d90526fde26b14aceaf552d59910a797
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Landscape/Minimalist
+    - Landscape - Map.prefab
+  uploadId: 701280

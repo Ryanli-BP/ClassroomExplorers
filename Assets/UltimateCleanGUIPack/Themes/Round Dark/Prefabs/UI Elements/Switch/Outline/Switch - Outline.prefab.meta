@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc6de820555d349f6840de07ddf431df
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Switch/Outline/Switch
+    - Outline.prefab
+  uploadId: 701280

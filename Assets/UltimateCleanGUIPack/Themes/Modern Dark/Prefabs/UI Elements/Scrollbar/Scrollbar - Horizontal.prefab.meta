@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d2b0e08e3940e4113a808e42e8f3a447
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Scrollbar/Scrollbar
+    - Horizontal.prefab
+  uploadId: 701280

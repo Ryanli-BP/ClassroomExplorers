@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3e4bb789ced34429aaf92d920b87d137
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Prefabs/Spinner/Dark (Light Color)/Spinner
+    - Dots (Transparency).prefab
+  uploadId: 701280

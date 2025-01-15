@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a111c204b542a4e33a00474c7a280524
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Input Field/Multiline
+    - Auto Rezise/InputField - Auto Resize.prefab
+  uploadId: 701280

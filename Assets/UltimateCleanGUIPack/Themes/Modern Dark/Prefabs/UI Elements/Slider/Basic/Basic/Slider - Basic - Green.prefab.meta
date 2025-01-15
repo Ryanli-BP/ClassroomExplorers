@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d0a87d68c728e4ca5ba0ff4f928936e7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Slider/Basic/Basic/Slider
+    - Basic - Green.prefab
+  uploadId: 701280

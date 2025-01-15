@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 54a8fdb0058764e9397927f7db4c9855
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Landscape/Fantasy
+    - Landscape - CreditShop.prefab
+  uploadId: 701280

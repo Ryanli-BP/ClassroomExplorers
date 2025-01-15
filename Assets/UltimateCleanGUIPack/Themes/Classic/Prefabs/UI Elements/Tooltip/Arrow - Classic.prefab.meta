@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0cdfd27ae4ba145c9a5e3d1af11225e1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Tooltip/Arrow
+    - Classic.prefab
+  uploadId: 701280

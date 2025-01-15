@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ed75d79b698ee4db3b4691f431cff67e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 22100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Spinner/Dots/DotLoading7.overrideController
+  uploadId: 701280

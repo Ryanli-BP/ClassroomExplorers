@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc098599f432c4fc6a5367b3b3e45f55
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Portrait/Minimalist
+    - Portrait - Statistics.prefab
+  uploadId: 701280

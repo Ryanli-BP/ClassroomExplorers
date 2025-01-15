@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1fde021bca3004753a7c4e8ad70db91d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Filled
+    - 3D - Gradient/Button - Filled - 3D - Light - Gradient - Green.prefab
+  uploadId: 701280

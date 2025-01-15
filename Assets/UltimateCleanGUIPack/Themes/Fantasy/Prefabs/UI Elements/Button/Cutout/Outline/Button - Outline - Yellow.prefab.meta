@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2ee68e6abc6e246ba902e2cd817fe2d6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Cutout/Outline/Button
+    - Outline - Yellow.prefab
+  uploadId: 701280

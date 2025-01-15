@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 492d37de9c7194c2f9e7caafb747f50c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Tooltip/Tooltip
+    - Top - Progress Bars.prefab
+  uploadId: 701280

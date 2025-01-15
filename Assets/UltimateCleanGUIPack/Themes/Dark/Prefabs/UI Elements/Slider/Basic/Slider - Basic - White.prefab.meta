@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a8895f0a0cf1d4c99a851061e36d80b8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Slider/Basic/Slider
+    - Basic - White.prefab
+  uploadId: 701280

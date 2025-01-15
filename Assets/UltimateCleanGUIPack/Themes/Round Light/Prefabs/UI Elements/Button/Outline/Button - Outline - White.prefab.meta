@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 98e6e3b559ed04b1eb15c64e68d59ae3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - White.prefab
+  uploadId: 701280

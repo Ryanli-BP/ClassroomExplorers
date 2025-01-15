@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9d774daeb24c14f93bc7257dfe2da6fb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Background/Background
+    - Gradient.prefab
+  uploadId: 701280

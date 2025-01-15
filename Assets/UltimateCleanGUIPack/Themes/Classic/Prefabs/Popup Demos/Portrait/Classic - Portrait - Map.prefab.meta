@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 255b0ee3747ea44358cd46276c1b19d9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/Popup Demos/Portrait/Classic
+    - Portrait - Map.prefab
+  uploadId: 701280

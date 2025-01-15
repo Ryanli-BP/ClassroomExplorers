@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4ebd5f4c3299d4eaebbaf7cfcd3be2b9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Cutout/Filled/Button
+    - Filled - White.prefab
+  uploadId: 701280

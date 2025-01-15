@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc3cdf09cd283422dacfea99e7a65968
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Notifications/Slide Down/Notification_SlideDown.overrideController
+  uploadId: 701280

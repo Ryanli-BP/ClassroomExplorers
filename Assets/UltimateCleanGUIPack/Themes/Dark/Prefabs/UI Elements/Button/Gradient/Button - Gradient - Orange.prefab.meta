@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f4e7a46ff9b7840a5946d3802c2f8247
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Orange.prefab
+  uploadId: 701280

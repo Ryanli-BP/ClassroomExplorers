@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 87d9fa10f17dc471dbd27630b299a196
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Gray.prefab
+  uploadId: 701280

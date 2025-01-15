@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 380b9020d37774c7a9f587a854c1e063
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Slider/Basic/Slider
+    - Basic - Red.prefab
+  uploadId: 701280

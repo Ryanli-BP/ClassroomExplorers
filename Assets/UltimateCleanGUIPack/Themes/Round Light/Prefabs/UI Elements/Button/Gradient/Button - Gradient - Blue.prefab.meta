@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 066dab76378a54ecb9525ec657a46e03
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Blue.prefab
+  uploadId: 701280

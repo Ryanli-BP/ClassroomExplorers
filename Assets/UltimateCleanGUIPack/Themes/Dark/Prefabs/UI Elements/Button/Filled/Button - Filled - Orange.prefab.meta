@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1733f01977a74b3b9be0b06bb375b78
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Orange.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9d269190cef8548f289b60791eac85f3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Pink.prefab
+  uploadId: 701280

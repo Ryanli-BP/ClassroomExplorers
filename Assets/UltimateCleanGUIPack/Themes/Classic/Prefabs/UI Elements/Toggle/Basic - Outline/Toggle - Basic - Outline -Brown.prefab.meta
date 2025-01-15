@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 94c0d8821fc0d47b998415d4af760a9e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Toggle/Basic
+    - Outline/Toggle - Basic - Outline -Brown.prefab
+  uploadId: 701280

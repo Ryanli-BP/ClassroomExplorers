@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 89a49da0236ba4d3f8e15c16feb71d85
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Switch/Outline
+    - Gradient/Switch - Outline Gradient.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 339a5d464edf543c5a11d100606aa448
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/Popup Demos/Portrait/RoundLight
+    - Portrait - Skills.prefab
+  uploadId: 701280

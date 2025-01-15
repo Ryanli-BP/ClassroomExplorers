@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 80aa99137eb9b48fb8937a8ed14f1b70
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Logo/Logo
+    - Concave.prefab
+  uploadId: 701280

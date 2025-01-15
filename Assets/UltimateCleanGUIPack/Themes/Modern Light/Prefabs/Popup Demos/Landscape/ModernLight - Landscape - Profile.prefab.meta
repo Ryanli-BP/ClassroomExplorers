@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c3945e86db46f472ba704a332cdca335
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Landscape/ModernLight
+    - Landscape - Profile.prefab
+  uploadId: 701280

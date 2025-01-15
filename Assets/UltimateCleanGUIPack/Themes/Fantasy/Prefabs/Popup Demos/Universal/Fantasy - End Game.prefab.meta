@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c5bdab39fff414b2a8547fbd57e7c4b3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Universal/Fantasy
+    - End Game.prefab
+  uploadId: 701280

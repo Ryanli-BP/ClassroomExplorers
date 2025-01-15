@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b262d99c072b34e5fb65a84e6df3ac04
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Notifications/Base/Notification.controller
+  uploadId: 701280

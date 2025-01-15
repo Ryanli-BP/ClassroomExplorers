@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2996be8946b874bdeba4b833fdcadd6a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Buttons/Zoom In/Zoom In
+    - Strong/Pressed.anim
+  uploadId: 701280

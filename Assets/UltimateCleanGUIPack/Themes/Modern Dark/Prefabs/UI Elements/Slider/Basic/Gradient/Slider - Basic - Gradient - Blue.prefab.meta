@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0a60495ce81d54fa597d2d7f5e42955c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Slider/Basic/Gradient/Slider
+    - Basic - Gradient - Blue.prefab
+  uploadId: 701280

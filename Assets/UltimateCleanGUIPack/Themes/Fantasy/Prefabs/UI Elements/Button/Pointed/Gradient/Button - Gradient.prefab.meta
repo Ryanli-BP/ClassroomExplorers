@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 55d9244d463274ded81e3bb0308fdde1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Pointed/Gradient/Button
+    - Gradient.prefab
+  uploadId: 701280

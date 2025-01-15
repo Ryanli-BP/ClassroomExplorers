@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4724ad1b260ab4fec9280ddea03500d9
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Scenes/UI Elements/Buttons/Buttons
+    - Rounded.unity
+  uploadId: 701280

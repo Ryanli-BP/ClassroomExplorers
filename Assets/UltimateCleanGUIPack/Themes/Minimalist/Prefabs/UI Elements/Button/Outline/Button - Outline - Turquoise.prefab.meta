@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 880329065e25443a0a8bdaeb7c71baa5
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Turquoise.prefab
+  uploadId: 701280

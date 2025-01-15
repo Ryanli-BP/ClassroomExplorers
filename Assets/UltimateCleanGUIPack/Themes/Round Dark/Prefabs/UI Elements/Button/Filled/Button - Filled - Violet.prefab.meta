@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 18105ad43fdb44c2a9099dc9e2f5d3a2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Violet.prefab
+  uploadId: 701280

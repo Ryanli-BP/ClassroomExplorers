@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b16dae2dbe17d4a8592d65605ed2a4d0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Scripts/Core/NotificationLauncher.cs
+  uploadId: 701280

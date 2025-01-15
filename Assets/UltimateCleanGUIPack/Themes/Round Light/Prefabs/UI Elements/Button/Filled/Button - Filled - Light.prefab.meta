@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0ae50037a719f4e868ee4b471bbd42e7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Light.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 65075a5d63b6d48329802ba074f8b486
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Progress
+    Bar/Rectangular/Colors/Progress Bar - Colors.prefab
+  uploadId: 701280

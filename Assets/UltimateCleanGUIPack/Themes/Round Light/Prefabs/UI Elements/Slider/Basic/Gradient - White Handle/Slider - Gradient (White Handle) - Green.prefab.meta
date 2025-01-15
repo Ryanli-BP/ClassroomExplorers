@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1aa37eb19137d491b947142f8970f5e3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Slider/Basic/Gradient
+    - White Handle/Slider - Gradient (White Handle) - Green.prefab
+  uploadId: 701280

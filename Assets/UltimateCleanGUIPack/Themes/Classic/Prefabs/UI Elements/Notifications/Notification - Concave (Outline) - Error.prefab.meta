@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c6b30d121a7be4e89a4154ecf3d2724e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Notifications/Notification
+    - Concave (Outline) - Error.prefab
+  uploadId: 701280

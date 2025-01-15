@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c04ab6ff002424bcaa658e792fc59d2e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Pointed/Outline/Button
+    - Outline - Gray.prefab
+  uploadId: 701280

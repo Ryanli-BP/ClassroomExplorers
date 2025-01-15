@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c39477f9e5b0d4f33bf9b446444f6601
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/Popup Demos/Landscape/ModernDark
+    - Landscape - Map.prefab
+  uploadId: 701280

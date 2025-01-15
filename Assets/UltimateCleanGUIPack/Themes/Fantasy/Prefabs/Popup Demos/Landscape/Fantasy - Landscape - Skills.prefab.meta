@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 52db669cc2c7e4048a2eee9fbaa5886a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Landscape/Fantasy
+    - Landscape - Skills.prefab
+  uploadId: 701280

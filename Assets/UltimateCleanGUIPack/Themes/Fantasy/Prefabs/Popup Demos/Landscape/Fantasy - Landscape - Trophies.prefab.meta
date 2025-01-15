@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7ee01213a69824df084fa61e503b0238
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Landscape/Fantasy
+    - Landscape - Trophies.prefab
+  uploadId: 701280

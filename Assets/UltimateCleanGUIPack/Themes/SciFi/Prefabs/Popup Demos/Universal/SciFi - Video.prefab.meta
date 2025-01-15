@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e4ec5ad57224047a9b35318c13378f8b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Universal/SciFi
+    - Video.prefab
+  uploadId: 701280

@@ -5,10 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.Events;
+using UltimateClean;
+
+[System.Serializable]
+public class PlayerStatsUI
+{
+    public TextMeshProUGUI pointsText;
+    public TextMeshProUGUI levelText;
+    public GameObject healthBar;
+}
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    [SerializeField] private HealthAnimation healthAnimation;
 
     [SerializeField] private GameObject directionPanel; // Panel that contains direction buttons
     [SerializeField] private Button northButton;
@@ -25,7 +36,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button continueMovingButton;
 
     [SerializeField] private TextMeshProUGUI diceResultText;
-    [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
+    [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
 
@@ -87,13 +98,22 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
-    public void UpdatePlayerStats(int playerID, int points, int level, int Health)
+    public void UpdatePlayerPoints(int playerIndex, int points)
     {
-        if (playerID > 0 && playerID <= playerStatsTexts.Count)
+        playerStatsUIList[playerIndex].pointsText.text = $"P {points}";
+    }
+
+    public void UpdatePlayerLevel(int playerIndex, int level)
+    {
+        playerStatsUIList[playerIndex].levelText.text = $"LV <#FF6573>{level}</color>";
+    }
+
+    public void UpdatePlayerHealth(int playerIndex, int health)
+    {
+        var healthAnimation = playerStatsUIList[playerIndex].healthBar.GetComponent<HealthAnimation>();
+        if (healthAnimation != null)
         {
-            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points\n" +
-                                                  $"Level {level}\n" +
-                                                  $"Health {Health}";
+            healthAnimation.AnimateHealth(health, Player.MAX_HEALTH);
         }
     }
 

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5ba88414ccfa0467a9b06b8a70f8f5b7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Tooltip/Tooltip
+    - Bottom.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 944b162b0b8c54579802ef2e2372a172
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Portrait/SciFi
+    - Portrait - Statistics.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f3b6fe30db0984a33a629caaaecf5a41
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Slider/Speech/Slider
+    - Center Speech (No Percent).prefab
+  uploadId: 701280

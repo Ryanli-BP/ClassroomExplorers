@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c05a7379fb519438aa70b0f357b48b1c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Toggle/Basic
+    - Outline/Toggle - Basic - Outline - Violet.prefab
+  uploadId: 701280

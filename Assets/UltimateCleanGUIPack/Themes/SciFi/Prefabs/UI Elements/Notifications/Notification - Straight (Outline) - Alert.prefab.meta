@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 88f817d765f3d4e84a33c8c53633a4e0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Notifications/Notification
+    - Straight (Outline) - Alert.prefab
+  uploadId: 701280

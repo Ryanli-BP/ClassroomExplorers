@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5e4a7c3b91a9f4bb4b1734e9cc377574
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Landscape/RoundDark
+    - Landscape - Messages.prefab
+  uploadId: 701280

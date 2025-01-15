@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0c5b485e7dcca4a3cab89f8a2bce00ae
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Universal/RoundDark
+    - Login.prefab
+  uploadId: 701280

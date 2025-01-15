@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d089bd9426c2046aead57506718fb68b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Background/Background
+    - Gradient - With Top Bar.prefab
+  uploadId: 701280

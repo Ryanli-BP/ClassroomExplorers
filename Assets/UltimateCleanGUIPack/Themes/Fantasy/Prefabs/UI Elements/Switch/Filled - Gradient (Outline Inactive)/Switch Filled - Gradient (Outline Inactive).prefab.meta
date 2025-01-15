@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b75b484d4d44b4ee7a71673b3c932ed8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Switch/Filled
+    - Gradient (Outline Inactive)/Switch Filled - Gradient (Outline Inactive).prefab
+  uploadId: 701280

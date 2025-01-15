@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 14f4ef42330f1421b83d1b96bcbbc938
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Checkbox/Filled/Checkbox
+    - Filled.prefab
+  uploadId: 701280

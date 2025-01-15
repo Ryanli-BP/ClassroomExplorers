@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 946070756c93444cc8ce7a8f98c81c95
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Landscape/Fantasy
+    - Landscape - Quests.prefab
+  uploadId: 701280

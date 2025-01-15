@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 74f79ed1d31694b9d933e9242c021de7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Notifications/Notification
+    - Semi Rounded - Help.prefab
+  uploadId: 701280

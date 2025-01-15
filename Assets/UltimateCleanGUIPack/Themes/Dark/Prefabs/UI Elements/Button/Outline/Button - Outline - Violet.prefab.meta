@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc0d10b8e37954b9a9f1cb09c19587d0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Violet.prefab
+  uploadId: 701280

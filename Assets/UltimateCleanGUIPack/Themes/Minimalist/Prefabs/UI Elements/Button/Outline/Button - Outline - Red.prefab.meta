@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c44d39c401a174b759dd231d83b7f23f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Red.prefab
+  uploadId: 701280

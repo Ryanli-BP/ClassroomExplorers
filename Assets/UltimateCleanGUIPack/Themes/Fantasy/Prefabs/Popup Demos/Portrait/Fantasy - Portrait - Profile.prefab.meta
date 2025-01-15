@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1858a7f1503ef423e9483926a0847b43
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Portrait/Fantasy
+    - Portrait - Profile.prefab
+  uploadId: 701280

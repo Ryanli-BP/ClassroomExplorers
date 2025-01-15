@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 75642c58d602142bf9a98d37b5a13361
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Slider/Basic
+    - Gradient/Slider - Basic - Gradient - Yellow.prefab
+  uploadId: 701280

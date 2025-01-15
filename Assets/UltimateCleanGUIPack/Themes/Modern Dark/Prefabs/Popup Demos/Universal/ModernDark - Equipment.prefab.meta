@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 798500ff2b1524838a2aef8621139845
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/Popup Demos/Universal/ModernDark
+    - Equipment.prefab
+  uploadId: 701280

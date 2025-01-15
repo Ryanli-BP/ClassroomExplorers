@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bfdaec186c9814e3984a83115209862d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/Popup Demos/Landscape/ModernDark
+    - Landscape - Statistics.prefab
+  uploadId: 701280

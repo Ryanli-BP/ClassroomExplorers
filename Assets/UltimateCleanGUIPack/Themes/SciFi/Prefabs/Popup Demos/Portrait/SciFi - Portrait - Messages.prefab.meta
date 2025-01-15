@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: daebbcb92660c4dd0baf8b5b1ecf6fb9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Portrait/SciFi
+    - Portrait - Messages.prefab
+  uploadId: 701280

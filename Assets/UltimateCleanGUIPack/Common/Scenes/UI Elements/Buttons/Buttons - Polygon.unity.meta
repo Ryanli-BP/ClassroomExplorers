@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 851d9c513931e497b86e7e4611c67edd
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Scenes/UI Elements/Buttons/Buttons
+    - Polygon.unity
+  uploadId: 701280

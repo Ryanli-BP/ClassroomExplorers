@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f661f442ebb724290901813b838bbe95
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Popup/Modules/Popup
+    - Scroll View - List (Auto Size)/Popup - Scroll View - List (Auto Size).prefab
+  uploadId: 701280

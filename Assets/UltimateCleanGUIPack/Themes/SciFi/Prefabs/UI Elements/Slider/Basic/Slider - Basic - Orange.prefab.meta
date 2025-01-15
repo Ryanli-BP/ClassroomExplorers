@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d5ee5a530c4f9453a99d97f3274ecfa0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Slider/Basic/Slider
+    - Basic - Orange.prefab
+  uploadId: 701280

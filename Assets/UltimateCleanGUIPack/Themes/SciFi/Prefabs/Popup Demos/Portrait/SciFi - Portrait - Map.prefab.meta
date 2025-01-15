@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cd616d23848f149229e6d60cbfe036a8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Portrait/SciFi
+    - Portrait - Map.prefab
+  uploadId: 701280

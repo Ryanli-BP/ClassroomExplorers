@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0f649a44556c740328388e9a39b6826f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Notifications/Notification
+    - Sharp Rounded - Error.prefab
+  uploadId: 701280

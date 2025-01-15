@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8a6cf8a847cd8428a8ed83de0f75c5db
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Portrait/Dark
+    - Portrait - CreditShop.prefab
+  uploadId: 701280

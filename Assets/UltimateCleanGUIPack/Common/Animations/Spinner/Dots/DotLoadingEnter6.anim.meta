@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f838aa783cc294c6fa4a5995cf309d9d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Spinner/Dots/DotLoadingEnter6.anim
+  uploadId: 701280
