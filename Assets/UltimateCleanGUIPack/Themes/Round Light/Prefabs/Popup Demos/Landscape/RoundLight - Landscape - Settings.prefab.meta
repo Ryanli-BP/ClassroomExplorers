@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dfe9048f602fc4bdd96f5e5f99baba52
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/Popup Demos/Landscape/RoundLight
+    - Landscape - Settings.prefab
+  uploadId: 701280

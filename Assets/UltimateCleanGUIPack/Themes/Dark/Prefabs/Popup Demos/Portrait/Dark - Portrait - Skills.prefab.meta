@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e069cb835d16040a9960f39e43c8c770
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Portrait/Dark
+    - Portrait - Skills.prefab
+  uploadId: 701280

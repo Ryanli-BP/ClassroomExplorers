@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4b0994da1388a47ffadd3f25ccb5dbad
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Effects/Cloud (Map Popup)/Cloud
+    - Left.anim
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4400200f03d0046a990d2ce9f5aa0732
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Orange.prefab
+  uploadId: 701280

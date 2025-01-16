@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a7850380d74c24b348e8bd103139b215
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Landscape/Minimalist
+    - Landscape - Profile.prefab
+  uploadId: 701280

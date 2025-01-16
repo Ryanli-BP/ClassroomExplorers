@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 835d69e530e244d9b91b4d3ef762d959
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Portrait/RoundDark
+    - Portrait - Messages.prefab
+  uploadId: 701280

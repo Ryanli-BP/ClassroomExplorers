@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2c0ebaf5849f042e29dd8770dafd2811
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Tooltip/Arrow
+    - Round - Dark.prefab
+  uploadId: 701280

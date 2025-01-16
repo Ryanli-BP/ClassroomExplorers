@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0d397c47ba72840da881ab9dffb08985
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Popups/Pop/Close.anim
+  uploadId: 701280

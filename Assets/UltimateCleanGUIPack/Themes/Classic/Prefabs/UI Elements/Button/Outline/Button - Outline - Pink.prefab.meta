@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 31bfe6ed78d3c4e3681c43e7ea56d16a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Pink.prefab
+  uploadId: 701280

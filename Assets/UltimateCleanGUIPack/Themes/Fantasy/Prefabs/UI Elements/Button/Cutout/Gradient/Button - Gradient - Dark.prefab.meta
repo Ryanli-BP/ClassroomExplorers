@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f2af644141d35447daff3bcd54ae6ae1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Cutout/Gradient/Button
+    - Gradient - Dark.prefab
+  uploadId: 701280

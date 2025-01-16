@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b65858eb8c93f46ada16c0cd95c84038
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Landscape/SciFi
+    - Landscape - Skills.prefab
+  uploadId: 701280

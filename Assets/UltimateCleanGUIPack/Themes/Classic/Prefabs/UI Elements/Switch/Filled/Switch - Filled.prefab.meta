@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dbd94ed384a814d578dfe08ef0a4f5f9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Switch/Filled/Switch
+    - Filled.prefab
+  uploadId: 701280

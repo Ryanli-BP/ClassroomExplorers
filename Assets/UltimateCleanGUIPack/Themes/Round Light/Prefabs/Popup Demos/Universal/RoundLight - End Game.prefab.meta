@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5d75a7a65b4d345f5a0bde3f2587a20c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/Popup Demos/Universal/RoundLight
+    - End Game.prefab
+  uploadId: 701280

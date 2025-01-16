@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a537c9b8205d64fb2811396aed9f5cb1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Dropdown/Narrow/Dropdown
+    - Narrow.prefab
+  uploadId: 701280

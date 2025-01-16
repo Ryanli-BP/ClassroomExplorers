@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4fc81a5a4905748e590b480a04083bb4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Filled
+    - 3D - Gradient/Button - Filled - 3D - Light - Gradient - Blue.prefab
+  uploadId: 701280

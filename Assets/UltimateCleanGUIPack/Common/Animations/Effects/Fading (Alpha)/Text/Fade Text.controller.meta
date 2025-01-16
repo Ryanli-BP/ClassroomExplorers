@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d731faf9e0a8a433f9396c8a517ef24e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Effects/Fading (Alpha)/Text/Fade
+    Text.controller
+  uploadId: 701280

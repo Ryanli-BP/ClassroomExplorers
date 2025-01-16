@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c31cafd863b454acc87692b756bd1693
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Scrollbar/Scrollbar
+    - Horizental.prefab
+  uploadId: 701280

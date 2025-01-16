@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 75c596ac4f39f4854be647f3746e75f7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Slider/Basic/Gradient
+    - 3D/Slider - Gradient - 3d - Red.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 44602ca5afee644fe9bebae5c97b335c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Notifications/Notification
+    - Semi Rounded - Success.prefab
+  uploadId: 701280

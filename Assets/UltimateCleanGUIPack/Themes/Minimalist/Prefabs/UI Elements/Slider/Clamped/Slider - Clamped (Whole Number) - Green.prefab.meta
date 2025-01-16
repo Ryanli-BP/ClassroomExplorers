@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ea872f4afdb3d4c70905c01a24b39b26
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Slider/Clamped/Slider
+    - Clamped (Whole Number) - Green.prefab
+  uploadId: 701280

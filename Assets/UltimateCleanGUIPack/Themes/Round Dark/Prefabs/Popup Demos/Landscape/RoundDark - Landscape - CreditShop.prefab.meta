@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b1e2fd9bb67134080a6b2a2c6598e8a6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Landscape/RoundDark
+    - Landscape - CreditShop.prefab
+  uploadId: 701280

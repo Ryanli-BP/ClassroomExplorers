@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dcd94fac1edac406e868f3bfe595e25d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Toggle/Multi-Select/Toggle
+    - Multi-Select (Text) - Brown.prefab
+  uploadId: 701280

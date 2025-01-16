@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5123e096e7f89466abbe9620f85f9fd9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Landscape/Minimalist
+    - Landscape - Leaderboard.prefab
+  uploadId: 701280

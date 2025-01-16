@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7fc9b42c4d3ce4af0a2cc8014b16cfe4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Landscape/Dark
+    - Landscape - CreditShop_Gems.prefab
+  uploadId: 701280

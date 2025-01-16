@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 18a21e06b14864bf4b4e1fc27f5290fd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/Popup Demos/Universal/ModernDark
+    - Chat.prefab
+  uploadId: 701280

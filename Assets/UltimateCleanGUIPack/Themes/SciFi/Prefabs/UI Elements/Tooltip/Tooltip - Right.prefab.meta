@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4953293c94c8243c5b9b1d41f47df595
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Tooltip/Tooltip
+    - Right.prefab
+  uploadId: 701280

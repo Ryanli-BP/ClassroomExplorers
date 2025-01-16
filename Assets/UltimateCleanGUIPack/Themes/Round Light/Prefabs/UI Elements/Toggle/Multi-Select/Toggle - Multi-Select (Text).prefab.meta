@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 30e8306b6595d4dfba94cda390196a76
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Toggle/Multi-Select/Toggle
+    - Multi-Select (Text).prefab
+  uploadId: 701280

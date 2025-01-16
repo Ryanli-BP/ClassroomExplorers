@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a77c8d2cf53e04f23aef9736b13b4d1e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Cutout/Filled/Button
+    - Filled - Red.prefab
+  uploadId: 701280

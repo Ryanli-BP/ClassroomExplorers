@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 240058b0be6c84805a61cb482d133af6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - White.prefab
+  uploadId: 701280

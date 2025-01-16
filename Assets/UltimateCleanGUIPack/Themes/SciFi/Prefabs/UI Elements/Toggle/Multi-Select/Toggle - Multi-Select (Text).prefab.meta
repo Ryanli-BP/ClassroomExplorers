@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: da2c21f709a87499f8423426d7276f61
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Toggle/Multi-Select/Toggle
+    - Multi-Select (Text).prefab
+  uploadId: 701280

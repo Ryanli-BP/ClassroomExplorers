@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 553c8fe6bc6d045a486269bd54ff5a68
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Universal/Dark
+    - Help.prefab
+  uploadId: 701280

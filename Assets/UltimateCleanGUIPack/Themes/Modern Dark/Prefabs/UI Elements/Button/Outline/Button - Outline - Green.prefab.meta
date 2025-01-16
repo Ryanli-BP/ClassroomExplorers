@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 18da3d68517bc4246a13b802c718560f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Green.prefab
+  uploadId: 701280

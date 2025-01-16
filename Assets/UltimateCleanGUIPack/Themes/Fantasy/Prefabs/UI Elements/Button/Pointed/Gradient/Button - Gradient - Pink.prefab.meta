@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9b9b2a3d61bd642e09c171a5e41eddf3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Pointed/Gradient/Button
+    - Gradient - Pink.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 45d3745d1a9e4429686bd18fb87c9d01
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient With Shadow - Purple - Soft.prefab
+  uploadId: 701280

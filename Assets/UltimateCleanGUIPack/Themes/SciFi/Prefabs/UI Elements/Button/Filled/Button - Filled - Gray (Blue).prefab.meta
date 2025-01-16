@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9809bc6ca64a64e338d02f4b295729a3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Gray (Blue).prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b3be60faeae714f828f0d4b9f5ab815e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Portrait/Minimalist
+    - Portrait - Skills.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 74756e5e4b1794f5c8b8f4544bf27d1a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Progress
+    Bar/Radial/Filled - Horizontal/Radial Progress Bar - Filled - Horizontal.prefab
+  uploadId: 701280

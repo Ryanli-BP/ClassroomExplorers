@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 73ae9d1ef3c30450a99b88a02ce7e608
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Slider/Clamped
+    - Gradient/Slider - Clamped (Whole Number) - Gradient - Yellow.prefab
+  uploadId: 701280

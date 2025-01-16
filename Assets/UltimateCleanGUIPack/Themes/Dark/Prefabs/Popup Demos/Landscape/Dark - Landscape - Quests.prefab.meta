@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 19263f6d716214a0fa04f23ff2e93130
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Landscape/Dark
+    - Landscape - Quests.prefab
+  uploadId: 701280

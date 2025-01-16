@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 043c1bb0a7c1b4e678f9ad31c110be9d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/Popup Demos/Universal/RoundLight
+    - End Game_Lose.prefab
+  uploadId: 701280

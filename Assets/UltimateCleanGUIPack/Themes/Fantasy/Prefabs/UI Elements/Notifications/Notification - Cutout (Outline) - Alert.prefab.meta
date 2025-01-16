@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b108b7dfc1ff24d0fa94cd5556e65144
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Notifications/Notification
+    - Cutout (Outline) - Alert.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3c509ccd6090e4ba595fc619319cd4ac
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Slider/Clamped/Slider
+    - Clamped (Whole Number) - Blue.prefab
+  uploadId: 701280

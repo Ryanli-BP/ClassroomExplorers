@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 43bbcfe5bd2254dd996d1ecd3e215d6e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Turquoise.prefab
+  uploadId: 701280

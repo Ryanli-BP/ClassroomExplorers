@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6efd64bf304e345a7bea1676501e7a78
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/Popup Demos/Portrait/RoundLight
+    - Portrait - Shop.prefab
+  uploadId: 701280

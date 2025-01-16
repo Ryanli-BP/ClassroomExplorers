@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8115815211df7459fb2273a39d264656
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Pink.prefab
+  uploadId: 701280

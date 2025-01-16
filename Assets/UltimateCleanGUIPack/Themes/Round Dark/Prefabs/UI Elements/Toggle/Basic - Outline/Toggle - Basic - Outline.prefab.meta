@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 93caba173b0e64fd296a344ac2b37876
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Toggle/Basic
+    - Outline/Toggle - Basic - Outline.prefab
+  uploadId: 701280

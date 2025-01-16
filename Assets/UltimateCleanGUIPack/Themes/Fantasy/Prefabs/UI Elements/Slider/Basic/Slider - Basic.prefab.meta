@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b0f00df3b556c48ef8646859368e7a6e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Slider/Basic/Slider
+    - Basic.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d631d0cec5299464cab74ac3b3ca1a28
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Notifications/Notification
+    - Rounded - Warning.prefab
+  uploadId: 701280

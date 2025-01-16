@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 95d3cadccf97f48b1a5b76a146f8e41a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - White.prefab
+  uploadId: 701280

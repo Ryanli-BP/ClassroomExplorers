@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 80a635c33a9b0444a9d07c22f525998d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Notifications/Fade/Close.anim
+  uploadId: 701280

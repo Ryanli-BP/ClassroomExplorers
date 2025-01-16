@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c4099cb693e694be79d0b2145c310523
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Slider/Basic/Slider
+    - Basic - Blue.prefab
+  uploadId: 701280

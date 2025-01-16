@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8dc9cf16afc174ea39115b3ea1ac94b1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Slider/Basic/Gradient
+    - 3D/Slider - Gradient - 3d - Yellow.prefab
+  uploadId: 701280

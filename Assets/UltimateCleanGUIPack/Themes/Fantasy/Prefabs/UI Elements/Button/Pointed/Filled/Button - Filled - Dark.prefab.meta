@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8dddcf525d5a34a9e9dec5202291eb1c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Pointed/Filled/Button
+    - Filled - Dark.prefab
+  uploadId: 701280

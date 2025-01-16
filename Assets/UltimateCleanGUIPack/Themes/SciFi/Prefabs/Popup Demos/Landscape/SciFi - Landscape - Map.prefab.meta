@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a2760db90ddf340d78e208d9d57ddb93
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Landscape/SciFi
+    - Landscape - Map.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e4e0754be133044f589e7e3864b3dee9
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Background/Background/Background
+    - Dark.prefab
+  uploadId: 701280

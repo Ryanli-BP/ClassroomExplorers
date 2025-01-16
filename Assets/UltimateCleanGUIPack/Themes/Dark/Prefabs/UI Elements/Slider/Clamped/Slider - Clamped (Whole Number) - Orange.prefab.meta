@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fbb7f04495707485fbc9108479a422aa
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Slider/Clamped/Slider
+    - Clamped (Whole Number) - Orange.prefab
+  uploadId: 701280

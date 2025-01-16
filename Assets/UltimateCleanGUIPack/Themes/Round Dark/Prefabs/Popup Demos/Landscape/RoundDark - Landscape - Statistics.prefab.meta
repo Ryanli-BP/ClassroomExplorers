@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 14c359598444c4ab2ac9a09a8ea28b98
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Landscape/RoundDark
+    - Landscape - Statistics.prefab
+  uploadId: 701280

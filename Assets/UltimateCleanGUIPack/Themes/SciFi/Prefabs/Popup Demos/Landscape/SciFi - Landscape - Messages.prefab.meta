@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2d1e17ae6d4aa461f961b66a37d01f0b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Landscape/SciFi
+    - Landscape - Messages.prefab
+  uploadId: 701280

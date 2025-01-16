@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5c7d9454b7b284908b124f3a8767e34e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Green.prefab
+  uploadId: 701280

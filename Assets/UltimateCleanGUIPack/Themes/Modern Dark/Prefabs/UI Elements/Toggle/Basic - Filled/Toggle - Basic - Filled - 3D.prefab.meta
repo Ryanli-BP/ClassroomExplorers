@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c3d0ee8693d934a67abd53da53fcc9ed
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Toggle/Basic
+    - Filled/Toggle - Basic - Filled - 3D.prefab
+  uploadId: 701280

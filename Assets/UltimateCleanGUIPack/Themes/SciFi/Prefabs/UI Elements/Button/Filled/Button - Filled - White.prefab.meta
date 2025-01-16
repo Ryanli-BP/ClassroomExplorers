@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9c8d8492d96d644c2b8aed4433e05d79
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - White.prefab
+  uploadId: 701280

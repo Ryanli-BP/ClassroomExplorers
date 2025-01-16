@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c8c0f679b9bfb443193b38079beeffb1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Tooltip/Arrow
+    - Modern - Light.prefab
+  uploadId: 701280

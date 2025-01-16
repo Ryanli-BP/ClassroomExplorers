@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6b42c937ba13a429a8c176762e704a72
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Slider/Basic/Slider
+    - Basic - Purple.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7299bce50a10d4a3d91d42077d1b88c1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Dropdown/Dropdown
+    - Basic.prefab
+  uploadId: 701280

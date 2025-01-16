@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6e355b1e47f224a4691b429bb94e6931
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Slider/Clamped/Slider
+    - Clamped (Whole Number) - Pink.prefab
+  uploadId: 701280

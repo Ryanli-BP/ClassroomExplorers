@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 33723f9cf820e48cc938df7fcd0fea3e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Background/Background
+    - 300ppu.prefab
+  uploadId: 701280

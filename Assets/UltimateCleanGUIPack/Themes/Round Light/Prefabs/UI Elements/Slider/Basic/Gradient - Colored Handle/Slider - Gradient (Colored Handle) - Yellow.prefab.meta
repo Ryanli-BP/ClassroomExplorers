@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 09c5bf6a304084191b62adead54a6b7a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Slider/Basic/Gradient
+    - Colored Handle/Slider - Gradient (Colored Handle) - Yellow.prefab
+  uploadId: 701280

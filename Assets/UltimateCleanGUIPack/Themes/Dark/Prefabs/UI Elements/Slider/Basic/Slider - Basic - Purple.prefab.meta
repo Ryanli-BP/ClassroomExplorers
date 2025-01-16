@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 06217c2296d5a4e9da5e432e439141ee
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Slider/Basic/Slider
+    - Basic - Purple.prefab
+  uploadId: 701280

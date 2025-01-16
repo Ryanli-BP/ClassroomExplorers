@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a4d8c407629744d85a4a9d12c5d3495e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Light.prefab
+  uploadId: 701280

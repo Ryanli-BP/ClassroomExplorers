@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a40fa8744d2cd4dbeb3c9c14f48f8974
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Slider/Basic/Gradient
+    - Clamped With Lines/Slider - Gradient - Clamped With Lines - Pink.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 008dcabc356f14240b473f37c80ea50b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Switch/Filled
+    - Gradient/Switch - Filled - Gradient.prefab
+  uploadId: 701280

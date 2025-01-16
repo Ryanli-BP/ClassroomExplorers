@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cf5ae0a4939314e03a2414e4dd4e5a0c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Landscape/ModernLight
+    - Landscape - Quests.prefab
+  uploadId: 701280

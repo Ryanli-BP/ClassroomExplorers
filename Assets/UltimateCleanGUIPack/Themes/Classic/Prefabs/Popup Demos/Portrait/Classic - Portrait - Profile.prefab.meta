@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b33693093788b451987bc486091226fa
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/Popup Demos/Portrait/Classic
+    - Portrait - Profile.prefab
+  uploadId: 701280

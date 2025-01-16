@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b37f687470f96404bb4a8e5359adc203
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/Popup Demos/Universal/ModernDark
+    - End Game_Lose.prefab
+  uploadId: 701280

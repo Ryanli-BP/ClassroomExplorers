@@ -47,6 +47,12 @@ public class PlayerManager : MonoBehaviour
         return players.Count;
     }
 
+    public int GetLevelUpPoints(int level)
+    {
+        Debug.Log("LEVEL" + level);
+        return levelUpPoints[level - 1];
+    }
+
     public void SpawnAllPlayersAtHome()
     {
         foreach (var player in players)

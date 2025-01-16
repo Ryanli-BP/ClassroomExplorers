@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 57e04ed33b7b0470d8466cf06a5d3a16
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Pink.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ff36d409fe99542b1aeb77eda4e1f093
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Red.prefab
+  uploadId: 701280

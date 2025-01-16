@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1ba5c13f094f445c19bcdcfbcd2d836f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Universal/Fantasy
+    - Info.prefab
+  uploadId: 701280

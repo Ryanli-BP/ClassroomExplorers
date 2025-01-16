@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 56dde1b2f76924b0e93e2291f5f2cbe2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Background/Background
+    - Medium (Blue).prefab
+  uploadId: 701280

@@ -47,29 +47,35 @@ public class TileManager : MonoBehaviour
 
     public void getTileAction(Tile tile)
     {
-        tile.TilePlayerID = PlayerManager.Instance.CurrentPlayerID;
+        var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
+        tile.TilePlayerID = currentPlayerID;
         
         switch (tile.GetTileType())
         {
             case TileType.Normal:
                 Debug.Log("Normal tile");
                 break;
+
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                PlayerManager.Instance.GetCurrentPlayer().AddPoints(Random.Range(3, 6) * PlayerManager.Instance.CurrentHighLevel);
+                int pointsGained = Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+                PlayerManager.Instance.GetCurrentPlayer().AddPoints(pointsGained);
+                UIManager.Instance.DisplayPointChange(pointsGained);
+                UIManager.Instance.DisplayGainStarAnimation(currentPlayerID);
                 break; 
+
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
-                PlayerManager.Instance.GetCurrentPlayer().AddPoints(-1);
+                int pointsLost = -(Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
+                PlayerManager.Instance.GetCurrentPlayer().AddPoints(pointsLost);
+                UIManager.Instance.DisplayPointChange(pointsLost);
+                UIManager.Instance.DisplayLoseStarAnimation();
                 break;
+
             case TileType.Home:
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
                 PlayerManager.Instance.GetCurrentPlayer().HealPLayer(1);
-                break;
-
-            default:
-                Debug.LogError("Unknown tile type");
                 break;
         }
     }

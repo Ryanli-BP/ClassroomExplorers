@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 660380d754b8e4f489603e03b82b9d30
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/Popup Demos/Landscape/ModernDark
+    - Landscape - Trophies.prefab
+  uploadId: 701280

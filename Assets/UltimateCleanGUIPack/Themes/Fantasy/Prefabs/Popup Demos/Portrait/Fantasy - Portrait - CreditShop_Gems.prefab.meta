@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fcdf1231e9c0c48cea0c39080d05bf92
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/Popup Demos/Portrait/Fantasy
+    - Portrait - CreditShop_Gems.prefab
+  uploadId: 701280
