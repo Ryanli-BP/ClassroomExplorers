@@ -38,7 +38,6 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    // This method finds a tile based on a position (rounded to the nearest grid position)
     public Tile GetTileAtPosition(Vector3 position)
     {
         tileDictionary.TryGetValue(position, out Tile tile);
@@ -47,8 +46,6 @@ public class TileManager : MonoBehaviour
 
     private void LoadQuizScene()
     {
-        // Save any necessary game state here (e.g., player position, current turn)
-        // Load the Quiz scene
         UnityEngine.SceneManagement.SceneManager.LoadScene("Q&A Scene");
     }
 
@@ -78,7 +75,6 @@ public class TileManager : MonoBehaviour
                 break;
             case TileType.Buzz:
                 Debug.Log("Buzz tile");
-                // You can handle Buzz tile here later
                 break;
             default:
                 Debug.LogError("Unknown tile type");
