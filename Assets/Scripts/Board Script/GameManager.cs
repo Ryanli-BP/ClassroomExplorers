@@ -223,5 +223,8 @@ public enum GameState
     PlayerCombat,
     PlayerFinishedMoving,
     PlayerTurnEnd,
+
+    PlayerStartQuiz, 
+    PlayerEndQuiz,
     GameEnd
 }

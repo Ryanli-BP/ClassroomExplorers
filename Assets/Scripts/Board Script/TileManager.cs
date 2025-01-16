@@ -67,7 +67,9 @@ public class TileManager : MonoBehaviour
                 PlayerManager.Instance.LevelUpPlayer();
                 PlayerManager.Instance.GetCurrentPlayer().HealPLayer(1);
                 break;
-
+            case TileType.Quiz:
+                Debug.Log("Quiz Tile");
+                break;
             default:
                 Debug.LogError("Unknown tile type");
                 break;
