@@ -21,7 +21,10 @@ public class Player : MonoBehaviour
         Level = 1;
         Health = MAX_HEALTH;
         Status = Status.Alive;
+        
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+        UIManager.Instance.UpdatePlayerLevel(playerID, Level);
+        UIManager.Instance.UpdatePlayerPoints(playerID, Points);
     }
 
     public int getPlayerID()

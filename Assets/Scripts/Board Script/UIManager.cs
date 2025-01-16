@@ -19,8 +19,6 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    [SerializeField] private HealthAnimation healthAnimation;
-
     [SerializeField] private GameObject directionPanel; // Panel that contains direction buttons
     [SerializeField] private Button northButton;
     [SerializeField] private Button eastButton;
@@ -100,17 +98,17 @@ public class UIManager : MonoBehaviour
 
     public void UpdatePlayerPoints(int playerIndex, int points)
     {
-        playerStatsUIList[playerIndex].pointsText.text = $"P {points}";
+        playerStatsUIList[playerIndex - 1].pointsText.text = $"P {points}";
     }
 
     public void UpdatePlayerLevel(int playerIndex, int level)
     {
-        playerStatsUIList[playerIndex].levelText.text = $"LV <#FF6573>{level}</color>";
+        playerStatsUIList[playerIndex - 1].levelText.text = $"LV <#FF6573>{level}</color>";
     }
 
     public void UpdatePlayerHealth(int playerIndex, int health)
     {
-        var healthAnimation = playerStatsUIList[playerIndex].healthBar.GetComponent<HealthAnimation>();
+        var healthAnimation = playerStatsUIList[playerIndex - 1].healthBar.GetComponent<HealthAnimation>();
         if (healthAnimation != null)
         {
             healthAnimation.AnimateHealth(health, Player.MAX_HEALTH);
