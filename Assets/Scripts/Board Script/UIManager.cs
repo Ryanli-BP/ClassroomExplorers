@@ -46,6 +46,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Button rollDiceButton; // Button to roll the dice
     [SerializeField] public Button evadeButton; // button for evade option
 
+    [SerializeField] private GameObject starPrefab; // Reference to the star prefab
+    [SerializeField] private Canvas mainCanvas; // Reference to the main canvas
 
     private void Awake()
     {
@@ -98,11 +100,13 @@ public class UIManager : MonoBehaviour
 
     public async void DisplayPointChange(int pointsChange)
     {
+        string originalColor = centreText.color.ToHexString(); // Store the original color
         string colorTag = pointsChange > 0 ? "<color=#FFFF9B>" : "<color=#8BBFFF>";
-        string symbol = pointsChange > 0 ? "+" : "-";
+        string symbol = pointsChange > 0 ? "+" : "";
         centreText.text = $"{colorTag}{symbol}{pointsChange}</color>";
         await Task.Delay(500); 
         centreText.text = "";
+        centreText.color = originalColor.ToColor(); // Restore the original color
     }
 
     public async void DisplayLevelUp()
@@ -133,6 +137,21 @@ public class UIManager : MonoBehaviour
         {
             healthAnimation.AnimateHealth(health, Player.MAX_HEALTH);
         }
+    }
+
+    public void DisplayGainStarAnimation(int playerIndex)
+    {
+        var playerPointBar = playerStatsUIList[playerIndex - 1].pointsBar.GetComponent<RectTransform>();
+        GameObject starInstance = Instantiate(starPrefab, mainCanvas.transform); // Instantiate as child of the main canvas
+        PointStarAnimation pointStarAnimation = starInstance.GetComponent<PointStarAnimation>();
+        pointStarAnimation.AnimatePointStar(starInstance, playerPointBar);
+    }
+
+    public void DisplayLoseStarAnimation()
+    {
+        GameObject starInstance = Instantiate(starPrefab, mainCanvas.transform); // Instantiate as child of the main canvas
+        PointStarAnimation pointStarAnimation = starInstance.GetComponent<PointStarAnimation>();
+        pointStarAnimation.AnimateLosePointStar(starInstance);
     }
 
     public void UpdateRound(int roundNumber)
@@ -246,5 +265,19 @@ public class UIManager : MonoBehaviour
             pvpPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
+    }
+}
+public static class ColorExtensions
+{
+    public static string ToHexString(this Color color)
+    {
+        return ColorUtility.ToHtmlStringRGBA(color);
+    }
+
+    public static Color ToColor(this string hex)
+    {
+        Color color;
+        ColorUtility.TryParseHtmlString($"#{hex}", out color);
+        return color;
     }
 }

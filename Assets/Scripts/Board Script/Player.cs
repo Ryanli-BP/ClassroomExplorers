@@ -37,7 +37,6 @@ public class Player : MonoBehaviour
         Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
         UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
-        UIManager.Instance.DisplayPointChange(amount);
     }
 
     public void LevelUp()
