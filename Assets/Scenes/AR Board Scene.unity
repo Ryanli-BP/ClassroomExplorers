@@ -546,13 +546,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d17f5de7f2ebed4da852476103e2db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScreenQuestion: {fileID: 0}
-  AnswerA: {fileID: 0}
-  AnswerB: {fileID: 0}
-  AnswerC: {fileID: 0}
-  AnswerD: {fileID: 0}
-  QuestionIndexText: {fileID: 0}
-  TimerText: {fileID: 0}
+  ScreenQuestion: {fileID: 391758480}
+  AnswerA: {fileID: 1252606342}
+  AnswerB: {fileID: 442828517}
+  AnswerC: {fileID: 198326297}
+  AnswerD: {fileID: 309684809}
+  QuestionIndexText: {fileID: 123719769}
+  TimerText: {fileID: 1491912925}
 --- !u!114 &119325038
 MonoBehaviour:
   m_ObjectHideFlags: 0
