@@ -56,11 +56,13 @@ public class TileManager : MonoBehaviour
                 break;
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                PlayerManager.Instance.GetCurrentPlayer().AddPoints(Random.Range(3, 6) * PlayerManager.Instance.CurrentHighLevel);
+                int pointsGained = Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+                PlayerManager.Instance.GetCurrentPlayer().AddPoints(pointsGained);
                 break; 
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
-                PlayerManager.Instance.GetCurrentPlayer().AddPoints(-1);
+                int pointsLost = -(Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
+                PlayerManager.Instance.GetCurrentPlayer().AddPoints(pointsLost);
                 break;
             case TileType.Home:
                 Debug.Log("Home tile");

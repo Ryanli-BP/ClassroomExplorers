@@ -34,9 +34,10 @@ public class Player : MonoBehaviour
 
     public void AddPoints(int amount)
     {
-        Points += amount;
+        Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
         UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        UIManager.Instance.DisplayPointChange(amount);
     }
 
     public void LevelUp()
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
         UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        UIManager.Instance.DisplayLevelUp();
     }
 
     public void LoseHealth(int amount)

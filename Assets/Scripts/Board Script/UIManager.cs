@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button fightButton;
     [SerializeField] private Button continueMovingButton;
 
-    [SerializeField] private TextMeshProUGUI diceResultText;
+    [SerializeField] private TextMeshProUGUI centreText;
     [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
@@ -90,10 +90,26 @@ public class UIManager : MonoBehaviour
 
     public async void DisplayDiceTotalResult(int totalResult)
     {
-        diceResultText.text = $"{totalResult}";
+        centreText.text = $"{totalResult}";
         await Task.Delay(500); 
-        diceResultText.text = "";
+        centreText.text = "";
         GameManager.Instance.HandleDiceResultDisplayFinished();
+    }
+
+    public async void DisplayPointChange(int pointsChange)
+    {
+        string colorTag = pointsChange > 0 ? "<color=#FFFF9B>" : "<color=#8BBFFF>";
+        string symbol = pointsChange > 0 ? "+" : "-";
+        centreText.text = $"{colorTag}{symbol}{pointsChange}</color>";
+        await Task.Delay(500); 
+        centreText.text = "";
+    }
+
+    public async void DisplayLevelUp()
+    {
+        centreText.text = "Level Up!";
+        await Task.Delay(500); 
+        centreText.text = "";
     }
 
     public void UpdatePlayerPoints(int playerIndex, int points, int levelUpPoints)
