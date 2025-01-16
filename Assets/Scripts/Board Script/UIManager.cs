@@ -10,7 +10,7 @@ using UltimateClean;
 [System.Serializable]
 public class PlayerStatsUI
 {
-    public TextMeshProUGUI pointsText;
+    public GameObject pointsBar; //points text is included in bar
     public TextMeshProUGUI levelText;
     public GameObject healthBar;
 }
@@ -96,9 +96,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
-    public void UpdatePlayerPoints(int playerIndex, int points)
+    public void UpdatePlayerPoints(int playerIndex, int points, int levelUpPoints)
     {
-        playerStatsUIList[playerIndex - 1].pointsText.text = $"P {points}";
+        var pointsAnimation = playerStatsUIList[playerIndex - 1].pointsBar.GetComponent<PointsAnimation>();
+        if (pointsAnimation != null)
+        {
+            pointsAnimation.AnimatePoints(points, levelUpPoints);
+        }
     }
 
     public void UpdatePlayerLevel(int playerIndex, int level)
