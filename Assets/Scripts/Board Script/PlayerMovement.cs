@@ -120,7 +120,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
                 List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
                 yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
-                    StartCoroutine(MoveToNextTileCoroutine(direction));
+                    DFSMoveToNextTile(direction);
                 }));
                 TileManager.Instance.ClearHighlightedTiles();
             }
@@ -138,6 +138,37 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
         initialMove = true;
         OnMovementComplete?.Invoke();
+    }
+        private void DFSMoveToNextTile(Direction direction) //This function is purely for DFS to work
+    {
+        Vector3 targetPosition = currentTile.transform.position;
+
+        switch (direction)
+        {
+            case Direction.North:
+                targetPosition += new Vector3(0, 0, 1);
+                break;
+            case Direction.East:
+                targetPosition += new Vector3(1, 0, 0);
+                break;
+            case Direction.South:
+                targetPosition += new Vector3(0, 0, -1);
+                break;
+            case Direction.West:
+                targetPosition += new Vector3(-1, 0, 0);
+                break;
+        }
+
+        currentTile = TileManager.Instance.GetTileAtPosition(targetPosition);
+
+        if (currentTile != null)
+        {
+            transform.position = targetPosition;
+        }
+        else
+        {
+            Debug.LogError("Tile not found at position: " + targetPosition);
+        }
     }
 
     private IEnumerator MoveToNextTileCoroutine(Direction direction)
