@@ -69,6 +69,7 @@ public class TileManager : MonoBehaviour
                 break;
             case TileType.Quiz:
                 Debug.Log("Quiz Tile");
+                GameManager.Instance.QuizStarter();
                 break;
             default:
                 Debug.LogError("Unknown tile type");

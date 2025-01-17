@@ -78,6 +78,14 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerTurnEnd:
                 EndPlayerTurn();
                 break;
+            
+            case GameState.PlayerStartQuiz:
+                HandleQuizStart();
+                break;
+            
+            case GameState.PlayerEndQuiz:    
+                HandleQuizEnd();
+                break;
 
             case GameState.GameEnd:
                 EndGame();
@@ -96,6 +104,14 @@ public class GameManager : MonoBehaviour
     {
         PlayerManager.Instance.SpawnAllPlayersAtHome();
         ChangeState(GameState.RoundStart);
+    }
+
+    public void OnQuizComplete()
+    {
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+        int quizPoints = QuizManager.Instance.GetCurrentPoints();
+        currentPlayer.AddPoints(quizPoints);
+        ChangeState(GameState.PlayerEndQuiz);
     }
 
     private void RoundEvent()
@@ -203,6 +219,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void QuizStarter()
+    {
+        ChangeState(GameState.PlayerStartQuiz);
+    }
+
+
+
+    private void HandleQuizStart()
+    {
+        if(QuizManager.Instance == null)
+        {
+            Debug.LogError("QuizManager is null");
+            return;
+        }
+        
+        UIManager.Instance.SetRollDiceButtonVisibility(false); // Hide dice UI
+        QuizManager.Instance.StartNewQuiz();
+    }
+    private void HandleQuizEnd()
+    {
+        GameObject QuizUI = GameObject.Find("QuizUI");
+        if (QuizUI != null)
+        {
+            QuizUI.SetActive(false);
+        }
+        ChangeState(GameState.PlayerTurnEnd);
+    }
     public void FinalLevelAchieved()
     {
         ChangeState(GameState.GameEnd);

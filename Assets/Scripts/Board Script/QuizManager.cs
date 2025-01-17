@@ -7,6 +7,9 @@ using UnityEngine;
 
 public class QuizManager : MonoBehaviour
 {
+    private const int POINTS_PER_CORRECT_ANSWER = 2;
+    private int correctAnswers = 0;
+
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
@@ -14,25 +17,51 @@ public class QuizManager : MonoBehaviour
     private float timeRemaining;
     private bool isQuizActive = false;
 
+    private int currentPoints = 0;
+
     public static QuizManager Instance { get; private set; }
 
+    [Header("References")]
+    [SerializeField] private GameObject QuizUI; // Assign in inspector
+    [SerializeField] private QuizDisplay QuizDisplay; // Assign in inspector
+    [SerializeField] private AnswerButtons AnswerButtons; // Assign in inspector
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
         else
-        {
             Destroy(gameObject);
+        if (QuizUI != null)
+        {
+            QuizUI.SetActive(false);
         }
-    }
-
-    private void Start()
-    {
         LoadQuestionsFromCSV();
-        StartQuiz();
+    }
+    
+
+    public void StartNewQuiz()
+    {
+        if (questions == null || questions.Count == 0)
+        {
+            Debug.LogError("No questions loaded!");
+            return;
+        }
+
+        // Enable UI
+        QuizUI.SetActive(true);
+        
+        // Initialize quiz state
+        timeRemaining = quizDuration;
+        currentQuestionIndex = -1;
+        currentPoints = 0;
+        isQuizActive = true;
+        
+        if(AnswerButtons != null)
+            AnswerButtons.EnableButtons();
+        else
+            Debug.LogError("AnswerButtons reference missing!");
+            
+        DisplayNextQuestion();
     }
 
     private void Update()
@@ -72,30 +101,31 @@ public class QuizManager : MonoBehaviour
         Debug.Log($"Loaded {questions.Count} questions from the CSV.");
     }
 
-    private void StartQuiz()
-    {
-        timeRemaining = quizDuration;
-        isQuizActive = true;
-        DisplayNextQuestion();
-    }
+
 
     private void EndQuiz()
     {
         isQuizActive = false;
+        QuizUI.SetActive(false);
         Debug.Log("Quiz has ended!");
-        // Additional logic to handle the end of the quiz can be added here
+        currentPoints = correctAnswers * POINTS_PER_CORRECT_ANSWER;
+        Player currPlayer = PlayerManager.Instance.GetCurrentPlayer();
+        currPlayer.AddPoints(currentPoints);
+        Debug.Log($"Player {currPlayer.getPlayerID()} scored {currentPoints} points!");
+        currentPoints = 0;
+        GameManager.Instance.OnQuizComplete();
     }
+
 
     public void DisplayNextQuestion()
     {
-        if (!isQuizActive) return;
-
-        currentQuestionIndex = (currentQuestionIndex + 1) % questions.Count;
-        Question q = questions[currentQuestionIndex];
-
-        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex, questions.Count);
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.Count)
+        {
+            Question currentQuestion = questions[currentQuestionIndex];
+            QuizDisplay.DisplayQuestion(currentQuestion, currentQuestionIndex, questions.Count);
+        }
     }
-
     public bool CheckAnswer(int answerIndex)
     {
         if (!isQuizActive) return false;
@@ -104,6 +134,27 @@ public class QuizManager : MonoBehaviour
         return questions[currentQuestionIndex].answer == selectedAnswer;
     }
 
+    public int GetCurrentPoints()
+    {
+        return currentPoints;
+    }
+
+    
+    public void AnswerQuestion(bool isCorrect)
+    {
+        if (isCorrect)
+        {
+            correctAnswers++;
+        }
+        if (currentQuestionIndex >= questions.Count - 1)
+        {
+            EndQuiz();
+        }
+        else
+        {
+            DisplayNextQuestion();
+        }
+    }
     public bool IsQuizActive()
     {
         return isQuizActive;
