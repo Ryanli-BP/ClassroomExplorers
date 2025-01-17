@@ -54,23 +54,28 @@ public class TileManager : MonoBehaviour
             case TileType.Normal:
                 Debug.Log("Normal tile");
                 break;
+                
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
                 PlayerManager.Instance.GetCurrentPlayer().AddPoints(Random.Range(3, 6) * PlayerManager.Instance.CurrentHighLevel);
                 break; 
+
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
                 PlayerManager.Instance.GetCurrentPlayer().AddPoints(-1);
                 break;
+
             case TileType.Home:
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
                 PlayerManager.Instance.GetCurrentPlayer().HealPLayer(1);
                 break;
+
             case TileType.Quiz:
                 Debug.Log("Quiz Tile");
                 GameManager.Instance.QuizStarter();
                 break;
+
             default:
                 Debug.LogError("Unknown tile type");
                 break;
