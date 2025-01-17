@@ -7,7 +7,7 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
-    [SerializeField] private Camera arCamera; // Reference to the AR camera
+    [SerializeField] private GameObject arCamera; // Reference to the AR camera
 
     private static readonly Vector3 currentPlayerPosition = new Vector3(27, 0.3f, 0);
     private static readonly Vector3 opponentPlayerPosition = new Vector3(33, 0.3f, 0);

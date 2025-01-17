@@ -119,9 +119,17 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
                 List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
+                Direction? selectedDirection = null;
+                
                 yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
-                    DFSMoveToNextTile(direction);
+                    selectedDirection = direction;
                 }));
+
+                if (selectedDirection.HasValue)
+                {
+                    yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
+                }
+
                 TileManager.Instance.ClearHighlightedTiles();
             }
             else
@@ -139,37 +147,7 @@ public class PlayerMovement : MonoBehaviour
         initialMove = true;
         OnMovementComplete?.Invoke();
     }
-        private void DFSMoveToNextTile(Direction direction) //This function is purely for DFS to work
-    {
-        Vector3 targetPosition = currentTile.transform.position;
 
-        switch (direction)
-        {
-            case Direction.North:
-                targetPosition += new Vector3(0, 0, 1);
-                break;
-            case Direction.East:
-                targetPosition += new Vector3(1, 0, 0);
-                break;
-            case Direction.South:
-                targetPosition += new Vector3(0, 0, -1);
-                break;
-            case Direction.West:
-                targetPosition += new Vector3(-1, 0, 0);
-                break;
-        }
-
-        currentTile = TileManager.Instance.GetTileAtPosition(targetPosition);
-
-        if (currentTile != null)
-        {
-            transform.position = targetPosition;
-        }
-        else
-        {
-            Debug.LogError("Tile not found at position: " + targetPosition);
-        }
-    }
 
     private IEnumerator MoveToNextTileCoroutine(Direction direction)
     {
