@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5cb9d8e0fd8fb43e0867cc9efe647a4c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Gray.prefab
+  uploadId: 701280

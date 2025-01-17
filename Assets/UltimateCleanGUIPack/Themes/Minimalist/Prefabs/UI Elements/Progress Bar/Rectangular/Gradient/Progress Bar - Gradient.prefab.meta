@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2fc05a3b4f14a4fa7b4516184ef8bec3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Progress
+    Bar/Rectangular/Gradient/Progress Bar - Gradient.prefab
+  uploadId: 701280

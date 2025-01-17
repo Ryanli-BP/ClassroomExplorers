@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 19770ccde2dae44b8bb7991cbb6e8fc2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Toggle/Basic
+    - Outline/Toggle - Basic - Outline.prefab
+  uploadId: 701280

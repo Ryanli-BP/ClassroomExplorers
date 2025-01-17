@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e9be9e33084894b0b94c699395a78d1c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Button/Outline/Button
+    - Outline.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 18e961d4d0791467485b45bfbe1ae0d1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Background/Background
+    - 200ppu.prefab
+  uploadId: 701280

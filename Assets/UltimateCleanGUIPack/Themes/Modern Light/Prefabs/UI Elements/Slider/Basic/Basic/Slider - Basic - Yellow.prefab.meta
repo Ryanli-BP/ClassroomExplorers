@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 981da9f7e35cc47a2b7420e3cc93ddf8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Slider/Basic/Basic/Slider
+    - Basic - Yellow.prefab
+  uploadId: 701280

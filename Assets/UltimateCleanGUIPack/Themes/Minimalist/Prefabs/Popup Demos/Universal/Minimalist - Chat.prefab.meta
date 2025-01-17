@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8bee4fb9c6b924a1cab0df498b42149b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Universal/Minimalist
+    - Chat.prefab
+  uploadId: 701280

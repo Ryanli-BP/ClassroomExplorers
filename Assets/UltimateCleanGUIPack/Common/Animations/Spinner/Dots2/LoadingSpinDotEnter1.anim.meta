@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4c9aa1e1cfb8b49d49886b9bbb6a73e3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Spinner/Dots2/LoadingSpinDotEnter1.anim
+  uploadId: 701280

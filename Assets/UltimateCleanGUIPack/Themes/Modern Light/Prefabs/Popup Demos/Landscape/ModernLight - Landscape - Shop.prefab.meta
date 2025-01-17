@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a6db80d9ee3014541909618e72c6037a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Landscape/ModernLight
+    - Landscape - Shop.prefab
+  uploadId: 701280

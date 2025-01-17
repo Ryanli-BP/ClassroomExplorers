@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d22d28f4b21264372a8c791b261fc5b7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Green.prefab
+  uploadId: 701280

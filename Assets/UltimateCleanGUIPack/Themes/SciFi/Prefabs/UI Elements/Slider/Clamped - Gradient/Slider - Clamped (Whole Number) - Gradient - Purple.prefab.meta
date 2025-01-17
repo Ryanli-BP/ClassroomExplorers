@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dd5184547aba641048d9666517abed96
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Slider/Clamped
+    - Gradient/Slider - Clamped (Whole Number) - Gradient - Purple.prefab
+  uploadId: 701280

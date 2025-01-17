@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b49e5b42e271f4e538b7c0a3427cedf4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Tooltip/Tooltip
+    - Right.prefab
+  uploadId: 701280

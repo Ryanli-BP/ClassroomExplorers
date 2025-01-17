@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 06c6be61f0dbd4e3cb3237729d9019ac
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Prefabs/Spinner/Dark (Light Color)/Spinner
+    - Doble Half Circle.prefab
+  uploadId: 701280

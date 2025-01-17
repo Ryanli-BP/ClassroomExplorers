@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bd91ab4e1697e4f15842277e70ef42d2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Cutout/Gradient/Button
+    - Gradient - Purple.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 54450a87a57ef4bf28dca63a25392fd3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/Popup Demos/Universal/Classic
+    - Contact.prefab
+  uploadId: 701280

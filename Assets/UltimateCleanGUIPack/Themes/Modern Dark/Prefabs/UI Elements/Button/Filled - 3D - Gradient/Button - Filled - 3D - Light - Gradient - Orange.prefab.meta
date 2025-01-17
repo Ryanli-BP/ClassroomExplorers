@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ee9d93e99bc5a4b4c9a8216ccf36da2a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Filled
+    - 3D - Gradient/Button - Filled - 3D - Light - Gradient - Orange.prefab
+  uploadId: 701280

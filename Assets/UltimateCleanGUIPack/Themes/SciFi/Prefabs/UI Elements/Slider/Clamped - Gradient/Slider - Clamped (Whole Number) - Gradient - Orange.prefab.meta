@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d836556a0695c4aca8722af33eca69e6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Slider/Clamped
+    - Gradient/Slider - Clamped (Whole Number) - Gradient - Orange.prefab
+  uploadId: 701280

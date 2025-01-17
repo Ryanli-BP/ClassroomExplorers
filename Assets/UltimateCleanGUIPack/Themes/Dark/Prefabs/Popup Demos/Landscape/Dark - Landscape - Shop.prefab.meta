@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 720c0ddc92eba4af1a7b0321dea479dc
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Landscape/Dark
+    - Landscape - Shop.prefab
+  uploadId: 701280

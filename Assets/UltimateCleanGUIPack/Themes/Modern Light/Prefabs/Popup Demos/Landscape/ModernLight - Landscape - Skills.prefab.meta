@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d4d5fa512220649c08f20cb5b59d945b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Landscape/ModernLight
+    - Landscape - Skills.prefab
+  uploadId: 701280

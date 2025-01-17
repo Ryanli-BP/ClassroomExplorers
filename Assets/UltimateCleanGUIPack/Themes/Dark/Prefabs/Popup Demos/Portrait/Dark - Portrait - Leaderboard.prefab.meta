@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2e235af6ef60148808215f654c787f5e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Portrait/Dark
+    - Portrait - Leaderboard.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 585c357ad65c840e9be9cc981ace93c1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Gray.prefab
+  uploadId: 701280

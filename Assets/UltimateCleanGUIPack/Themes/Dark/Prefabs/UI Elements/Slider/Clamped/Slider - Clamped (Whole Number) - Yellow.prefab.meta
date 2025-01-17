@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d82331b2b68ac4db7adea95d1350442f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/UI Elements/Slider/Clamped/Slider
+    - Clamped (Whole Number) - Yellow.prefab
+  uploadId: 701280

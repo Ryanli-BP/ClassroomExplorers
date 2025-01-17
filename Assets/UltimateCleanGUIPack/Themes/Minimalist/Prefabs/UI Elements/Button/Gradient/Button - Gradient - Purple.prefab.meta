@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b50ad30d4f70340f3b2436f34fd07d1b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Purple.prefab
+  uploadId: 701280

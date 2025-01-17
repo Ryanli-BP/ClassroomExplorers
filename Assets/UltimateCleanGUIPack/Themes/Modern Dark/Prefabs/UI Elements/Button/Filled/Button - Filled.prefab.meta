@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b31529e27bd064a3b849ba5984109832
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Filled/Button
+    - Filled.prefab
+  uploadId: 701280

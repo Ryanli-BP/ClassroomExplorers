@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c94d8e83ad45e43a4bc5c794b99d445f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Notifications/Fade/Notification_Fade.overrideController
+  uploadId: 701280

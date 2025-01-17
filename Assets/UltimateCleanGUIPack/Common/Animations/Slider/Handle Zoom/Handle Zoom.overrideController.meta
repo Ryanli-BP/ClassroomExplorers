@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0f3c2296594fc4414a266da51f0abb6f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Slider/Handle Zoom/Handle
+    Zoom.overrideController
+  uploadId: 701280

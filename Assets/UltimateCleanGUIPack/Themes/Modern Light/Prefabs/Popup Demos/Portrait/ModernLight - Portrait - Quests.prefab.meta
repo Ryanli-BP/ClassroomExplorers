@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c473b30e778b84640a4a6b9dd4b0fe3d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Portrait/ModernLight
+    - Portrait - Quests.prefab
+  uploadId: 701280

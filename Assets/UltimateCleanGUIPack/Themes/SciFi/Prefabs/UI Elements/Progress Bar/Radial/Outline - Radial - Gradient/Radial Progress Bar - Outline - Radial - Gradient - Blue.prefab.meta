@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b074f8cb58a6d4f7796a996aa7dec4ae
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Progress
+    Bar/Radial/Outline - Radial - Gradient/Radial Progress Bar - Outline - Radial
+    - Gradient - Blue.prefab
+  uploadId: 701280

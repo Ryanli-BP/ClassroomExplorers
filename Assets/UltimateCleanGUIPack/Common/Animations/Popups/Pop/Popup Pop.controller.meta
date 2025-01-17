@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d91343be5f46f4eda822db3eddb7809a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Popups/Pop/Popup Pop.controller
+  uploadId: 701280

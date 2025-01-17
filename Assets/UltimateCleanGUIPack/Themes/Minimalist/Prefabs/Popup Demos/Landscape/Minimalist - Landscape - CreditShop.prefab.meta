@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5fabb9ca9bd1842d1aee9247bc2644de
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Landscape/Minimalist
+    - Landscape - CreditShop.prefab
+  uploadId: 701280

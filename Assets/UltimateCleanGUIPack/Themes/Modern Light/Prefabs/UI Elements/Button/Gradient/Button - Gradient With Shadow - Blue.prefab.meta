@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 74d6342a997b14fc6af22dfa5fa8d135
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient With Shadow - Blue.prefab
+  uploadId: 701280

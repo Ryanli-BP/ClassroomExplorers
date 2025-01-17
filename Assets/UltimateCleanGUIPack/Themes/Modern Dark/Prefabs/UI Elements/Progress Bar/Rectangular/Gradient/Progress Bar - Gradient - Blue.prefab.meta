@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c5e6a4c5f8c18473dba40e89ecada6d5
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Progress
+    Bar/Rectangular/Gradient/Progress Bar - Gradient - Blue.prefab
+  uploadId: 701280

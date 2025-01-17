@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a88ad553b24ee48c68712e59139960e2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Progress
+    Bar/Radial/Outline - Radial/Radial Progress Bar - Outline - Radial.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d60e539968e5b4fc2a9ef1f1d75a9eb7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Slider/Basic/Basic
+    - 3D/Slider - Basic - 3d - Red.prefab
+  uploadId: 701280

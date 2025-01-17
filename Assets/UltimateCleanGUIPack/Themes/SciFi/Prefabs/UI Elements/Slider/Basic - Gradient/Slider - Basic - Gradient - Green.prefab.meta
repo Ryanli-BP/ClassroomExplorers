@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0253b5826c0ae4b048252a5bcd3bf34e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Slider/Basic
+    - Gradient/Slider - Basic - Gradient - Green.prefab
+  uploadId: 701280

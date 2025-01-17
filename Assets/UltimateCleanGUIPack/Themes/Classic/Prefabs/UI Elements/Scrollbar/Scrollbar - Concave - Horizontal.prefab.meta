@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8d98906293bff42bb94090c8831b3810
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Scrollbar/Scrollbar
+    - Concave - Horizontal.prefab
+  uploadId: 701280

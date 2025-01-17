@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 96a7d24030a624af7a95b4758bd8ce6f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Yellow.prefab
+  uploadId: 701280

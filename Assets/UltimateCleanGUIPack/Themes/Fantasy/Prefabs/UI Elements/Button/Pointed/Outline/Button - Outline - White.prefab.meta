@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0c74302e2f5fe4f59a6b048cf8e5d09d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Pointed/Outline/Button
+    - Outline - White.prefab
+  uploadId: 701280

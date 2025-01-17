@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4635c16614dce4e5f94d6d3ce49a9e7e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Tooltip/Arrow
+    - Minimalist.prefab
+  uploadId: 701280

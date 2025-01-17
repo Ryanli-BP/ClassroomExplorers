@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0be26348d237544c1b1f18e0871147e8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Slider/Basic/Basic
+    - 3D/Slider - Basic - 3d - Violet.prefab
+  uploadId: 701280

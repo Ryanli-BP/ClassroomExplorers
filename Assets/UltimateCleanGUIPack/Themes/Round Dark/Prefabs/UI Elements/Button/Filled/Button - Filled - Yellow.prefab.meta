@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc871ff84c4564e608b2507e4a40a0c6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Yellow.prefab
+  uploadId: 701280

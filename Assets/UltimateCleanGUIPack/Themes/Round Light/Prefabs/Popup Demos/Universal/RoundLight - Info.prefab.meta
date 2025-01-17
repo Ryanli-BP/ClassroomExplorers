@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cfb9a11417d9644d4a44cca6ae0cba5a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/Popup Demos/Universal/RoundLight
+    - Info.prefab
+  uploadId: 701280

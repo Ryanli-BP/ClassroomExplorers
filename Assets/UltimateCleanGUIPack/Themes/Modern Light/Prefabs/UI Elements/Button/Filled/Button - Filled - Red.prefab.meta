@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 656a2e35f4bfc4c2f85c2fa614f02567
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Red.prefab
+  uploadId: 701280

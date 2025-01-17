@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 847bbc92e822b472ca1840af0874e993
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/Popup Demos/Landscape/Classic
+    - Landscape - Level.prefab
+  uploadId: 701280

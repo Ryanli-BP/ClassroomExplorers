@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 39647eb23c1124a938a5caa0cc165dee
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient With Shadow - Pink.prefab
+  uploadId: 701280

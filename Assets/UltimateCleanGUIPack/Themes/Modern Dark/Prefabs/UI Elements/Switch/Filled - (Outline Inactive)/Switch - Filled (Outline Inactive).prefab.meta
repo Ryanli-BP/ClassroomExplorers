@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 444aa818d5b9240439bf894fb69b7ad0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Switch/Filled
+    - (Outline Inactive)/Switch - Filled (Outline Inactive).prefab
+  uploadId: 701280

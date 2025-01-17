@@ -119,16 +119,24 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("At a crossroad! Waiting for player to choose a direction...");
                 List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
+                Direction? selectedDirection = null;
+                
                 yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
-                    MoveToNextTile(direction);
+                    selectedDirection = direction;
                 }));
+
+                if (selectedDirection.HasValue)
+                {
+                    yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
+                }
+
                 TileManager.Instance.ClearHighlightedTiles();
             }
             else
             {
                 // Move in the only available direction
                 Direction nextDirection = availableDirections[0];
-                MoveToNextTile(nextDirection);
+                yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
             }
 
             remainingSteps--;
@@ -140,8 +148,10 @@ public class PlayerMovement : MonoBehaviour
         OnMovementComplete?.Invoke();
     }
 
-    private void MoveToNextTile(Direction direction)
+
+    private IEnumerator MoveToNextTileCoroutine(Direction direction)
     {
+        Debug.Log("MoveToNextTile called with direction: " + direction);
         // Update last direction based on the current movement direction
         _lastDirection = direction;
 
@@ -164,17 +174,26 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        // Find the tile at the new position
+        Debug.Log("Starting MoveToNextTileCoroutine to target position: " + targetPosition);
+        yield return StartCoroutine(MoveToNextTileCoroutine(targetPosition));
+    }
+
+    private IEnumerator MoveToNextTileCoroutine(Vector3 targetPosition)
+    {
+        Debug.Log("MoveToNextTileCoroutine started");
+
         currentTile = TileManager.Instance.GetTileAtPosition(targetPosition);
 
         if (currentTile != null)
         {
-            // Apply movement and update the current tile
-            transform.position = targetPosition;
+            PlayerMovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovementAnimation>();
+            yield return StartCoroutine(movementAnimation.HopTo(targetPosition));
         }
         else
         {
             Debug.LogError("Tile not found at position: " + targetPosition);
         }
+
+        Debug.Log("MoveToNextTileCoroutine ended");
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 73a350056111d44d498eeb22da869ae1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Universal/Dark
+    - End Game.prefab
+  uploadId: 701280

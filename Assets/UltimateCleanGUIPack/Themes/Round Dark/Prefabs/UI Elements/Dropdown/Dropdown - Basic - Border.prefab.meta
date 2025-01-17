@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 23ddc24cac08c4419b42df1b881a4b36
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/UI Elements/Dropdown/Dropdown
+    - Basic - Border.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d946618f29b044d2db16f5c702ef3c0c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Slider/Clamped/Slider
+    - Clamped (Whole Number) - Violet.prefab
+  uploadId: 701280

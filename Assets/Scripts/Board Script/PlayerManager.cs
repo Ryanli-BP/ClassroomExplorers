@@ -47,6 +47,12 @@ public class PlayerManager : MonoBehaviour
         return players.Count;
     }
 
+    public int GetLevelUpPoints(int level)
+    {
+        Debug.Log("LEVEL" + level);
+        return levelUpPoints[level - 1];
+    }
+
     public void SpawnAllPlayersAtHome()
     {
         foreach (var player in players)
@@ -62,7 +68,7 @@ public class PlayerManager : MonoBehaviour
         if (homeTile != null)
         {
             Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += 0.5f; // Adjust Y offset
+            homePosition.y += 0.2f; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");

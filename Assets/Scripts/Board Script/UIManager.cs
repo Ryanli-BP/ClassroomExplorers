@@ -5,6 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.Events;
+using UltimateClean;
+
+[System.Serializable]
+public class PlayerStatsUI
+{
+    public GameObject pointsBar; //points text is included in bar
+    public TextMeshProUGUI levelText;
+    public GameObject healthBar;
+}
 
 public class UIManager : MonoBehaviour
 {
@@ -24,8 +33,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button fightButton;
     [SerializeField] private Button continueMovingButton;
 
-    [SerializeField] private TextMeshProUGUI diceResultText;
-    [SerializeField] private List<TextMeshProUGUI> playerStatsTexts; // List of Texts to display each player's stats
+    [SerializeField] private TextMeshProUGUI centreText;
+    [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
 
@@ -37,6 +46,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Button rollDiceButton; // Button to roll the dice
     [SerializeField] public Button evadeButton; // button for evade option
 
+    [SerializeField] private GameObject starPrefab; // Reference to the star prefab
+    [SerializeField] private Canvas mainCanvas; // Reference to the main canvas
 
     private void Awake()
     {
@@ -81,20 +92,66 @@ public class UIManager : MonoBehaviour
 
     public async void DisplayDiceTotalResult(int totalResult)
     {
-        diceResultText.text = $"{totalResult}";
+        centreText.text = $"{totalResult}";
         await Task.Delay(500); 
-        diceResultText.text = "";
+        centreText.text = "";
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
-    public void UpdatePlayerStats(int playerID, int points, int level, int Health)
+    public async void DisplayPointChange(int pointsChange)
     {
-        if (playerID > 0 && playerID <= playerStatsTexts.Count)
+        string originalColor = centreText.color.ToHexString(); // Store the original color
+        string colorTag = pointsChange > 0 ? "<color=#FFFF9B>" : "<color=#8BBFFF>";
+        string symbol = pointsChange > 0 ? "+" : "";
+        centreText.text = $"{colorTag}{symbol}{pointsChange}</color>";
+        await Task.Delay(500); 
+        centreText.text = "";
+        centreText.color = originalColor.ToColor(); // Restore the original color
+    }
+
+    public async void DisplayLevelUp()
+    {
+        centreText.text = "Level Up!";
+        await Task.Delay(500); 
+        centreText.text = "";
+    }
+
+    public void UpdatePlayerPoints(int playerIndex, int points, int levelUpPoints)
+    {
+        var pointsAnimation = playerStatsUIList[playerIndex - 1].pointsBar.GetComponent<PointsAnimation>();
+        if (pointsAnimation != null)
         {
-            playerStatsTexts[playerID - 1].text = $"Player {playerID}: {points} Points\n" +
-                                                  $"Level {level}\n" +
-                                                  $"Health {Health}";
+            pointsAnimation.AnimatePoints(points, levelUpPoints);
         }
+    }
+
+    public void UpdatePlayerLevel(int playerIndex, int level)
+    {
+        playerStatsUIList[playerIndex - 1].levelText.text = $"LV <#FF6573>{level}</color>";
+    }
+
+    public void UpdatePlayerHealth(int playerIndex, int health)
+    {
+        var healthAnimation = playerStatsUIList[playerIndex - 1].healthBar.GetComponent<HealthAnimation>();
+        if (healthAnimation != null)
+        {
+            healthAnimation.AnimateHealth(health, Player.MAX_HEALTH);
+        }
+    }
+
+    public void DisplayGainStarAnimation(int playerIndex)
+    {
+        var playerPointBar = playerStatsUIList[playerIndex - 1].pointsBar.GetComponent<RectTransform>();
+        GameObject starInstance = Instantiate(starPrefab, mainCanvas.transform); // Instantiate as child of the main canvas
+        PointStarAnimation pointStarAnimation = starInstance.GetComponent<PointStarAnimation>();
+        pointStarAnimation.AnimatePointStar(starInstance, playerPointBar);
+    }
+
+    public void DisplayLoseStarAnimation()
+    {
+        GameObject starInstance = Instantiate(starPrefab, mainCanvas.transform); // Instantiate as child of the main canvas
+        PointStarAnimation pointStarAnimation = starInstance.GetComponent<PointStarAnimation>();
+        pointStarAnimation.AnimateLosePointStar(starInstance);
     }
 
     public void UpdateRound(int roundNumber)
@@ -208,5 +265,19 @@ public class UIManager : MonoBehaviour
             pvpPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
+    }
+}
+public static class ColorExtensions
+{
+    public static string ToHexString(this Color color)
+    {
+        return ColorUtility.ToHtmlStringRGBA(color);
+    }
+
+    public static Color ToColor(this string hex)
+    {
+        Color color;
+        ColorUtility.TryParseHtmlString($"#{hex}", out color);
+        return color;
     }
 }

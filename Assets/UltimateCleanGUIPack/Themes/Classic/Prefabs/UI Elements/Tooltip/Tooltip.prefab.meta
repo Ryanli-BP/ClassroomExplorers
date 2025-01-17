@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 75e01dea124754d5f98ff7b081f8eafa
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/UI Elements/Tooltip/Tooltip.prefab
+  uploadId: 701280

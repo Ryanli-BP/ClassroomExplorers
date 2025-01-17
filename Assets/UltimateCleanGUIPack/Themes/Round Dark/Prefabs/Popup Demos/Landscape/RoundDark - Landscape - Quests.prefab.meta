@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: dafac601a25a24ab9a6639a08208d6e0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Landscape/RoundDark
+    - Landscape - Quests.prefab
+  uploadId: 701280

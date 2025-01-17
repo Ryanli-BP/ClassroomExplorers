@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b4c2eccf1f4514a9292f4fa24b6cfddc
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Toggle/Basic
+    - Outline/Toggle - Basic - Outline.prefab
+  uploadId: 701280

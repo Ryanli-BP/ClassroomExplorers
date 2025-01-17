@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 51ec3d1f280db401da3e68d3a41a5d98
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Classic/Prefabs/Popup Demos/Landscape/Classic
+    - Landscape - Messages.prefab
+  uploadId: 701280

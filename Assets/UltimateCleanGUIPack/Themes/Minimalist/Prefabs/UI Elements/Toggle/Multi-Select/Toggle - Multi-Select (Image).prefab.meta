@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d44a6a6d6bbe44105a2c40fcdc9baf8f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Toggle/Multi-Select/Toggle
+    - Multi-Select (Image).prefab
+  uploadId: 701280

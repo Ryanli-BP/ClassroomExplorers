@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 363a6e74ae9044824aad0e2c407c7f35
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/Popup Demos/Portrait/ModernDark
+    - Portrait - Leaderboard.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e2861b1ea48db4fcb81f9ed381731b9a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Dark.prefab
+  uploadId: 701280

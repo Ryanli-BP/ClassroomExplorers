@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 028efd5cde65d4848b8bc3c2bb560f75
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Fantasy/Prefabs/UI Elements/Button/Pointed/Outline/Button
+    - Outline - Purple.prefab
+  uploadId: 701280

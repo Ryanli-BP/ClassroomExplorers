@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6d5dbc548a8ba4c3ca648a09c36bf80a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Portrait/RoundDark
+    - Portrait - CreditShop.prefab
+  uploadId: 701280

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ba8c47462eba441649d4e8ccf92fce29
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Buttons/Zoom Out/Login
+    (Demo)/Button Login (Demo).overrideController
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6644e55030e174c2a917a3697c6b41da
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Gradient/Button
+    - Gradient - Violet.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 552622d4fd60c4151971d5c5971519ba
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Dark/Prefabs/Popup Demos/Portrait/Dark
+    - Portrait - Inventory.prefab
+  uploadId: 701280

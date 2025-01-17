@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8ff1cd1360fea4d78bbc118693dfa8b3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/UI Elements/Button/Filled/Button
+    - Filled - Purple.prefab
+  uploadId: 701280

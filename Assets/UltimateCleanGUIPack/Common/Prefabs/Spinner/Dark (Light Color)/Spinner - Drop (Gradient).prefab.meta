@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f2851b24c3d0144b5b5cb44e52763462
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Prefabs/Spinner/Dark (Light Color)/Spinner
+    - Drop (Gradient).prefab
+  uploadId: 701280

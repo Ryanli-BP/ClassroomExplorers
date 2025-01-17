@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fe59f27c6df0a48cab1040e229e209b2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Yellow.prefab
+  uploadId: 701280

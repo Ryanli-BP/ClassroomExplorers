@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 60bb5594ac9204cd3bc934260b44e2bd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/UI Elements/Notifications/Notification
+    - Sharp Rounded - Info.prefab
+  uploadId: 701280

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2bb3c37ccbc7e4f6ba57855ad316238c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Dark/Prefabs/UI Elements/Button/Outline/Button
+    - Outline - Yellow.prefab
+  uploadId: 701280

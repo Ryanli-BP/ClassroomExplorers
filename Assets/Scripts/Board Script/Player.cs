@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public const int MAX_HEALTH = 10;
 
     public int Points { get; set; }
-    public int Level { get; set; }
+    public int Level { get; set; } = 1;
     public int Health { get; set; }
     public Status Status { get; set; }
 
@@ -21,7 +21,10 @@ public class Player : MonoBehaviour
         Level = 1;
         Health = MAX_HEALTH;
         Status = Status.Alive;
-        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level, Health);
+
+        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+        UIManager.Instance.UpdatePlayerLevel(playerID, Level);
+        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
     }
 
     public int getPlayerID()
@@ -31,23 +34,25 @@ public class Player : MonoBehaviour
 
     public void AddPoints(int amount)
     {
-        Points += amount;
+        Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
-        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level, Health);
+        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
     }
 
     public void LevelUp()
     {
         Level += 1;
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
-        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level, Health);
+        UIManager.Instance.UpdatePlayerLevel(playerID, Level);
+        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        UIManager.Instance.DisplayLevelUp();
     }
 
     public void LoseHealth(int amount)
     {
         Health = Math.Max(0,Health - amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
-        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level, Health);
+        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
     public void Dies()
@@ -78,6 +83,6 @@ public class Player : MonoBehaviour
     {
         Health = Math.Min(MAX_HEALTH, Health + amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
-        UIManager.Instance.UpdatePlayerStats(playerID, Points, Level, Health);
+        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 }

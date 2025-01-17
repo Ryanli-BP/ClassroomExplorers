@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fc8450566c55f41758c2719105201637
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Dropdown/Dropdown
+    - Basic.prefab
+  uploadId: 701280

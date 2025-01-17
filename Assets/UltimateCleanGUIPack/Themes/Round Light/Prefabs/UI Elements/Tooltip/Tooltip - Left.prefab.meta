@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f4db6ec34dcc648ccbbe09e1a8e28a82
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Light/Prefabs/UI Elements/Tooltip/Tooltip
+    - Left.prefab
+  uploadId: 701280

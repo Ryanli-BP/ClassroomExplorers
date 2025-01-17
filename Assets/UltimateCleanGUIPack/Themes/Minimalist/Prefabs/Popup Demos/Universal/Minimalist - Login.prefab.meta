@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6cdc3a847279d49f3ae7061e78e402a0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Minimalist/Prefabs/Popup Demos/Universal/Minimalist
+    - Login.prefab
+  uploadId: 701280

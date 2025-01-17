@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bef3b8161bf82468e90aa07a0e5caba7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/UI Elements/Button/Filled/Button
+    - Filled.prefab
+  uploadId: 701280

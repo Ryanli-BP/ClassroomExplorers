@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b15249a97982b40ba8946ada6e7bc4d2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Portrait/SciFi
+    - Portrait - Level.prefab
+  uploadId: 701280

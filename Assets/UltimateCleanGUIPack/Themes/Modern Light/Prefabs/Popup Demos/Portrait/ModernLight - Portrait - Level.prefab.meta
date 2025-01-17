@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 95bdba4ebc64d48eeb313f310f69ebf3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Modern Light/Prefabs/Popup Demos/Portrait/ModernLight
+    - Portrait - Level.prefab
+  uploadId: 701280

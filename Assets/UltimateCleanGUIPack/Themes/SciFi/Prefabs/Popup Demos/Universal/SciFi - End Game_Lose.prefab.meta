@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 51a4c9442f93d4a02bc6188c8342ae7d
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/SciFi/Prefabs/Popup Demos/Universal/SciFi
+    - End Game_Lose.prefab
+  uploadId: 701280

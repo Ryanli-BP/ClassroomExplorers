@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3c14e0765182b45b0997db506aa093d3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Themes/Round Dark/Prefabs/Popup Demos/Landscape/RoundDark
+    - Landscape - Trophies.prefab
+  uploadId: 701280

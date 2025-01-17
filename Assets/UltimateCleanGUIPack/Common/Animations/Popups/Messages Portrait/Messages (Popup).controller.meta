@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 13d7e15c5ddd44a74acd8cbf207d8881
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 154574
+  packageName: Ultimate Clean GUI Pack
+  packageVersion: 2.3.0
+  assetPath: Assets/UltimateCleanGUIPack/Common/Animations/Popups/Messages Portrait/Messages
+    (Popup).controller
+  uploadId: 701280
