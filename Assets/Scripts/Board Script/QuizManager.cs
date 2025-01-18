@@ -55,7 +55,7 @@ public class QuizManager : MonoBehaviour
             Debug.LogError("No questions loaded!");
             return;
         }
-
+        UIManager.Instance.SetBoardUIActive(false);
         QuizUI.SetActive(true);
         timeRemaining = quizDuration;
         currentQuestionIndex = -1;
