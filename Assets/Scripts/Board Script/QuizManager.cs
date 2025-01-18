@@ -8,6 +8,8 @@ using UnityEngine;
 public class QuizManager : MonoBehaviour
 {   
     [SerializeField] private GameObject QuizUI;
+
+
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
@@ -31,12 +33,6 @@ public class QuizManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        LoadQuestionsFromCSV();
-        StartQuiz();
-    }
-
     private void Update()
     {
         if (isQuizActive)
@@ -53,6 +49,7 @@ public class QuizManager : MonoBehaviour
 
     public void StartNewQuiz()
     {
+        LoadQuestionsFromCSV();
         if (questions == null || questions.Count == 0)
         {
             Debug.LogError("No questions loaded!");
@@ -93,12 +90,6 @@ public class QuizManager : MonoBehaviour
         Debug.Log($"Loaded {questions.Count} questions from the CSV.");
     }
 
-    private void StartQuiz()
-    {
-        timeRemaining = quizDuration;
-        isQuizActive = true;
-        DisplayNextQuestion();
-    }
 
     private void EndQuiz()
     {
@@ -116,6 +107,7 @@ public class QuizManager : MonoBehaviour
         {
             UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
         }
+        
         GameManager.Instance.HandleQuizEnd();
     }
 

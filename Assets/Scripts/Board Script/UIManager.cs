@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.Events;
 using UltimateClean;
+using System.Numerics;
 
 [System.Serializable]
 public class PlayerStatsUI
@@ -51,6 +52,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject boardUI;
 
+    private UnityEngine.Vector3 lastPos;
 
     private void Awake()
     {
@@ -274,7 +276,14 @@ public class UIManager : MonoBehaviour
     {
         if (boardUI != null)
         {
+            Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+            lastPos = currentPlayer.transform.position;
+            Debug.Log($"Last position: {lastPos}");
             boardUI.SetActive(active);
+            if (currentPlayer.transform.position != lastPos)
+            {
+                throw new System.Exception("Player position changed while board UI was active");
+            }
         }
         else
         {
