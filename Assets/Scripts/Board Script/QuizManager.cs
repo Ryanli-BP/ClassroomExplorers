@@ -111,6 +111,11 @@ public class QuizManager : MonoBehaviour
         correctAnswerCount = 0;
         Debug.Log($"Player {currentPlayer.getPlayerID()} scored {pointsToAward} points!");
         currentPlayer.AddPoints(pointsToAward);
+
+        if (pointsToAward > 0)
+        {
+            UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
+        }
         GameManager.Instance.HandleQuizEnd();
     }
 
