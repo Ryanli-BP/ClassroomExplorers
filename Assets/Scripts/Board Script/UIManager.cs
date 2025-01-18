@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine.Events;
 using UltimateClean;
+using System.Numerics;
 
 [System.Serializable]
 public class PlayerStatsUI
@@ -48,6 +49,10 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject starPrefab; // Reference to the star prefab
     [SerializeField] private Canvas mainCanvas; // Reference to the main canvas
+
+    [SerializeField] private GameObject boardUI;
+
+    private UnityEngine.Vector3 lastPos;
 
     private void Awake()
     {
@@ -265,6 +270,25 @@ public class UIManager : MonoBehaviour
             pvpPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
+    }
+
+    public void SetBoardUIActive(bool active)
+    {
+        if (boardUI != null)
+        {
+            Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+            lastPos = currentPlayer.transform.position;
+            Debug.Log($"Last position: {lastPos}");
+            boardUI.SetActive(active);
+            if (currentPlayer.transform.position != lastPos)
+            {
+                throw new System.Exception("Player position changed while board UI was active");
+            }
+        }
+        else
+        {
+            Debug.LogError("Board UI reference missing in UIManager");
+        }
     }
 }
 public static class ColorExtensions

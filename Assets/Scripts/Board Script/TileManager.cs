@@ -71,6 +71,11 @@ public class TileManager : MonoBehaviour
                 UIManager.Instance.DisplayPointChange(pointsLost);
                 UIManager.Instance.DisplayLoseStarAnimation();
                 break;
+            
+            case TileType.Quiz:
+                Debug.Log("Quiz tile");
+                QuizManager.Instance.StartNewQuiz();
+                break;
 
             case TileType.Home:
                 Debug.Log("Home tile");
