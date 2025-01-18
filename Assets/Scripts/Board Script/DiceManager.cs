@@ -42,7 +42,7 @@ public class DiceManager : MonoBehaviour
         if (newState == GameState.PlayerCombat)
         {
             // Apply offset to x-axis for arena
-            dicePositionOffset = 30f;
+            dicePositionOffset = 50f;
             transform.position += new Vector3(dicePositionOffset, 0f, 0f);
         }
         else

@@ -9,9 +9,9 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] private GameObject arCamera; // Reference to the AR camera
 
-    private static readonly Vector3 currentPlayerPosition = new Vector3(27, 0.3f, 0);
-    private static readonly Vector3 opponentPlayerPosition = new Vector3(33, 0.3f, 0);
-    private static readonly Vector3 cameraPosition = new Vector3(30, 9, -9);
+    private static readonly Vector3 currentPlayerPosition = new Vector3(47, 0.2f, 0);
+    private static readonly Vector3 opponentPlayerPosition = new Vector3(54, 0.2f, 0);
+    private static readonly Vector3 defaultCameraPosition = new Vector3(0, 8, -10);
 
     private void Awake()
     {
@@ -45,7 +45,7 @@ public class CombatManager : MonoBehaviour
 
     private void TeleportToFightingArea(Player currentPlayer, Player opponentPlayer)
     {
-        arCamera.transform.position = cameraPosition;
+        arCamera.transform.position = defaultCameraPosition + new Vector3(50, 0, 0);
         currentPlayer.transform.position = currentPlayerPosition;
         opponentPlayer.transform.position = opponentPlayerPosition;
         currentPlayer.transform.LookAt(opponentPlayer.transform);
@@ -56,7 +56,7 @@ public class CombatManager : MonoBehaviour
 
     private void TeleportBackToBoard(Player currentPlayer, Player opponentPlayer, Vector3 originalCurrentPlayerPosition, Vector3 originalOpponentPlayerPosition, Quaternion originalCurrentPlayerRotation, Quaternion originalOpponentPlayerRotation)
     {
-        arCamera.transform.position = new Vector3(0, 9, -9);
+        arCamera.transform.position = defaultCameraPosition;
         currentPlayer.transform.position = originalCurrentPlayerPosition;
         opponentPlayer.transform.position = originalOpponentPlayerPosition;
         currentPlayer.transform.rotation = originalCurrentPlayerRotation;
