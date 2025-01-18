@@ -164,14 +164,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void HandleQuizStart()
+    public void HandleQuizStart()
     {
         UIManager.Instance.SetBoardUIActive(false);
         QuizManager.Instance.StartNewQuiz();
         ChangeState(GameState.PlayerInQuiz);
     }
 
-    private void HandleQuizEnd()
+    public void HandleQuizEnd()
     {
         UIManager.Instance.SetBoardUIActive(true);
         ChangeState(GameState.PlayerTurnEnd);

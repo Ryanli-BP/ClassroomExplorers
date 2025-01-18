@@ -14,6 +14,7 @@ public class QuizManager : MonoBehaviour
     public float quizDuration = 60f; // Duration of the quiz in seconds
     private float timeRemaining;
     private bool isQuizActive = false;
+    private int correctAnswerCount = 0;
 
     public static QuizManager Instance { get; private set; }
 
@@ -104,7 +105,13 @@ public class QuizManager : MonoBehaviour
         isQuizActive = false;
         QuizUI.SetActive(false);
         Debug.Log("Quiz has ended!");
-        // Additional logic to handle the end of the quiz can be added here
+        int pointsToAward = correctAnswerCount * 10;
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+
+        correctAnswerCount = 0;
+        Debug.Log($"Player {currentPlayer.getPlayerID()} scored {pointsToAward} points!");
+        currentPlayer.AddPoints(pointsToAward);
+        GameManager.Instance.HandleQuizEnd();
     }
 
     public void DisplayNextQuestion()
@@ -122,6 +129,11 @@ public class QuizManager : MonoBehaviour
         if (!isQuizActive) return false;
 
         string selectedAnswer = ((char)('A' + answerIndex)).ToString();
+
+        if (selectedAnswer == questions[currentQuestionIndex].answer)
+        {
+            correctAnswerCount++;
+        }
         return questions[currentQuestionIndex].answer == selectedAnswer;
     }
 
