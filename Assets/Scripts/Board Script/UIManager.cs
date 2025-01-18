@@ -112,14 +112,14 @@ public class UIManager : MonoBehaviour
     public async void DisplayPointChange(int pointsChange)
     {
         centreDisplayPanel.SetActive(true);
-        string originalColor = centreDisplayPanel.GetComponent<TextMeshProUGUI>().color.ToHexString(); // Store the original color
+        string originalColor = centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().color.ToHexString(); // Store the original color
         string colorTag = pointsChange > 0 ? "<color=#FFFF9B>" : "<color=#8BBFFF>";
         string symbol = pointsChange > 0 ? "+" : "";
 
         centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{colorTag}{symbol}{pointsChange}</color>";
         await Task.Delay(500); 
         centreDisplayPanel.SetActive(false);
-        centreDisplayPanel.GetComponent<TextMeshProUGUI>().color = originalColor.ToColor(); // Restore the original color
+        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().color = originalColor.ToColor(); // Restore the original color
     }
 
     public async void DisplayLevelUp()

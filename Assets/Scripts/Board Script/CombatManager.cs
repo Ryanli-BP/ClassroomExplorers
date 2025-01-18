@@ -101,11 +101,74 @@ public class CombatManager : MonoBehaviour
             //Attack "animation"
             if (i == 0)
             {
-                yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition));
+                var swordObject = currentPlayer.transform.GetChild(0).gameObject;
+                swordObject.SetActive(true);
+
+                if (isEvade == true)
+                {
+                    // Start both animations simultaneously
+                    IEnumerator attackAnim = currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition);
+                    IEnumerator evadeAnim = null;
+                    
+                    if (evdValue > atkValue)
+                    {
+                        evadeAnim = opponentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade();
+                        StartCoroutine(evadeAnim);
+                    }
+                    
+                    yield return attackAnim;
+                    if (evadeAnim != null)
+                    {
+                        while (opponentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
+                        {
+                            yield return null;
+                        }
+                    }
+                }
+                else
+                {
+                    var shieldObject = opponentPlayer.transform.GetChild(1).gameObject;
+                    shieldObject.SetActive(true);
+                    yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition));
+                    shieldObject.SetActive(false);
+                }
+                
+                swordObject.SetActive(false);
             }
             else
             {
-                yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition));
+                var swordObject = opponentPlayer.transform.GetChild(0).gameObject;
+                swordObject.SetActive(true);
+                
+                if (isEvade == true)
+                {
+                    IEnumerator attackAnim = opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition);
+                    IEnumerator evadeAnim = null;
+                    
+                    if (evdValue > atkValue)
+                    {
+                        evadeAnim = currentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade(false);
+                        StartCoroutine(evadeAnim);
+                    }
+                    
+                    yield return attackAnim;
+                    if (evadeAnim != null)
+                    {
+                        while (currentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
+                        {
+                            yield return null;
+                        }
+                    }
+                }
+                else
+                {
+                    var shieldObject = currentPlayer.transform.GetChild(1).gameObject;
+                    shieldObject.SetActive(true);
+                    yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition));
+                    shieldObject.SetActive(false);
+                }
+                
+                swordObject.SetActive(false);
             }
 
             Player targetPlayer = (i == 0) ? opponentPlayer : currentPlayer;

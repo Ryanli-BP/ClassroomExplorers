@@ -81,6 +81,10 @@ public class Player : MonoBehaviour
 
     public void HealPLayer(int amount)
     {
+        if (Status == Status.Dead) //cannot heal a dead player
+        {
+            return;
+        }
         Health = Math.Min(MAX_HEALTH, Health + amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);

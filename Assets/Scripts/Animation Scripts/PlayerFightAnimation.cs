@@ -4,8 +4,8 @@ using System.Collections;
 public class PlayerFightAnimation : MonoBehaviour
 {
     [Header("Animation Settings")]
-    [SerializeField] private float attackSpeed = 2f;
-    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float attackSpeed = 2.5f;
+    [SerializeField] private float jumpHeight = 3f;
     
     private bool isAttacking = false;
     public bool IsAttacking => isAttacking;
@@ -18,33 +18,39 @@ public class PlayerFightAnimation : MonoBehaviour
         }
     }
 
-    private IEnumerator LeapStrikeAnimation(Vector3 targetPosition)
+        private IEnumerator LeapStrikeAnimation(Vector3 targetPosition)
     {
         isAttacking = true;
         Vector3 startPosition = transform.position;
-        Vector3 midPoint = Vector3.Lerp(startPosition, targetPosition, 0.6f); // Strike position
+        Vector3 strikePosition = new Vector3(
+            targetPosition.x + ((startPosition.x - targetPosition.x) * 0.1f), 
+            targetPosition.y, 
+            targetPosition.z
+        );
+        
         float journey = 0f;
+        Quaternion originalRotation = transform.rotation;
 
         // Forward leap
         while (journey <= 1f)
         {
             journey += Time.deltaTime * attackSpeed;
             
-            // Calculate forward movement
-            float x = Mathf.Lerp(startPosition.x, midPoint.x, journey);
-            
-            // Parabolic jump with higher arc
-            float y = startPosition.y + (-4f * jumpHeight * journey * journey + 4f * jumpHeight * journey);
-            
-            // Keep Z position constant
+            float x = Mathf.Lerp(startPosition.x, strikePosition.x, journey);
+            float heightCurve = Mathf.Sin(journey * Mathf.PI);
+            float y = startPosition.y + (heightCurve * jumpHeight);
             float z = startPosition.z;
             
             transform.position = new Vector3(x, y, z);
             
-            // Rotate for strike at peak
-            if (journey > 0.4f && journey < 0.6f)
+            // Forward tilt during leap
+            float tiltAngle = Mathf.Lerp(0, -30, journey);
+            transform.rotation = originalRotation * Quaternion.Euler(tiltAngle, 0, 0);
+            
+            // Attack spin at apex
+            if (journey > 0.45f && journey < 0.55f)
             {
-                transform.Rotate(0, 0, -360 * Time.deltaTime); // Add a spin
+                transform.Rotate(0, 0, -720 * Time.deltaTime);
             }
             
             yield return null;
@@ -52,22 +58,29 @@ public class PlayerFightAnimation : MonoBehaviour
 
         // Return to start position
         journey = 0f;
-        Vector3 attackPosition = transform.position;
+        Vector3 returnStartPos = transform.position;
+        Quaternion attackRotation = transform.rotation;
         
         while (journey <= 1f)
         {
             journey += Time.deltaTime * attackSpeed;
             
-            float x = Mathf.Lerp(attackPosition.x, startPosition.x, journey);
-            float y = attackPosition.y + (-4f * jumpHeight * journey * journey + 4f * jumpHeight * journey);
+            float x = Mathf.Lerp(returnStartPos.x, startPosition.x, journey);
+            float heightCurve = Mathf.Sin(journey * Mathf.PI);
+            float y = startPosition.y + (heightCurve * jumpHeight * 0.5f);
             float z = startPosition.z;
             
             transform.position = new Vector3(x, y, z);
+            
+            // Return tilt to original
+            float tiltAngle = Mathf.Lerp(-30, 0, journey);
+            transform.rotation = originalRotation * Quaternion.Euler(tiltAngle, 0, 0);
+            
             yield return null;
         }
 
         transform.position = startPosition;
-        transform.rotation = Quaternion.identity;
+        transform.rotation = originalRotation;
         isAttacking = false;
     }
 }
