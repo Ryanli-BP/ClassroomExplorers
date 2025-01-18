@@ -117,9 +117,3 @@ board_BurstDebugInformation_DoNotShip/
 .vsconfig
 *.iml
 Assets/XR/Settings/OpenXR Package Settings.asset
-
-# Track Unity scenes and prefabs
-!*.unity
-!*.prefab
-!*.meta
-!/[Aa]ssets/[Ss]cenes/**
