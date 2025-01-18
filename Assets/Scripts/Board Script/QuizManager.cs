@@ -6,7 +6,8 @@ using CsvHelper.Configuration;
 using UnityEngine;
 
 public class QuizManager : MonoBehaviour
-{
+{   
+    [SerializeField] private GameObject QuizUI;
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
@@ -42,13 +43,32 @@ public class QuizManager : MonoBehaviour
             timeRemaining -= Time.deltaTime;
             QuizDisplay.Instance.UpdateTimer(timeRemaining); // Update the timer display
 
-            if (timeRemaining <= 0)
+            if (timeRemaining <= 0 || currentQuestionIndex == questions.Count - 1)
             {
                 EndQuiz();
             }
         }
     }
 
+    public void StartNewQuiz()
+    {
+        if (questions == null || questions.Count == 0)
+        {
+            Debug.LogError("No questions loaded!");
+            return;
+        }
+
+        QuizUI.SetActive(true);
+        timeRemaining = quizDuration;
+        currentQuestionIndex = -1;
+        isQuizActive = true;
+        
+        // Reset and enable answers
+        AnswerButtons.Instance.EnableButtons();
+        
+        // Show first question
+        DisplayNextQuestion();
+    }
     private void LoadQuestionsFromCSV()
     {
         if (csvFile == null)
@@ -82,6 +102,7 @@ public class QuizManager : MonoBehaviour
     private void EndQuiz()
     {
         isQuizActive = false;
+        QuizUI.SetActive(false);
         Debug.Log("Quiz has ended!");
         // Additional logic to handle the end of the quiz can be added here
     }

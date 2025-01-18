@@ -78,6 +78,18 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerTurnEnd:
                 EndPlayerTurn();
                 break;
+            
+            case GameState.PlayerLandQuiz:
+                HandleQuizStart();
+                break;
+            
+            case GameState.PlayerInQuiz:
+                HandleQuizEnd();
+                break;  
+            
+            case GameState.PlayerEndQuiz:
+                HandleQuizEnd();
+                break;
 
             case GameState.GameEnd:
                 EndGame();
@@ -152,7 +164,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void HandleQuizStart()
+    {
+        UIManager.Instance.SetBoardUIActive(false);
+        QuizManager.Instance.StartNewQuiz();
+        ChangeState(GameState.PlayerInQuiz);
+    }
 
+    private void HandleQuizEnd()
+    {
+        UIManager.Instance.SetBoardUIActive(true);
+        ChangeState(GameState.PlayerTurnEnd);
+    }
+
+    public void OnQuizComplete()
+    {
+        ChangeState(GameState.PlayerEndQuiz);
+    }
     private void StartPlayerMovement()
     {
         Debug.Log("Starting player movement");
@@ -223,5 +251,8 @@ public enum GameState
     PlayerCombat,
     PlayerFinishedMoving,
     PlayerTurnEnd,
+    PlayerLandQuiz, 
+    PlayerInQuiz,
+    PlayerEndQuiz,
     GameEnd
 }

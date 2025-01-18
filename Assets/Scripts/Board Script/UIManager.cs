@@ -49,6 +49,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject starPrefab; // Reference to the star prefab
     [SerializeField] private Canvas mainCanvas; // Reference to the main canvas
 
+    [SerializeField] private GameObject boardUI;
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -265,6 +268,18 @@ public class UIManager : MonoBehaviour
             pvpPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
+    }
+
+    public void SetBoardUIActive(bool active)
+    {
+        if (boardUI != null)
+        {
+            boardUI.SetActive(active);
+        }
+        else
+        {
+            Debug.LogError("Board UI reference missing in UIManager");
+        }
     }
 }
 public static class ColorExtensions
