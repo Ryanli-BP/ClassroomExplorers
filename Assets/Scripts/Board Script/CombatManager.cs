@@ -35,7 +35,6 @@ public class CombatManager : MonoBehaviour
         // Teleport to fighting area
         TeleportToFightingArea(currentPlayer, opponentPlayer);
 
-        // Implement fighting logic here
         yield return StartCoroutine(PlayerCombat(currentPlayer, opponentPlayer));
         Debug.Log("Teleporting back to board...");
 
@@ -100,21 +99,18 @@ public class CombatManager : MonoBehaviour
             }
 
             //Attack "animation"
-            if (i==0)
+            if (i == 0)
             {
-                currentPlayer.transform.position = opponentPlayerPosition - new Vector3(1, 0, 0);
-                yield return new WaitForSeconds(0.5f);
-                currentPlayer.transform.position = currentPlayerPosition;
+                yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition));
             }
             else
             {
-                opponentPlayer.transform.position = currentPlayerPosition + new Vector3(1, 0, 0);
-                yield return new WaitForSeconds(0.5f);
-                opponentPlayer.transform.position = opponentPlayerPosition;
+                yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition));
             }
 
             Player targetPlayer = (i == 0) ? opponentPlayer : currentPlayer;
-
+            
+            //Calculate damage
             if (isEvade == true)
             {
                 targetPlayer.LoseHealth((evdValue > atkValue) ? 0 : atkValue);
@@ -124,6 +120,7 @@ public class CombatManager : MonoBehaviour
                 targetPlayer.LoseHealth(Math.Max(1, atkValue - dfdValue));
             }
 
+            //Trigger death if die
             if (currentPlayer.Health <= 0)
             {
                 currentPlayer.Dies();
