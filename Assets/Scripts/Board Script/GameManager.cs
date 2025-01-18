@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
                 break;
             
             case GameState.PlayerLandQuiz:
+                Debug.Log($"Landing on quiz. Player position: {PlayerManager.Instance.GetCurrentPlayer().transform.position}");
                 HandleQuizStart();
                 break;
             
@@ -174,6 +175,7 @@ public class GameManager : MonoBehaviour
     public void HandleQuizEnd()
     {
         UIManager.Instance.SetBoardUIActive(true);
+        Debug.Log($"Quiz ended. Player postion: {PlayerManager.Instance.GetCurrentPlayer().transform.position}"); 
         ChangeState(GameState.PlayerTurnEnd);
     }
 
