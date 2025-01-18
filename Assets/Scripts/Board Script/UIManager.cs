@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button fightButton;
     [SerializeField] private Button continueMovingButton;
 
-    [SerializeField] private TextMeshProUGUI centreText;
+    [SerializeField] private GameObject centreDisplayPanel;
     [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
@@ -66,6 +66,11 @@ public class UIManager : MonoBehaviour
     {
         rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
         evadeButton.onClick.AddListener(OnEvadeButtonClicked);
+
+        directionPanel.SetActive(false);
+        homePromptPanel.SetActive(false);
+        pvpPromptPanel.SetActive(false);
+        centreDisplayPanel.SetActive(false);
         rollDiceButtonPanel.gameObject.SetActive(false);
         evadeButtonPanel.gameObject.SetActive(false);
     }
@@ -97,28 +102,32 @@ public class UIManager : MonoBehaviour
 
     public async void DisplayDiceTotalResult(int totalResult)
     {
-        centreText.text = $"{totalResult}";
+        centreDisplayPanel.SetActive(true);
+        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{totalResult}";
         await Task.Delay(500); 
-        centreText.text = "";
+        centreDisplayPanel.SetActive(false);
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
     public async void DisplayPointChange(int pointsChange)
     {
-        string originalColor = centreText.color.ToHexString(); // Store the original color
+        centreDisplayPanel.SetActive(true);
+        string originalColor = centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().color.ToHexString(); // Store the original color
         string colorTag = pointsChange > 0 ? "<color=#FFFF9B>" : "<color=#8BBFFF>";
         string symbol = pointsChange > 0 ? "+" : "";
-        centreText.text = $"{colorTag}{symbol}{pointsChange}</color>";
+
+        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{colorTag}{symbol}{pointsChange}</color>";
         await Task.Delay(500); 
-        centreText.text = "";
-        centreText.color = originalColor.ToColor(); // Restore the original color
+        centreDisplayPanel.SetActive(false);
+        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().color = originalColor.ToColor(); // Restore the original color
     }
 
     public async void DisplayLevelUp()
     {
-        centreText.text = "Level Up!";
+        centreDisplayPanel.SetActive(true);
+        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Level Up!";
         await Task.Delay(500); 
-        centreText.text = "";
+        centreDisplayPanel.SetActive(false);
     }
 
     public void UpdatePlayerPoints(int playerIndex, int points, int levelUpPoints)

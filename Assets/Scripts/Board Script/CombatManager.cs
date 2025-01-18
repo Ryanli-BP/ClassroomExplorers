@@ -35,7 +35,6 @@ public class CombatManager : MonoBehaviour
         // Teleport to fighting area
         TeleportToFightingArea(currentPlayer, opponentPlayer);
 
-        // Implement fighting logic here
         yield return StartCoroutine(PlayerCombat(currentPlayer, opponentPlayer));
         Debug.Log("Teleporting back to board...");
 
@@ -100,21 +99,81 @@ public class CombatManager : MonoBehaviour
             }
 
             //Attack "animation"
-            if (i==0)
+            if (i == 0)
             {
-                currentPlayer.transform.position = opponentPlayerPosition - new Vector3(1, 0, 0);
-                yield return new WaitForSeconds(0.5f);
-                currentPlayer.transform.position = currentPlayerPosition;
+                var swordObject = currentPlayer.transform.GetChild(0).gameObject;
+                swordObject.SetActive(true);
+
+                if (isEvade == true)
+                {
+                    // Start both animations simultaneously
+                    IEnumerator attackAnim = currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition);
+                    IEnumerator evadeAnim = null;
+                    
+                    if (evdValue > atkValue)
+                    {
+                        evadeAnim = opponentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade();
+                        StartCoroutine(evadeAnim);
+                    }
+                    
+                    yield return attackAnim;
+                    if (evadeAnim != null)
+                    {
+                        while (opponentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
+                        {
+                            yield return null;
+                        }
+                    }
+                }
+                else
+                {
+                    var shieldObject = opponentPlayer.transform.GetChild(1).gameObject;
+                    shieldObject.SetActive(true);
+                    yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition));
+                    shieldObject.SetActive(false);
+                }
+                
+                swordObject.SetActive(false);
             }
             else
             {
-                opponentPlayer.transform.position = currentPlayerPosition + new Vector3(1, 0, 0);
-                yield return new WaitForSeconds(0.5f);
-                opponentPlayer.transform.position = opponentPlayerPosition;
+                var swordObject = opponentPlayer.transform.GetChild(0).gameObject;
+                swordObject.SetActive(true);
+                
+                if (isEvade == true)
+                {
+                    IEnumerator attackAnim = opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition);
+                    IEnumerator evadeAnim = null;
+                    
+                    if (evdValue > atkValue)
+                    {
+                        evadeAnim = currentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade(false);
+                        StartCoroutine(evadeAnim);
+                    }
+                    
+                    yield return attackAnim;
+                    if (evadeAnim != null)
+                    {
+                        while (currentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
+                        {
+                            yield return null;
+                        }
+                    }
+                }
+                else
+                {
+                    var shieldObject = currentPlayer.transform.GetChild(1).gameObject;
+                    shieldObject.SetActive(true);
+                    yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition));
+                    shieldObject.SetActive(false);
+                }
+                
+                swordObject.SetActive(false);
             }
 
             Player targetPlayer = (i == 0) ? opponentPlayer : currentPlayer;
-
+            
+            //Calculate damage
             if (isEvade == true)
             {
                 targetPlayer.LoseHealth((evdValue > atkValue) ? 0 : atkValue);
@@ -124,6 +183,7 @@ public class CombatManager : MonoBehaviour
                 targetPlayer.LoseHealth(Math.Max(1, atkValue - dfdValue));
             }
 
+            //Trigger death if die
             if (currentPlayer.Health <= 0)
             {
                 currentPlayer.Dies();
