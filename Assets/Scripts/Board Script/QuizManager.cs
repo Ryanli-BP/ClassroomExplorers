@@ -8,8 +8,8 @@ using UnityEngine;
 public class QuizManager : MonoBehaviour
 {   
     [SerializeField] private GameObject QuizUI;
-
-
+    [SerializeField] private float slideSpeed = 1f;
+    private RectTransform quizRect;
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
@@ -26,6 +26,7 @@ public class QuizManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            quizRect = QuizUI.GetComponent<RectTransform>();
         }
         else
         {
@@ -46,26 +47,30 @@ public class QuizManager : MonoBehaviour
             }
         }
     }
-
     public void StartNewQuiz()
     {
         LoadQuestionsFromCSV();
-        if (questions == null || questions.Count == 0)
-        {
-            Debug.LogError("No questions loaded!");
-            return;
-        }
+        if (questions == null || questions.Count == 0) return;
+        
         UIManager.Instance.SetBoardUIActive(false);
         QuizUI.SetActive(true);
-        timeRemaining = quizDuration;
-        currentQuestionIndex = -1;
-        isQuizActive = true;
         
-        // Reset and enable answers
-        AnswerButtons.Instance.EnableButtons();
+        // Store final position
+        Vector3 finalPosition = new Vector3(QuizUI.transform.localPosition.x, 0f, QuizUI.transform.localPosition.z);
         
-        // Show first question
-        DisplayNextQuestion();
+        LeanTween.moveLocalY(QuizUI, 0f, slideSpeed)
+            .setEase(LeanTweenType.easeOutBack)
+            .setOnComplete(() => {
+                // Ensure position is maintained
+                QuizUI.transform.localPosition = finalPosition;
+                
+                // Start quiz after animation
+                timeRemaining = quizDuration;
+                currentQuestionIndex = -1;
+                isQuizActive = true;
+                AnswerButtons.Instance.EnableButtons();
+                DisplayNextQuestion();
+            });
     }
     private void LoadQuestionsFromCSV()
     {
