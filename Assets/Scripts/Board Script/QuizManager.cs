@@ -55,23 +55,26 @@ public class QuizManager : MonoBehaviour
         UIManager.Instance.SetBoardUIActive(false);
         QuizUI.SetActive(true);
         
-        // Store final position
-        Vector3 finalPosition = new Vector3(QuizUI.transform.localPosition.x, 0f, QuizUI.transform.localPosition.z);
+        Vector3 finalPosition = new Vector3(QuizUI.transform.localPosition.x, -540f, QuizUI.transform.localPosition.z);
         
-        LeanTween.moveLocalY(QuizUI, 0f, slideSpeed)
+        LeanTween.moveLocalY(QuizUI, -540f, slideSpeed)
             .setEase(LeanTweenType.easeOutBack)
             .setOnComplete(() => {
-                // Ensure position is maintained
-                QuizUI.transform.localPosition = finalPosition;
-                
-                // Start quiz after animation
-                timeRemaining = quizDuration;
-                currentQuestionIndex = -1;
-                isQuizActive = true;
-                AnswerButtons.Instance.EnableButtons();
-                DisplayNextQuestion();
+                QuizUI.transform.localPosition = finalPosition;  // Lock position
+                StartQuizLogic();
             });
     }
+
+    private void StartQuizLogic()
+    {
+    timeRemaining = quizDuration;
+    currentQuestionIndex = -1;
+    isQuizActive = true;
+    AnswerButtons.Instance.EnableButtons();
+    DisplayNextQuestion();
+    }
+
+
     private void LoadQuestionsFromCSV()
     {
         if (csvFile == null)
@@ -99,21 +102,27 @@ public class QuizManager : MonoBehaviour
     private void EndQuiz()
     {
         isQuizActive = false;
-        QuizUI.SetActive(false);
-        Debug.Log("Quiz has ended!");
-        int pointsToAward = correctAnswerCount * 10;
-        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
-
-        correctAnswerCount = 0;
-        Debug.Log($"Player {currentPlayer.getPlayerID()} scored {pointsToAward} points!");
-        currentPlayer.AddPoints(pointsToAward);
-
-        if (pointsToAward > 0)
-        {
-            UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
-        }
         
-        GameManager.Instance.HandleQuizEnd();
+        LeanTween.moveLocalY(QuizUI, -1080f, slideSpeed)
+            .setEase(LeanTweenType.easeInBack)
+            .setOnComplete(() => {
+                QuizUI.SetActive(false);
+                HandleQuizComplete();
+            });
+    }
+
+    private void HandleQuizComplete()
+    {
+    int pointsToAward = correctAnswerCount * 10;
+    Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+    correctAnswerCount = 0;
+    
+    if (pointsToAward > 0)
+    {
+        UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
+    }
+    
+    GameManager.Instance.HandleQuizEnd();
     }
 
     public void DisplayNextQuestion()
