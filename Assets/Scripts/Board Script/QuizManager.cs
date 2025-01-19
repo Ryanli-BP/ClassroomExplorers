@@ -14,6 +14,7 @@ public class QuizManager : MonoBehaviour
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
     public float quizDuration = 60f; // Duration of the quiz in seconds
+    private int answeredQuestionsCount = 0;  
     private float timeRemaining;
     private bool isQuizActive = false;
     private int correctAnswerCount = 0;
@@ -41,7 +42,7 @@ public class QuizManager : MonoBehaviour
             timeRemaining -= Time.deltaTime;
             QuizDisplay.Instance.UpdateTimer(timeRemaining); // Update the timer display
 
-            if (timeRemaining <= 0 || currentQuestionIndex == questions.Count - 1)
+            if (timeRemaining <= 0 || answeredQuestionsCount >= questions.Count )
             {
                 EndQuiz();
             }
@@ -138,7 +139,7 @@ public class QuizManager : MonoBehaviour
     public bool CheckAnswer(int answerIndex)
     {
         if (!isQuizActive) return false;
-
+        answeredQuestionsCount++;
         string selectedAnswer = ((char)('A' + answerIndex)).ToString();
 
         if (selectedAnswer == questions[currentQuestionIndex].answer)
