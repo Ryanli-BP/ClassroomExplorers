@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public Action<int> OnDiceRollResultForCombat;
     public Action<bool> OnDiceResultDisplayForCombat; // New action to notify when dice result display finishes.
 
+    public int answerPointMultiplier = 10;
 
 
     private void Awake()
@@ -81,12 +82,10 @@ public class GameManager : MonoBehaviour
             
             case GameState.PlayerLandQuiz:
                 HandleQuizStart();
-                break;
-            
+                break; 
             case GameState.PlayerInQuiz:
-                HandleQuizEnd();
-                break;  
-            
+                HandleQuizClenaup();
+                break;
             case GameState.PlayerEndQuiz:
                 HandleQuizEnd();
                 break;
@@ -118,6 +117,9 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.PlayerTurnStart);
     }
 
+    public void HandleQuizLand(){
+        QuizManager.Instance.StartNewQuiz();
+    }
     private void StartPlayerTurn()
     {
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn.");
@@ -166,29 +168,42 @@ public class GameManager : MonoBehaviour
 
     public void HandleQuizStart()
     {
-        UIManager.Instance.SetBoardUIActive(false);
-        QuizManager.Instance.StartNewQuiz();
+        Debug.Log("Quiz started, transitioning to PlayerInQuiz");
         ChangeState(GameState.PlayerInQuiz);
+    }
+
+    public void HandleQuizClenaup()
+    {  
+        if (currentState == GameState.PlayerInQuiz && !QuizManager.Instance.IsQuizActive() )
+        {
+            int playerId = QuizManager.Instance.GetCurrPlayerID();
+            int points = QuizManager.Instance.GetAnswerPoints();
+            Debug.Log($"points : {points}");
+            if (points > 0)
+            {
+                LeanTween.delayedCall(1f, () =>
+                {
+                    UIManager.Instance.DisplayGainStarAnimation(playerId);
+                    UIManager.Instance.DisplayPointChange(points);
+                });
+
+                LeanTween.delayedCall(1.5f, () =>
+                {ChangeState(GameState.PlayerEndQuiz);
+                });
+            }
+        }
     }
 
     public void HandleQuizEnd()
     {
         Debug.Log("Quiz ended, transitioning to PlayerTurnEnd");
-        // Only handle state change once
-        if (currentState == GameState.PlayerInQuiz)
-        {
-            ChangeState(GameState.PlayerEndQuiz);
-        }
-        else if (currentState == GameState.PlayerEndQuiz) 
+
+        if (currentState == GameState.PlayerEndQuiz) 
         {
             ChangeState(GameState.PlayerTurnEnd);
         }
     }
 
-    public void OnQuizComplete()
-    {
-        ChangeState(GameState.PlayerEndQuiz);
-    }
     private void StartPlayerMovement()
     {
         Debug.Log("Starting player movement");

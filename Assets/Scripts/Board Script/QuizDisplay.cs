@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using static QuizManager;  
 
 public class QuizDisplay : MonoBehaviour
 {

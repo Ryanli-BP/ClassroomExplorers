@@ -19,6 +19,8 @@ public class QuizManager : MonoBehaviour
     private bool isQuizActive = false;
     private int correctAnswerCount = 0;
 
+    private int pointsMultiplier = 10;
+
     private Player quizPlayer;
 
     public static QuizManager Instance { get; private set; }
@@ -52,31 +54,29 @@ public class QuizManager : MonoBehaviour
     }
     public void StartNewQuiz()
     {
+        if (isQuizActive) return;
         LoadQuestionsFromCSV();
         if (questions == null || questions.Count == 0) return;
         
+        // Initialize quiz state
         answeredQuestionsCount = 0;
         currentQuestionIndex = -1;
         correctAnswerCount = 0;
         quizPlayer = PlayerManager.Instance.GetCurrentPlayer();
-
+        
+        // Single UI transition
         UIManager.Instance.SetBoardUIActive(false);
         QuizUI.SetActive(true);
         
-        Vector3 finalPosition = new Vector3(QuizUI.transform.localPosition.x, -540f, QuizUI.transform.localPosition.z);
-        
+        // Animate quiz entry
         LeanTween.moveLocalY(QuizUI, -540f, slideSpeed)
             .setEase(LeanTweenType.easeOutBack)
             .setOnComplete(() => {
-                QuizUI.transform.localPosition = finalPosition;  // Lock position
                 StartQuizLogic();
             });
     }
 
-    public int GetCorrectAnswerCount()
-    {
-        return correctAnswerCount;
-    }
+
     private void StartQuizLogic()
     {
     timeRemaining = quizDuration;
@@ -110,6 +110,7 @@ public class QuizManager : MonoBehaviour
         Debug.Log($"Loaded {questions.Count} questions from the CSV.");
     }
 
+    
 
     private void EndQuiz()
     {
@@ -126,23 +127,20 @@ public class QuizManager : MonoBehaviour
 
     private void HandleQuizComplete()
     {
-        int pointsToAward = correctAnswerCount * 10;
+        int pointsToAward = correctAnswerCount * pointsMultiplier;
         correctAnswerCount = 0;
     
         if (pointsToAward > 0)
         {
             quizPlayer.AddPoints(pointsToAward);
-            UIManager.Instance.DisplayGainStarAnimation(quizPlayer.getPlayerID());
-            UIManager.Instance.DisplayPointChange(pointsToAward);
-
             LeanTween.delayedCall(1.5f, () => {
-                GameManager.Instance.HandleQuizEnd();
+                GameManager.Instance.HandleQuizClenaup();
             });
         
         }
         else
         {
-            GameManager.Instance.HandleQuizEnd();
+            GameManager.Instance.HandleQuizClenaup();
         }
     }
     public void DisplayNextQuestion()
@@ -172,7 +170,20 @@ public class QuizManager : MonoBehaviour
     {
         return isQuizActive;
     }
-}
+
+
+    // Getters
+
+    public int GetAnswerPoints()
+    {
+        return correctAnswerCount * pointsMultiplier;
+    }
+    public int GetCurrPlayerID()
+    {
+        return PlayerManager.Instance.GetCurrentPlayer().getPlayerID();
+    }
+
+
 
 public class Question
 {
@@ -182,4 +193,5 @@ public class Question
     public string optionC { get; set; }
     public string optionD { get; set; }
     public string answer { get; set; }
+}
 }
