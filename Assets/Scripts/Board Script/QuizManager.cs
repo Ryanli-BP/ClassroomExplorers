@@ -108,6 +108,7 @@ public class QuizManager : MonoBehaviour
             .setEase(LeanTweenType.easeInBack)
             .setOnComplete(() => {
                 QuizUI.SetActive(false);
+                UIManager.Instance.SetBoardUIActive(true);
                 HandleQuizComplete();
             });
     }
@@ -120,6 +121,7 @@ public class QuizManager : MonoBehaviour
     
     if (pointsToAward > 0)
     {
+        currentPlayer.AddPoints(pointsToAward);
         UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
     }
     
