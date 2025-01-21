@@ -173,8 +173,16 @@ public class GameManager : MonoBehaviour
 
     public void HandleQuizEnd()
     {
-        UIManager.Instance.SetBoardUIActive(true);
-        ChangeState(GameState.PlayerTurnEnd);
+        Debug.Log("Quiz ended, transitioning to PlayerTurnEnd");
+        // Only handle state change once
+        if (currentState == GameState.PlayerInQuiz)
+        {
+            ChangeState(GameState.PlayerEndQuiz);
+        }
+        else if (currentState == GameState.PlayerEndQuiz) 
+        {
+            ChangeState(GameState.PlayerTurnEnd);
+        }
     }
 
     public void OnQuizComplete()
@@ -218,6 +226,7 @@ public class GameManager : MonoBehaviour
     private void EndPlayerTurn()
     {
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn ended.");
+        IsResumingMovement = false; // Reset movement flag
         PlayerManager.Instance.GoNextPlayer();
         RoundManager.Instance.IncrementTurn();
 

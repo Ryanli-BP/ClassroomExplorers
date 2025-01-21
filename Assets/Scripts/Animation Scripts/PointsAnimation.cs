@@ -10,6 +10,7 @@ namespace UltimateClean
         [SerializeField] private float duration = 1f;
         [SerializeField] private TextMeshProUGUI text;
         private Image image;
+        
         private SlicedFilledImage slicedImage;
 
         private void Awake()
