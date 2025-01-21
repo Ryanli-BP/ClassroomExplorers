@@ -2008,6 +2008,7 @@ MonoBehaviour:
   evadeButton: {fileID: 2107093685}
   starPrefab: {fileID: 9161559492263529680, guid: b1bf89654f17832428077924ddd05f8c, type: 3}
   mainCanvas: {fileID: 989211282}
+  damageTextPrefab: {fileID: 7472290046231572112, guid: 797475c0cfdb4774cb22ae966cadbe56, type: 3}
   boardUI: {fileID: 761339815}
 --- !u!4 &217416945
 Transform:
@@ -7493,6 +7494,63 @@ MonoBehaviour:
   hasWest: 1
   HomeplayerID: 0
   tileType: 4
+--- !u!1001 &641618306
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
+      propertyPath: m_Name
+      value: CHAHIN_EARTH
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d1b819901535a3d4b82226af1dc1477c, type: 3}
 --- !u!1 &654431591
 GameObject:
   m_ObjectHideFlags: 0
@@ -14818,7 +14876,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 50
+  far clip plane: 60
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -21173,7 +21231,7 @@ Transform:
   m_GameObject: {fileID: 2023817165}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 8, z: -10}
+  m_LocalPosition: {x: 50, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -22750,3 +22808,4 @@ SceneRoots:
   - {fileID: 1030566502}
   - {fileID: 1683598218}
   - {fileID: 704303319}
+  - {fileID: 641618306}

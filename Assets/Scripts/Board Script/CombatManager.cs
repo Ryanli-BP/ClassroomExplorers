@@ -176,11 +176,18 @@ public class CombatManager : MonoBehaviour
             //Calculate damage
             if (isEvade == true)
             {
-                targetPlayer.LoseHealth((evdValue > atkValue) ? 0 : atkValue);
+                int damage = (evdValue > atkValue) ? 0 : atkValue;
+                targetPlayer.LoseHealth(damage);
+                if (damage > 0)
+                {
+                    UIManager.Instance.DisplayDamageNumber(targetPlayer.transform.position, damage);
+                }
             }
             else
             {
-                targetPlayer.LoseHealth(Math.Max(1, atkValue - dfdValue));
+                int damage = Math.Max(1, atkValue - dfdValue);
+                targetPlayer.LoseHealth(damage);
+                UIManager.Instance.DisplayDamageNumber(targetPlayer.transform.position, damage);
             }
 
             //Trigger death if die
