@@ -74,7 +74,7 @@ public class TileManager : MonoBehaviour
             
             case TileType.Quiz:
                 Debug.Log("Quiz tile");
-                GameManager.Instance.HandleQuizLand();
+                QuizManager.Instance.StartNewQuiz();
                 break;
 
             case TileType.Home:
