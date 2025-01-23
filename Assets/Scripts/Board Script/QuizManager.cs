@@ -19,8 +19,6 @@ public class QuizManager : MonoBehaviour
     private bool isQuizActive = false;
     private int correctAnswerCount = 0;
 
-    private Player quizPlayer;
-
     public static QuizManager Instance { get; private set; }
 
     private void Awake()
@@ -55,11 +53,6 @@ public class QuizManager : MonoBehaviour
         LoadQuestionsFromCSV();
         if (questions == null || questions.Count == 0) return;
         
-        answeredQuestionsCount = 0;
-        currentQuestionIndex = -1;
-        correctAnswerCount = 0;
-        quizPlayer = PlayerManager.Instance.GetCurrentPlayer();
-
         UIManager.Instance.SetBoardUIActive(false);
         QuizUI.SetActive(true);
         
@@ -73,10 +66,6 @@ public class QuizManager : MonoBehaviour
             });
     }
 
-    public int GetCorrectAnswerCount()
-    {
-        return correctAnswerCount;
-    }
     private void StartQuizLogic()
     {
     timeRemaining = quizDuration;
@@ -126,25 +115,19 @@ public class QuizManager : MonoBehaviour
 
     private void HandleQuizComplete()
     {
-        int pointsToAward = correctAnswerCount * 10;
-        correctAnswerCount = 0;
+    int pointsToAward = correctAnswerCount * 10;
+    Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+    correctAnswerCount = 0;
     
-        if (pointsToAward > 0)
-        {
-            quizPlayer.AddPoints(pointsToAward);
-            UIManager.Instance.DisplayGainStarAnimation(quizPlayer.getPlayerID());
-            UIManager.Instance.DisplayPointChange(pointsToAward);
-
-            LeanTween.delayedCall(1.5f, () => {
-                GameManager.Instance.HandleQuizEnd();
-            });
-        
-        }
-        else
-        {
-            GameManager.Instance.HandleQuizEnd();
-        }
+    if (pointsToAward > 0)
+    {
+        currentPlayer.AddPoints(pointsToAward);
+        UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
     }
+    
+    GameManager.Instance.HandleQuizEnd();
+    }
+
     public void DisplayNextQuestion()
     {
         if (!isQuizActive) return;
