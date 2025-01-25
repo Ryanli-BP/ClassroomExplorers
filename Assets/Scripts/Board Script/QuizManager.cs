@@ -1,9 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
 using UnityEngine;
+ 
 
 public class QuizManager : MonoBehaviour
 {   
@@ -18,6 +20,9 @@ public class QuizManager : MonoBehaviour
     private float timeRemaining;
     private bool isQuizActive = false;
     private int correctAnswerCount = 0;
+    private bool isTransitioning = false;
+
+    private Player quizPlayer;
 
     public static QuizManager Instance { get; private set; }
 
@@ -50,20 +55,58 @@ public class QuizManager : MonoBehaviour
     }
     public void StartNewQuiz()
     {
+        if (isTransitioning || isQuizActive) return;
+        StartCoroutine(StartQuizSequence());
+    }
+
+    private IEnumerator StartQuizSequence()
+    {
+        isTransitioning = true;
         LoadQuestionsFromCSV();
-        if (questions == null || questions.Count == 0) return;
-        
+        if (questions == null || questions.Count == 0)
+        {
+            isTransitioning = false;
+            yield break;
+        }
+
+        quizPlayer = PlayerManager.Instance.GetCurrentPlayer();
+        answeredQuestionsCount = 0;
+        currentQuestionIndex = -1;
+        correctAnswerCount = 0;
+        timeRemaining = quizDuration;
+
+        yield return new WaitForSeconds(0.1f);
         UIManager.Instance.SetBoardUIActive(false);
+        
+        yield return new WaitForSeconds(0.2f);
         QuizUI.SetActive(true);
         
-        Vector3 finalPosition = new Vector3(QuizUI.transform.localPosition.x, -540f, QuizUI.transform.localPosition.z);
-        
         LeanTween.moveLocalY(QuizUI, -540f, slideSpeed)
-            .setEase(LeanTweenType.easeOutBack)
-            .setOnComplete(() => {
-                QuizUI.transform.localPosition = finalPosition;  // Lock position
-                StartQuizLogic();
-            });
+            .setEase(LeanTweenType.easeOutBack);
+            
+        yield return new WaitForSeconds(slideSpeed);
+        isQuizActive = true;
+        isTransitioning = false;
+        StartQuizLogic();
+    }
+
+    private IEnumerator EndQuizSequence()
+    {
+        isTransitioning = true;
+        isQuizActive = false;
+        
+        LeanTween.moveLocalY(QuizUI, -1080f, slideSpeed)
+            .setEase(LeanTweenType.easeInBack);
+            
+        yield return new WaitForSeconds(slideSpeed);
+        QuizUI.SetActive(false);
+        
+        yield return new WaitForSeconds(0.2f);
+        UIManager.Instance.SetBoardUIActive(true);
+        
+        yield return new WaitForSeconds(0.1f);
+        isTransitioning = false;
+        HandleQuizComplete();
     }
 
     private void StartQuizLogic()
@@ -102,14 +145,8 @@ public class QuizManager : MonoBehaviour
 
     private void EndQuiz()
     {
-        isQuizActive = false;
-        
-        LeanTween.moveLocalY(QuizUI, -1080f, slideSpeed)
-            .setEase(LeanTweenType.easeInBack)
-            .setOnComplete(() => {
-                QuizUI.SetActive(false);
-                HandleQuizComplete();
-            });
+        if (isTransitioning) return;
+        StartCoroutine(EndQuizSequence());
     }
 
     private void HandleQuizComplete()
@@ -120,6 +157,8 @@ public class QuizManager : MonoBehaviour
     
     if (pointsToAward > 0)
     {
+        currentPlayer.AddPoints(pointsToAward);
+        UIManager.Instance.DisplayPointChange(pointsToAward);
         UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
     }
     
