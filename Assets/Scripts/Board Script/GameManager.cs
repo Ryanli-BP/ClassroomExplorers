@@ -164,6 +164,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void HandleQuizLand()
+    {
+    ChangeState(GameState.PlayerLandQuiz);
+    }   
+
     public void HandleQuizStart()
     {
         UIManager.Instance.SetBoardUIActive(false);
@@ -177,10 +182,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.PlayerTurnEnd);
     }
 
-    public void OnQuizComplete()
-    {
-        ChangeState(GameState.PlayerEndQuiz);
-    }
+
     private void StartPlayerMovement()
     {
         Debug.Log("Starting player movement");

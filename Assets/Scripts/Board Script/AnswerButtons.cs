@@ -29,6 +29,7 @@ public class AnswerButtons : MonoBehaviour
 
     public void OnAnswerSelected(int answerIndex)
     {
+        DisableAllButtons();
         bool isCorrect = QuizManager.Instance.CheckAnswer(answerIndex);
 
         if (isCorrect)
