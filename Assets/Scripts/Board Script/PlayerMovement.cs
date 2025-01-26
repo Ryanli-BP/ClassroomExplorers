@@ -7,8 +7,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Tile currentTile; // Assign the starting tile in the Inspector
-    private Direction FacingDirection; // To track the direction the player came from
-    [SerializeField] private Direction _lastDirection; // To track the direction the player came from
+    private Direction _lastDirection; // To track the direction the player came from
     private bool isMoving = false;
     private bool initialMove = true; //One time flag for removing TilePlayerID
     private int remainingSteps = 0;
@@ -30,22 +29,103 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(MoveStepByStep());
     }
 
+    private IEnumerator HandlePvPEncounter()
+    {
+        if (currentTile.TilePlayerID != 0 && 
+            currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID && 
+            PlayerManager.Instance.GetPlayerByID(currentTile.TilePlayerID).Status == Status.Alive)
+        {
+            Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
+            bool? playerChoice = null;
+
+            yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
+                playerChoice = choice;
+            }));
+
+            while (playerChoice == null)
+            {
+                yield return null;
+            }
+
+            if (playerChoice == true)
+            {
+                Debug.Log("Player chose to fight.");
+                GameManager.Instance.OnCombatTriggered();
+                yield return StartCoroutine(CombatManager.Instance.HandleFight(currentTile.TilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                GameManager.Instance.IsResumingMovement = false;
+                if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
+                {
+                    isMoving = false;
+                }
+            }
+            else
+            {
+                Debug.Log("Player chose to continue moving.");
+            }
+        }
+    }
+
+    private IEnumerator HandleHomeTile(bool initialOnHome)
+    {
+        if (currentTile.GetTileType() == TileType.Home && 
+            currentTile.GetHomePlayerID() == PlayerManager.Instance.CurrentPlayerID && 
+            !initialOnHome)
+        {
+            Debug.Log("Reached home tile. Prompting player to choose.");
+            yield return StartCoroutine(PromptManager.Instance.HandleHomeTile((choice) => {
+                if (choice)
+                {
+                    Debug.Log("Player chose to stay on the home tile.");
+                    isMoving = false;
+                }
+                else
+                {
+                    Debug.Log("Player chose to continue moving.");
+                }
+            }));
+        }
+    }
+
+    private IEnumerator HandleCrossroads(List<Direction> availableDirections)
+    {
+        if (availableDirections.Count > 1)
+        {
+            Debug.Log("At a crossroad! Waiting for player to choose a direction...");
+            List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
+            Direction? selectedDirection = null;
+            
+            yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
+                selectedDirection = direction;
+            }));
+
+            if (selectedDirection.HasValue)
+            {
+                yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
+            }
+
+            TileManager.Instance.ClearHighlightedTiles();
+        }
+        else
+        {
+            Direction nextDirection = availableDirections[0];
+            yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
+        }
+    }
+
     private IEnumerator MoveStepByStep()
     {
         isMoving = true;
-        bool initialOnHome = true; //one time flag
+        bool initialOnHome = true;
 
         while (remainingSteps >= 0)
         {
             if (initialMove)
             {
-                // Reset the TilePlayerID of the current tile
                 currentTile.TilePlayerID = 0;
                 initialMove = false;
             }
 
-            // Get valid directions based on the last direction         
-            List<Direction> availableDirections = currentTile.GetAllAvailableDirections(_lastDirection);
+            List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
             
             if (availableDirections.Count == 0)
             {
@@ -53,36 +133,9 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
             
-            if (currentTile.TilePlayerID != 0 && currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID && PlayerManager.Instance.GetPlayerByID(currentTile.TilePlayerID).Status == Status.Alive) {
-                Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
+            yield return StartCoroutine(HandlePvPEncounter());
 
-                bool? playerChoice = null; // Use nullable bool to track the choice
-
-                yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
-                    playerChoice = choice; 
-                }));
-
-                // Wait until the player's choice is resolved
-                while (playerChoice == null) {
-                    yield return null;
-                }
-
-                if (playerChoice == true) {
-                    Debug.Log("Player chose to fight.");
-                    GameManager.Instance.OnCombatTriggered();
-                    yield return StartCoroutine(CombatManager.Instance.HandleFight(currentTile.TilePlayerID, PlayerManager.Instance.CurrentPlayerID));
-                    GameManager.Instance.IsResumingMovement = false; // needed for states to work correctly after combat
-                    if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead) 
-                    {
-                        isMoving = false;
-                        break;
-                    }
-                } else {
-                    Debug.Log("Player chose to continue moving.");
-                }
-            }
-
-            if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead) 
+            if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
             {
                 Debug.Log("Player is dead. Cannot move.");
                 break;
@@ -94,53 +147,15 @@ public class PlayerMovement : MonoBehaviour
                 break;
             }
 
-            // Prompt the player if they reach their home tile
-            if (currentTile.GetTileType() == TileType.Home  && currentTile.GetHomePlayerID() == PlayerManager.Instance.CurrentPlayerID && !initialOnHome)
-            {
-                Debug.Log("Reached home tile. Prompting player to choose.");
-                yield return StartCoroutine(PromptManager.Instance.HandleHomeTile((choice) => {
-                    if (choice)
-                    {
-                        Debug.Log("Player chose to stay on the home tile.");
-                        isMoving = false;
-                    }
-                    else
-                    {
-                        Debug.Log("Player chose to continue moving.");
-                    }
-                }));
-                if (!isMoving) { break; } // Exit if movement is stopped
-            }
+            yield return StartCoroutine(HandleHomeTile(initialOnHome));
+            if (!isMoving) { break; }
 
             initialOnHome = false;
 
-            // If at a crossroads, stop and wait for player input
-            if (availableDirections.Count > 1)
-            {
-                Debug.Log("At a crossroad! Waiting for player to choose a direction...");
-                List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
-                Direction? selectedDirection = null;
-                
-                yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
-                    selectedDirection = direction;
-                }));
-
-                if (selectedDirection.HasValue)
-                {
-                    yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
-                }
-
-                TileManager.Instance.ClearHighlightedTiles();
-            }
-            else
-            {
-                // Move in the only available direction
-                Direction nextDirection = availableDirections[0];
-                yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
-            }
+            yield return StartCoroutine(HandleCrossroads(availableDirections));
 
             remainingSteps--;
-            yield return new WaitForSeconds(0.05f); // Optional delay for smoother movement
+            yield return new WaitForSeconds(0.05f);
         }
 
         isMoving = false;

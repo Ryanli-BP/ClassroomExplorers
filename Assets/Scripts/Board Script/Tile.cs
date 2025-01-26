@@ -37,13 +37,13 @@ public class Tile : MonoBehaviour
     }
 
     // Return all valid directions (used for crossroads)
-    public List<Direction> GetAllAvailableDirections(Direction fromDirection)
+    public List<Direction> GetAllAvailableDirections()
     {
         List<Direction> validDirections = new List<Direction>();
-        if (hasNorth && fromDirection != Direction.South) validDirections.Add(Direction.North);
-        if (hasEast && fromDirection != Direction.West) validDirections.Add(Direction.East);
-        if (hasSouth && fromDirection != Direction.North) validDirections.Add(Direction.South);
-        if (hasWest && fromDirection != Direction.East) validDirections.Add(Direction.West);
+        if (hasNorth) validDirections.Add(Direction.North);
+        if (hasEast) validDirections.Add(Direction.East);
+        if (hasSouth) validDirections.Add(Direction.South);
+        if (hasWest) validDirections.Add(Direction.West);
 
         return validDirections;
     }

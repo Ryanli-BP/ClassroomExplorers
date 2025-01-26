@@ -107,6 +107,8 @@ public class TileManager : MonoBehaviour
                 if (destinationTile != null)
                 {
                     PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position);
+                    tile.TilePlayerID = 0;
+                    destinationTile.TilePlayerID = currentPlayerID; //register the teleportation
                 }
                 break;
         }
@@ -131,7 +133,7 @@ public class TileManager : MonoBehaviour
             return;
         }
 
-        List<Direction> directions = tile.GetAllAvailableDirections(Direction.None);
+        List<Direction> directions = tile.GetAllAvailableDirections();
         foreach (Direction direction in directions)
         {
             Tile nextTile = GetNextTile(tile, direction);
