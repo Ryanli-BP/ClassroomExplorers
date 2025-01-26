@@ -92,7 +92,7 @@ public class TileManager : MonoBehaviour
             
             case TileType.Quiz:
                 Debug.Log("Quiz tile");
-                QuizManager.Instance.StartNewQuiz();
+                GameManager.Instance.HandleQuizLand();
                 break;
 
             case TileType.Home:
