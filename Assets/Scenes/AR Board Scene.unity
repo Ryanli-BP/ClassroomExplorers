@@ -369,6 +369,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (40)
@@ -1144,7 +1148,7 @@ MonoBehaviour:
   hasSouth: 0
   hasWest: 0
   HomeplayerID: 0
-  tileType: 0
+  tileType: 5
 --- !u!1 &139631133
 GameObject:
   m_ObjectHideFlags: 0
@@ -3671,6 +3675,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (29)
@@ -5220,7 +5228,7 @@ MonoBehaviour:
   hasSouth: 0
   hasWest: 0
   HomeplayerID: 0
-  tileType: 0
+  tileType: 5
 --- !u!1001 &526129619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10760,7 +10768,7 @@ MonoBehaviour:
   hasSouth: 0
   hasWest: 0
   HomeplayerID: 0
-  tileType: 0
+  tileType: 5
 --- !u!114 &967765575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10839,7 +10847,7 @@ MonoBehaviour:
   hasSouth: 0
   hasWest: 1
   HomeplayerID: 0
-  tileType: 0
+  tileType: 5
 --- !u!1 &989211279
 GameObject:
   m_ObjectHideFlags: 0
@@ -13487,6 +13495,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (24)
@@ -14208,7 +14220,7 @@ MonoBehaviour:
   hasSouth: 1
   hasWest: 0
   HomeplayerID: 0
-  tileType: 0
+  tileType: 5
 --- !u!114 &1235857680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15084,7 +15096,7 @@ MonoBehaviour:
   hasSouth: 0
   hasWest: 0
   HomeplayerID: 0
-  tileType: 0
+  tileType: 5
 --- !u!114 &1319847630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16972,7 +16984,7 @@ MonoBehaviour:
   hasSouth: 0
   hasWest: 0
   HomeplayerID: 0
-  tileType: 0
+  tileType: 5
 --- !u!1 &1538874187
 GameObject:
   m_ObjectHideFlags: 0
@@ -17841,6 +17853,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (26)
@@ -18282,6 +18298,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (10)
@@ -18923,6 +18943,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (5)
@@ -21332,7 +21356,7 @@ Transform:
   m_GameObject: {fileID: 2023817165}
   serializedVersion: 2
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 50, y: 8, z: -10}
+  m_LocalPosition: {x: 0, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -22017,6 +22041,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (9)

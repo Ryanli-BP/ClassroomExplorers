@@ -117,3 +117,4 @@ board_BurstDebugInformation_DoNotShip/
 .vsconfig
 *.iml
 Assets/XR/Settings/OpenXR Package Settings.asset
+/Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials

@@ -10,6 +10,8 @@ public class TileManager : MonoBehaviour
     private Dictionary<Vector3, Tile> tileDictionary = new Dictionary<Vector3, Tile>();
     private List<GameObject> activeHighlights = new List<GameObject>(); // Store active highlight overlays
 
+    private List<Tile> portalTiles = new List<Tile>(); // Add this field
+
     void Awake()
     {
         if (Instance == null)
@@ -31,6 +33,10 @@ public class TileManager : MonoBehaviour
             foreach (var tile in allTiles)
             {
                 tileDictionary[tile.transform.position] = tile;
+                if (tile.GetTileType() == TileType.Portal)
+                {
+                    portalTiles.Add(tile);
+                }
             }
         }
         else
@@ -43,6 +49,18 @@ public class TileManager : MonoBehaviour
     {
         tileDictionary.TryGetValue(position, out Tile tile);
         return tile;
+    }
+
+    private Tile GetRandomPortalTile(Tile currentTile)
+    {
+        if (portalTiles.Count <= 1) return null;
+        
+        List<Tile> availablePortals = new List<Tile>(portalTiles);
+        availablePortals.Remove(currentTile);
+        if (availablePortals.Count == 0) return null;
+        
+        int randomIndex = Random.Range(0, availablePortals.Count);
+        return availablePortals[randomIndex];
     }
 
     public void getTileAction(Tile tile)
@@ -81,6 +99,15 @@ public class TileManager : MonoBehaviour
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
                 PlayerManager.Instance.GetCurrentPlayer().HealPLayer(1);
+                break;
+
+            case TileType.Portal:
+                Debug.Log("Portal tile");
+                Tile destinationTile = GetRandomPortalTile(tile);
+                if (destinationTile != null)
+                {
+                    PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position);
+                }
                 break;
         }
     }
