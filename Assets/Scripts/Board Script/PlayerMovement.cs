@@ -132,8 +132,9 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-            
+            Debug.Log("PVP ENCOUNTYER ACTIVATE");
             yield return StartCoroutine(HandlePvPEncounter());
+            Debug.Log("PVP ENCOUNTYER DONE");
 
             if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead) //check if dead
             {
@@ -165,7 +166,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MoveToNextTileCoroutine(Direction direction)
     {
-        Debug.Log("MoveToNextTile called with direction: " + direction);
         // Update last direction based on the current movement direction
         _lastDirection = direction;
 
@@ -188,13 +188,11 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        Debug.Log("Starting MoveToNextTileCoroutine to target position: " + targetPosition);
         yield return StartCoroutine(MoveToNextTileCoroutine(targetPosition));
     }
 
     private IEnumerator MoveToNextTileCoroutine(Vector3 targetPosition)
     {
-        Debug.Log("MoveToNextTileCoroutine started");
 
         currentTile = TileManager.Instance.GetTileAtPosition(targetPosition);
 

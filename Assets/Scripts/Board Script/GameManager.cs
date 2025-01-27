@@ -164,6 +164,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void HandleCombatEnd()
+    {
+        ChangeState(GameState.PlayerMovement);
+    }
+
     public void HandleQuizLand()
     {
     ChangeState(GameState.PlayerLandQuiz);
