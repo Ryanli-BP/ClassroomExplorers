@@ -2015,6 +2015,7 @@ MonoBehaviour:
   rollDiceButton: {fileID: 1220653429}
   evadeButton: {fileID: 2107093685}
   starPrefab: {fileID: 9161559492263529680, guid: b1bf89654f17832428077924ddd05f8c, type: 3}
+  damageTextPrefab: {fileID: 4271009710820074333, guid: 797475c0cfdb4774cb22ae966cadbe56, type: 3}
   mainCanvas: {fileID: 989211282}
   boardUI: {fileID: 761339815}
 --- !u!4 &217416945
