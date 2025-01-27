@@ -49,7 +49,6 @@ public class PlayerManager : MonoBehaviour
 
     public int GetLevelUpPoints(int level)
     {
-        Debug.Log("LEVEL" + level);
         return levelUpPoints[level - 1];
     }
 

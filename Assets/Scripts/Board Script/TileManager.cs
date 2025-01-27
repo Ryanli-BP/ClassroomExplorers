@@ -108,8 +108,15 @@ public class TileManager : MonoBehaviour
                 {
                     PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position);
                     tile.TilePlayerID = 0;
-                    destinationTile.TilePlayerID = currentPlayerID; //register the teleportation
+                    destinationTile.TilePlayerID = currentPlayerID;
+                    //UIManager.Instance.DisplayTeleportEffect();
                 }
+                break;
+        
+            case TileType.Reroll:
+                Debug.Log("Reroll tile - Player gets another turn");
+                GameManager.Instance.HandleReroll();
+                //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
                 break;
         }
     }

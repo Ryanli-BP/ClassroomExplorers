@@ -77,6 +77,7 @@ public class Player : MonoBehaviour
         PlayerManager.Instance.DeadPlayers.Remove(this);
         UIManager.Instance.ClearReviveCounter(playerID);
         Debug.Log($"Player {playerID} has revived.");
+        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
     public void TeleportTo(Vector3 position)

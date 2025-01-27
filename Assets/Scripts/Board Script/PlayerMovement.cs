@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
             
             yield return StartCoroutine(HandlePvPEncounter());
 
-            if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
+            if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead) //check if dead
             {
                 Debug.Log("Player is dead. Cannot move.");
                 break;
@@ -149,7 +149,6 @@ public class PlayerMovement : MonoBehaviour
 
             yield return StartCoroutine(HandleHomeTile(initialOnHome));
             if (!isMoving) { break; }
-
             initialOnHome = false;
 
             yield return StartCoroutine(HandleCrossroads(availableDirections));
