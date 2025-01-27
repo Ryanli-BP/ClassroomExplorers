@@ -209,7 +209,12 @@ public class GameManager : MonoBehaviour
     {
         TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
 
-        if (currentState == GameState.GameEnd)
+        if (currentState == GameState.GameEnd) //if reached final level from home tile
+        {
+            return;
+        }
+
+        if (currentState == GameState.PlayerRollingMovementDice) //if land on reroll tile
         {
             return;
         }
@@ -231,6 +236,13 @@ public class GameManager : MonoBehaviour
         {
             ChangeState(GameState.PlayerTurnStart);
         }
+    }
+
+    public void HandleReroll()
+    {
+        Debug.Log("Player landed on reroll tile - starting new roll");
+        IsResumingMovement = false;
+        ChangeState(GameState.PlayerRollingMovementDice);
     }
 
     public void FinalLevelAchieved()

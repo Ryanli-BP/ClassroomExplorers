@@ -10,6 +10,8 @@ public class TileManager : MonoBehaviour
     private Dictionary<Vector3, Tile> tileDictionary = new Dictionary<Vector3, Tile>();
     private List<GameObject> activeHighlights = new List<GameObject>(); // Store active highlight overlays
 
+    private List<Tile> portalTiles = new List<Tile>(); // Add this field
+
     void Awake()
     {
         if (Instance == null)
@@ -31,6 +33,10 @@ public class TileManager : MonoBehaviour
             foreach (var tile in allTiles)
             {
                 tileDictionary[tile.transform.position] = tile;
+                if (tile.GetTileType() == TileType.Portal)
+                {
+                    portalTiles.Add(tile);
+                }
             }
         }
         else
@@ -43,6 +49,18 @@ public class TileManager : MonoBehaviour
     {
         tileDictionary.TryGetValue(position, out Tile tile);
         return tile;
+    }
+
+    private Tile GetRandomPortalTile(Tile currentTile)
+    {
+        if (portalTiles.Count <= 1) return null;
+        
+        List<Tile> availablePortals = new List<Tile>(portalTiles);
+        availablePortals.Remove(currentTile);
+        if (availablePortals.Count == 0) return null;
+        
+        int randomIndex = Random.Range(0, availablePortals.Count);
+        return availablePortals[randomIndex];
     }
 
     public void getTileAction(Tile tile)
@@ -82,6 +100,24 @@ public class TileManager : MonoBehaviour
                 PlayerManager.Instance.LevelUpPlayer();
                 PlayerManager.Instance.GetCurrentPlayer().HealPLayer(1);
                 break;
+
+            case TileType.Portal:
+                Debug.Log("Portal tile");
+                Tile destinationTile = GetRandomPortalTile(tile);
+                if (destinationTile != null)
+                {
+                    PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position);
+                    tile.TilePlayerID = 0;
+                    destinationTile.TilePlayerID = currentPlayerID;
+                    //UIManager.Instance.DisplayTeleportEffect();
+                }
+                break;
+        
+            case TileType.Reroll:
+                Debug.Log("Reroll tile - Player gets another turn");
+                GameManager.Instance.HandleReroll();
+                //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
+                break;
         }
     }
 
@@ -104,7 +140,7 @@ public class TileManager : MonoBehaviour
             return;
         }
 
-        List<Direction> directions = tile.GetAllAvailableDirections(Direction.None);
+        List<Direction> directions = tile.GetAllAvailableDirections();
         foreach (Direction direction in directions)
         {
             Tile nextTile = GetNextTile(tile, direction);

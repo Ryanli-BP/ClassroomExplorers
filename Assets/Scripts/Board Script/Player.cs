@@ -77,6 +77,22 @@ public class Player : MonoBehaviour
         PlayerManager.Instance.DeadPlayers.Remove(this);
         UIManager.Instance.ClearReviveCounter(playerID);
         Debug.Log($"Player {playerID} has revived.");
+        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+    }
+
+    public void TeleportTo(Vector3 position)
+    {
+        // Adjust Y position for proper height above tile
+        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.2f, position.z);
+        
+        // Update player position
+        transform.position = teleportPosition;
+        
+        // Update current tile reference
+        GetComponent<PlayerMovement>().CurrentTile = TileManager.Instance.GetTileAtPosition(position);
+    
+        
+        Debug.Log($"Player {playerID} teleported to position {position}");
     }
 
     public void HealPLayer(int amount)
