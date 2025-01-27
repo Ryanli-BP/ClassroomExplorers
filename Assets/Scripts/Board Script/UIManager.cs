@@ -4,9 +4,7 @@ using TMPro;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine.Events;
 using UltimateClean;
-using System.Numerics;
 
 [System.Serializable]
 public class PlayerStatsUI
@@ -48,6 +46,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Button evadeButton; // button for evade option
 
     [SerializeField] private GameObject starPrefab; // Reference to the star prefab
+    [SerializeField] private TextMeshProUGUI damageTextPrefab;
     [SerializeField] private Canvas mainCanvas; // Reference to the main canvas
 
     [SerializeField] private GameObject boardUI;
@@ -166,6 +165,39 @@ public class UIManager : MonoBehaviour
         GameObject starInstance = Instantiate(starPrefab, mainCanvas.transform); // Instantiate as child of the main canvas
         PointStarAnimation pointStarAnimation = starInstance.GetComponent<PointStarAnimation>();
         pointStarAnimation.AnimateLosePointStar(starInstance);
+    }
+
+    public async void DisplayDamageNumber(Vector3 position, int damage)
+    {
+        TextMeshProUGUI damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
+        damageText.text = $"-{damage}";
+
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(position);
+        damageText.transform.position = screenPos + new Vector3(0, 50, 0);
+
+        // Longer duration and delayed fade
+        float duration = 1f;
+        float fadeStartTime = duration * 0.5f; // Start fading halfway through
+        float startTime = Time.time;
+        Color textColor = damageText.color;
+
+        while (Time.time - startTime < duration)
+        {
+            float progress = (Time.time - startTime) / duration;
+            damageText.transform.position += Vector3.up * Time.deltaTime * 50f;
+
+            // Only fade in the second half of the animation
+            if (progress > 0.5f)
+            {
+                float fadeProgress = (progress - 0.5f) * 1f; // Normalize fade progress to 0-1
+                textColor.a = 1 - fadeProgress;
+                damageText.color = textColor;
+            }
+
+            await Task.Yield();
+        }
+
+        Destroy(damageText.gameObject);
     }
 
     public void UpdateRound(int roundNumber)
