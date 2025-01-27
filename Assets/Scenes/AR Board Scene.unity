@@ -19232,7 +19232,7 @@ MonoBehaviour:
   hasSouth: 1
   hasWest: 0
   HomeplayerID: 0
-  tileType: 0
+  tileType: 6
 --- !u!1 &1800479862
 GameObject:
   m_ObjectHideFlags: 0
@@ -21437,6 +21437,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1471103828}
     m_Modifications:
+    - target: {fileID: 4452850258131147370, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b86f88e96d38d7a419087aa02d29dd4c, type: 2}
     - target: {fileID: 6367568555104786116, guid: 97d4f78177ff50c438f4f555cc888994, type: 3}
       propertyPath: m_Name
       value: Tile (36)
