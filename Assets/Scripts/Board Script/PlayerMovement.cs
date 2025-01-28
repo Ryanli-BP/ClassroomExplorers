@@ -173,54 +173,25 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MoveToNextTileCoroutine(Direction direction)
     {
-        // Update last direction based on the current movement direction
         _lastDirection = direction;
-
-        Vector3 targetPosition = currentTile.transform.position;
-
-        // Move the player in the chosen direction (assumes tiles are spaced 1 unit apart)
-        switch (direction)
-        {
-            case Direction.North:
-                targetPosition += new Vector3(0, 0, 1);
-                break;
-            case Direction.East:
-                targetPosition += new Vector3(1, 0, 0);
-                break;
-            case Direction.South:
-                targetPosition += new Vector3(0, 0, -1);
-                break;
-            case Direction.West:
-                targetPosition += new Vector3(-1, 0, 0);
-                break;
-        }
-
-        yield return StartCoroutine(MovingToNextTileCoroutine(targetPosition));
-    }
-
-    private IEnumerator MovingToNextTileCoroutine(Vector3 targetPosition)
-    {
-        // Remove player from current tile before moving
-        if (currentTile != null)
-        {
-            currentTile.RemovePlayer(PlayerManager.Instance.CurrentPlayerID);
-        }
-
-        // Get and set new tile
-        Tile nextTile = TileManager.Instance.GetTileAtPosition(targetPosition);
+        Tile nextTile = currentTile.GetConnectedTile(direction);
 
         if (nextTile != null)
         {
-            // Add player to new tile
+            if (currentTile != null)
+            {
+                currentTile.RemovePlayer(PlayerManager.Instance.CurrentPlayerID);
+            }
+
             nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
             currentTile = nextTile;
 
             PlayerMovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovementAnimation>();
-            yield return StartCoroutine(movementAnimation.HopTo(targetPosition));
+            yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
         }
         else
         {
-            Debug.LogError("Tile not found at position: " + targetPosition);
+            Debug.LogError($"No connected tile found in direction: {direction}");
         }
     }
 }

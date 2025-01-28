@@ -9,10 +9,10 @@ public enum TileType { Normal, GainPoint, DropPoint, Home , Quiz, Portal, Reroll
 public class Tile : MonoBehaviour
 {
     // Boolean flags to indicate available directions
-    [SerializeField] private bool hasNorth;
-    [SerializeField] private bool hasEast;
-    [SerializeField] private bool hasSouth;
-    [SerializeField] private bool hasWest;
+    [SerializeField] private Tile northTile;
+    [SerializeField] private Tile eastTile;
+    [SerializeField] private Tile southTile;
+    [SerializeField] private Tile westTile;
 
 
     // Boolean flag for tile propertiers
@@ -41,12 +41,23 @@ public class Tile : MonoBehaviour
     public List<Direction> GetAllAvailableDirections()
     {
         List<Direction> validDirections = new List<Direction>();
-        if (hasNorth) validDirections.Add(Direction.North);
-        if (hasEast) validDirections.Add(Direction.East);
-        if (hasSouth) validDirections.Add(Direction.South);
-        if (hasWest) validDirections.Add(Direction.West);
-
+        if (northTile != null) validDirections.Add(Direction.North);
+        if (eastTile != null) validDirections.Add(Direction.East);
+        if (southTile != null) validDirections.Add(Direction.South);
+        if (westTile != null) validDirections.Add(Direction.West);
         return validDirections;
+    }
+
+    public Tile GetConnectedTile(Direction direction)
+    {
+        return direction switch
+        {
+            Direction.North => northTile,
+            Direction.East => eastTile,
+            Direction.South => southTile,
+            Direction.West => westTile,
+            _ => null
+        };
     }
 
     public TileType GetTileType()

@@ -134,7 +134,7 @@ public class TileManager : MonoBehaviour
 
         if (steps == 0)
         {
-            HighlightTile(tile); // Highlight only the tiles where steps reach zero
+            HighlightTile(tile);
             highlightedTiles.Add(tile);
             return;
         }
@@ -142,7 +142,7 @@ public class TileManager : MonoBehaviour
         List<Direction> directions = tile.GetAllAvailableDirections();
         foreach (Direction direction in directions)
         {
-            Tile nextTile = GetNextTile(tile, direction);
+            Tile nextTile = tile.GetConnectedTile(direction);
             if (nextTile != null)
             {
                 DFSHighlight(nextTile, steps - 1, highlightedTiles);
