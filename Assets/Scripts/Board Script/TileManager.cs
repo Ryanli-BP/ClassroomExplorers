@@ -32,7 +32,6 @@ public class TileManager : MonoBehaviour
             allTiles.AddRange(tileContainer.GetComponentsInChildren<Tile>());
             foreach (var tile in allTiles)
             {
-                tileDictionary[tile.transform.position] = tile;
                 if (tile.GetTileType() == TileType.Portal)
                 {
                     portalTiles.Add(tile);
@@ -43,12 +42,6 @@ public class TileManager : MonoBehaviour
         {
             Debug.LogError("Tile container is not assigned! Please assign the tile container in the Inspector.");
         }
-    }
-
-    public Tile GetTileAtPosition(Vector3 position)
-    {
-        tileDictionary.TryGetValue(position, out Tile tile);
-        return tile;
     }
 
     private Tile GetRandomPortalTile(Tile currentTile)
@@ -105,7 +98,7 @@ public class TileManager : MonoBehaviour
                 Tile destinationTile = GetRandomPortalTile(tile);
                 if (destinationTile != null)
                 {
-                    PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position);
+                    PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position, destinationTile);
                     tile.TilePlayerIDs.Remove(currentPlayerID);
                     destinationTile.TilePlayerIDs.Add(currentPlayerID);
                     //UIManager.Instance.DisplayTeleportEffect();
@@ -134,7 +127,7 @@ public class TileManager : MonoBehaviour
 
         if (steps == 0)
         {
-            HighlightTile(tile); // Highlight only the tiles where steps reach zero
+            HighlightTile(tile);
             highlightedTiles.Add(tile);
             return;
         }
@@ -142,35 +135,12 @@ public class TileManager : MonoBehaviour
         List<Direction> directions = tile.GetAllAvailableDirections();
         foreach (Direction direction in directions)
         {
-            Tile nextTile = GetNextTile(tile, direction);
+            Tile nextTile = tile.GetConnectedTile(direction);
             if (nextTile != null)
             {
                 DFSHighlight(nextTile, steps - 1, highlightedTiles);
             }
         }
-    }
-
-    private Tile GetNextTile(Tile tile, Direction direction)
-    {
-        Vector3 targetPosition = tile.transform.position;
-
-        switch (direction)
-        {
-            case Direction.North:
-                targetPosition += new Vector3(0, 0, 1);
-                break;
-            case Direction.East:
-                targetPosition += new Vector3(1, 0, 0);
-                break;
-            case Direction.South:
-                targetPosition += new Vector3(0, 0, -1);
-                break;
-            case Direction.West:
-                targetPosition += new Vector3(-1, 0, 0);
-                break;
-        }
-
-        return GetTileAtPosition(targetPosition);
     }
 
     private void HighlightTile(Tile tile)

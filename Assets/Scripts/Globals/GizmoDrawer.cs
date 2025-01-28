@@ -3,7 +3,7 @@ using UnityEngine;
 public class GizmoDrawer : MonoBehaviour
 {
     public Color gizmoColor = Color.black;
-    public float gizmoSize = 0.1f;
+    public float gizmoSize = 0.3f;
 
     private void OnDrawGizmos()
     {
