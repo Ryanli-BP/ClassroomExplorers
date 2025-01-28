@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 using System.Threading.Tasks;
 
 public class Dice : MonoBehaviour
@@ -11,24 +10,67 @@ public class Dice : MonoBehaviour
     public bool rollfin;
     public bool delayfin;
 
-    public delegate void DiceFinishedRolling(); // Event for dice finished rolling
+    private int previousTopFace = -1;
+    private float stableTime = 0f;
+    private const float STABILITY_THRESHOLD = 3f;
+    private const float VELOCITY_THRESHOLD = 0.01f;
+    private const float ANGULAR_VELOCITY_THRESHOLD = 0.01f;
+    private bool isTrackingStability = false;
+    private const float MAX_ROLL_TIME = 5f;
+    private float rollTimer = 0f;
+
+    public delegate void DiceFinishedRolling();
     public event DiceFinishedRolling OnDiceFinishedRolling;
 
     private void Update()
     {
-        if (!delayfin) return;
+        if (!delayfin || rollfin) return;
 
-        if (!rollfin && rb.linearVelocity.sqrMagnitude == 0f)
+        rollTimer += Time.deltaTime;
+        int currentTopFace = GetCurrentTopFace();
+
+        // Failsafe: Force random result after MAX_ROLL_TIME
+        if (rollTimer >= MAX_ROLL_TIME)
         {
             rollfin = true;
-            int result = GetRes();
-            DiceManager.Instance.HandleDiceResult(result); // Send result to GameManager
-
+            int randomResult = Random.Range(1, 7);
+            DiceManager.Instance.HandleDiceResult(randomResult);
             OnDiceFinishedRolling?.Invoke();
+            return;
+        }
+
+        // Check if dice has completely stopped
+        if (rb.linearVelocity.magnitude < VELOCITY_THRESHOLD && 
+            rb.angularVelocity.magnitude < ANGULAR_VELOCITY_THRESHOLD)
+        {
+            rollfin = true;
+            DiceManager.Instance.HandleDiceResult(currentTopFace + 1);
+            OnDiceFinishedRolling?.Invoke();
+            return;
+        }
+
+        // Stability check for wobbling dice
+        if (currentTopFace != previousTopFace)
+        {
+            stableTime = 0f;
+            previousTopFace = currentTopFace;
+            isTrackingStability = true;
+        }
+        else if (isTrackingStability)
+        {
+            stableTime += Time.deltaTime;
+            
+            if (stableTime >= STABILITY_THRESHOLD)
+            {
+                rollfin = true;
+                DiceManager.Instance.HandleDiceResult(currentTopFace + 1);
+                OnDiceFinishedRolling?.Invoke();
+                isTrackingStability = false;
+            }
         }
     }
 
-    private int GetRes()
+    private int GetCurrentTopFace()
     {
         if (dicefaces == null) return -1;
 
@@ -44,10 +86,7 @@ public class Dice : MonoBehaviour
             }
         }
 
-        int diceResult = topFace + 1;
-        Debug.Log($"Dice {diceNum} result: {diceResult}");
-
-        return diceResult;
+        return topFace;
     }
 
     public void RollDice(float throwForce, float rollForce, int i)
@@ -55,6 +94,9 @@ public class Dice : MonoBehaviour
         diceNum = i;
         rollfin = false;
         delayfin = false;
+        isTrackingStability = false;
+        stableTime = 0f;
+        previousTopFace = -1;
 
         var randomVar = Random.Range(-1f, 1f);
         rb.linearDamping = 0.1f; // Reduce linear damping
