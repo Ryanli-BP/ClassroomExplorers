@@ -21,15 +21,16 @@ public class Tile : MonoBehaviour
     // special tile attributes, normal by default
     [SerializeField] private TileType tileType = TileType.Normal;
 
-    // Player ID of the player currently on the tile
-    public int TilePlayerID { get; set; } = 0;
+    // Player ID of the players currently on the tile
+    [SerializeField] public List<int> TilePlayerIDs { get; private set; } = new List<int>();
 
     void Start()
     {
-        TilePlayerID = HomeplayerID; //This is needed for the combat system to work properly on the 1st round
+        if(HomeplayerID != 0)
+        {
+            AddPlayer(HomeplayerID);
+        }
     }
-
-    
 
     public int GetHomePlayerID()
     {
@@ -51,6 +52,19 @@ public class Tile : MonoBehaviour
     public TileType GetTileType()
     {
         return tileType;
+    }
+
+    public void AddPlayer(int playerID)
+    {
+        if (!TilePlayerIDs.Contains(playerID))
+        {
+            TilePlayerIDs.Add(playerID);
+        }
+    }
+
+    public void RemovePlayer(int playerID)
+    {
+        TilePlayerIDs.Remove(playerID);
     }
 
 

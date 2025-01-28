@@ -73,6 +73,7 @@ public class CombatManager : MonoBehaviour
 
             //Leverages the RolDiceButton for attack and defend by simply changing the text
             UIManager.Instance.SetRollDiceButtonText("Attack");
+            Debug.Log("enabling dice within combat");
             DiceManager.Instance.EnableDiceRoll();
             yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
 
@@ -205,6 +206,7 @@ public class CombatManager : MonoBehaviour
             }
         }
         UIManager.Instance.SetRollDiceButtonText("Roll Dice");
+        GameManager.Instance.HandleCombatEnd();
     }
 
     private IEnumerator RollForCombatValue(System.Action<int> callback)

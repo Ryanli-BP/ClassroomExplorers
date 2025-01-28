@@ -31,36 +31,47 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator HandlePvPEncounter()
     {
-        if (currentTile.TilePlayerID != 0 && 
-            currentTile.TilePlayerID != PlayerManager.Instance.CurrentPlayerID && 
-            PlayerManager.Instance.GetPlayerByID(currentTile.TilePlayerID).Status == Status.Alive)
+        if (currentTile.TilePlayerIDs.Count > 0 && !initialMove)
+        Debug.Log($"Players on tile: [{string.Join(", ", currentTile.TilePlayerIDs)}]");
         {
-            Debug.Log($"Player {currentTile.TilePlayerID} is on this tile.");
-            bool? playerChoice = null;
-
-            yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
-                playerChoice = choice;
-            }));
-
-            while (playerChoice == null)
+            foreach (int tilePlayerID in currentTile.TilePlayerIDs)
             {
-                yield return null;
-            }
-
-            if (playerChoice == true)
-            {
-                Debug.Log("Player chose to fight.");
-                GameManager.Instance.OnCombatTriggered();
-                yield return StartCoroutine(CombatManager.Instance.HandleFight(currentTile.TilePlayerID, PlayerManager.Instance.CurrentPlayerID));
-                GameManager.Instance.IsResumingMovement = false;
-                if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
+                // Skip if it's the current player or if the player on tile is dead
+                if (tilePlayerID == PlayerManager.Instance.CurrentPlayerID ||
+                    PlayerManager.Instance.GetPlayerByID(tilePlayerID).Status != Status.Alive)
                 {
-                    isMoving = false;
+                    continue;
                 }
-            }
-            else
-            {
-                Debug.Log("Player chose to continue moving.");
+
+                Debug.Log($"Player {tilePlayerID} is on this tile.");
+                bool? playerChoice = null;
+
+                yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
+                    playerChoice = choice;
+                }));
+
+                while (playerChoice == null)
+                {
+                    yield return null;
+                }
+
+                if (playerChoice == true)
+                {
+                    Debug.Log("Player chose to fight.");
+                    GameManager.Instance.OnCombatTriggered();
+                    yield return StartCoroutine(CombatManager.Instance.HandleFight(tilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                    GameManager.Instance.IsResumingMovement = false;
+                    
+                    if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
+                    {
+                        isMoving = false;
+                        yield break; // Exit if current player dies
+                    }
+                }
+                else
+                {
+                    Debug.Log("Player chose to continue moving.");
+                }
             }
         }
     }
@@ -119,11 +130,6 @@ public class PlayerMovement : MonoBehaviour
 
         while (remainingSteps >= 0)
         {
-            if (initialMove)
-            {
-                currentTile.TilePlayerID = 0;
-                initialMove = false;
-            }
 
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
             
@@ -132,20 +138,17 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-            
-            yield return StartCoroutine(HandlePvPEncounter());
-
-            if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead) //check if dead
+            if(!initialMove) //cannoy challenge on first move
             {
-                Debug.Log("Player is dead. Cannot move.");
-                break;
+                yield return StartCoroutine(HandlePvPEncounter()); //isMoving is set to false if dead
             }
-
+            
             if (remainingSteps == 0)
             {
                 isMoving = false;
-                break;
             }
+
+            if (!isMoving) break;
 
             yield return StartCoroutine(HandleHomeTile(initialOnHome));
             if (!isMoving) { break; }
@@ -155,6 +158,11 @@ public class PlayerMovement : MonoBehaviour
 
             remainingSteps--;
             yield return new WaitForSeconds(0.05f);
+
+            if (initialMove) //currently, initialMove is a condition for pvpencounter
+            {
+                initialMove = false;
+            }
         }
 
         isMoving = false;
@@ -165,7 +173,6 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MoveToNextTileCoroutine(Direction direction)
     {
-        Debug.Log("MoveToNextTile called with direction: " + direction);
         // Update last direction based on the current movement direction
         _lastDirection = direction;
 
@@ -188,18 +195,26 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        Debug.Log("Starting MoveToNextTileCoroutine to target position: " + targetPosition);
-        yield return StartCoroutine(MoveToNextTileCoroutine(targetPosition));
+        yield return StartCoroutine(MovingToNextTileCoroutine(targetPosition));
     }
 
-    private IEnumerator MoveToNextTileCoroutine(Vector3 targetPosition)
+    private IEnumerator MovingToNextTileCoroutine(Vector3 targetPosition)
     {
-        Debug.Log("MoveToNextTileCoroutine started");
-
-        currentTile = TileManager.Instance.GetTileAtPosition(targetPosition);
-
+        // Remove player from current tile before moving
         if (currentTile != null)
         {
+            currentTile.RemovePlayer(PlayerManager.Instance.CurrentPlayerID);
+        }
+
+        // Get and set new tile
+        Tile nextTile = TileManager.Instance.GetTileAtPosition(targetPosition);
+
+        if (nextTile != null)
+        {
+            // Add player to new tile
+            nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
+            currentTile = nextTile;
+
             PlayerMovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(targetPosition));
         }
@@ -207,7 +222,5 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.LogError("Tile not found at position: " + targetPosition);
         }
-
-        Debug.Log("MoveToNextTileCoroutine ended");
     }
 }

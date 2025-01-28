@@ -152,6 +152,7 @@ MonoBehaviour:
   numDice: 3
   throwForce: 4
   rollForce: 4
+  testDiceResult: 8
 --- !u!4 &2310173
 Transform:
   m_ObjectHideFlags: 0
