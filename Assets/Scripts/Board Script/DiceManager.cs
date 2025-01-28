@@ -38,19 +38,15 @@ public class DiceManager : MonoBehaviour
         GameManager.OnGameStateChanged -= OnGameStateChanged;
     }
 
-        private void OnGameStateChanged(GameState newState)
+    private void OnGameStateChanged(GameState newState)
     {
         if (newState == GameState.PlayerCombat)
         {
-            // Apply offset to x-axis for arena
-            dicePositionOffset = 50f;
-            transform.position += new Vector3(dicePositionOffset, 0f, 0f);
+            transform.position = ArenaManager.Instance.GetCombatDicePosition();
         }
         else
         {
-            // Reset dice position offset
-            transform.position -= new Vector3(dicePositionOffset, 0f, 0f);
-            dicePositionOffset = 0;
+            transform.position = ArenaManager.Instance.GetboardDicePosition();
         }
     }
 

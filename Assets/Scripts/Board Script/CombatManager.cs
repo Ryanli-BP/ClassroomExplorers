@@ -44,18 +44,19 @@ public class CombatManager : MonoBehaviour
 
     private void TeleportToFightingArea(Player currentPlayer, Player opponentPlayer)
     {
-        arCamera.transform.position = defaultCameraPosition + new Vector3(50, 0, 0);
-        currentPlayer.transform.position = currentPlayerPosition;
-        opponentPlayer.transform.position = opponentPlayerPosition;
+        arCamera.transform.position = ArenaManager.Instance.GetCombatCameraPosition();
+        currentPlayer.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
+        opponentPlayer.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
+        
         currentPlayer.transform.LookAt(opponentPlayer.transform);
-        currentPlayer.transform.Rotate(0, 180, 0); // offset
+        currentPlayer.transform.Rotate(0, 180, 0);
         opponentPlayer.transform.LookAt(currentPlayer.transform);
         opponentPlayer.transform.Rotate(0, 180, 0);
     }
 
     private void TeleportBackToBoard(Player currentPlayer, Player opponentPlayer, Vector3 originalCurrentPlayerPosition, Vector3 originalOpponentPlayerPosition, Quaternion originalCurrentPlayerRotation, Quaternion originalOpponentPlayerRotation)
     {
-        arCamera.transform.position = defaultCameraPosition;
+        arCamera.transform.position = ArenaManager.Instance.GetBoardCameraPosition();
         currentPlayer.transform.position = originalCurrentPlayerPosition;
         opponentPlayer.transform.position = originalOpponentPlayerPosition;
         currentPlayer.transform.rotation = originalCurrentPlayerRotation;
