@@ -66,7 +66,6 @@ public class TileManager : MonoBehaviour
     public void getTileAction(Tile tile)
     {
         var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
-        tile.TilePlayerID = currentPlayerID;
         
         switch (tile.GetTileType())
         {
@@ -107,8 +106,8 @@ public class TileManager : MonoBehaviour
                 if (destinationTile != null)
                 {
                     PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position);
-                    tile.TilePlayerID = 0;
-                    destinationTile.TilePlayerID = currentPlayerID;
+                    tile.TilePlayerIDs.Remove(currentPlayerID);
+                    destinationTile.TilePlayerIDs.Add(currentPlayerID);
                     //UIManager.Instance.DisplayTeleportEffect();
                 }
                 break;
