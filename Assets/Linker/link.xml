@@ -1,0 +1,3 @@
+<linker>
+  <assembly fullname="CsvHelper" preserve="all" />
+</linker>

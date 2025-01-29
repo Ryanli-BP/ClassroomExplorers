@@ -152,7 +152,7 @@ MonoBehaviour:
   numDice: 3
   throwForce: 4
   rollForce: 4
-  testDiceResult: 8
+  testDiceResult: 7
 --- !u!4 &2310173
 Transform:
   m_ObjectHideFlags: 0
@@ -20954,9 +20954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90cc2ed8171830408fdfb27dd1a7260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
-  speed: 1.5
-  initialPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1906703916
 MonoBehaviour:
   m_ObjectHideFlags: 0
