@@ -83,10 +83,6 @@ public class GameManager : MonoBehaviour
                 HandleQuizStart();
                 break;
             
-            case GameState.PlayerInQuiz:
-                HandleQuizEnd();
-                break;  
-            
             case GameState.PlayerEndQuiz:
                 HandleQuizEnd();
                 break;
@@ -178,12 +174,13 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.SetBoardUIActive(false);
         QuizManager.Instance.StartNewQuiz();
-        ChangeState(GameState.PlayerInQuiz);
     }
 
     public void HandleQuizEnd()
     {
         UIManager.Instance.SetBoardUIActive(true);
+        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>(); 
+        PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete; //unsubscribe from action becuase OnPlayerMovementComplete is not called if land on quiz tile
         ChangeState(GameState.PlayerTurnEnd);
     }
 
