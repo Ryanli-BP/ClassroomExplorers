@@ -83,10 +83,6 @@ public class GameManager : MonoBehaviour
                 HandleQuizStart();
                 break;
             
-            case GameState.PlayerInQuiz:
-                HandleQuizEnd();
-                break;  
-            
             case GameState.PlayerEndQuiz:
                 HandleQuizEnd();
                 break;
@@ -178,7 +174,6 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.SetBoardUIActive(false);
         QuizManager.Instance.StartNewQuiz();
-        ChangeState(GameState.PlayerInQuiz);
     }
 
     public void HandleQuizEnd()

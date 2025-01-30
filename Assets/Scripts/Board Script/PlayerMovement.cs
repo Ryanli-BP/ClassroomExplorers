@@ -167,7 +167,17 @@ public class PlayerMovement : MonoBehaviour
 
         isMoving = false;
         initialMove = true;
-        OnMovementComplete?.Invoke();
+
+        // Check if landed on a quiz tile
+        if (currentTile.GetTileType() == TileType.Quiz)
+        {
+            GameManager.Instance.HandleQuizLand();
+            // OnMovementComplete will be called after quiz completion via GameManager
+        }
+        else
+        {
+            OnMovementComplete?.Invoke();
+        }        
     }
 
 

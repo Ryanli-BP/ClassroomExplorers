@@ -136,6 +136,7 @@ public class QuizManager : MonoBehaviour
         using (var reader = new StringReader(csvFile.text))
         using (var csv = new CsvReader(reader, config))
         {
+            csv.Context.RegisterClassMap<QuestionMap>();
             questions = new List<Question>(csv.GetRecords<Question>());
         }
 
@@ -146,6 +147,7 @@ public class QuizManager : MonoBehaviour
     private void EndQuiz()
     {
         if (isTransitioning) return;
+        Debug.Log("Quiz ended.");
         StartCoroutine(EndQuizSequence());
     }
 
@@ -202,4 +204,17 @@ public class Question
     public string optionC { get; set; }
     public string optionD { get; set; }
     public string answer { get; set; }
+}
+
+public sealed class QuestionMap : ClassMap<Question>
+{
+    public QuestionMap()
+    {
+        Map(m => m.question);
+        Map(m => m.optionA);
+        Map(m => m.optionB);
+        Map(m => m.optionC);
+        Map(m => m.optionD);
+        Map(m => m.answer);
+    }
 }
