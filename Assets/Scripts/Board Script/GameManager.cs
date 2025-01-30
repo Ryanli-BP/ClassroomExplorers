@@ -179,6 +179,8 @@ public class GameManager : MonoBehaviour
     public void HandleQuizEnd()
     {
         UIManager.Instance.SetBoardUIActive(true);
+        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>(); 
+        PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete; //unsubscribe from action becuase OnPlayerMovementComplete is not called if land on quiz tile
         ChangeState(GameState.PlayerTurnEnd);
     }
 

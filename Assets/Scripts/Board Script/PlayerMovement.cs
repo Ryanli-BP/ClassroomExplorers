@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
         if (currentTile.GetTileType() == TileType.Quiz)
         {
             GameManager.Instance.HandleQuizLand();
-            // OnMovementComplete will be called after quiz completion via GameManager
+            // OnMovementComplete actioin will be disabled after quiz completion via GameManager with HandleQuizEnd() instead
         }
         else
         {
