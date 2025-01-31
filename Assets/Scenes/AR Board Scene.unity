@@ -23153,7 +23153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc0c603368fda24c93355a6ecb517fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players:
+  numOfPlayers: 3
+  playerPrefabs:
   - {fileID: 1218891191}
   - {fileID: 2094211948}
   - {fileID: 1031455821}

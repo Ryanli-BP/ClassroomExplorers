@@ -4,7 +4,11 @@ using System.Collections.Generic;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
-    [SerializeField] private List<Player> players;
+
+    [SerializeField] public int numOfPlayers;
+
+    [SerializeField] private List<Player> playerPrefabs;
+    private List<Player> players = new List<Player>(); // List of actual players in the game
 
     [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 40 };
 
@@ -20,6 +24,20 @@ public class PlayerManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+        InitialisePlayers();
+    }
+
+    private void InitialisePlayers(){
+        players.Clear();
+
+        // Instantiate the number of players specified by the user
+        for (int i = 0; i < numOfPlayers; i++)
+        {
+            Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count]); // Ensure it loops if more players than prefabs
+            players.Add(newPlayer);
+            newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene
+            Debug.Log($"Player {newPlayer.getPlayerID()} created.");
+        }
     }
 
     public List<Player> GetPlayerList()
