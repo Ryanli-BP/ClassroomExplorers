@@ -2100,16 +2100,10 @@ MonoBehaviour:
   fightButton: {fileID: 771451871}
   continueMovingButton: {fileID: 305933814}
   centreDisplayPanel: {fileID: 1034160846}
-  playerStatsUIList:
-  - pointsBar: {fileID: 1959138604}
+  playerStatsUIPrefab:
+    pointsBar: {fileID: 1959138604}
     levelText: {fileID: 603685447}
     healthBar: {fileID: 1786743345}
-  - pointsBar: {fileID: 1141740980}
-    levelText: {fileID: 1116043228}
-    healthBar: {fileID: 1772054920}
-  - pointsBar: {fileID: 1141740980}
-    levelText: {fileID: 1116043228}
-    healthBar: {fileID: 1772054920}
   roundDisplayText: {fileID: 158698565}
   currentPlayerTurnText: {fileID: 1538874189}
   reviveCounterText: {fileID: 286134046}
