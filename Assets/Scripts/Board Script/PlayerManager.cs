@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private List<Player> playerPrefabs;
     private List<Player> players = new List<Player>(); // List of actual players in the game
 
+    [SerializeField] private List<GameObject> homeObjects;
+
     [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 40 };
 
     public int CurrentPlayerID { get; set; } = 1;
@@ -25,6 +27,7 @@ public class PlayerManager : MonoBehaviour
         else
             Destroy(gameObject);
         InitialisePlayers();
+        AssignPlayersToHomes();
     }
 
     private void InitialisePlayers(){
@@ -37,6 +40,33 @@ public class PlayerManager : MonoBehaviour
             players.Add(newPlayer);
             newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene
             Debug.Log($"Player {newPlayer.getPlayerID()} created.");
+        }
+    }
+
+    public void AssignPlayersToHomes()
+    {
+        // Iterate over the players and assign them to a home
+        for (int i = 0; i < players.Count; i++)
+        {
+            // Assuming home objects are assigned sequentially, you can modify this logic
+            if (i < homeObjects.Count)
+            {
+                // Show the corresponding home object for the player
+                homeObjects[i].SetActive(true);
+            }
+        }
+
+        // Hide homes for unassigned players
+        HideUnassignedHomes(homeObjects, players.Count);
+    }
+
+    public void HideUnassignedHomes(List<GameObject> homeObjects, int assignedPlayerCount)
+    {
+        // Iterate through all home objects
+        for (int i = assignedPlayerCount; i < homeObjects.Count; i++)
+        {
+            // Hide any remaining homes that aren't assigned to players
+            homeObjects[i].SetActive(false);
         }
     }
 
