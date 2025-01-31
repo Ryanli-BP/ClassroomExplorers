@@ -2100,6 +2100,7 @@ MonoBehaviour:
   fightButton: {fileID: 771451871}
   continueMovingButton: {fileID: 305933814}
   centreDisplayPanel: {fileID: 1034160846}
+  numberOfPlayers: 3
   playerStatsUIPrefab:
     pointsBar: {fileID: 1959138604}
     levelText: {fileID: 603685447}
