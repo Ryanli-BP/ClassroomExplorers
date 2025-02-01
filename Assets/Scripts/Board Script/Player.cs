@@ -17,14 +17,17 @@ public class Player : MonoBehaviour
     public int ReviveCounter { get; set; } = 0;
     void Start()
     {
-        Points = 0;
-        Level = 1;
-        Health = MAX_HEALTH;
-        Status = Status.Alive;
+        if (playerID <= PlayerManager.Instance.numOfPlayers)
+        {
+            Points = 0;
+            Level = 1;
+            Health = MAX_HEALTH;
+            Status = Status.Alive;
 
-        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-        UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+            UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+            UIManager.Instance.UpdatePlayerLevel(playerID, Level);
+            UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        }
     }
 
     public int getPlayerID()
