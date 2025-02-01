@@ -5,8 +5,9 @@ public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
     public GameObject tileContainer;
+    public GameObject darkOverlayPrefab;
+    private List<GameObject> activeDarkOverlays = new List<GameObject>();
     public GameObject highlightOverlayPrefab; // Reference to the highlight overlay prefab
-    public GameObject pathHighlightPrefab;
     public List<Tile> allTiles = new List<Tile>();
     private List<GameObject> activeHighlights = new List<GameObject>(); // Store active highlight overlays
     private List<GameObject> activePathHighlights = new List<GameObject>();
@@ -117,17 +118,26 @@ public class TileManager : MonoBehaviour
     public List<Tile> HighlightPossibleTiles(Tile startTile, int steps)
     {
         List<Tile> highlightedTiles = new List<Tile>();
-        DFSHighlight(startTile, steps, highlightedTiles);
+        HashSet<Tile> pathAndDestinationTiles = new HashSet<Tile>();
+        
+        // First find all valid paths and destinations
+        DFSHighlight(startTile, steps, highlightedTiles, null, pathAndDestinationTiles);
+        
+        // Then darken tiles not in paths or destinations
+        DarkenNonHighlightedTiles(pathAndDestinationTiles);
+        
         return highlightedTiles;
     }
 
-    private void DFSHighlight(Tile tile, int steps, List<Tile> highlightedTiles, List<Tile> currentPath = null)
+    private void DFSHighlight(Tile tile, int steps, List<Tile> highlightedTiles, List<Tile> currentPath = null, HashSet<Tile> allValidTiles = null)
     {
-        // Initialize currentPath on first call
         if (currentPath == null)
             currentPath = new List<Tile>();
+        if (allValidTiles == null)
+            allValidTiles = new HashSet<Tile>();
         
         currentPath.Add(tile);
+        allValidTiles.Add(tile); // Add to valid tiles but don't highlight path
 
         if (steps < 0)
         {
@@ -135,15 +145,9 @@ public class TileManager : MonoBehaviour
             return;
         }
 
-        // Highlight the path tiles (except the last one)
-        if (currentPath.Count > 1 && steps > 0)
-        {
-            HighlightPathTile(tile);
-        }
-
         if (steps == 0)
         {
-            HighlightTile(tile); // Highlight destination
+            HighlightTile(tile); // Only highlight destination
             highlightedTiles.Add(tile);
             currentPath.RemoveAt(currentPath.Count - 1);
             return;
@@ -155,25 +159,11 @@ public class TileManager : MonoBehaviour
             Tile nextTile = tile.GetConnectedTile(direction);
             if (nextTile != null && !currentPath.Contains(nextTile))
             {
-                DFSHighlight(nextTile, steps - 1, highlightedTiles, currentPath);
+                DFSHighlight(nextTile, steps - 1, highlightedTiles, currentPath, allValidTiles);
             }
         }
 
         currentPath.RemoveAt(currentPath.Count - 1);
-    }
-
-    private void HighlightPathTile(Tile tile)
-    {
-        if (pathHighlightPrefab != null)
-        {
-            GameObject pathHighlight = Instantiate(pathHighlightPrefab, tile.transform.position + new Vector3(0, 0.005f, 0), Quaternion.Euler(0, 0, 0));
-            pathHighlight.SetActive(true);
-            activePathHighlights.Add(pathHighlight);
-        }
-        else
-        {
-            Debug.LogError("Path highlight prefab is not assigned!");
-        }
     }
 
     private void HighlightTile(Tile tile)
@@ -191,6 +181,27 @@ public class TileManager : MonoBehaviour
         }
     }
 
+    private void DarkenNonHighlightedTiles(HashSet<Tile> validTiles)
+    {
+        if (darkOverlayPrefab == null)
+        {
+            Debug.LogError("Dark overlay prefab is not assigned!");
+            return;
+        }
+
+        foreach (Tile tile in allTiles)
+        {
+            if (!validTiles.Contains(tile))
+            {
+                GameObject darkOverlay = Instantiate(darkOverlayPrefab, 
+                    tile.transform.position + new Vector3(0, 0.003f, 0), 
+                    Quaternion.Euler(0, 0, 0));
+                darkOverlay.SetActive(true);
+                activeDarkOverlays.Add(darkOverlay);
+            }
+        }
+    }
+
     public void ClearHighlightedTiles()
     {
         foreach (GameObject highlight in activeHighlights)
@@ -204,5 +215,11 @@ public class TileManager : MonoBehaviour
             Destroy(pathHighlight);
         }
         activePathHighlights.Clear();
+
+        foreach (GameObject darkOverlay in activeDarkOverlays)
+        {
+            Destroy(darkOverlay);
+        }
+        activeDarkOverlays.Clear();
     }
 }

@@ -14130,8 +14130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileContainer: {fileID: 1230113819}
+  darkOverlayPrefab: {fileID: 2419270645141792063, guid: bd05ffa916cc08d44a6c15e83582014d, type: 3}
   highlightOverlayPrefab: {fileID: 5145767643627895912, guid: c9b17140ff9fc2f429502e6d8581491c, type: 3}
-  pathHighlightPrefab: {fileID: 2419270645141792063, guid: 854d60387181ca745a72571f8705f9ac, type: 3}
   allTiles:
   - {fileID: 1826945209}
   - {fileID: 1415499905}
@@ -20815,7 +20815,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1873486643
 RectTransform:
   m_ObjectHideFlags: 0
