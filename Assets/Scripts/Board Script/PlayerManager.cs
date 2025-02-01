@@ -4,7 +4,18 @@ using System.Collections.Generic;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
-    [SerializeField] private List<Player> players;
+
+    [SerializeField] private int _numOfPlayers = 2; // Backing field
+    public int numOfPlayers
+    {
+        get => _numOfPlayers;
+        set => _numOfPlayers = value;
+    }
+
+    [SerializeField] private List<Player> playerPrefabs;
+    private List<Player> players = new List<Player>(); // List of actual players in the game
+
+    [SerializeField] private List<GameObject> homeObjects;
 
     [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 40 };
 
@@ -20,6 +31,48 @@ public class PlayerManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+        InitialisePlayers();
+        AssignPlayersToHomes();
+    }
+
+    private void InitialisePlayers(){
+        players.Clear();
+
+        // Instantiate the number of players specified by the user
+        for (int i = 0; i < numOfPlayers; i++)
+        {
+            Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count]); // Ensure it loops if more players than prefabs
+            players.Add(newPlayer);
+            newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene
+            Debug.Log($"Player {newPlayer.getPlayerID()} created.");
+        }
+    }
+
+    public void AssignPlayersToHomes()
+    {
+        // Iterate over the players and assign them to a home
+        for (int i = 0; i < players.Count; i++)
+        {
+            // Assuming home objects are assigned sequentially, you can modify this logic
+            if (i < homeObjects.Count)
+            {
+                // Show the corresponding home object for the player
+                homeObjects[i].SetActive(true);
+            }
+        }
+
+        // Hide homes for unassigned players
+        HideUnassignedHomes(homeObjects, players.Count);
+    }
+
+    public void HideUnassignedHomes(List<GameObject> homeObjects, int assignedPlayerCount)
+    {
+        // Iterate through all home objects
+        for (int i = assignedPlayerCount; i < homeObjects.Count; i++)
+        {
+            // Hide any remaining homes that aren't assigned to players
+            homeObjects[i].SetActive(false);
+        }
     }
 
     public List<Player> GetPlayerList()
@@ -29,7 +82,16 @@ public class PlayerManager : MonoBehaviour
 
     public Player GetPlayerByID(int playerID)
     {
-        return players[playerID - 1];
+        if (playerID > 0 && playerID <= players.Count)
+        {
+            Debug.Log($"CurrentID: {players[playerID-1]}");
+            return players[playerID - 1];
+        }
+        else
+        {
+            Debug.LogError($"Invalid player ID: {playerID}. There are only {players.Count} players.");
+            return null; // Or handle the invalid ID case as needed.
+        }
     }
 
     public Player GetCurrentPlayer()
@@ -37,9 +99,11 @@ public class PlayerManager : MonoBehaviour
         return players[CurrentPlayerID - 1];
     }
 
-    public void GoNextPlayer() //We can implement this to player being based on a list of playerID in mutable order later
+    public void GoNextPlayer()
     {
-        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1; // Adjust for 1-based index
+        // Use 0-based index for players, then adjust the player ID if needed.
+        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1;  // Wrap around 0-based index
+        Debug.Log($"Current player ID is now {CurrentPlayerID}.");
     }
 
     public int GetNumOfPlayers()
