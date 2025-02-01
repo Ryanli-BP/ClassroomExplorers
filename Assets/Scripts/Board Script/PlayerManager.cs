@@ -5,7 +5,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
 
-    [SerializeField] public int numOfPlayers;
+    public int numOfPlayers { get; set; } = 2;
 
     [SerializeField] private List<Player> playerPrefabs;
     private List<Player> players = new List<Player>(); // List of actual players in the game

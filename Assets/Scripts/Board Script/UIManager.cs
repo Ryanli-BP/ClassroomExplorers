@@ -33,9 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button continueMovingButton;
 
     [SerializeField] private GameObject centreDisplayPanel;
-    [SerializeField] private int numberOfPlayers;
-    [SerializeField] private PlayerStatsUI playerStatsUIPrefab;
-    private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
+    [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
 
@@ -57,37 +55,11 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        GeneratePlayerUIStats();
         if (Instance == null)
             Instance = this;
         else
             Destroy(gameObject);
     }
-
-    private void GeneratePlayerUIStats()
-    {
-        playerStatsUIList.Clear();
-
-    for (int i = 0; i < numberOfPlayers; i++)
-    {
-        // Instantiate a new UI GameObject (copy) for each player
-        GameObject newPointsBar = Instantiate(playerStatsUIPrefab.pointsBar);
-        TextMeshProUGUI newLevelText = Instantiate(playerStatsUIPrefab.levelText);
-        GameObject newHealthBar = Instantiate(playerStatsUIPrefab.healthBar);
-
-        // Create a new instance of PlayerStatsUI and assign the new UI elements
-        PlayerStatsUI newPlayerStatsUI = new PlayerStatsUI
-        {
-            pointsBar = newPointsBar, // Unique instance for each player
-            levelText = newLevelText,  // Unique instance for each player
-            healthBar = newHealthBar   // Unique instance for each player
-        };
-
-        // Add the newly created PlayerStatsUI to the list
-        playerStatsUIList.Add(newPlayerStatsUI);
-    }
-    }
-
 
     private void Start()
     {
