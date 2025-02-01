@@ -60,6 +60,16 @@ public class UIManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+        rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
+        evadeButton.onClick.AddListener(OnEvadeButtonClicked);
+
+        directionPanel.SetActive(false);
+        homePromptPanel.SetActive(false);
+        pvpPromptPanel.SetActive(false);
+        centreDisplayPanel.SetActive(false);
+        rollDiceButtonPanel.gameObject.SetActive(false);
+        evadeButtonPanel.gameObject.SetActive(false);
     }
 
     private void GenereateUIList(){
@@ -79,15 +89,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-        evadeButton.onClick.AddListener(OnEvadeButtonClicked);
-
-        directionPanel.SetActive(false);
-        homePromptPanel.SetActive(false);
-        pvpPromptPanel.SetActive(false);
-        centreDisplayPanel.SetActive(false);
-        rollDiceButtonPanel.gameObject.SetActive(false);
-        evadeButtonPanel.gameObject.SetActive(false);
         GenereateUIList();
     }
 
@@ -153,6 +154,10 @@ public class UIManager : MonoBehaviour
         {
             pointsAnimation.AnimatePoints(points, levelUpPoints);
         }
+        else
+        {
+            Debug.LogError("PointsAnimation component missing in player stats UI");
+        }
     }
 
     public void UpdatePlayerLevel(int playerIndex, int level)
@@ -166,6 +171,10 @@ public class UIManager : MonoBehaviour
         if (healthAnimation != null)
         {
             healthAnimation.AnimateHealth(health, Player.MAX_HEALTH);
+        }
+        else
+        {
+            Debug.LogError("PointsAnimation component missing in player stats UI");
         }
     }
 
