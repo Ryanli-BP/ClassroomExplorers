@@ -18,12 +18,6 @@ EditorBuildSettings:
     path: Assets/Scenes/AR scene(old).unity
     guid: b8938c5548d664cf6b9a1fff1b211085
   - enabled: 1
-    path: Assets/Scenes/Loading.unity
-    guid: a0b24b1c336614dc69ae76eaa515c019
-  - enabled: 1
-    path: Assets/Scenes/Lobby.unity
-    guid: ea13aa2673d284915afa74ee07940fe5
-  - enabled: 1
     path: Assets/Scenes/AR Board Scene.unity
     guid: d646b84b25a9db842b7b8d8dee1d9416
   m_configObjects:
