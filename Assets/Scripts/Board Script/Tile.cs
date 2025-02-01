@@ -22,11 +22,17 @@ public class Tile : MonoBehaviour
     [SerializeField] private TileType tileType = TileType.Normal;
 
     // Player ID of the players currently on the tile
-    [SerializeField] public List<int> TilePlayerIDs { get; private set; } = new List<int>();
+    [SerializeField] private List<int> _TilePlayerIDs = new List<int>();
+    public List<int> TilePlayerIDs
+    {
+        get => _TilePlayerIDs;
+        set => _TilePlayerIDs = value;
+    }
+
 
     void Start()
     {
-        if(HomeplayerID != 0)
+        if(HomeplayerID != 0 && HomeplayerID <= PlayerManager.Instance.numOfPlayers)
         {
             AddPlayer(HomeplayerID);
         }

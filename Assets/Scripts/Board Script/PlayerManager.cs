@@ -82,18 +82,28 @@ public class PlayerManager : MonoBehaviour
 
     public Player GetPlayerByID(int playerID)
     {
-        return players[playerID - 1];
+        if (playerID > 0 && playerID <= players.Count)
+        {
+            Debug.Log($"CurrentID: {players[playerID-1]}");
+            return players[playerID - 1];
+        }
+        else
+        {
+            Debug.LogError($"Invalid player ID: {playerID}. There are only {players.Count} players.");
+            return null; // Or handle the invalid ID case as needed.
+        }
     }
 
     public Player GetCurrentPlayer()
     {
-        Debug.Log($"Player {CurrentPlayerID} spawn.");
         return players[CurrentPlayerID - 1];
     }
 
-    public void GoNextPlayer() //We can implement this to player being based on a list of playerID in mutable order later
+    public void GoNextPlayer()
     {
-        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1; // Adjust for 1-based index
+        // Use 0-based index for players, then adjust the player ID if needed.
+        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1;  // Wrap around 0-based index
+        Debug.Log($"Current player ID is now {CurrentPlayerID}.");
     }
 
     public int GetNumOfPlayers()

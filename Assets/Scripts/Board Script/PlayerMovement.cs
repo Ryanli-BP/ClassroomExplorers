@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         {
             foreach (int tilePlayerID in currentTile.TilePlayerIDs)
             {
+                Debug.Log($"TileID:{tilePlayerID} CurrID:{PlayerManager.Instance.CurrentPlayerID}");
                 // Skip if it's the current player or if the player on tile is dead
                 if (tilePlayerID == PlayerManager.Instance.CurrentPlayerID ||
                     PlayerManager.Instance.GetPlayerByID(tilePlayerID).Status != Status.Alive)
