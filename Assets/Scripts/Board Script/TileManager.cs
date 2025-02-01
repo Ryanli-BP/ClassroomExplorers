@@ -6,9 +6,10 @@ public class TileManager : MonoBehaviour
     public static TileManager Instance { get; private set; }
     public GameObject tileContainer;
     public GameObject highlightOverlayPrefab; // Reference to the highlight overlay prefab
+    public GameObject pathHighlightPrefab;
     public List<Tile> allTiles = new List<Tile>();
-    private Dictionary<Vector3, Tile> tileDictionary = new Dictionary<Vector3, Tile>();
     private List<GameObject> activeHighlights = new List<GameObject>(); // Store active highlight overlays
+    private List<GameObject> activePathHighlights = new List<GameObject>();
 
     private List<Tile> portalTiles = new List<Tile>(); // Add this field
 
@@ -120,15 +121,31 @@ public class TileManager : MonoBehaviour
         return highlightedTiles;
     }
 
-    private void DFSHighlight(Tile tile, int steps, List<Tile> highlightedTiles)
+    private void DFSHighlight(Tile tile, int steps, List<Tile> highlightedTiles, List<Tile> currentPath = null)
     {
+        // Initialize currentPath on first call
+        if (currentPath == null)
+            currentPath = new List<Tile>();
+        
+        currentPath.Add(tile);
+
         if (steps < 0)
+        {
+            currentPath.RemoveAt(currentPath.Count - 1);
             return;
+        }
+
+        // Highlight the path tiles (except the last one)
+        if (currentPath.Count > 1 && steps > 0)
+        {
+            HighlightPathTile(tile);
+        }
 
         if (steps == 0)
         {
-            HighlightTile(tile);
+            HighlightTile(tile); // Highlight destination
             highlightedTiles.Add(tile);
+            currentPath.RemoveAt(currentPath.Count - 1);
             return;
         }
 
@@ -136,10 +153,26 @@ public class TileManager : MonoBehaviour
         foreach (Direction direction in directions)
         {
             Tile nextTile = tile.GetConnectedTile(direction);
-            if (nextTile != null)
+            if (nextTile != null && !currentPath.Contains(nextTile))
             {
-                DFSHighlight(nextTile, steps - 1, highlightedTiles);
+                DFSHighlight(nextTile, steps - 1, highlightedTiles, currentPath);
             }
+        }
+
+        currentPath.RemoveAt(currentPath.Count - 1);
+    }
+
+    private void HighlightPathTile(Tile tile)
+    {
+        if (pathHighlightPrefab != null)
+        {
+            GameObject pathHighlight = Instantiate(pathHighlightPrefab, tile.transform.position + new Vector3(0, 0.005f, 0), Quaternion.Euler(0, 0, 0));
+            pathHighlight.SetActive(true);
+            activePathHighlights.Add(pathHighlight);
+        }
+        else
+        {
+            Debug.LogError("Path highlight prefab is not assigned!");
         }
     }
 
@@ -165,5 +198,11 @@ public class TileManager : MonoBehaviour
             Destroy(highlight);
         }
         activeHighlights.Clear();
+
+        foreach (GameObject pathHighlight in activePathHighlights)
+        {
+            Destroy(pathHighlight);
+        }
+        activePathHighlights.Clear();
     }
 }

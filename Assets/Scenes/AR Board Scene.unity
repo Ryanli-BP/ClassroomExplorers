@@ -13855,6 +13855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileContainer: {fileID: 1230113819}
   highlightOverlayPrefab: {fileID: 5145767643627895912, guid: c9b17140ff9fc2f429502e6d8581491c, type: 3}
+  pathHighlightPrefab: {fileID: 2419270645141792063, guid: 854d60387181ca745a72571f8705f9ac, type: 3}
   allTiles:
   - {fileID: 1826945209}
   - {fileID: 1415499905}
