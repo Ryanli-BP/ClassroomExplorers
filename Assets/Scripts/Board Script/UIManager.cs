@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button continueMovingButton;
 
     [SerializeField] private GameObject centreDisplayPanel;
+    [SerializeField] private List<GameObject> playerUIPrefab = new List<GameObject>();
     [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
@@ -61,6 +62,21 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    private void GenereateUIList(){
+        SetAvatarInactive();
+        Debug.Log($"Total player:{PlayerManager.Instance.numOfPlayers}");
+        for(int i = 0; i < PlayerManager.Instance.numOfPlayers; i++){
+            playerUIPrefab[i].SetActive(true);
+            Debug.Log("Set active UI");
+        }
+    }
+
+    private void SetAvatarInactive(){
+        for(int i = 0; i < playerUIPrefab.Count; i++){
+            playerUIPrefab[i].SetActive(false);
+        }
+    }
+
     private void Start()
     {
         rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
@@ -72,6 +88,7 @@ public class UIManager : MonoBehaviour
         centreDisplayPanel.SetActive(false);
         rollDiceButtonPanel.gameObject.SetActive(false);
         evadeButtonPanel.gameObject.SetActive(false);
+        GenereateUIList();
     }
 
     private void OnRollDiceButtonClicked()

@@ -5,7 +5,12 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
 
-    public int numOfPlayers { get; set; } = 2;
+    [SerializeField] private int _numOfPlayers = 2; // Backing field
+    public int numOfPlayers
+    {
+        get => _numOfPlayers;
+        set => _numOfPlayers = value;
+    }
 
     [SerializeField] private List<Player> playerPrefabs;
     private List<Player> players = new List<Player>(); // List of actual players in the game
@@ -82,6 +87,7 @@ public class PlayerManager : MonoBehaviour
 
     public Player GetCurrentPlayer()
     {
+        Debug.Log($"Player {CurrentPlayerID} spawn.");
         return players[CurrentPlayerID - 1];
     }
 
