@@ -70,6 +70,7 @@ public class UIManager : MonoBehaviour
         centreDisplayPanel.SetActive(false);
         rollDiceButtonPanel.gameObject.SetActive(false);
         evadeButtonPanel.gameObject.SetActive(false);
+        GenereateUIList();
     }
 
     private void GenereateUIList(){
@@ -89,7 +90,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        GenereateUIList();
+        //GenereateUIList();
     }
 
     private void OnRollDiceButtonClicked()

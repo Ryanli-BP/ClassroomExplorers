@@ -170,14 +170,16 @@ public class TileManager : MonoBehaviour
     {
         if (highlightOverlayPrefab != null)
         {
-            Debug.Log("Highlighting tile at position: " + tile.transform.position);
-            GameObject highlight = Instantiate(highlightOverlayPrefab, tile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.Euler(90, 0, 0));
+            // Store original prefab rotation
+            Quaternion originalRotation = highlightOverlayPrefab.transform.rotation;
+            
+            GameObject highlight = Instantiate(highlightOverlayPrefab, 
+                tile.transform.position + new Vector3(0, 0.01f, 0), 
+                originalRotation);
+                
+            highlight.transform.localScale = highlight.transform.localScale * ARBoardPlacement.worldScale;
             highlight.SetActive(true);
             activeHighlights.Add(highlight);
-        }
-        else
-        {
-            Debug.LogError("Highlight overlay prefab is not assigned!");
         }
     }
 
@@ -196,6 +198,7 @@ public class TileManager : MonoBehaviour
                 GameObject darkOverlay = Instantiate(darkOverlayPrefab, 
                     tile.transform.position + new Vector3(0, 0.003f, 0), 
                     Quaternion.Euler(0, 0, 0));
+                darkOverlay.transform.localScale = darkOverlay.transform.localScale * ARBoardPlacement.worldScale;
                 darkOverlay.SetActive(true);
                 activeDarkOverlays.Add(darkOverlay);
             }

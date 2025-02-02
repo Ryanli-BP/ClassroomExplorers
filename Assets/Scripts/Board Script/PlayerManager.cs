@@ -42,6 +42,7 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < numOfPlayers; i++)
         {
             Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count]); // Ensure it loops if more players than prefabs
+            newPlayer.transform.localScale = newPlayer.transform.localScale * ARBoardPlacement.worldScale; 
             players.Add(newPlayer);
             newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene
             Debug.Log($"Player {newPlayer.getPlayerID()} created.");

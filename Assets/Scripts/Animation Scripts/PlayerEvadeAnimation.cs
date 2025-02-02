@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerEvadeAnimation : MonoBehaviour
 {
     [SerializeField] private float evadeSpeed = 3f;
-    [SerializeField] private float sideStepDistance = 2f;
+    [SerializeField] private float sideStepDistance = 2f * ARBoardPlacement.worldScale;
     
     private bool isEvading = false;
     public bool IsEvading => isEvading;

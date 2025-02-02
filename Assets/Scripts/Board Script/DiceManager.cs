@@ -88,6 +88,7 @@ public class DiceManager : MonoBehaviour
             for (int i = 0; i < numDice; i++)
             {
                 Dice diceLive = Instantiate(DiceToThrow, transform.position, transform.rotation);
+                diceLive.transform.localScale = diceLive.transform.localScale * ARBoardPlacement.worldScale;
                 liveDice.Add(diceLive);
                 diceLive.RollDice(throwForce, rollForce, i);
                 diceLive.OnDiceFinishedRolling += HandleDiceFinishedRolling;  // Subscribe to dice finish event
