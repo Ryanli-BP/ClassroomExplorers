@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UltimateClean;
+using System.Collections;
 
 [System.Serializable]
 public class PlayerStatsUI
@@ -14,6 +15,7 @@ public class PlayerStatsUI
     public GameObject healthBar;
 }
 
+[DefaultExecutionOrder(0)]
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
@@ -52,7 +54,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject boardUI;
 
-    private UnityEngine.Vector3 lastPos;
+    private Vector3 lastPos;
 
     private void Awake()
     {
@@ -61,37 +63,113 @@ public class UIManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-        evadeButton.onClick.AddListener(OnEvadeButtonClicked);
-
-        directionPanel.SetActive(false);
-        homePromptPanel.SetActive(false);
-        pvpPromptPanel.SetActive(false);
-        centreDisplayPanel.SetActive(false);
-        rollDiceButtonPanel.gameObject.SetActive(false);
-        evadeButtonPanel.gameObject.SetActive(false);
-        GenereateUIList();
-    }
-
-    private void GenereateUIList(){
-        SetAvatarInactive();
-        Debug.Log($"Total player:{PlayerManager.Instance.numOfPlayers}");
-        for(int i = 0; i < PlayerManager.Instance.numOfPlayers; i++){
-            playerUIPrefab[i].SetActive(true);
-            Debug.Log("Set active UI");
-        }
-    }
-
-    private void SetAvatarInactive(){
-        for(int i = 0; i < playerUIPrefab.Count; i++){
-            playerUIPrefab[i].SetActive(false);
-        }
     }
 
     private void Start()
     {
-        //GenereateUIList();
+        if (GameInitializer.Instance.IsGameInitialized) //if game initialized, initialize UI immediately
+        {
+            InitializeUI();
+        }
+        else //if not, wait for game to initialize(AR Tap to Place Board)
+        {
+            GameInitializer.Instance.OnGameInitialized += OnGameInitialized;
+        }
+
+        GameInitializer.Instance.ConfirmManagerReady("UIManager");
     }
+
+    private void InitializeUI()
+    {
+        StartCoroutine(WaitForManagersToInitialize());
+    }
+
+    private void OnGameInitialized()
+    {
+        GameInitializer.Instance.OnGameInitialized -= OnGameInitialized;
+        InitializeUI();
+    }
+
+    private IEnumerator WaitForManagersToInitialize() //This is not strictly needed but it's safer this way
+    {
+        // Wait for all required managers
+        while (PlayerManager.Instance == null || 
+               GameManager.Instance == null ||
+               TileManager.Instance == null)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // Initialize UI elements
+        GenereateUIList();
+        SetupButtonListeners();
+        SetInitialPanelStates();
+    }
+
+    private void SetupButtonListeners()
+    {
+        if (rollDiceButton != null)
+            rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
+        if (evadeButton != null)
+            evadeButton.onClick.AddListener(OnEvadeButtonClicked);
+    }
+
+    private void SetInitialPanelStates()
+    {
+        if (directionPanel) directionPanel.SetActive(false);
+        if (homePromptPanel) homePromptPanel.SetActive(false);
+        if (pvpPromptPanel) pvpPromptPanel.SetActive(false);
+        if (centreDisplayPanel) centreDisplayPanel.SetActive(false);
+        if (rollDiceButtonPanel) rollDiceButtonPanel.gameObject.SetActive(false);
+        if (evadeButtonPanel) evadeButtonPanel.gameObject.SetActive(false);
+    }
+
+    private void SetAvatarInactive()
+    {
+        for(int i = 0; i < playerUIPrefab.Count; i++)
+        {
+            playerUIPrefab[i].SetActive(false);
+        }
+    }
+
+    private void GenereateUIList()
+    {
+        if (PlayerManager.Instance == null) //for debugging purposes
+        {
+            Debug.LogError("PlayerManager.Instance is null!");
+            return;
+        }
+
+        if (playerUIPrefab == null || playerUIPrefab.Count == 0)
+        {
+            Debug.LogError("playerUIPrefab list is null or empty!");
+            return;
+        }
+
+        SetAvatarInactive();
+        
+        int numPlayers = PlayerManager.Instance.numOfPlayers;
+
+        for(int i = 0; i < numPlayers && i < playerUIPrefab.Count; i++)
+        {
+            if (playerUIPrefab[i] != null)
+            {
+                playerUIPrefab[i].SetActive(true);
+            }
+            else
+            {
+                Debug.LogError($"Player UI Prefab at index {i} is null!");
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameInitializer.Instance != null)
+            GameInitializer.Instance.OnGameInitialized -= OnGameInitialized;
+    }
+
+
 
     private void OnRollDiceButtonClicked()
     {

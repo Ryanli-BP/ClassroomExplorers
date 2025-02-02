@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-//iuhsfj    
+
+[DefaultExecutionOrder(-20)]
 public class TileManager : MonoBehaviour
 {
     public static TileManager Instance { get; private set; }
@@ -10,7 +11,6 @@ public class TileManager : MonoBehaviour
     public GameObject highlightOverlayPrefab; // Reference to the highlight overlay prefab
     public List<Tile> allTiles = new List<Tile>();
     private List<GameObject> activeHighlights = new List<GameObject>(); // Store active highlight overlays
-    private List<GameObject> activePathHighlights = new List<GameObject>();
 
     private List<Tile> portalTiles = new List<Tile>(); // Add this field
 
@@ -44,6 +44,8 @@ public class TileManager : MonoBehaviour
         {
             Debug.LogError("Tile container is not assigned! Please assign the tile container in the Inspector.");
         }
+
+        GameInitializer.Instance.ConfirmManagerReady("TileManager");
     }
 
     private Tile GetRandomPortalTile(Tile currentTile)
@@ -170,12 +172,10 @@ public class TileManager : MonoBehaviour
     {
         if (highlightOverlayPrefab != null)
         {
-            // Store original prefab rotation
-            Quaternion originalRotation = highlightOverlayPrefab.transform.rotation;
             
             GameObject highlight = Instantiate(highlightOverlayPrefab, 
                 tile.transform.position + new Vector3(0, 0.01f, 0), 
-                originalRotation);
+                Quaternion.Euler(90, 0, 0));
                 
             highlight.transform.localScale = highlight.transform.localScale * ARBoardPlacement.worldScale;
             highlight.SetActive(true);
@@ -212,12 +212,6 @@ public class TileManager : MonoBehaviour
             Destroy(highlight);
         }
         activeHighlights.Clear();
-
-        foreach (GameObject pathHighlight in activePathHighlights)
-        {
-            Destroy(pathHighlight);
-        }
-        activePathHighlights.Clear();
 
         foreach (GameObject darkOverlay in activeDarkOverlays)
         {

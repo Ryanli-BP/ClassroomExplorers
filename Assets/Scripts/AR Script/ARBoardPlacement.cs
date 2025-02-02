@@ -8,7 +8,7 @@ using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 public class ARBoardPlacement : MonoBehaviour
 {
     [SerializeField] GameObject boardRoot;
-    public static float worldScale = 0.05f;
+    public static float worldScale = 1f; //To scale world values and prefabs with AR, set to 0.05f
     [SerializeField] Vector3 desiredScale = new Vector3(worldScale, worldScale, worldScale);
     private ARRaycastManager ARRaycastManager;
     private ARPlaneManager ARPlaneManager;
@@ -46,6 +46,9 @@ public class ARBoardPlacement : MonoBehaviour
                 GameObject board = Instantiate(boardRoot, pose.position, pose.rotation);
                 board.transform.localScale = desiredScale;
                 hasPlacedBoard = true;
+
+                // Initialize game after board placement
+                GameInitializer.Instance.InitializeGame();
 
                 if (ARPlaneManager.GetPlane(hit.trackableId).alignment == PlaneAlignment.HorizontalUp)
                 {

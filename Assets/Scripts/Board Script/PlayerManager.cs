@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
@@ -31,8 +32,15 @@ public class PlayerManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+    }
+
+    void Start()
+    {
         InitialisePlayers();
         AssignPlayersToHomes();
+        SpawnAllPlayersAtHome();
+        GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
     private void InitialisePlayers(){
