@@ -51,25 +51,28 @@ public class ARBoardPlacement : MonoBehaviour
             foreach (ARRaycastHit hit in hits)
             {
                 Pose pose = hit.pose;
-                GameObject board = Instantiate(boardRoot, pose.position, pose.rotation);
+                
+                // First instantiate the board at the hit position
+                GameObject board = Instantiate(boardRoot, pose.position, Quaternion.identity);
                 board.transform.localScale = desiredScale;
-                hasPlacedBoard = true;
-
-                // Initialize game after board placement
-                GameInitializer.Instance.InitializeGame();
-
+                
                 if (ARPlaneManager.GetPlane(hit.trackableId).alignment == PlaneAlignment.HorizontalUp)
                 {
-                    Vector3 position = board.transform.position;
-                    
+                    // Get the direction from the board to the camera (horizontal only)
                     Vector3 cameraPosition = Camera.main.transform.position;
-                    Vector3 direction = cameraPosition - position;
+                    Vector3 direction = cameraPosition - pose.position;
+                    direction.y = 0; // Zero out the vertical component
                     
-                    Vector3 targetRotationEuler = Quaternion.LookRotation(direction).eulerAngles;
-                    Vector3 scaledEuler = Vector3.Scale(targetRotationEuler, board.transform.up.normalized);
-                    Quaternion targetRotation = Quaternion.Euler(scaledEuler);
-                    board.transform.rotation = board.transform.rotation * targetRotation;
+                    // Create rotation that faces the camera
+                    if (direction != Vector3.zero)
+                    {
+                        Quaternion targetRotation = Quaternion.LookRotation(-direction); // Note the negative direction
+                        board.transform.rotation = targetRotation;
+                    }
                 }
+                
+                hasPlacedBoard = true;
+                GameInitializer.Instance.InitializeGame();
 
                 // Hide all planes after placement
                 ARPlaneManager.planePrefab.SetActive(false);
