@@ -140,7 +140,7 @@ public class PlayerManager : MonoBehaviour
         if (homeTile != null)
         {
             Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += 0.2f; // Adjust Y offset
+            homePosition.y += 0.2f * ARBoardPlacement.worldScale; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");

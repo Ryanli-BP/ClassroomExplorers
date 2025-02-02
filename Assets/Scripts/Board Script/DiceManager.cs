@@ -10,7 +10,7 @@ public class DiceManager : MonoBehaviour
     [SerializeField] private int numDice = 1;
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
-    [SerializeField] private int testDiceResult = 0;
+    //[SerializeField] private int testDiceResult = 0;
 
     private float dicePositionOffset = 0; // Offset for dice position
 
@@ -112,7 +112,7 @@ public class DiceManager : MonoBehaviour
     public void HandleDiceResult(int diceResult)
     {
         totalDiceResult += diceResult;
-        totalDiceResult = testDiceResult; // For testing purposes
+        //totalDiceResult = testDiceResult; // For testing purposes
     }
 
     public int GetTotalDiceResult()

@@ -22,7 +22,11 @@ public class GameInitializer : MonoBehaviour
         else
             Destroy(gameObject);
 
-        //InitializeGame(); //DISABLE THIS FOR AR, ENABLE FOR PC
+        // Automatically initialize game if running on PC instead of needing to wait for ARBoardPlacement
+        if (PlatformUtils.IsRunningOnPC())
+        {
+            InitializeGame();
+        }
     }
 
         private void CheckAllComponents()
@@ -60,5 +64,17 @@ public class GameInitializer : MonoBehaviour
     {
         IsGameInitialized = true;
         OnGameInitialized?.Invoke();
+    }
+}
+
+public static class PlatformUtils
+{
+    public static bool IsRunningOnPC()
+    {
+        return Application.platform == RuntimePlatform.WindowsPlayer ||
+               Application.platform == RuntimePlatform.OSXPlayer ||
+               Application.platform == RuntimePlatform.LinuxPlayer ||
+               Application.platform == RuntimePlatform.WindowsEditor ||
+               Application.platform == RuntimePlatform.OSXEditor;
     }
 }
