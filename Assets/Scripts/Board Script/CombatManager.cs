@@ -9,9 +9,7 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] private GameObject arCamera; // Reference to the AR camera
 
-    private static readonly Vector3 currentPlayerPosition = new Vector3(47, 0.2f, 0);
-    private static readonly Vector3 opponentPlayerPosition = new Vector3(54, 0.2f, 0);
-    private static readonly Vector3 defaultCameraPosition = new Vector3(0, 8, -10);
+
 
     private void Awake()
     {
@@ -109,7 +107,7 @@ public class CombatManager : MonoBehaviour
                 if (isEvade == true)
                 {
                     // Start both animations simultaneously
-                    IEnumerator attackAnim = currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition);
+                    IEnumerator attackAnim = currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition());
                     IEnumerator evadeAnim = null;
                     
                     if (evdValue > atkValue)
@@ -131,7 +129,7 @@ public class CombatManager : MonoBehaviour
                 {
                     var shieldObject = opponentPlayer.transform.GetChild(1).gameObject;
                     shieldObject.SetActive(true);
-                    yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(opponentPlayerPosition));
+                    yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition()));
                     shieldObject.SetActive(false);
                 }
                 
@@ -144,7 +142,7 @@ public class CombatManager : MonoBehaviour
                 
                 if (isEvade == true)
                 {
-                    IEnumerator attackAnim = opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition);
+                    IEnumerator attackAnim = opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition());
                     IEnumerator evadeAnim = null;
                     
                     if (evdValue > atkValue)
@@ -166,7 +164,7 @@ public class CombatManager : MonoBehaviour
                 {
                     var shieldObject = currentPlayer.transform.GetChild(1).gameObject;
                     shieldObject.SetActive(true);
-                    yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(currentPlayerPosition));
+                    yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition()));
                     shieldObject.SetActive(false);
                 }
                 

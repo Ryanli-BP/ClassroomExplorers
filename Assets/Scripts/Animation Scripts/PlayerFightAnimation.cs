@@ -5,10 +5,16 @@ public class PlayerFightAnimation : MonoBehaviour
 {
     [Header("Animation Settings")]
     [SerializeField] private float attackSpeed = 2.5f;
-    [SerializeField] private float jumpHeight = 3f;
+    private float baseJumpHeight = 3f;
+    private float scaledJumpHeight;
     
     private bool isAttacking = false;
     public bool IsAttacking => isAttacking;
+
+    private void Start()
+    {
+        scaledJumpHeight = baseJumpHeight * ARBoardPlacement.worldScale;
+    }
 
     public IEnumerator PerformAttack(Vector3 targetPosition)
     {
@@ -38,7 +44,7 @@ public class PlayerFightAnimation : MonoBehaviour
             
             float x = Mathf.Lerp(startPosition.x, strikePosition.x, journey);
             float heightCurve = Mathf.Sin(journey * Mathf.PI);
-            float y = startPosition.y + (heightCurve * jumpHeight);
+            float y = startPosition.y + (heightCurve * scaledJumpHeight);
             float z = startPosition.z;
             
             transform.position = new Vector3(x, y, z);
@@ -67,7 +73,7 @@ public class PlayerFightAnimation : MonoBehaviour
             
             float x = Mathf.Lerp(returnStartPos.x, startPosition.x, journey);
             float heightCurve = Mathf.Sin(journey * Mathf.PI);
-            float y = startPosition.y + (heightCurve * jumpHeight * 0.5f);
+            float y = startPosition.y + (heightCurve * scaledJumpHeight * 0.5f);
             float z = startPosition.z;
             
             transform.position = new Vector3(x, y, z);

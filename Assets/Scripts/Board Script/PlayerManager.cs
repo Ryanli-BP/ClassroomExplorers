@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
@@ -31,8 +32,15 @@ public class PlayerManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
+    }
+
+    void Start()
+    {
         InitialisePlayers();
         AssignPlayersToHomes();
+        SpawnAllPlayersAtHome();
+        GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
     private void InitialisePlayers(){
@@ -42,6 +50,7 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < numOfPlayers; i++)
         {
             Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count]); // Ensure it loops if more players than prefabs
+            newPlayer.transform.localScale = newPlayer.transform.localScale * ARBoardPlacement.worldScale; 
             players.Add(newPlayer);
             newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene
             Debug.Log($"Player {newPlayer.getPlayerID()} created.");
@@ -131,7 +140,7 @@ public class PlayerManager : MonoBehaviour
         if (homeTile != null)
         {
             Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += 0.2f; // Adjust Y offset
+            homePosition.y += 0.2f * ARBoardPlacement.worldScale; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");

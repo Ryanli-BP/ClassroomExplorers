@@ -1,7 +1,8 @@
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
+using System.Collections;
 
+[DefaultExecutionOrder(20)]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -100,9 +101,18 @@ public class GameManager : MonoBehaviour
         return currentState;
     }
 
-    private void SetupGame()
+    public void SetupGame()
     {
-        PlayerManager.Instance.SpawnAllPlayersAtHome();
+        StartCoroutine(WaitForComponentsAndSetup());
+    }
+
+    private IEnumerator WaitForComponentsAndSetup() //To ensure everything is setup on other scripts first
+    {
+        while (!GameInitializer.Instance.AllComponentsReady)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
         ChangeState(GameState.RoundStart);
     }
 

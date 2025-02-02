@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
 
+[DefaultExecutionOrder(-10)]
 public class RoundManager : MonoBehaviour
 {
 
@@ -14,6 +14,7 @@ public class RoundManager : MonoBehaviour
         round = 0;
         UIManager.Instance.UpdateRound(round);
         UIManager.Instance.UpdateCurrentPlayerTurn(Turn);
+        GameInitializer.Instance.ConfirmManagerReady("RoundManager");
     }
     private void Awake()
     {

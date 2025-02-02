@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public enum Status { Alive, Dead }
 public class Player : MonoBehaviour
@@ -24,10 +25,21 @@ public class Player : MonoBehaviour
             Health = MAX_HEALTH;
             Status = Status.Alive;
 
-            UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-            UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-            UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+            StartCoroutine(InitializePlayerUI());
         }
+    }
+
+    private IEnumerator InitializePlayerUI()
+    {
+        while (UIManager.Instance == null || !GameInitializer.Instance.IsGameInitialized)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // Update UI once UIManager is ready
+        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+        UIManager.Instance.UpdatePlayerLevel(playerID, Level);
+        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
     }
 
     public int getPlayerID()
