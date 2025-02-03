@@ -29,8 +29,6 @@ public class ArenaManager : MonoBehaviour
 
         if (PlatformUtils.IsRunningOnPC())
         {
-            boardCameraSpot.transform.position = boardCameraSpot.transform.position + new Vector3(0, 10, -10);
-            combatCameraSpot.transform.position = combatCameraSpot.transform.position + new Vector3(0, 10, -10);
 
             arCamera.transform.position = boardCameraSpot.transform.position;
             arCamera.transform.rotation = Quaternion.Euler(50, 0, 0);
