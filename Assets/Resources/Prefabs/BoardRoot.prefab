@@ -346,7 +346,6 @@ MonoBehaviour:
   numDice: 3
   throwForce: 4
   rollForce: 4
-  testDiceResult: 5
 --- !u!1 &113356922619122445
 GameObject:
   m_ObjectHideFlags: 0
@@ -2455,7 +2454,7 @@ Transform:
   m_GameObject: {fileID: 826927323243329249}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17144,7 +17143,7 @@ Transform:
   m_GameObject: {fileID: 8398868867762811916}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

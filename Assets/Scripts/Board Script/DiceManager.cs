@@ -87,7 +87,9 @@ public class DiceManager : MonoBehaviour
             // Instantiate and roll new dice
             for (int i = 0; i < numDice; i++)
             {
-                Dice diceLive = Instantiate(DiceToThrow, transform.position, transform.rotation);
+                Dice diceLive = Instantiate(DiceToThrow, 
+                transform.position, 
+                ARBoardPlacement.boardRotation * transform.rotation);
                 diceLive.transform.localScale = diceLive.transform.localScale * ARBoardPlacement.worldScale;
                 liveDice.Add(diceLive);
                 diceLive.RollDice(throwForce, rollForce, i);

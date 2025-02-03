@@ -49,7 +49,9 @@ public class PlayerManager : MonoBehaviour
         // Instantiate the number of players specified by the user
         for (int i = 0; i < numOfPlayers; i++)
         {
-            Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count]); // Ensure it loops if more players than prefabs
+            Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count],
+            Vector3.zero,
+            ARBoardPlacement.boardRotation); // Ensure it loops if more players than prefabs
             newPlayer.transform.localScale = newPlayer.transform.localScale * ARBoardPlacement.worldScale; 
             players.Add(newPlayer);
             newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene

@@ -14,6 +14,7 @@ public class ARBoardPlacement : MonoBehaviour
     private ARPlaneManager ARPlaneManager;
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
     private bool hasPlacedBoard = false;
+    public static Quaternion boardRotation { get; private set; }
 
     private void Awake()
     {
@@ -27,6 +28,9 @@ public class ARBoardPlacement : MonoBehaviour
         {
             worldScale = 0.05f; 
         }
+        
+        // Ensure board starts inactive
+        boardRoot.SetActive(false);
     }
 
     private void OnEnable()
@@ -52,29 +56,31 @@ public class ARBoardPlacement : MonoBehaviour
             {
                 Pose pose = hit.pose;
                 
-                // First instantiate the board at the hit position
-                GameObject board = Instantiate(boardRoot, pose.position, Quaternion.identity);
-                board.transform.localScale = desiredScale;
+                // Set position and scale
+                boardRoot.transform.position = pose.position;
+                boardRoot.transform.localScale = desiredScale;
+                
                 
                 if (ARPlaneManager.GetPlane(hit.trackableId).alignment == PlaneAlignment.HorizontalUp)
                 {
-                    // Get the direction from the board to the camera (horizontal only)
                     Vector3 cameraPosition = Camera.main.transform.position;
                     Vector3 direction = cameraPosition - pose.position;
-                    direction.y = 0; // Zero out the vertical component
+                    direction.y = 0;
                     
-                    // Create rotation that faces the camera
                     if (direction != Vector3.zero)
                     {
-                        Quaternion targetRotation = Quaternion.LookRotation(-direction); // Note the negative direction
-                        board.transform.rotation = targetRotation;
+                        Quaternion targetRotation = Quaternion.LookRotation(-direction);
+                        boardRoot.transform.rotation = targetRotation;
+                        boardRotation = targetRotation; // Store the rotation
                     }
                 }
                 
+                // Activate the board
+                boardRoot.SetActive(true);
                 hasPlacedBoard = true;
                 GameInitializer.Instance.InitializeGame();
 
-                // Hide all planes after placement
+                // Hide planes
                 ARPlaneManager.planePrefab.SetActive(false);
                 foreach (var plane in ARPlaneManager.trackables)
                 {
