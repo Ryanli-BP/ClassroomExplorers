@@ -29,6 +29,7 @@ public class CombatManager : MonoBehaviour
         Vector3 originalOpponentPlayerPosition = opponentPlayer.gameObject.transform.position;
         Quaternion originalCurrentPlayerRotation = currentPlayer.gameObject.transform.rotation;
         Quaternion originalOpponentPlayerRotation = opponentPlayer.gameObject.transform.rotation;
+        Vector3 originalCameraPosition = arCamera.transform.position;
 
         // Teleport to fighting area
         TeleportToFightingArea(currentPlayer, opponentPlayer);
@@ -37,11 +38,12 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Teleporting back to board...");
 
         // Teleport back to board
-        TeleportBackToBoard(currentPlayer, opponentPlayer, originalCurrentPlayerPosition, originalOpponentPlayerPosition, originalCurrentPlayerRotation, originalOpponentPlayerRotation);
+        TeleportBackToBoard(currentPlayer, opponentPlayer, originalCurrentPlayerPosition, originalOpponentPlayerPosition, originalCurrentPlayerRotation, originalOpponentPlayerRotation, originalCameraPosition);
     }
 
     private void TeleportToFightingArea(Player currentPlayer, Player opponentPlayer)
     {
+        
         arCamera.transform.position = ArenaManager.Instance.GetCombatCameraPosition();
         currentPlayer.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
         opponentPlayer.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
@@ -52,9 +54,19 @@ public class CombatManager : MonoBehaviour
         opponentPlayer.transform.Rotate(0, 180, 0);
     }
 
-    private void TeleportBackToBoard(Player currentPlayer, Player opponentPlayer, Vector3 originalCurrentPlayerPosition, Vector3 originalOpponentPlayerPosition, Quaternion originalCurrentPlayerRotation, Quaternion originalOpponentPlayerRotation)
+    private void TeleportBackToBoard(Player currentPlayer, Player opponentPlayer, Vector3 originalCurrentPlayerPosition, Vector3 originalOpponentPlayerPosition, Quaternion originalCurrentPlayerRotation, Quaternion originalOpponentPlayerRotation, Vector3 originalCameraPosition)
     {
-        arCamera.transform.position = ArenaManager.Instance.GetBoardCameraPosition();
+        if (PlatformUtils.IsRunningOnPC()) //for camera
+        {
+            arCamera.transform.position = ArenaManager.Instance.GetBoardCameraPosition();
+
+        }
+        else
+        {
+            arCamera.transform.position = originalCameraPosition;
+            arCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
         currentPlayer.transform.position = originalCurrentPlayerPosition;
         opponentPlayer.transform.position = originalOpponentPlayerPosition;
         currentPlayer.transform.rotation = originalCurrentPlayerRotation;

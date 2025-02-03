@@ -13,8 +13,10 @@ public class Dice : MonoBehaviour
     private int previousTopFace = -1;
     private float stableTime = 0f;
     private const float STABILITY_THRESHOLD = 3f;
-    private const float VELOCITY_THRESHOLD = 0.01f;
-    private const float ANGULAR_VELOCITY_THRESHOLD = 0.01f;
+    private const float BASE_VELOCITY_THRESHOLD = 0.01f;
+    private const float BASE_ANGULAR_VELOCITY_THRESHOLD = 0.01f;
+    private float VELOCITY_THRESHOLD => BASE_VELOCITY_THRESHOLD * ARBoardPlacement.worldScale;
+    private float ANGULAR_VELOCITY_THRESHOLD => BASE_ANGULAR_VELOCITY_THRESHOLD * ARBoardPlacement.worldScale;
     private bool isTrackingStability = false;
     private const float MAX_ROLL_TIME = 5f;
     private float rollTimer = 0f;
@@ -99,22 +101,26 @@ public class Dice : MonoBehaviour
         previousTopFace = -1;
 
         var randomVar = Random.Range(-1f, 1f);
-        rb.linearDamping = 0.1f; // Reduce linear damping
-        rb.angularDamping = 0.1f; // Reduce angular damping
-        rb.AddForce(transform.forward * (throwForce + randomVar), ForceMode.Impulse);
+        rb.linearDamping = 0.1f * ARBoardPlacement.worldScale;
+        rb.angularDamping = 0.1f * ARBoardPlacement.worldScale;
+        
+        // Scale forces by worldScale
+        float scaledThrowForce = throwForce * ARBoardPlacement.worldScale;
+        float scaledRollForce = rollForce * ARBoardPlacement.worldScale;
+        
+        rb.AddForce(transform.forward * (scaledThrowForce + randomVar), ForceMode.Impulse);
 
         var randX = Random.Range(-1f, 1f);
         var randY = Random.Range(-1f, 1f);
         var randZ = Random.Range(-1f, 1f);
-        rb.AddTorque(new Vector3(randX, randY, randZ) * (rollForce + randomVar), ForceMode.Impulse);
+        rb.AddTorque(new Vector3(randX, randY, randZ) * (scaledRollForce + randomVar), ForceMode.Impulse);
 
-        // Add initial random movement if it's the only die
         if (DiceManager.Instance.GetNumDice() == 1)
         {
-            var initialRandomForce = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * throwForce;
+            var initialRandomForce = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * scaledThrowForce;
             rb.AddForce(initialRandomForce, ForceMode.Impulse);
 
-            var initialRandomTorque = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * rollForce;
+            var initialRandomTorque = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * scaledRollForce;
             rb.AddTorque(initialRandomTorque, ForceMode.Impulse);
         }
 

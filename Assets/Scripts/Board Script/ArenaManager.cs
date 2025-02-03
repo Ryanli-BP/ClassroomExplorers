@@ -13,6 +13,8 @@ public class ArenaManager : MonoBehaviour
     [SerializeField] private Transform boardCameraSpot;
     [SerializeField] private Transform boardDiceSpot;
 
+    [SerializeField] private Transform arCamera;
+
     private void Awake()
     {
         if (Instance == null)
@@ -23,6 +25,13 @@ public class ArenaManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+
+        if (PlatformUtils.IsRunningOnPC())
+        {
+
+            arCamera.transform.position = boardCameraSpot.transform.position;
+            arCamera.transform.rotation = Quaternion.Euler(50, 0, 0);
         }
     }
 

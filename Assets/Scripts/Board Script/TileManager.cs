@@ -173,9 +173,10 @@ public class TileManager : MonoBehaviour
         if (highlightOverlayPrefab != null)
         {
             
+            Quaternion highlightRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(90, 0, 0);
             GameObject highlight = Instantiate(highlightOverlayPrefab, 
-                tile.transform.position + new Vector3(0, 0.01f, 0), 
-                Quaternion.Euler(90, 0, 0));
+            tile.transform.position + new Vector3(0, 0.005f, 0), 
+            highlightRotation);
                 
             highlight.transform.localScale = highlight.transform.localScale * ARBoardPlacement.worldScale;
             highlight.SetActive(true);
@@ -196,8 +197,8 @@ public class TileManager : MonoBehaviour
             if (!validTiles.Contains(tile))
             {
                 GameObject darkOverlay = Instantiate(darkOverlayPrefab, 
-                    tile.transform.position + new Vector3(0, 0.003f, 0), 
-                    Quaternion.Euler(0, 0, 0));
+                tile.transform.position + new Vector3(0, 0.003f, 0), 
+                ARBoardPlacement.boardRotation);
                 darkOverlay.transform.localScale = darkOverlay.transform.localScale * ARBoardPlacement.worldScale;
                 darkOverlay.SetActive(true);
                 activeDarkOverlays.Add(darkOverlay);

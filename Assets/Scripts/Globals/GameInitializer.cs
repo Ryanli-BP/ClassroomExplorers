@@ -6,6 +6,8 @@ public class GameInitializer : MonoBehaviour
     public bool IsGameInitialized { get; private set; }
     public bool AllComponentsReady { get; private set; }
     public event System.Action OnGameInitialized;
+    [SerializeField] private GameObject boardRoot;
+    
 
     private bool isUIManagerReady;
     private bool isPlayerManagerReady;
@@ -26,6 +28,7 @@ public class GameInitializer : MonoBehaviour
         if (PlatformUtils.IsRunningOnPC())
         {
             InitializeGame();
+            boardRoot.gameObject.SetActive(true);
         }
     }
 

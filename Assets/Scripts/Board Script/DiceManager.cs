@@ -74,7 +74,7 @@ public class DiceManager : MonoBehaviour
             UIManager.Instance.SetRollDiceButtonVisibility(false);
 
             originalGravity = Physics.gravity;
-            Physics.gravity = new Vector3(0, -20f, 0); // Increase gravity
+            Physics.gravity = new Vector3(0, -20f * ARBoardPlacement.worldScale, 0); // Increase gravity
 
             // Unsubscribe from previous dice finish events before destroying old dice
             foreach (var die in liveDice)
@@ -87,7 +87,9 @@ public class DiceManager : MonoBehaviour
             // Instantiate and roll new dice
             for (int i = 0; i < numDice; i++)
             {
-                Dice diceLive = Instantiate(DiceToThrow, transform.position, transform.rotation);
+                Dice diceLive = Instantiate(DiceToThrow, 
+                transform.position, 
+                ARBoardPlacement.boardRotation * transform.rotation);
                 diceLive.transform.localScale = diceLive.transform.localScale * ARBoardPlacement.worldScale;
                 liveDice.Add(diceLive);
                 diceLive.RollDice(throwForce, rollForce, i);
