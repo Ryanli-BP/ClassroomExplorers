@@ -20,17 +20,20 @@ public class ARBoardPlacement : MonoBehaviour
     {
         ARRaycastManager = GetComponent<ARRaycastManager>();
         ARPlaneManager = GetComponent<ARPlaneManager>();
+
         if (PlatformUtils.IsRunningOnPC())
         {
-            worldScale = 1f; 
+            worldScale = 1f;
+            boardRoot.SetActive(true); 
+            boardRotation = Quaternion.identity;
         }
         else
         {
-            worldScale = 0.05f; 
+            worldScale = 0.05f;
+            boardRoot.SetActive(false); 
+            
         }
         
-        // Ensure board starts inactive
-        boardRoot.SetActive(false);
     }
 
     private void OnEnable()

@@ -175,7 +175,7 @@ public class TileManager : MonoBehaviour
             
             Quaternion highlightRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(90, 0, 0);
             GameObject highlight = Instantiate(highlightOverlayPrefab, 
-            tile.transform.position + new Vector3(0, 0.01f, 0), 
+            tile.transform.position + new Vector3(0, 0.005f, 0), 
             highlightRotation);
                 
             highlight.transform.localScale = highlight.transform.localScale * ARBoardPlacement.worldScale;
