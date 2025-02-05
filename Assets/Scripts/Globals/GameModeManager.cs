@@ -12,36 +12,44 @@ public enum GameMode
 }
 
 [System.Serializable]
-public class GameModeConfig
+public class GameModeConfig 
 {
     public GameMode currentMode;
-    public Dictionary<GameMode, ModeSettings> modes;
+    public Dictionary<GameMode, GameConfig> modes;
 }
 
 [System.Serializable]
-public class ModeSettings
+public class GameConfig
 {
+    // External configurable settings
     public bool enabled;
-    public int maxPlayers;
-    public float respawnTime;
-    public int maxTeams;
+    public int maxPlayers; 
+    public float roundTime;
     public int playersPerTeam;
-    public bool friendlyFire;
-    public int roundTime;
-    public float warmupTime;
-    public int minPlayers;
+    public float respawnTime;
 }
 
-public class GameModeManager : MonoBehaviour
+[System.Serializable]
+public class ModeRules
+{
+    // Mode-specific gameplay rules
+    public bool canHealPlayers;
+    public bool canFightPlayers;
+    public bool friendlyFire;
+}
+
+public class GameConfigManager : MonoBehaviour
 {
     [SerializeField] private string configUrl = "https://your-api.com/gamemodes";
     private GameModeConfig currentConfig;
+    private Dictionary<GameMode, ModeRules> modeRules;
     private bool isInitialized;
 
-    public static GameModeManager Instance { get; private set; }
+    public static GameConfigManager Instance { get; private set; }
 
     private void Awake()
     {
+        InitializeModeRules();
         if (Instance == null)
         {
             Instance = this;
@@ -56,6 +64,34 @@ public class GameModeManager : MonoBehaviour
     private async void Start()
     {
         await InitializeGameModes();
+    }
+
+    private void InitializeModeRules()
+    {
+        modeRules = new Dictionary<GameMode, ModeRules>
+        {
+            { GameMode.FFA, new ModeRules 
+                { 
+                    canHealPlayers = false, 
+                    canFightPlayers = true, 
+                    friendlyFire = true 
+                }
+            },
+            { GameMode.TEAM, new ModeRules 
+                { 
+                    canHealPlayers = true, 
+                    canFightPlayers = true, 
+                    friendlyFire = false 
+                }
+            },
+            { GameMode.COOP, new ModeRules 
+                { 
+                    canHealPlayers = true, 
+                    canFightPlayers = false, 
+                    friendlyFire = false 
+                }
+            }
+        };
     }
 
     private async Task InitializeGameModes()
@@ -107,7 +143,6 @@ public class GameModeManager : MonoBehaviour
             Debug.LogError($"Failed to load fallback config: {e.Message}");
         }
     }
-
     public void ApplyGameMode(GameMode mode)
     {
         if (!isInitialized)
@@ -129,52 +164,30 @@ public class GameModeManager : MonoBehaviour
         }
 
         currentConfig.currentMode = mode;
-        ModeSettings settings = currentConfig.modes[mode];
-        ApplyModeSettings(settings);
+        ApplyModeSettings(mode);
     }
 
-    private void ApplyModeSettings(ModeSettings settings)
+
+    private void ApplyModeSettings(GameMode mode)
     {
-        switch (currentConfig.currentMode)
-        {
-            case GameMode.FFA:
-                ApplyFFASettings(settings);
-                break;
-            case GameMode.TEAM:
-                ApplyTeamSettings(settings);
-                break;
-            case GameMode.COOP:
-                ApplyCompetitiveSettings(settings);
-                break;
-        }
-    }
+        var config = currentConfig.modes[mode];
+        var rules = modeRules[mode];
 
-    private void ApplyFFASettings(ModeSettings settings)
-    {
-        // Implement FFA specific settings
+        // Apply configurable settings
+        
+
+        // Apply mode-specific rules
 
     }
 
-    private void ApplyTeamSettings(ModeSettings settings)
-    {
-        // Implement Team specific settings
-
-    }
-
-    private void ApplyCompetitiveSettings(ModeSettings settings)
-    {
-        // Implement Competitive specific settings
-
-    }
-
-    public GameMode GetCurrentMode()
-    {
-        return currentConfig.currentMode;
-    }
-
-    public ModeSettings GetCurrentModeSettings()
+    public GameConfig GetCurrentConfig()
     {
         return currentConfig.modes[currentConfig.currentMode];
+    }
+
+    public ModeRules GetCurrentRules()
+    {
+        return modeRules[currentConfig.currentMode];
     }
 
     public async Task RefreshConfig()
