@@ -29,10 +29,10 @@ public class QuizDisplay : MonoBehaviour
     public void DisplayQuestion(Question question, int currentIndex, int totalQuestions)
     {
         ScreenQuestion.GetComponent<TextMeshProUGUI>().text = question.question;
-        AnswerA.GetComponent<TextMeshProUGUI>().text = $"A. {question.optionA}";
-        AnswerB.GetComponent<TextMeshProUGUI>().text = $"B. {question.optionB}";
-        AnswerC.GetComponent<TextMeshProUGUI>().text = $"C. {question.optionC}";
-        AnswerD.GetComponent<TextMeshProUGUI>().text = $"D. {question.optionD}";
+        AnswerA.GetComponent<TextMeshProUGUI>().text = $"A. {question.choiceA}";
+        AnswerB.GetComponent<TextMeshProUGUI>().text = $"B. {question.choiceB}";
+        AnswerC.GetComponent<TextMeshProUGUI>().text = $"C. {question.choiceC}";
+        AnswerD.GetComponent<TextMeshProUGUI>().text = $"D. {question.choiceD}";
         QuestionIndexText.GetComponent<TextMeshProUGUI>().text = $"{currentIndex + 1}/{totalQuestions}"; // Display the index
     }
 

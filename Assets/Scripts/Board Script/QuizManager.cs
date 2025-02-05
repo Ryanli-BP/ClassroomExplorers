@@ -199,10 +199,10 @@ public class QuizManager : MonoBehaviour
 public class Question
 {
     public string question { get; set; }
-    public string optionA { get; set; }
-    public string optionB { get; set; }
-    public string optionC { get; set; }
-    public string optionD { get; set; }
+    public string choiceA { get; set; }
+    public string choiceB { get; set; }
+    public string choiceC { get; set; }
+    public string choiceD { get; set; }
     public string answer { get; set; }
 }
 
@@ -211,10 +211,10 @@ public sealed class QuestionMap : ClassMap<Question>
     public QuestionMap()
     {
         Map(m => m.question);
-        Map(m => m.optionA);
-        Map(m => m.optionB);
-        Map(m => m.optionC);
-        Map(m => m.optionD);
+        Map(m => m.choiceA);
+        Map(m => m.choiceB);
+        Map(m => m.choiceC);
+        Map(m => m.choiceD);
         Map(m => m.answer);
     }
 }
