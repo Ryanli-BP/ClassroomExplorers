@@ -52,6 +52,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI damageTextPrefab;
     [SerializeField] private Canvas mainCanvas; // Reference to the main canvas
 
+    [SerializeField] private GameObject healPromptPanel;
+    [SerializeField] private Button healButton;
+    [SerializeField] private Button skipHealButton;
+
     [SerializeField] private GameObject boardUI;
 
     private Vector3 lastPos;
@@ -414,6 +418,23 @@ public class UIManager : MonoBehaviour
 
         continueMovingButton.onClick.AddListener(() => {
             pvpPromptPanel.SetActive(false);
+            onPlayerChoice(false);
+        });
+    }
+
+    public void ShowHealingPrompt(Action<bool> onPlayerChoice)
+    {
+        healPromptPanel.SetActive(true);
+        healButton.onClick.RemoveAllListeners();
+        skipHealButton.onClick.RemoveAllListeners();
+
+        healButton.onClick.AddListener(() => {
+            healPromptPanel.SetActive(false);
+            onPlayerChoice(true);
+        });
+
+        skipHealButton.onClick.AddListener(() => {
+            healPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
     }

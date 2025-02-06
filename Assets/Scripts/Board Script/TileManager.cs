@@ -94,7 +94,7 @@ public class TileManager : MonoBehaviour
             case TileType.Home:
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
-                PlayerManager.Instance.GetCurrentPlayer().HealPLayer(1);
+                PlayerManager.Instance.GetCurrentPlayer().Heal(1);
                 break;
 
             case TileType.Portal:
