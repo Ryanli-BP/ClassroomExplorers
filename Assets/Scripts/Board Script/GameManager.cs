@@ -79,6 +79,10 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerTurnEnd:
                 EndPlayerTurn();
                 break;
+
+            case GameState.BossTurn:
+                StartBossTurn();
+                break;
             
             case GameState.PlayerLandQuiz:
                 HandleQuizStart();
@@ -104,6 +108,11 @@ public class GameManager : MonoBehaviour
     public void SetupGame()
     {
         StartCoroutine(WaitForComponentsAndSetup());
+    }
+
+    public void StartBossTurn()
+    {
+        BossManager.Instance.HandleBossTurn();
     }
 
     private IEnumerator WaitForComponentsAndSetup() //To ensure everything is setup on other scripts first
@@ -175,6 +184,12 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.PlayerMovement);
     }
 
+    public void HandleBossTurnEnd()
+    {
+        UIManager.Instance.UpdateCurrentPlayerTurn(RoundManager.Instance.Turn);
+        ChangeState(GameState.RoundStart);
+    }
+
     public void HandleQuizLand()
     {
     ChangeState(GameState.PlayerLandQuiz);
@@ -242,7 +257,15 @@ public class GameManager : MonoBehaviour
 
         if (RoundManager.Instance.Turn == 1)
         {
-            ChangeState(GameState.RoundStart);
+            // All players have taken their turn, now it's boss turn
+            if (GameConfigManager.Instance.GetCurrentRules().haveBoss)
+            {
+                ChangeState(GameState.BossTurn);
+            }
+            else
+            {
+                ChangeState(GameState.RoundStart);
+            }
         }
         else
         {
@@ -277,8 +300,8 @@ public enum GameState
     PlayerCombat,
     PlayerFinishedMoving,
     PlayerTurnEnd,
+    BossTurn,
     PlayerLandQuiz, 
-    PlayerInQuiz,
     PlayerEndQuiz,
     GameEnd
 }

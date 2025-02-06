@@ -319,6 +319,11 @@ public class UIManager : MonoBehaviour
         currentPlayerTurnText.text = $"Player {playerID}'s Turn";
     }
 
+    public void DisplayBossTurn()
+    {
+        currentPlayerTurnText.text = "Boss's Turn";
+    }
+
     public void UpdateReviveCounter(int playerID, int reviveCounter)
     {
         if (reviveCounter > 0)

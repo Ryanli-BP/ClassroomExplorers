@@ -12,7 +12,8 @@ public enum GameMode
 public class ModeRules
 {
     public bool canHealPlayers;
-    public bool canFightPlayers; 
+    public bool canFightPlayers;
+    public bool haveBoss; 
     public bool friendlyFire;
 }
 
@@ -45,21 +46,24 @@ public class GameConfigManager : MonoBehaviour
                 { 
                     canHealPlayers = false, 
                     canFightPlayers = true, 
-                    friendlyFire = true 
+                    friendlyFire = true, 
+                    haveBoss = false
                 }
             },
             { GameMode.TEAM, new ModeRules 
                 { 
                     canHealPlayers = true, 
                     canFightPlayers = true, 
-                    friendlyFire = false 
+                    friendlyFire = false,
+                    haveBoss = false 
                 }
             },
             { GameMode.COOP, new ModeRules 
                 { 
                     canHealPlayers = true, 
                     canFightPlayers = false, 
-                    friendlyFire = false 
+                    friendlyFire = false,
+                    haveBoss = true 
                 }
             }
         };
