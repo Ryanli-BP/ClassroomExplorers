@@ -12,6 +12,13 @@ public class PlayerMovement : MonoBehaviour
     private bool initialMove = true; //One time flag for removing TilePlayerID
     private int remainingSteps = 0;
     public event Action OnMovementComplete;
+    private bool canFightPlayers;
+
+    void Start()
+    {
+        ModeRules currentRules = GameConfigManager.Instance.GetCurrentRules();
+        canFightPlayers = currentRules.canFightPlayers;
+    }
 
     public Tile CurrentTile
     {
@@ -139,7 +146,8 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-            if(!initialMove) //cannoy challenge on first move
+
+            if(!initialMove && canFightPlayers) //cannoy challenge on first move
             {
                 yield return StartCoroutine(HandlePvPEncounter()); //isMoving is set to false if dead
             }

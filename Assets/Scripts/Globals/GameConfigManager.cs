@@ -114,7 +114,6 @@ public class GameConfigManager : MonoBehaviour
                 {
                     string json = request.downloadHandler.text;
                     currentConfig = JsonConvert.DeserializeObject<GameModeConfig>(json);
-                    ApplyGameMode(currentConfig.currentMode);
                 }
                 else
                 {
@@ -136,48 +135,11 @@ public class GameConfigManager : MonoBehaviour
         {
             TextAsset fallbackConfig = Resources.Load<TextAsset>("fallback_config");
             currentConfig = JsonConvert.DeserializeObject<GameModeConfig>(fallbackConfig.text);
-            ApplyGameMode(currentConfig.currentMode);
         }
         catch (System.Exception e)
         {
             Debug.LogError($"Failed to load fallback config: {e.Message}");
         }
-    }
-    public void ApplyGameMode(GameMode mode)
-    {
-        if (!isInitialized)
-        {
-            Debug.LogError("GameModeManager not initialized yet");
-            return;
-        }
-
-        if (!currentConfig.modes.ContainsKey(mode))
-        {
-            Debug.LogError($"Game mode {mode} not found in config");
-            return;
-        }
-
-        if (!currentConfig.modes[mode].enabled)
-        {
-            Debug.LogError($"Game mode {mode} is disabled");
-            return;
-        }
-
-        currentConfig.currentMode = mode;
-        ApplyModeSettings(mode);
-    }
-
-
-    private void ApplyModeSettings(GameMode mode)
-    {
-        var config = currentConfig.modes[mode];
-        var rules = modeRules[mode];
-
-        // Apply configurable settings
-        
-
-        // Apply mode-specific rules
-
     }
 
     public GameConfig GetCurrentConfig()
