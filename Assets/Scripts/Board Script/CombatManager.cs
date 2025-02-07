@@ -19,47 +19,44 @@ public class CombatManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public IEnumerator HandleFight(int opponentPlayerID, int currentPlayerID)
+    public IEnumerator HandleFight(Entity attacker, Entity defender)
     {
         // Record original positions
-        Player currentPlayer = PlayerManager.Instance.GetPlayerByID(currentPlayerID);
-        Player opponentPlayer = PlayerManager.Instance.GetPlayerByID(opponentPlayerID);
-
-        Vector3 originalCurrentPlayerPosition = currentPlayer.gameObject.transform.position;
-        Vector3 originalOpponentPlayerPosition = opponentPlayer.gameObject.transform.position;
-        Quaternion originalCurrentPlayerRotation = currentPlayer.gameObject.transform.rotation;
-        Quaternion originalOpponentPlayerRotation = opponentPlayer.gameObject.transform.rotation;
+        Vector3 originalAttackerPosition = attacker.transform.position;
+        Vector3 originalDefenderPosition = defender.transform.position;
+        Quaternion originalAttackerRotation = attacker.transform.rotation;
+        Quaternion originalDefenderRotation = defender.transform.rotation;
         Vector3 originalCameraPosition = arCamera.transform.position;
 
         // Teleport to fighting area
-        TeleportToFightingArea(currentPlayer, opponentPlayer);
+        TeleportToFightingArea(attacker, defender);
 
-        yield return StartCoroutine(PlayerCombat(currentPlayer, opponentPlayer));
-        Debug.Log("Teleporting back to board...");
-
+        yield return StartCoroutine(CombatSequence(attacker, defender));
+        
         // Teleport back to board
-        TeleportBackToBoard(currentPlayer, opponentPlayer, originalCurrentPlayerPosition, originalOpponentPlayerPosition, originalCurrentPlayerRotation, originalOpponentPlayerRotation, originalCameraPosition);
+        TeleportBackToBoard(attacker, defender, originalAttackerPosition, originalDefenderPosition, 
+            originalAttackerRotation, originalDefenderRotation, originalCameraPosition);
     }
 
-    private void TeleportToFightingArea(Player currentPlayer, Player opponentPlayer)
+    private void TeleportToFightingArea(Entity attacker, Entity defender)
     {
-        
         arCamera.transform.position = ArenaManager.Instance.GetCombatCameraPosition();
-        currentPlayer.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
-        opponentPlayer.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
+        attacker.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
+        defender.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
         
-        currentPlayer.transform.LookAt(opponentPlayer.transform);
-        currentPlayer.transform.Rotate(0, 180, 0);
-        opponentPlayer.transform.LookAt(currentPlayer.transform);
-        opponentPlayer.transform.Rotate(0, 180, 0);
+        attacker.transform.LookAt(defender.transform);
+        attacker.transform.Rotate(0, 180, 0);
+        defender.transform.LookAt(attacker.transform);
+        defender.transform.Rotate(0, 180, 0);
     }
 
-    private void TeleportBackToBoard(Player currentPlayer, Player opponentPlayer, Vector3 originalCurrentPlayerPosition, Vector3 originalOpponentPlayerPosition, Quaternion originalCurrentPlayerRotation, Quaternion originalOpponentPlayerRotation, Vector3 originalCameraPosition)
+    private void TeleportBackToBoard(Entity attacker, Entity defender, Vector3 originalAttackerPosition, 
+        Vector3 originalDefenderPosition, Quaternion originalAttackerRotation, 
+        Quaternion originalDefenderRotation, Vector3 originalCameraPosition)
     {
-        if (PlatformUtils.IsRunningOnPC()) //for camera
+        if (PlatformUtils.IsRunningOnPC())
         {
             arCamera.transform.position = ArenaManager.Instance.GetBoardCameraPosition();
-
         }
         else
         {
@@ -67,13 +64,13 @@ public class CombatManager : MonoBehaviour
             arCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        currentPlayer.transform.position = originalCurrentPlayerPosition;
-        opponentPlayer.transform.position = originalOpponentPlayerPosition;
-        currentPlayer.transform.rotation = originalCurrentPlayerRotation;
-        opponentPlayer.transform.rotation = originalOpponentPlayerRotation;
+        attacker.transform.position = originalAttackerPosition;
+        defender.transform.position = originalDefenderPosition;
+        attacker.transform.rotation = originalAttackerRotation;
+        defender.transform.rotation = originalDefenderRotation;
     }
 
-    public IEnumerator PlayerCombat(Player currentPlayer, Player opponentPlayer)
+    public IEnumerator CombatSequence(Entity attacker, Entity defender)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -113,25 +110,25 @@ public class CombatManager : MonoBehaviour
             //Attack "animation"
             if (i == 0)
             {
-                var swordObject = currentPlayer.transform.GetChild(0).gameObject;
+                var swordObject = attacker.transform.GetChild(0).gameObject;
                 swordObject.SetActive(true);
 
                 if (isEvade == true)
                 {
                     // Start both animations simultaneously
-                    IEnumerator attackAnim = currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition());
+                    IEnumerator attackAnim = attacker.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition());
                     IEnumerator evadeAnim = null;
                     
                     if (evdValue > atkValue)
                     {
-                        evadeAnim = opponentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade();
+                        evadeAnim = defender.GetComponent<PlayerEvadeAnimation>().PerformEvade();
                         StartCoroutine(evadeAnim);
                     }
                     
                     yield return attackAnim;
                     if (evadeAnim != null)
                     {
-                        while (opponentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
+                        while (defender.GetComponent<PlayerEvadeAnimation>().IsEvading)
                         {
                             yield return null;
                         }
@@ -139,9 +136,9 @@ public class CombatManager : MonoBehaviour
                 }
                 else
                 {
-                    var shieldObject = opponentPlayer.transform.GetChild(1).gameObject;
+                    var shieldObject = defender.transform.GetChild(1).gameObject;
                     shieldObject.SetActive(true);
-                    yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition()));
+                    yield return StartCoroutine(attacker.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition()));
                     shieldObject.SetActive(false);
                 }
                 
@@ -149,24 +146,24 @@ public class CombatManager : MonoBehaviour
             }
             else
             {
-                var swordObject = opponentPlayer.transform.GetChild(0).gameObject;
+                var swordObject = defender.transform.GetChild(0).gameObject;
                 swordObject.SetActive(true);
                 
                 if (isEvade == true)
                 {
-                    IEnumerator attackAnim = opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition());
+                    IEnumerator attackAnim = defender.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition());
                     IEnumerator evadeAnim = null;
                     
                     if (evdValue > atkValue)
                     {
-                        evadeAnim = currentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade(false);
+                        evadeAnim = attacker.GetComponent<PlayerEvadeAnimation>().PerformEvade(false);
                         StartCoroutine(evadeAnim);
                     }
                     
                     yield return attackAnim;
                     if (evadeAnim != null)
                     {
-                        while (currentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
+                        while (attacker.GetComponent<PlayerEvadeAnimation>().IsEvading)
                         {
                             yield return null;
                         }
@@ -174,45 +171,45 @@ public class CombatManager : MonoBehaviour
                 }
                 else
                 {
-                    var shieldObject = currentPlayer.transform.GetChild(1).gameObject;
+                    var shieldObject = attacker.transform.GetChild(1).gameObject;
                     shieldObject.SetActive(true);
-                    yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition()));
+                    yield return StartCoroutine(defender.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition()));
                     shieldObject.SetActive(false);
                 }
                 
                 swordObject.SetActive(false);
             }
 
-            Player targetPlayer = (i == 0) ? opponentPlayer : currentPlayer;
+            Entity target = (i == 0) ? defender : attacker;
             
             //Calculate damage
             if (isEvade == true)
             {
                 int damage = (evdValue > atkValue) ? 0 : atkValue;
-                targetPlayer.LoseHealth(damage);
+                target.LoseHealth(damage);
                 if (damage > 0)
                 {
-                    UIManager.Instance.DisplayDamageNumber(targetPlayer.transform.position, damage);
+                    UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
                     yield return new WaitForSeconds(1f);
                 }
             }
             else
             {
                 int damage = Math.Max(1, atkValue - dfdValue);
-                targetPlayer.LoseHealth(damage);
-                UIManager.Instance.DisplayDamageNumber(targetPlayer.transform.position, damage);
+                target.LoseHealth(damage);
+                UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
                 yield return new WaitForSeconds(1f);
             }
 
             //Trigger death if die
-            if (currentPlayer.Health <= 0)
+            if (attacker.Health <= 0)
             {
-                currentPlayer.Dies();
+                attacker.Dies();
                 break;
             }
-            else if (opponentPlayer.Health <= 0)
+            else if (defender.Health <= 0)
             {
-                opponentPlayer.Dies();
+                defender.Dies();
                 break;
             }
         }

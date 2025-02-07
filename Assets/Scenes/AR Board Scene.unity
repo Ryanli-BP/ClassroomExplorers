@@ -2913,7 +2913,7 @@ MonoBehaviour:
     levelText: {fileID: 713890680}
     healthBar: {fileID: 1084826098}
   roundDisplayText: {fileID: 158698565}
-  currentPlayerTurnText: {fileID: 1538874189}
+  currentTurnText: {fileID: 1538874189}
   reviveCounterText: {fileID: 286134046}
   rollDiceButtonPanel: {fileID: 493656809}
   evadeButtonPanel: {fileID: 999839361}
@@ -6874,6 +6874,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad63971631c874d1aa33146b8079b8a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &779496667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 779496668}
+  m_Layer: 0
+  m_Name: Entity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &779496668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779496667}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1395689106}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &790703415
 GameObject:
   m_ObjectHideFlags: 0
@@ -8464,6 +8495,10 @@ PrefabInstance:
       value: BoardRoot
       objectReference: {fileID: 0}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      propertyPath: _numOfPlayers
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: playerObjects.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -8524,6 +8559,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3266162705352424900, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1514981342}
+    - targetCorrespondingSourceObject: {fileID: 3266162705352424900, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 779496668}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
 --- !u!1 &952218560

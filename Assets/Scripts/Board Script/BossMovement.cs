@@ -11,15 +11,43 @@ public class BossMovement : MonoBehaviour
     private MovementAnimation movementAnimation;
     public event Action OnMovementComplete;
 
-    void Start()
-    {
-        
-    }
-
     public Tile CurrentTile
     {
         get { return currentTile; }
         set { currentTile = value; }
+    }
+
+    private IEnumerator HandleBossCombat()
+    {
+        if (currentTile.TilePlayerIDs.Count > 0)
+        {
+            foreach (int tilePlayerID in currentTile.TilePlayerIDs)
+            {
+                Entity Player = PlayerManager.Instance.GetPlayerByID(tilePlayerID);
+                // Skip if the player on tile is dead
+                if (Player.Status != Status.Alive)
+                {
+                    continue;
+                }
+
+                Debug.Log($"Boss encountered Player {tilePlayerID}. Initiating combat.");
+                GameManager.Instance.OnCombatTriggered();
+                
+                // Pass boss ID as the opponent (assuming it's stored in BossManager)
+                yield return StartCoroutine(CombatManager.Instance.HandleFight(
+                    BossManager.Instance.activeBoss, 
+                    Player));
+                
+                GameManager.Instance.IsResumingMovement = false;
+                remainingSteps = 0; // Stop movement after combat
+                
+                if (BossManager.Instance.activeBoss.Status == Status.Dead)
+                {
+                    isMoving = false;
+                    yield break; // Exit if boss dies
+                }
+            }
+        }
     }
 
     public void MoveBoss(int diceRoll)
@@ -36,9 +64,14 @@ public class BossMovement : MonoBehaviour
     {
         isMoving = true;
 
-        while (remainingSteps > 0)
+        while (remainingSteps >= 0)
         {
             Debug.Log($"Remaining steps: {remainingSteps}");
+            
+            // Handle combat before movement
+            yield return StartCoroutine(HandleBossCombat());
+            if (!isMoving) break;
+
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
             
             if (availableDirections.Count == 0)

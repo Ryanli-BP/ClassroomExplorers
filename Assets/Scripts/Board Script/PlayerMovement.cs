@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Debug.Log("Player chose to fight.");
                     GameManager.Instance.OnCombatTriggered();
-                    yield return StartCoroutine(CombatManager.Instance.HandleFight(tilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                    yield return StartCoroutine(CombatManager.Instance.HandleFight(PlayerManager.Instance.GetPlayerByID(tilePlayerID), PlayerManager.Instance.GetCurrentPlayer()));
                     GameManager.Instance.IsResumingMovement = false;
 
                     remainingSteps = 0; // Stop movement after combat
