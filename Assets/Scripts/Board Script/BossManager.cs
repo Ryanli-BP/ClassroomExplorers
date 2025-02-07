@@ -4,8 +4,8 @@ using System.Collections;
 public class BossManager : MonoBehaviour
 {
     public static BossManager Instance;
-    [SerializeField] private Boss bossPrefab;
-    private Boss activeBoss;
+    [SerializeField] private Boss bossObject;
+    public Boss activeBoss { get; private set; }
 
     private void Awake()
     {
@@ -31,26 +31,28 @@ public class BossManager : MonoBehaviour
         {
             SpawnBoss();
         }
+        else
+        {
+            bossObject.gameObject.SetActive(false);
+        }
     }
 
     private void SpawnBoss()
     {
-        activeBoss = Instantiate(bossPrefab, 
-            Vector3.zero, 
-            ARBoardPlacement.boardRotation);
-        activeBoss.transform.localScale *= ARBoardPlacement.worldScale;
+        bossObject.gameObject.SetActive(true);
+        activeBoss = bossObject;
         SpawnBossAtStartTile();
     }
 
     private void SpawnBossAtStartTile()
     {
-        Tile startTile = TileManager.Instance.allTiles[0]; // Or pick specific tile
+        Tile startTile = TileManager.Instance.allTiles[0];
         if (startTile != null)
         {
             Vector3 spawnPosition = startTile.transform.position;
             spawnPosition.y += 0.2f * ARBoardPlacement.worldScale;
             activeBoss.transform.position = spawnPosition;
-            activeBoss.CurrentTile = startTile;
+            activeBoss.Movement.CurrentTile = startTile;
             Debug.Log("Boss spawned at start tile");
         }
         else
@@ -59,20 +61,8 @@ public class BossManager : MonoBehaviour
         }
     }
 
-    public void HandleBossTurn()
+    public void StartBossMovement(int diceTotal)
     {
-        Debug.Log("Starting Boss Turn");
-        StartCoroutine(ExecuteBossTurn());
-    }
-    private IEnumerator ExecuteBossTurn()
-    {
-        // Display "Boss's Turn" message
-        UIManager.Instance.DisplayBossTurn();
-        
-        // Wait for a short duration
-        yield return new WaitForSeconds(2f);
-        
-        // Proceed to next round
-        GameManager.Instance.HandleBossTurnEnd();
+        activeBoss.Movement.MoveBoss(diceTotal);
     }
 }

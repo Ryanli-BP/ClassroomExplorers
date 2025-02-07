@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    private Tile currentTile;
-    public Tile CurrentTile
-    {
-        get { return currentTile; }
-        set { currentTile = value; }
-    }
     public int Health { get; set; }
     public Status Status { get; set; }
+    public BossMovement Movement { get; private set; }
+
+    private void Awake()
+    {
+        Movement = GetComponent<BossMovement>();
+    }
 
     private void Start()
     {

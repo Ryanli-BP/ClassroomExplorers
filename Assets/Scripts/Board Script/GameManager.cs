@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
+    private bool isBossTurn = false;
 
     public bool IsResumingMovement { get; set; } = false; // Flag such that player don't StartPlayerMovement again after combat->moving state change
     public Action<int> OnDiceRollResultForCombat;
@@ -55,9 +56,19 @@ public class GameManager : MonoBehaviour
 
             case GameState.PlayerRollingMovementDice:
                 EnableMovementDiceRoll();
+
+                if (isBossTurn)
+                {
+                    DiceManager.Instance.RollDice();
+                }
                 break;
 
             case GameState.PlayerMovement:
+                if (isBossTurn)
+                {
+                    StartBossMovement();
+                }
+                else
                 if (!IsResumingMovement)
                 {
                     StartPlayerMovement();
@@ -77,11 +88,15 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.PlayerTurnEnd:
-                EndPlayerTurn();
+                StartCoroutine(EndPlayerTurn());
                 break;
 
             case GameState.BossTurn:
                 StartBossTurn();
+                break;
+            
+            case GameState.BossTurnEnd:
+                HandleBossTurnEnd();
                 break;
             
             case GameState.PlayerLandQuiz:
@@ -108,11 +123,6 @@ public class GameManager : MonoBehaviour
     public void SetupGame()
     {
         StartCoroutine(WaitForComponentsAndSetup());
-    }
-
-    public void StartBossTurn()
-    {
-        BossManager.Instance.HandleBossTurn();
     }
 
     private IEnumerator WaitForComponentsAndSetup() //To ensure everything is setup on other scripts first
@@ -147,6 +157,13 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.PlayerRollingMovementDice);
         }
         
+    }
+
+    public void StartBossTurn()
+    {
+        UIManager.Instance.DisplayBossTurn();
+        isBossTurn = true;
+        ChangeState(GameState.PlayerRollingMovementDice);
     }
 
     private void EnableMovementDiceRoll()
@@ -187,6 +204,7 @@ public class GameManager : MonoBehaviour
     public void HandleBossTurnEnd()
     {
         UIManager.Instance.UpdateCurrentPlayerTurn(RoundManager.Instance.Turn);
+        isBossTurn = false;
         ChangeState(GameState.RoundStart);
     }
 
@@ -218,12 +236,28 @@ public class GameManager : MonoBehaviour
         PlayerManager.Instance.StartPlayerMovement(DiceManager.Instance.GetTotalDiceResult());
     }
 
+    private void StartBossMovement()
+    {
+        Debug.Log("Starting boss movement");
+        BossMovement BossMovement = BossManager.Instance.activeBoss.Movement;
+        BossMovement.OnMovementComplete += OnBossMovementComplete;
+        BossManager.Instance.StartBossMovement(DiceManager.Instance.GetTotalDiceResult());
+    }
+
     private void OnPlayerMovementComplete()
     {
         Debug.Log("Player movement complete");
         PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
         PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete;
         ChangeState(GameState.PlayerFinishedMoving);
+    }
+
+    private void OnBossMovementComplete()
+    {
+        Debug.Log("Boss movement complete");
+        BossMovement BossMovement = BossManager.Instance.activeBoss.Movement;
+        BossMovement.OnMovementComplete -= OnBossMovementComplete;
+        ChangeState(GameState.BossTurnEnd);
     }
 
     public void OnCombatTriggered()
@@ -249,8 +283,10 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.PlayerTurnEnd);
     }
 
-    private void EndPlayerTurn()
+    private IEnumerator EndPlayerTurn()
     {
+        yield return StartCoroutine(slightDelay(0.5f));
+
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn ended.");
         PlayerManager.Instance.GoNextPlayer();
         RoundManager.Instance.IncrementTurn();
@@ -271,6 +307,11 @@ public class GameManager : MonoBehaviour
         {
             ChangeState(GameState.PlayerTurnStart);
         }
+    }
+
+    private IEnumerator slightDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
     }
 
     public void HandleReroll()
@@ -301,6 +342,7 @@ public enum GameState
     PlayerFinishedMoving,
     PlayerTurnEnd,
     BossTurn,
+    BossTurnEnd,
     PlayerLandQuiz, 
     PlayerEndQuiz,
     GameEnd

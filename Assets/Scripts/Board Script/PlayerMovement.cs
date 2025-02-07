@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Tile currentTile; // Assign the starting tile in the Inspector
+    private Tile currentTile; 
     private Direction _lastDirection; // To track the direction the player came from
     private bool isMoving = false;
     private bool initialMove = true; //One time flag for removing TilePlayerID
@@ -150,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleCrossroads(List<Direction> availableDirections)
+    private IEnumerator HandlePaths(List<Direction> availableDirections)
     {
         if (availableDirections.Count > 1)
         {
@@ -215,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
             if (!isMoving) { break; }
             initialOnHome = false;
 
-            yield return StartCoroutine(HandleCrossroads(availableDirections));
+            yield return StartCoroutine(HandlePaths(availableDirections));
 
             remainingSteps--;
             yield return new WaitForSeconds(0.05f);
