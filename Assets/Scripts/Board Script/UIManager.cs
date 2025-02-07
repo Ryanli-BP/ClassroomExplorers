@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<GameObject> playerUIPrefab = new List<GameObject>();
     [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private TextMeshProUGUI roundDisplayText;
-    [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
+    [SerializeField] private TextMeshProUGUI currentTurnText; 
 
     [SerializeField] private TextMeshProUGUI reviveCounterText;
     private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
@@ -316,12 +316,12 @@ public class UIManager : MonoBehaviour
     
     public void UpdateCurrentPlayerTurn(int playerID)
     {
-        currentPlayerTurnText.text = $"Player {playerID}'s Turn";
+        currentTurnText.text = $"Player {playerID}'s Turn";
     }
 
     public void DisplayBossTurn()
     {
-        currentPlayerTurnText.text = "Boss's Turn";
+        currentTurnText.text = "Boss's Turn";
     }
 
     public void UpdateReviveCounter(int playerID, int reviveCounter)

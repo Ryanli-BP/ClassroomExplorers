@@ -8,7 +8,7 @@ public class BossMovement : MonoBehaviour
     private Tile currentTile;
     private bool isMoving = false;
     private int remainingSteps = 0;
-    private PlayerMovementAnimation movementAnimation;
+    private MovementAnimation movementAnimation;
     public event Action OnMovementComplete;
 
     void Start()
@@ -66,7 +66,7 @@ public class BossMovement : MonoBehaviour
         if (nextTile != null)
         {
             currentTile = nextTile;
-            movementAnimation = BossManager.Instance.activeBoss.GetComponent<PlayerMovementAnimation>();
+            movementAnimation = BossManager.Instance.activeBoss.GetComponent<MovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
         }
         else

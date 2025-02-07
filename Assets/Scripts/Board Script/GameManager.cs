@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
                 StartPlayerTurn();
                 break;
 
-            case GameState.PlayerRollingMovementDice:
+            case GameState.RollingMovementDice:
                 EnableMovementDiceRoll();
 
                 if (isBossTurn)
@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
 
-            case GameState.PlayerMovement:
+            case GameState.BoardMovement:
                 if (isBossTurn)
                 {
                     StartBossMovement();
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            ChangeState(GameState.PlayerRollingMovementDice);
+            ChangeState(GameState.RollingMovementDice);
         }
         
     }
@@ -163,7 +163,7 @@ public class GameManager : MonoBehaviour
     {
         UIManager.Instance.DisplayBossTurn();
         isBossTurn = true;
-        ChangeState(GameState.PlayerRollingMovementDice);
+        ChangeState(GameState.RollingMovementDice);
     }
 
     private void EnableMovementDiceRoll()
@@ -185,9 +185,9 @@ public class GameManager : MonoBehaviour
 
     public void HandleDiceResultDisplayFinished()
     {
-        if (currentState == GameState.PlayerRollingMovementDice)
+        if (currentState == GameState.RollingMovementDice)
         {
-            ChangeState(GameState.PlayerMovement);
+            ChangeState(GameState.BoardMovement);
         }
         else if (currentState == GameState.PlayerCombat)
         {
@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
 
     public void HandleCombatEnd()
     {
-        ChangeState(GameState.PlayerMovement);
+        ChangeState(GameState.BoardMovement);
     }
 
     public void HandleBossTurnEnd()
@@ -275,7 +275,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (currentState == GameState.PlayerRollingMovementDice) //if land on reroll tile
+        if (currentState == GameState.RollingMovementDice) //if land on reroll tile
         {
             return;
         }
@@ -318,7 +318,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Player landed on reroll tile - starting new roll");
         IsResumingMovement = false;
-        ChangeState(GameState.PlayerRollingMovementDice);
+        ChangeState(GameState.RollingMovementDice);
     }
 
     public void FinalLevelAchieved()
@@ -336,8 +336,8 @@ public enum GameState
     GameSetup,
     RoundStart,
     PlayerTurnStart,
-    PlayerRollingMovementDice,
-    PlayerMovement,
+    RollingMovementDice,
+    BoardMovement,
     PlayerCombat,
     PlayerFinishedMoving,
     PlayerTurnEnd,
