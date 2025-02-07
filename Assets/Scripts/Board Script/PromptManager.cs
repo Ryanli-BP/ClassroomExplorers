@@ -41,6 +41,19 @@ public class PromptManager : MonoBehaviour
         onPlayerChoice(playerChoice == true);
     }
 
+    public IEnumerator HandleHealing(Action<bool> onPlayerChoice)
+    {
+        bool? playerChoice = null;
+
+        UIManager.Instance.ShowHealingPrompt((choice) => {
+            playerChoice = choice;
+        });
+
+        yield return new WaitUntil(() => playerChoice != null);
+
+        onPlayerChoice(playerChoice == true);
+    }
+
     public IEnumerator HandleDirections(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
     {
         Direction? chosenDirection = null;

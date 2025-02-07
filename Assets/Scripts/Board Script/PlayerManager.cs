@@ -13,8 +13,8 @@ public class PlayerManager : MonoBehaviour
         set => _numOfPlayers = value;
     }
 
-    [SerializeField] private List<Player> playerPrefabs;
-    private List<Player> players = new List<Player>(); // List of actual players in the game
+    [SerializeField] private List<Player> playerObjects;
+    private List<Player> players = new List<Player>();
 
     [SerializeField] private List<GameObject> homeObjects;
 
@@ -43,19 +43,23 @@ public class PlayerManager : MonoBehaviour
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
-    private void InitialisePlayers(){
+    private void InitialisePlayers()
+    {
         players.Clear();
 
-        // Instantiate the number of players specified by the user
+        // Instead of instantiating, just activate the existing players
         for (int i = 0; i < numOfPlayers; i++)
         {
-            Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count],
-            Vector3.zero,
-            ARBoardPlacement.boardRotation); // Ensure it loops if more players than prefabs
-            newPlayer.transform.localScale = newPlayer.transform.localScale * ARBoardPlacement.worldScale; 
-            players.Add(newPlayer);
-            newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene
-            Debug.Log($"Player {newPlayer.getPlayerID()} created.");
+            Player player = playerObjects[i % playerObjects.Count];
+            player.gameObject.SetActive(true);
+            players.Add(player);
+            Debug.Log($"Player {player.getPlayerID()} activated.");
+        }
+
+        // Deactivate unused player objects
+        for (int i = numOfPlayers; i < playerObjects.Count; i++)
+        {
+            playerObjects[i].gameObject.SetActive(false);
         }
     }
 

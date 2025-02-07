@@ -1,0 +1,77 @@
+using System;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class BossMovement : MonoBehaviour
+{
+    private Tile currentTile;
+    private bool isMoving = false;
+    private int remainingSteps = 0;
+    private PlayerMovementAnimation movementAnimation;
+    public event Action OnMovementComplete;
+
+    void Start()
+    {
+        
+    }
+
+    public Tile CurrentTile
+    {
+        get { return currentTile; }
+        set { currentTile = value; }
+    }
+
+    public void MoveBoss(int diceRoll)
+    {
+        if (isMoving || currentTile == null)
+            return;
+
+        Debug.Log($"Boss rolled: {diceRoll} steps");
+        remainingSteps = diceRoll;
+        StartCoroutine(MoveStepByStep());
+    }
+
+    private IEnumerator MoveStepByStep()
+    {
+        isMoving = true;
+
+        while (remainingSteps > 0)
+        {
+            Debug.Log($"Remaining steps: {remainingSteps}");
+            List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
+            
+            if (availableDirections.Count == 0)
+            {
+                Debug.LogError("No valid directions found! Boss cannot move.");
+                break;
+            }
+
+            // Always take first available direction for now
+            Direction nextDirection = availableDirections[0];
+            yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
+
+            remainingSteps--;
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        isMoving = false;
+        OnMovementComplete?.Invoke();
+    }
+
+    private IEnumerator MoveToNextTileCoroutine(Direction direction)
+    {
+        Tile nextTile = currentTile.GetConnectedTile(direction);
+
+        if (nextTile != null)
+        {
+            currentTile = nextTile;
+            movementAnimation = BossManager.Instance.activeBoss.GetComponent<PlayerMovementAnimation>();
+            yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
+        }
+        else
+        {
+            Debug.LogError($"No connected tile found in direction: {direction}");
+        }
+    }
+}

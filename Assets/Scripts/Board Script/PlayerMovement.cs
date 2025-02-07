@@ -6,12 +6,21 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Tile currentTile; // Assign the starting tile in the Inspector
+    private Tile currentTile; 
     private Direction _lastDirection; // To track the direction the player came from
     private bool isMoving = false;
     private bool initialMove = true; //One time flag for removing TilePlayerID
     private int remainingSteps = 0;
     public event Action OnMovementComplete;
+    private bool canFightPlayers;
+    private bool canHealPlayers;
+
+    void Start()
+    {
+        ModeRules currentRules = GameConfigManager.Instance.GetCurrentRules();
+        canFightPlayers = currentRules.canFightPlayers;
+        canHealPlayers = currentRules.canHealPlayers;
+    }
 
     public Tile CurrentTile
     {
@@ -62,12 +71,55 @@ public class PlayerMovement : MonoBehaviour
                     GameManager.Instance.OnCombatTriggered();
                     yield return StartCoroutine(CombatManager.Instance.HandleFight(tilePlayerID, PlayerManager.Instance.CurrentPlayerID));
                     GameManager.Instance.IsResumingMovement = false;
+
+                    remainingSteps = 0; // Stop movement after combat
                     
                     if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
                     {
                         isMoving = false;
                         yield break; // Exit if current player dies
                     }
+                }
+                else
+                {
+                    Debug.Log("Player chose to continue moving.");
+                }
+            }
+        }
+    }
+
+    private IEnumerator HandleHealEncounter()
+    {
+        if (currentTile.TilePlayerIDs.Count > 0 && !initialMove)
+        {
+            foreach (int tilePlayerID in currentTile.TilePlayerIDs)
+            {
+                // Skip if it's the current player or if the player on tile is dead
+                if (tilePlayerID == PlayerManager.Instance.CurrentPlayerID ||
+                    PlayerManager.Instance.GetPlayerByID(tilePlayerID).Status != Status.Alive)
+                {
+                    continue;
+                }
+
+                Debug.Log($"Player {tilePlayerID} can be healed on this tile.");
+                bool? playerChoice = null;
+
+                yield return StartCoroutine(PromptManager.Instance.HandleHealing((choice) => {
+                    playerChoice = choice;
+                }));
+
+                while (playerChoice == null)
+                {
+                    yield return null;
+                }
+
+                if (playerChoice == true)
+                {
+                    Debug.Log($"Player chose to heal Player {tilePlayerID}.");
+                    Player otherPlayer = PlayerManager.Instance.GetPlayerByID(tilePlayerID);
+                    otherPlayer.Heal(2);
+                    remainingSteps = 0; // Stop movement after healing
+                    break; // Exit after healing one player
                 }
                 else
                 {
@@ -98,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleCrossroads(List<Direction> availableDirections)
+    private IEnumerator HandlePaths(List<Direction> availableDirections)
     {
         if (availableDirections.Count > 1)
         {
@@ -139,9 +191,17 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-            if(!initialMove) //cannoy challenge on first move
+
+            if (!initialMove)
             {
-                yield return StartCoroutine(HandlePvPEncounter()); //isMoving is set to false if dead
+                if (canFightPlayers)
+                {
+                    yield return StartCoroutine(HandlePvPEncounter());
+                }
+                else if (canHealPlayers)
+                {
+                    yield return StartCoroutine(HandleHealEncounter());
+                }
             }
             
             if (remainingSteps == 0)
@@ -155,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
             if (!isMoving) { break; }
             initialOnHome = false;
 
-            yield return StartCoroutine(HandleCrossroads(availableDirections));
+            yield return StartCoroutine(HandlePaths(availableDirections));
 
             remainingSteps--;
             yield return new WaitForSeconds(0.05f);

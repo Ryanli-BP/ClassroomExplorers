@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
         Debug.Log($"Player {playerID} teleported to position {position}");
     }
 
-    public void HealPLayer(int amount)
+    public void Heal(int amount)
     {
         if (Status == Status.Dead) //cannot heal a dead player
         {
