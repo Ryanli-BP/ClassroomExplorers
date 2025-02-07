@@ -4,31 +4,37 @@ using UnityEngine.SceneManagement;
 public class CharacterSelection : MonoBehaviour
 {
     [SerializeField] private GameObject[] characters;
-    private int selectedCharacter = 0;
+    private int selectedCharacterIndex = 0;
 
     public void NextCharacter()
     {
-        characters[selectedCharacter].SetActive(false);
-        selectedCharacter = (selectedCharacter + 1) % characters.Length;
-        characters[selectedCharacter].SetActive(true);
+        characters[selectedCharacterIndex].SetActive(false);
+        selectedCharacterIndex = (selectedCharacterIndex + 1) % characters.Length;
+        characters[selectedCharacterIndex].SetActive(true);
     }
 
     public void PreviousCharacter()
     {
-        characters[selectedCharacter].SetActive(false);
-        selectedCharacter = (selectedCharacter - 1 + characters.Length) % characters.Length;
-        characters[selectedCharacter].SetActive(true);
+        characters[selectedCharacterIndex].SetActive(false);
+        selectedCharacterIndex = (selectedCharacterIndex - 1 + characters.Length) % characters.Length;
+        characters[selectedCharacterIndex].SetActive(true);
     }
 
     public void StartGame()
     {
-        PlayerPrefs.SetInt("selectedCharacter", selectedCharacter);
-        SceneManager.LoadScene(1); // Ensure scene index or name is valid
+        // Save the selected character's index to PlayerPrefs
+        PlayerPrefs.SetInt("SelectedCharacterIndex", selectedCharacterIndex);
+        PlayerPrefs.Save();
+
+        // Load the next scene
+        SceneManager.LoadScene("AR Board Scene");
     }
 
     private void Start()
     {
         if (characters.Length > 0)
-            characters[selectedCharacter].SetActive(true); // Initialize character visibility
+        {
+            characters[selectedCharacterIndex].SetActive(true); // Initialize character visibility
+        }
     }
 }

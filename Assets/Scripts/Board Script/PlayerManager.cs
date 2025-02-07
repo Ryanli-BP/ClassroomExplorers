@@ -43,17 +43,54 @@ public class PlayerManager : MonoBehaviour
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
+    private GameObject SpawnPlayer1()
+    {
+        // Retrieve selected character prefab index from PlayerPrefs
+        int selectedCharacterIndex = PlayerPrefs.GetInt("SelectedCharacterIndex", 0); // Default to 0 if not found
+
+        if (selectedCharacterIndex >= 0 && selectedCharacterIndex < playerObjects.Count)
+        {
+            GameObject player1Instance = Instantiate(playerObjects[selectedCharacterIndex].gameObject, Vector3.zero, Quaternion.identity);
+            Debug.Log($"Player 1 spawned with prefab: {playerObjects[selectedCharacterIndex].name}");
+            return player1Instance;
+        }
+        else
+        {
+            Debug.LogError("No valid character prefab found for Player 1!");
+            return null;
+        }
+    }
     private void InitialisePlayers()
     {
         players.Clear();
 
-        // Instead of instantiating, just activate the existing players
-        for (int i = 0; i < numOfPlayers; i++)
+        // Spawn Player 1 from the character selection prefab
+        GameObject player1Instance = SpawnPlayer1();
+
+        if (player1Instance != null)
         {
-            Player player = playerObjects[i % playerObjects.Count];
-            player.gameObject.SetActive(true);
-            players.Add(player);
-            Debug.Log($"Player {player.getPlayerID()} activated.");
+            Player player1 = player1Instance.GetComponent<Player>();
+            player1.gameObject.SetActive(true);
+            players.Add(player1);
+            Debug.Log("Player 1 initialized and added.");
+        }
+        else
+        {
+            Debug.LogError("Player 1 prefab spawn failed!");
+            return; // Exit early if Player 1 setup failed
+        }
+
+        // Instantiate and initialize other players from the prefab
+        for (int i = 1; i < numOfPlayers; i++)
+        {
+            // Instantiate a new player instance from the prefab
+            GameObject playerInstance = Instantiate(playerObjects[i % playerObjects.Count].gameObject);
+            
+            playerInstance.SetActive(true);
+            Player playerComponent = playerInstance.GetComponent<Player>();
+            
+            players.Add(playerComponent);
+            Debug.Log($"Player {playerComponent.getPlayerID()} activated.");
         }
 
         // Deactivate unused player objects
@@ -62,6 +99,7 @@ public class PlayerManager : MonoBehaviour
             playerObjects[i].gameObject.SetActive(false);
         }
     }
+
 
     public void AssignPlayersToHomes()
     {
