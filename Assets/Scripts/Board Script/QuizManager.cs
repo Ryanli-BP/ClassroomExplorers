@@ -5,10 +5,9 @@ using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
 using UnityEngine;
- 
 
 public class QuizManager : MonoBehaviour
-{   
+{
     [SerializeField] private GameObject QuizUI;
     [SerializeField] private float slideSpeed = 1f;
     private RectTransform quizRect;
@@ -47,12 +46,13 @@ public class QuizManager : MonoBehaviour
             timeRemaining -= Time.deltaTime;
             QuizDisplay.Instance.UpdateTimer(timeRemaining); // Update the timer display
 
-            if (timeRemaining <= 0 || answeredQuestionsCount >= questions.Count )
+            if (timeRemaining <= 0 || answeredQuestionsCount >= questions.Count)
             {
                 EndQuiz();
             }
         }
     }
+
     public void StartNewQuiz()
     {
         if (isTransitioning || isQuizActive) return;
@@ -62,7 +62,8 @@ public class QuizManager : MonoBehaviour
     private IEnumerator StartQuizSequence()
     {
         isTransitioning = true;
-        LoadQuestionsFromCSV();
+        yield return StartCoroutine(DownloadQuestionCSV());
+
         if (questions == null || questions.Count == 0)
         {
             isTransitioning = false;
@@ -77,20 +78,29 @@ public class QuizManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
         UIManager.Instance.SetBoardUIActive(false);
-        
+
         yield return new WaitForSeconds(0.2f);
         QuizUI.SetActive(true);
-        
+
         LeanTween.moveLocalY(QuizUI, -540f, slideSpeed)
             .setEase(LeanTweenType.easeOutBack);
-            
+
         yield return new WaitForSeconds(slideSpeed);
         isQuizActive = true;
         isTransitioning = false;
         StartQuizLogic();
     }
 
-    private IEnumerator EndQuizSequence()
+	private void StartQuizLogic()
+    {
+    	timeRemaining = quizDuration;
+    	currentQuestionIndex = -1;
+    	isQuizActive = true;
+    	AnswerButtons.Instance.EnableButtons();
+    	DisplayNextQuestion();
+    }
+	
+	private IEnumerator EndQuizSequence()
     {
         isTransitioning = true;
         isQuizActive = false;
@@ -109,21 +119,37 @@ public class QuizManager : MonoBehaviour
         HandleQuizComplete();
     }
 
-    private void StartQuizLogic()
+    private IEnumerator DownloadQuestionCSV()
     {
-    timeRemaining = quizDuration;
-    currentQuestionIndex = -1;
-    isQuizActive = true;
-    AnswerButtons.Instance.EnableButtons();
-    DisplayNextQuestion();
+        string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
+        string savePath = Path.Combine(Application.persistentDataPath, "QuestionCSV.csv");
+
+        bool downloadCompleted = false;
+        string errorMessage = null;
+
+        NetworkManager.Instance.DownloadFile(url, savePath, 
+            () => { downloadCompleted = true; }, 
+            (error) => { errorMessage = error; downloadCompleted = true; });
+
+        while (!downloadCompleted)
+        {
+            yield return null;
+        }
+
+        if (!string.IsNullOrEmpty(errorMessage))
+        {
+            Debug.LogError(errorMessage);
+            yield break;
+        }
+
+        LoadQuestionsFromCSV(savePath);
     }
 
-
-    private void LoadQuestionsFromCSV()
+    private void LoadQuestionsFromCSV(string filePath)
     {
-        if (csvFile == null)
+        if (!File.Exists(filePath))
         {
-            Debug.LogError("CSV file not assigned in the inspector!");
+            Debug.LogError("CSV file not found!");
             return;
         }
 
@@ -133,7 +159,7 @@ public class QuizManager : MonoBehaviour
             MissingFieldFound = null
         };
 
-        using (var reader = new StringReader(csvFile.text))
+        using (var reader = new StreamReader(filePath))
         using (var csv = new CsvReader(reader, config))
         {
             csv.Context.RegisterClassMap<QuestionMap>();
@@ -142,7 +168,6 @@ public class QuizManager : MonoBehaviour
 
         Debug.Log($"Loaded {questions.Count} questions from the CSV.");
     }
-
 
     private void EndQuiz()
     {
@@ -153,18 +178,18 @@ public class QuizManager : MonoBehaviour
 
     private void HandleQuizComplete()
     {
-    int pointsToAward = correctAnswerCount * 10;
-    Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
-    correctAnswerCount = 0;
-    
-    if (pointsToAward > 0)
-    {
-        currentPlayer.AddPoints(pointsToAward);
-        UIManager.Instance.DisplayPointChange(pointsToAward);
-        UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
-    }
-    
-    GameManager.Instance.HandleQuizEnd();
+        int pointsToAward = correctAnswerCount * 10;
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+        correctAnswerCount = 0;
+
+        if (pointsToAward > 0)
+        {
+            currentPlayer.AddPoints(pointsToAward);
+            UIManager.Instance.DisplayPointChange(pointsToAward);
+            UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
+        }
+
+        GameManager.Instance.HandleQuizEnd();
     }
 
     public void DisplayNextQuestion()
@@ -199,10 +224,10 @@ public class QuizManager : MonoBehaviour
 public class Question
 {
     public string question { get; set; }
-    public string optionA { get; set; }
-    public string optionB { get; set; }
-    public string optionC { get; set; }
-    public string optionD { get; set; }
+    public string choiceA { get; set; }
+    public string choiceB { get; set; }
+    public string choiceC { get; set; }
+    public string choiceD { get; set; }
     public string answer { get; set; }
 }
 
@@ -211,10 +236,10 @@ public sealed class QuestionMap : ClassMap<Question>
     public QuestionMap()
     {
         Map(m => m.question);
-        Map(m => m.optionA);
-        Map(m => m.optionB);
-        Map(m => m.optionC);
-        Map(m => m.optionD);
+        Map(m => m.choiceA);
+        Map(m => m.choiceB);
+        Map(m => m.choiceC);
+        Map(m => m.choiceD);
         Map(m => m.answer);
     }
 }
