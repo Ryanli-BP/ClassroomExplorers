@@ -70,59 +70,76 @@ public class CombatManager : MonoBehaviour
         defender.transform.rotation = originalDefenderRotation;
     }
 
-    public IEnumerator CombatSequence(Entity attacker, Entity defender)
+    private IEnumerator CombatSequence(Entity attacker, Entity defender)
     {
+        bool isAttackerBoss = attacker is Boss;
+        bool isDefenderBoss = defender is Boss;
+
         for (int i = 0; i < 2; i++)
         {
             int atkValue = 0;
             int dfdValue = 0;
-            bool? isEvade = null; //nullable bool for WaitUntil check if player evades
+            bool? isEvade = null;
             int evdValue = 0;
 
-            //Leverages the RolDiceButton for attack and defend by simply changing the text
-            UIManager.Instance.SetRollDiceButtonText("Attack");
-            Debug.Log("enabling dice within combat");
-            DiceManager.Instance.EnableDiceRoll();
-            yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
-
-            UIManager.Instance.SetRollDiceButtonText("Defend");
-            DiceManager.Instance.EnableDiceRoll();
-            UIManager.Instance.SetEvadeButtonVisibility(true);
-           
-            // Wait for player to choose between defend and evade
-            UIManager.Instance.rollDiceButton.onClick.AddListener(() => isEvade = false);
-            UIManager.Instance.evadeButton.onClick.AddListener(() => isEvade = true);
-
-            yield return new WaitUntil(() => isEvade != null);
-            UIManager.Instance.SetEvadeButtonVisibility(false);
-
-            if (isEvade == true)
+            // Attack Phase
+            if ((i == 0 && isAttackerBoss) || (i == 1 && isDefenderBoss))
             {
-                yield return StartCoroutine(RollForCombatValue(result => evdValue = result));
-                Debug.Log($"Combat result: Attack = {atkValue}, Evade = {evdValue}");
+                // Automatic boss attack roll
+                DiceManager.Instance.EnableDiceRoll();
+                DiceManager.Instance.RollDice();
+                yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
             }
             else
             {
+                // Player attack roll
+                UIManager.Instance.SetRollDiceButtonText("Attack");
+                DiceManager.Instance.EnableDiceRoll();
+                yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
+            }
+
+            // Defense Phase
+            if ((i == 0 && isDefenderBoss) || (i == 1 && isAttackerBoss))
+            {
+                // Automatic boss defense roll (bosses always defend, never evade)
+                isEvade = false;
+                DiceManager.Instance.EnableDiceRoll();
+                DiceManager.Instance.RollDice();
                 yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
-                Debug.Log($"Combat result: Attack = {atkValue}, Defense = {dfdValue}");
             }
-
-            //Attack "animation"
-            if (i == 0)
-            {
-                yield return StartCoroutine(PerformCombatAnimation(attacker, defender, isEvade, atkValue, evdValue, false));
-            }
-            //CounterAttack "animation"
             else
             {
-                yield return StartCoroutine(PerformCombatAnimation(attacker, defender, isEvade, atkValue, evdValue, true));
+                // Player defense/evade choice
+                UIManager.Instance.SetRollDiceButtonText("Defend");
+                DiceManager.Instance.EnableDiceRoll();
+                UIManager.Instance.SetEvadeButtonVisibility(true);
+            
+                UIManager.Instance.rollDiceButton.onClick.AddListener(() => isEvade = false);
+                UIManager.Instance.evadeButton.onClick.AddListener(() => isEvade = true);
+
+                yield return new WaitUntil(() => isEvade != null);
+                UIManager.Instance.SetEvadeButtonVisibility(false);
+
+                if (isEvade == true)
+                {
+                    yield return StartCoroutine(RollForCombatValue(result => evdValue = result));
+                }
+                else
+                {
+                    yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
+                }
             }
 
             Entity target = (i == 0) ? defender : attacker;
+
+            // Only perform animations if neither entity is a boss
+            if (!isAttackerBoss && !isDefenderBoss)
+            {
+                yield return StartCoroutine(PerformCombatAnimation(attacker, defender, isEvade, atkValue, evdValue, i == 1));
+            }
             
             yield return StartCoroutine(ApplyDamage(target, isEvade, atkValue, dfdValue, evdValue));
 
-            //Trigger death if die
             if (attacker.Health <= 0)
             {
                 attacker.Dies();
@@ -134,6 +151,7 @@ public class CombatManager : MonoBehaviour
                 break;
             }
         }
+
         UIManager.Instance.SetRollDiceButtonText("Roll Dice");
         GameManager.Instance.HandleCombatEnd();
     }
