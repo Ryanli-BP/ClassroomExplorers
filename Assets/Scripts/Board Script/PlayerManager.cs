@@ -13,7 +13,10 @@ public class PlayerManager : MonoBehaviour
         set => _numOfPlayers = value;
     }
 
-    [SerializeField] private List<Player> playerObjects;
+    [SerializeField] private Player playerPrefab;  // Main player prefab
+    public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
+    public GameObject[] hats; // No need to serialize if not exposed to the Inspector
+
     private List<Player> players = new List<Player>();
 
     [SerializeField] private List<GameObject> homeObjects;
@@ -47,21 +50,62 @@ public class PlayerManager : MonoBehaviour
     {
         players.Clear();
 
-        // Instead of instantiating, just activate the existing players
+        // Retrieve selected player information from the previous scene
+        int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
+        int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
+
         for (int i = 0; i < numOfPlayers; i++)
         {
-            Player player = playerObjects[i % playerObjects.Count];
-            player.gameObject.SetActive(true);
-            players.Add(player);
-            Debug.Log($"Player {player.getPlayerID()} activated.");
-        }
+            // Instantiate the player prefab
+            Player playerObject = Instantiate(playerPrefab, transform);
+            
+            // Set the player appearance before adding to the list
+            SetPlayerAppearance(playerObject, i == 0 ? selectedPlayerIndex : i, i == 0 ? selectedHatIndex : i); // Set appearance for Player1 differently
 
-        // Deactivate unused player objects
-        for (int i = numOfPlayers; i < playerObjects.Count; i++)
-        {
-            playerObjects[i].gameObject.SetActive(false);
+            playerObject.gameObject.SetActive(true);
+            
+            // Add the instantiated GameObject (with Player script) to the players list
+            players.Add(playerObject);
+
+            // Assuming playerPrefab already contains a Player component that will be automatically added
+            Debug.Log($"Player {i + 1} instantiated and appearance set.");
         }
     }
+    
+    public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
+    {
+        // Assuming the player object has a way to reference its body colors and hats,
+        // let's get the components or child objects related to the appearance.
+
+        // Deactivate all body colors and activate the selected one for the specific player object
+        for (int i = 0; i < bodyColors.Length; i++)
+        {
+            if (i == selectedBodyIndex)
+            {
+                bodyColors[i].SetActive(true);  // Activate selected body color on the specific player
+            }
+            else
+            {
+                bodyColors[i].SetActive(false); // Deactivate other body colors
+            }
+        }
+
+        // Deactivate all hats and activate the selected one for the specific player object
+        for (int i = 0; i < hats.Length; i++)
+        {
+            if (i == selectedHatIndex)
+            {
+                hats[i].SetActive(true); // Activate selected hat
+            }
+            else
+            {
+                hats[i].SetActive(false); // Deactivate other hats
+            }
+        }
+
+        Debug.Log($"Player appearance set for {playerObject.name}: Body Index {selectedBodyIndex}, Hat Index {selectedHatIndex}");
+    }
+
 
     public void AssignPlayersToHomes()
     {
