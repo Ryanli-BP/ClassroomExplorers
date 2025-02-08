@@ -28,7 +28,7 @@ public class Boss : Entity
     {
         Status = Status.Dead;
         Debug.Log("Boss has been defeated!");
-        // Add any boss death logic
+        GameManager.Instance.WinGameConditionAchieved();
     }
 
     public override void TeleportTo(Vector3 position, Tile destinationTile)

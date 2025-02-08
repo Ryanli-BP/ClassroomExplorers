@@ -312,7 +312,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.RollingMovementDice);
     }
 
-    public void FinalLevelAchieved()
+    public void WinGameConditionAchieved()
     {
         ChangeState(GameState.GameEnd);
     }
