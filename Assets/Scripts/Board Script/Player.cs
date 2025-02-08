@@ -47,6 +47,12 @@ public class Player : MonoBehaviour
         return playerID;
     }
 
+    public void SetPlayerID(int id)
+    {
+        playerID = id;
+    }
+
+
     public void AddPoints(int amount)
     {
         Points = Math.Max(0, Points + amount);

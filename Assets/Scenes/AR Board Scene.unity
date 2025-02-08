@@ -3853,7 +3853,7 @@ PrefabInstance:
       objectReference: {fileID: 1490284415679532867}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: bodyColors.Array.size
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[0]'
@@ -3862,31 +3862,31 @@ PrefabInstance:
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[1]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3513206218032565839}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[2]'
       value: 
-      objectReference: {fileID: 3513206218032565839}
+      objectReference: {fileID: 6807946669873568613}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[3]'
       value: 
-      objectReference: {fileID: 6807946669873568613}
+      objectReference: {fileID: 1654744074544576383}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[4]'
       value: 
-      objectReference: {fileID: 1654744074544576383}
+      objectReference: {fileID: 342135387821786889}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[5]'
       value: 
-      objectReference: {fileID: 342135387821786889}
+      objectReference: {fileID: 3585996141684184103}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[6]'
       value: 
-      objectReference: {fileID: 3585996141684184103}
+      objectReference: {fileID: 5915637559591093265}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[7]'
       value: 
-      objectReference: {fileID: 5915637559591093265}
+      objectReference: {fileID: 239061697004019696}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: 'bodyColors.Array.data[8]'
       value: 
