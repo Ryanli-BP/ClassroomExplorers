@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Debug.Log("Player chose to fight.");
                     GameManager.Instance.OnCombatTriggered();
-                    yield return StartCoroutine(CombatManager.Instance.HandleFight(tilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                    yield return StartCoroutine(CombatManager.Instance.HandleFight(PlayerManager.Instance.GetCurrentPlayer(), PlayerManager.Instance.GetPlayerByID(tilePlayerID)));
                     GameManager.Instance.IsResumingMovement = false;
 
                     remainingSteps = 0; // Stop movement after combat
@@ -204,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             
+            //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
                 isMoving = false;
@@ -256,8 +257,7 @@ public class PlayerMovement : MonoBehaviour
 
             nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
             currentTile = nextTile;
-
-            PlayerMovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovementAnimation>();
+            MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
         }
         else

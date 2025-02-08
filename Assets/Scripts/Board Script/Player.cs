@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 
 public enum Status { Alive, Dead }
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     [SerializeField] private int playerID;
 
@@ -12,8 +12,6 @@ public class Player : MonoBehaviour
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
-    public int Health { get; set; }
-    public Status Status { get; set; }
 
     public int ReviveCounter { get; set; } = 0;
     void Start()
@@ -71,14 +69,14 @@ public class Player : MonoBehaviour
         UIManager.Instance.DisplayLevelUp();
     }
 
-    public void LoseHealth(int amount)
+    public override void LoseHealth(int amount)
     {
-        Health = Math.Max(0,Health - amount);
+        Health = Mathf.Max(0, Health - amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
-    public void Dies()
+    public override void Dies()
     {
         Status = Status.Dead;
         PlayerManager.Instance.DeadPlayers.Add(this);
@@ -103,10 +101,10 @@ public class Player : MonoBehaviour
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
-    public void TeleportTo(Vector3 position, Tile destinationTile)
+    public override void TeleportTo(Vector3 position, Tile destinationTile)
     {
         // Adjust Y position for proper height above tile
-        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.2f, position.z);
+        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.2f * ARBoardPlacement.worldScale, position.z);
         
         // Update player position
         transform.position = teleportPosition;

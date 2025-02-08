@@ -47,6 +47,7 @@ public class BossManager : MonoBehaviour
     private void SpawnBossAtStartTile()
     {
         Tile startTile = TileManager.Instance.allTiles[0];
+        startTile.BossOnTile = true;
         if (startTile != null)
         {
             Vector3 spawnPosition = startTile.transform.position;
