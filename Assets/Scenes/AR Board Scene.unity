@@ -2913,7 +2913,7 @@ MonoBehaviour:
     levelText: {fileID: 713890680}
     healthBar: {fileID: 1084826098}
   roundDisplayText: {fileID: 158698565}
-  currentPlayerTurnText: {fileID: 1538874189}
+  currentTurnText: {fileID: 1538874189}
   reviveCounterText: {fileID: 286134046}
   rollDiceButtonPanel: {fileID: 493656809}
   evadeButtonPanel: {fileID: 999839361}
