@@ -63,10 +63,10 @@ public class PlayerManager : MonoBehaviour
             int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
             int hatIndex = i == 0 ? selectedHatIndex : i; // Use selected hat for Player 1, default for others
 
-            SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
-
             playerObject.gameObject.SetActive(true);
             playerObject.SetPlayerID(i+1);
+            
+            SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
             
             // Add the instantiated GameObject (with Player script) to the players list
             players.Add(playerObject);

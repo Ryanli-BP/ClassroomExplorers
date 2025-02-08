@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator InitializePlayerUI()
     {
+        Debug.Log($"{playerID}");
         while (UIManager.Instance == null || !GameInitializer.Instance.IsGameInitialized)
         {
             yield return new WaitForSeconds(0.1f);
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
 
     public void SetPlayerID(int id)
     {
+        Debug.Log($"Player {playerID} has been assigned ID {id}");
         playerID = id;
     }
 
