@@ -123,6 +123,7 @@ public class QuizManager : MonoBehaviour
     {
         string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
         string savePath = Path.Combine(Application.persistentDataPath, "QuestionCSV.csv");
+        string fallbackPath = Path.Combine(Application.dataPath, "Questions CSV", "questionsTest.csv");
 
         bool downloadCompleted = false;
         string errorMessage = null;
@@ -138,7 +139,8 @@ public class QuizManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(errorMessage))
         {
-            Debug.LogError(errorMessage);
+            Debug.LogWarning($"Failed to download questions: {errorMessage}. Falling back to local CSV file.");
+            LoadQuestionsFromCSV(fallbackPath);
             yield break;
         }
 

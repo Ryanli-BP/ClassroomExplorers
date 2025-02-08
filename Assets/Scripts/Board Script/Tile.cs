@@ -30,6 +30,8 @@ public class Tile : MonoBehaviour
         set => _TilePlayerIDs = value;
     }
 
+    public bool BossOnTile { get; set; } = false;
+
 
     void Start()
     {
