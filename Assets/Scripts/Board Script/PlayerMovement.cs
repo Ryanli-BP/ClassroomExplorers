@@ -230,16 +230,7 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
         initialMove = true;
 
-        // Check if landed on a quiz tile
-        if (currentTile.GetTileType() == TileType.Quiz)
-        {
-            GameManager.Instance.HandleQuizLand();
-            // OnMovementComplete actioin will be disabled after quiz completion via GameManager with HandleQuizEnd() instead
-        }
-        else
-        {
-            OnMovementComplete?.Invoke();
-        }        
+            OnMovementComplete?.Invoke();      
     }
 
 

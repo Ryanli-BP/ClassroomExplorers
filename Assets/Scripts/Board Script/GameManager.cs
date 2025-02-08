@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.FinishedMoving:
-                StartTileAction();
+                StartCoroutine(StartTileAction());
                 break;
 
             case GameState.PlayerTurnEnd:
@@ -97,14 +97,6 @@ public class GameManager : MonoBehaviour
             
             case GameState.BossTurnEnd:
                 HandleBossTurnEnd();
-                break;
-            
-            case GameState.PlayerLandQuiz:
-                HandleQuizStart();
-                break;
-            
-            case GameState.PlayerEndQuiz:
-                HandleQuizEnd();
                 break;
 
             case GameState.GameEnd:
@@ -206,12 +198,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateCurrentPlayerTurn(RoundManager.Instance.Turn);
         isBossTurn = false;
         ChangeState(GameState.RoundStart);
-    }
-
-    public void HandleQuizLand()
-    {
-    ChangeState(GameState.PlayerLandQuiz);
-    }   
+    } 
 
     public void HandleQuizStart()
     {
@@ -222,9 +209,7 @@ public class GameManager : MonoBehaviour
     public void HandleQuizEnd()
     {
         UIManager.Instance.SetBoardUIActive(true);
-        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>(); 
-        PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete; //unsubscribe from action becuase OnPlayerMovementComplete is not called if land on quiz tile
-        ChangeState(GameState.PlayerTurnEnd);
+        TileManager.Instance.OnTileActionComplete = true;
     }
 
 
@@ -266,8 +251,10 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.PlayerCombat);
     }
 
-    private void StartTileAction()
+    private IEnumerator StartTileAction()
     {
+        TileManager.Instance.OnTileActionComplete = false;
+
         if(isBossTurn)
         {
             TileManager.Instance.getBossTileAction(BossManager.Instance.activeBoss.Movement.CurrentTile);
@@ -277,14 +264,19 @@ public class GameManager : MonoBehaviour
             TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
         }
 
-        // Early returns for special cases
+        // Wait until the action completes
+        while (!TileManager.Instance.OnTileActionComplete)
+        {
+            yield return null;
+        }
+
+        // Early break for special cases
         if (currentState == GameState.GameEnd || currentState == GameState.RollingMovementDice)
-            return;
+            yield break;
 
         // Change state based on turn
         GameState nextState = isBossTurn ? GameState.BossTurnEnd : GameState.PlayerTurnEnd;
         ChangeState(nextState);
-
     }
 
     private IEnumerator EndPlayerTurn()
@@ -347,7 +339,5 @@ public enum GameState
     PlayerTurnEnd,
     BossTurn,
     BossTurnEnd,
-    PlayerLandQuiz, 
-    PlayerEndQuiz,
     GameEnd
 }
