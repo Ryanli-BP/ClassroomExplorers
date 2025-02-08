@@ -281,7 +281,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EndPlayerTurn()
     {
-        yield return StartCoroutine(slightDelay(0.5f));
+        yield return new WaitForSeconds(0.5f);
 
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn ended.");
         PlayerManager.Instance.GoNextPlayer();
@@ -303,11 +303,6 @@ public class GameManager : MonoBehaviour
         {
             ChangeState(GameState.PlayerTurnStart);
         }
-    }
-
-    private IEnumerator slightDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
     }
 
     public void HandleReroll()

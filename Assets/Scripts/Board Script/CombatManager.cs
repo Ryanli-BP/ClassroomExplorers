@@ -9,7 +9,7 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] private GameObject arCamera; // Reference to the AR camera
 
-
+    //FirstTA means FIRST TO ACT, SecondTA means SECOND TO ACT
 
     private void Awake()
     {
@@ -19,40 +19,40 @@ public class CombatManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public IEnumerator HandleFight(Entity attacker, Entity defender)
+    public IEnumerator HandleFight(Entity FirstTA, Entity SecondTA)
     {
         // Record original positions
-        Vector3 originalAttackerPosition = attacker.transform.position;
-        Vector3 originalDefenderPosition = defender.transform.position;
-        Quaternion originalAttackerRotation = attacker.transform.rotation;
-        Quaternion originalDefenderRotation = defender.transform.rotation;
+        Vector3 originalFirstTAPosition = FirstTA.transform.position;
+        Vector3 originalSecondTAPosition = SecondTA.transform.position;
+        Quaternion originalFirstTARotation = FirstTA.transform.rotation;
+        Quaternion originalSecondTARotation = SecondTA.transform.rotation;
         Vector3 originalCameraPosition = arCamera.transform.position;
 
         // Teleport to fighting area
-        TeleportToFightingArea(attacker, defender);
+        TeleportToFightingArea(FirstTA, SecondTA);
 
-        yield return StartCoroutine(CombatSequence(attacker, defender));
+        yield return StartCoroutine(CombatSequence(FirstTA, SecondTA));
         
         // Teleport back to board
-        TeleportBackToBoard(attacker, defender, originalAttackerPosition, originalDefenderPosition, 
-            originalAttackerRotation, originalDefenderRotation, originalCameraPosition);
+        TeleportBackToBoard(FirstTA, SecondTA, originalFirstTAPosition, originalSecondTAPosition, 
+            originalFirstTARotation, originalSecondTARotation, originalCameraPosition);
     }
 
-    private void TeleportToFightingArea(Entity attacker, Entity defender)
+    private void TeleportToFightingArea(Entity FirstTA, Entity SecondTA)
     {
         arCamera.transform.position = ArenaManager.Instance.GetCombatCameraPosition();
-        attacker.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
-        defender.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
+        FirstTA.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
+        SecondTA.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
         
-        attacker.transform.LookAt(defender.transform);
-        attacker.transform.Rotate(0, 180, 0);
-        defender.transform.LookAt(attacker.transform);
-        defender.transform.Rotate(0, 180, 0);
+        FirstTA.transform.LookAt(SecondTA.transform);
+        FirstTA.transform.Rotate(0, 180, 0);
+        SecondTA.transform.LookAt(FirstTA.transform);
+        SecondTA.transform.Rotate(0, 180, 0);
     }
 
-    private void TeleportBackToBoard(Entity attacker, Entity defender, Vector3 originalAttackerPosition, 
-        Vector3 originalDefenderPosition, Quaternion originalAttackerRotation, 
-        Quaternion originalDefenderRotation, Vector3 originalCameraPosition)
+    private void TeleportBackToBoard(Entity FirstTA, Entity SecondTA, Vector3 originalFirstTAPosition, 
+        Vector3 originalSecondTAPosition, Quaternion originalFirstTARotation, 
+        Quaternion originalSecondTARotation, Vector3 originalCameraPosition)
     {
         if (PlatformUtils.IsRunningOnPC())
         {
@@ -64,18 +64,18 @@ public class CombatManager : MonoBehaviour
             arCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        attacker.transform.position = originalAttackerPosition;
-        defender.transform.position = originalDefenderPosition;
-        attacker.transform.rotation = originalAttackerRotation;
-        defender.transform.rotation = originalDefenderRotation;
+        FirstTA.transform.position = originalFirstTAPosition;
+        SecondTA.transform.position = originalSecondTAPosition;
+        FirstTA.transform.rotation = originalFirstTARotation;
+        SecondTA.transform.rotation = originalSecondTARotation;
     }
 
-    private IEnumerator CombatSequence(Entity attacker, Entity defender)
+    private IEnumerator CombatSequence(Entity FirstTA, Entity SecondTA)
     {
-        bool isAttackerBoss = attacker is Boss;
-        bool isDefenderBoss = defender is Boss;
+        bool BossisFirstTA = FirstTA is Boss;
+        bool BossisSecondTA = SecondTA is Boss;
 
-        for (int i = 0; i < 2; i++)
+        for (int turn = 0; turn < 2; turn++)
         {
             int atkValue = 0;
             int dfdValue = 0;
@@ -83,7 +83,7 @@ public class CombatManager : MonoBehaviour
             int evdValue = 0;
 
             // Attack Phase
-            if ((i == 0 && isAttackerBoss) || (i == 1 && isDefenderBoss))
+            if ((turn == 0 && BossisFirstTA) || (turn == 1 && BossisSecondTA))
             {
                 // Automatic boss attack roll
                 DiceManager.Instance.EnableDiceRoll();
@@ -99,7 +99,7 @@ public class CombatManager : MonoBehaviour
             }
 
             // Defense Phase
-            if ((i == 0 && isDefenderBoss) || (i == 1 && isAttackerBoss))
+            if ((turn == 0 && BossisSecondTA) || (turn == 1 && BossisFirstTA))
             {
                 // Automatic boss defense roll (bosses always defend, never evade)
                 isEvade = false;
@@ -130,20 +130,22 @@ public class CombatManager : MonoBehaviour
                 }
             }
 
-            Entity target = (i == 0) ? defender : attacker;
+            Entity target = (turn == 0) ? SecondTA : FirstTA;
 
-            yield return StartCoroutine(PerformCombatAnimation(attacker, defender, isEvade, atkValue, evdValue, i == 1));
+            yield return StartCoroutine(PerformCombatAnimation(FirstTA, SecondTA, isEvade, atkValue, evdValue, turn == 1));
             
             yield return StartCoroutine(ApplyDamage(target, isEvade, atkValue, dfdValue, evdValue));
 
-            if (attacker.Health <= 0)
+            yield return new WaitForSeconds(0.4f);
+
+            if (FirstTA.Health <= 0)
             {
-                attacker.Dies();
+                FirstTA.Dies();
                 break;
             }
-            else if (defender.Health <= 0)
+            else if (SecondTA.Health <= 0)
             {
-                defender.Dies();
+                SecondTA.Dies();
                 break;
             }
         }
@@ -152,65 +154,91 @@ public class CombatManager : MonoBehaviour
         GameManager.Instance.HandleCombatEnd();
     }
 
-//Basically, the first to attack is Attacker, the "Defender" then counter-attacks. so both attack/defends
-//it's only indictative of the order of how the fight happens
-private IEnumerator PerformCombatAnimation(Entity attacker, Entity defender, bool? isEvade, int atkValue, int evdValue, bool isCounterAttack)
-{
-    bool isAttackerBoss = attacker is Boss;
-    bool isDefenderBoss = defender is Boss;
-    var attackerPos = isCounterAttack ? ArenaManager.Instance.GetCombatPlayerPosition() : ArenaManager.Instance.GetCombatOpponentPosition();
-
-    if ((isCounterAttack && isDefenderBoss) || (!isCounterAttack && isAttackerBoss))
+    private IEnumerator PerformAttackAnimation(Entity attacker, Entity target)
     {
-        Entity boss = isCounterAttack ? defender : attacker;
-        yield return StartCoroutine(boss.GetComponent<BossFightAnimation>().PerformAttack(attackerPos));
-    }
-    else
-    {
-        var swordObject = (isCounterAttack ? defender : attacker).transform.GetChild(0).gameObject;
-        swordObject.SetActive(true);
+        var attackerPos = target.transform.position;
 
-        if (isEvade == true)
+        if (attacker is Boss)
         {
-            IEnumerator attackAnim = (isCounterAttack ? defender : attacker).GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos);
-            IEnumerator evadeAnim = null;
-            
-            if (evdValue > atkValue)
-            {
-                evadeAnim = (isCounterAttack ? attacker : defender).GetComponent<PlayerEvadeAnimation>().PerformEvade(!isCounterAttack);
-                StartCoroutine(evadeAnim);
-            }
-            
-            yield return attackAnim;
-
-            if (evadeAnim != null)
-            {
-                while ((isCounterAttack ? attacker : defender).GetComponent<PlayerEvadeAnimation>().IsEvading)
-                {
-                    yield return null;
-                }
-            }
+            yield return StartCoroutine(attacker.GetComponent<BossFightAnimation>().PerformAttack(attackerPos));
         }
         else
         {
-            // Only show shield if theDefender is a player
-            Entity theDefender = isCounterAttack ? attacker : defender;
-            if (theDefender is Player)
-            {
-                var shieldObject = theDefender.transform.GetChild(1).gameObject;
-                shieldObject.SetActive(true);
-                yield return StartCoroutine((isCounterAttack ? defender : attacker).GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos));
-                shieldObject.SetActive(false);
-            }
-            else
-            {
-                yield return StartCoroutine((isCounterAttack ? defender : attacker).GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos));
-            }
+            var swordObject = attacker.transform.GetChild(0).gameObject;
+            swordObject.SetActive(true);
+            yield return StartCoroutine(attacker.GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos));
+            swordObject.SetActive(false);
         }
-        
-        swordObject.SetActive(false);
     }
-}
+
+    private IEnumerator PerformDefendAnimation(Entity defender)
+    {
+        if (defender is Boss)
+        {
+            // TODO: Implement boss defense animation if needed
+            yield break;
+        }
+
+        var shieldObject = defender.transform.GetChild(1).gameObject;
+        shieldObject.SetActive(true);
+        yield return new WaitForSeconds(1f); // Animation duration
+        shieldObject.SetActive(false);
+    }
+
+    private IEnumerator PerformEvadeAnimation(Entity defender, bool evadeRight)
+    {
+        if (defender is Boss)
+        {
+            yield break;
+        }
+
+        yield return StartCoroutine(defender.GetComponent<PlayerEvadeAnimation>().PerformEvade(evadeRight));
+    }
+
+    private IEnumerator NoAnimation()
+    {
+        yield break;
+    }
+
+    //Basically, the initial FirstTA is FirstTA, the "SecondTA" then counter-attacks. so both attack/defends
+        //it's only indictative of the order of how the fight happens(bad naming I know, bit lazy to change now)
+    private IEnumerator PerformCombatAnimation(Entity FirstTA, Entity SecondTA, bool? isEvade, int atkValue, int evdValue, bool isTurn1)
+    {
+        Entity attacker = isTurn1 ? SecondTA : FirstTA;
+        Entity defender = isTurn1 ? FirstTA : SecondTA;
+
+        // Start both animations simultaneously
+        IEnumerator attackAnim = PerformAttackAnimation(attacker, defender);
+        IEnumerator defendAnim;
+
+        if (defender is Boss)
+        {
+            defendAnim = PerformDefendAnimation(defender);
+        }
+
+        else if (isEvade == true)
+        {
+            defendAnim = evdValue > atkValue ? 
+                PerformEvadeAnimation(defender, isTurn1) : 
+                NoAnimation();
+        }
+        else
+        {
+            defendAnim = PerformDefendAnimation(defender);
+        }
+
+        // Run both animations concurrently
+        StartCoroutine(attackAnim);
+        StartCoroutine(defendAnim);
+
+        // Wait for both animations to complete
+        while (attacker.GetComponent<PlayerFightAnimation>()?.IsAttacking == true || 
+            attacker.GetComponent<BossFightAnimation>()?.IsAttacking == true ||
+            defender.GetComponent<PlayerEvadeAnimation>()?.IsEvading == true)
+        {
+            yield return null;
+        }
+    }
 
     private IEnumerator ApplyDamage(Entity target, bool? isEvade, int atkValue, int dfdValue, int evdValue)
     {
