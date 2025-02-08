@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject centreDisplayPanel;
     [SerializeField] private List<GameObject> playerUIPrefab = new List<GameObject>();
     [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
+    [SerializeField] private GameObject BossHealthBarPanel;
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentTurnText; 
 
@@ -257,8 +258,26 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("PointsAnimation component missing in player stats UI");
+            Debug.LogError("HealthAnimation component missing in player stats UI");
         }
+    }
+
+    public void UpdateBossHealth( int health)
+    {
+        var healthAnimation = BossHealthBarPanel.transform.Find("healthBar").GetComponent<HealthAnimation>();
+        if (healthAnimation != null)
+        {
+            healthAnimation.AnimateHealth(health, Boss.MAX_HEALTH);
+        }
+        else
+        {
+            Debug.LogError("HealthAnimation component missing in Boss healthbar");
+        }
+    }
+
+    public void ToggleBossUI(bool active)
+    {
+        BossHealthBarPanel.SetActive(active);
     }
 
     public void DisplayGainStarAnimation(int playerIndex)

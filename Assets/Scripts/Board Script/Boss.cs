@@ -3,6 +3,7 @@ using UnityEngine;
 public class Boss : Entity
 {
     public BossMovement Movement { get; private set; }
+    public const int MAX_HEALTH = 100;
 
     private void Awake()
     {
@@ -11,15 +12,16 @@ public class Boss : Entity
 
     private void Start()
     {
-        Health = 100;
+        Health = MAX_HEALTH;
         Status = Status.Alive;
+        UIManager.Instance.UpdateBossHealth(Health);
     }
 
     public override void LoseHealth(int amount)
     {
         Health = Mathf.Max(0, Health - amount);
         Debug.Log($"Boss now has {Health} health.");
-        // Add UI update for boss health if needed
+        UIManager.Instance.UpdateBossHealth(Health);
     }
 
     public override void Dies()

@@ -35,9 +35,14 @@ public class Tile : MonoBehaviour
 
     void Start()
     {
+
         if(HomeplayerID != 0 && HomeplayerID <= PlayerManager.Instance.numOfPlayers)
         {
             AddPlayer(HomeplayerID);
+        }
+        else
+        {
+            tileType = TileType.Normal;
         }
     }
 
