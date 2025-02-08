@@ -70,6 +70,13 @@ public class BossMovement : MonoBehaviour
             
             // Handle combat before movement
             yield return StartCoroutine(HandleBossCombat());
+
+            //Finishes handling all movement actions on final tile
+            if (remainingSteps == 0)
+            {
+                isMoving = false;
+            }
+
             if (!isMoving) break;
 
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();

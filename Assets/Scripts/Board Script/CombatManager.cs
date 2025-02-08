@@ -132,11 +132,7 @@ public class CombatManager : MonoBehaviour
 
             Entity target = (i == 0) ? defender : attacker;
 
-            // Only perform animations if neither entity is a boss
-            if (!isAttackerBoss && !isDefenderBoss)
-            {
-                yield return StartCoroutine(PerformCombatAnimation(attacker, defender, isEvade, atkValue, evdValue, i == 1));
-            }
+            yield return StartCoroutine(PerformCombatAnimation(attacker, defender, isEvade, atkValue, evdValue, i == 1));
             
             yield return StartCoroutine(ApplyDamage(target, isEvade, atkValue, dfdValue, evdValue));
 
@@ -156,10 +152,21 @@ public class CombatManager : MonoBehaviour
         GameManager.Instance.HandleCombatEnd();
     }
 
-    private IEnumerator PerformCombatAnimation(Entity attacker, Entity defender, bool? isEvade, int atkValue, int evdValue, bool isCounterAttack)
+//Basically, the first to attack is Attacker, the "Defender" then counter-attacks. so both attack/defends
+//it's only indictative of the order of how the fight happens
+private IEnumerator PerformCombatAnimation(Entity attacker, Entity defender, bool? isEvade, int atkValue, int evdValue, bool isCounterAttack)
+{
+    bool isAttackerBoss = attacker is Boss;
+    bool isDefenderBoss = defender is Boss;
+    var attackerPos = isCounterAttack ? ArenaManager.Instance.GetCombatPlayerPosition() : ArenaManager.Instance.GetCombatOpponentPosition();
+
+    if ((isCounterAttack && isDefenderBoss) || (!isCounterAttack && isAttackerBoss))
     {
-        // Get the position of the attacker and coresponding sword for this attack round
-        var attackerPos = isCounterAttack ? ArenaManager.Instance.GetCombatPlayerPosition() : ArenaManager.Instance.GetCombatOpponentPosition();
+        Entity boss = isCounterAttack ? defender : attacker;
+        yield return StartCoroutine(boss.GetComponent<BossFightAnimation>().PerformAttack(attackerPos));
+    }
+    else
+    {
         var swordObject = (isCounterAttack ? defender : attacker).transform.GetChild(0).gameObject;
         swordObject.SetActive(true);
 
@@ -168,14 +175,15 @@ public class CombatManager : MonoBehaviour
             IEnumerator attackAnim = (isCounterAttack ? defender : attacker).GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos);
             IEnumerator evadeAnim = null;
             
-            if (evdValue > atkValue) //start evade animation
+            if (evdValue > atkValue)
             {
                 evadeAnim = (isCounterAttack ? attacker : defender).GetComponent<PlayerEvadeAnimation>().PerformEvade(!isCounterAttack);
                 StartCoroutine(evadeAnim);
             }
-            yield return attackAnim; //wait for attack animation to finish
+            
+            yield return attackAnim;
 
-            if (evadeAnim != null) //wait for evade animation to finish
+            if (evadeAnim != null)
             {
                 while ((isCounterAttack ? attacker : defender).GetComponent<PlayerEvadeAnimation>().IsEvading)
                 {
@@ -185,15 +193,24 @@ public class CombatManager : MonoBehaviour
         }
         else
         {
-            // Display shield for defender
-            var shieldObject = (isCounterAttack ? attacker : defender).transform.GetChild(1).gameObject;
-            shieldObject.SetActive(true);
-            yield return StartCoroutine((isCounterAttack ? defender : attacker).GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos));
-            shieldObject.SetActive(false);
+            // Only show shield if theDefender is a player
+            Entity theDefender = isCounterAttack ? attacker : defender;
+            if (theDefender is Player)
+            {
+                var shieldObject = theDefender.transform.GetChild(1).gameObject;
+                shieldObject.SetActive(true);
+                yield return StartCoroutine((isCounterAttack ? defender : attacker).GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos));
+                shieldObject.SetActive(false);
+            }
+            else
+            {
+                yield return StartCoroutine((isCounterAttack ? defender : attacker).GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos));
+            }
         }
         
         swordObject.SetActive(false);
     }
+}
 
     private IEnumerator ApplyDamage(Entity target, bool? isEvade, int atkValue, int dfdValue, int evdValue)
     {

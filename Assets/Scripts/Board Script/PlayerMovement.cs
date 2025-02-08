@@ -204,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             
+            //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
                 isMoving = false;
