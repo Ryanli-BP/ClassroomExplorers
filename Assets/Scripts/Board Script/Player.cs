@@ -29,6 +29,7 @@ public class Player : Entity
 
     private IEnumerator InitializePlayerUI()
     {
+        Debug.Log($"{playerID}");
         while (UIManager.Instance == null || !GameInitializer.Instance.IsGameInitialized)
         {
             yield return new WaitForSeconds(0.1f);
@@ -44,6 +45,13 @@ public class Player : Entity
     {
         return playerID;
     }
+
+    public void SetPlayerID(int id)
+    {
+        Debug.Log($"Player {playerID} has been assigned ID {id}");
+        playerID = id;
+    }
+
 
     public void AddPoints(int amount)
     {

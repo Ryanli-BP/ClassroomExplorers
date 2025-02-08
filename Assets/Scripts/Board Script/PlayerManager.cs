@@ -13,7 +13,10 @@ public class PlayerManager : MonoBehaviour
         set => _numOfPlayers = value;
     }
 
-    [SerializeField] private List<Player> playerObjects;
+    [SerializeField] private Player playerPrefab;  // Main player prefab
+    public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
+    public GameObject[] hats; // No need to serialize if not exposed to the Inspector
+
     private List<Player> players = new List<Player>();
 
     [SerializeField] private List<GameObject> homeObjects;
@@ -47,21 +50,76 @@ public class PlayerManager : MonoBehaviour
     {
         players.Clear();
 
-        // Instead of instantiating, just activate the existing players
+        // Retrieve selected player information from the previous scene
+        int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
+        int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
+
         for (int i = 0; i < numOfPlayers; i++)
         {
-            Player player = playerObjects[i % playerObjects.Count];
-            player.gameObject.SetActive(true);
-            players.Add(player);
-            Debug.Log($"Player {player.getPlayerID()} activated.");
+            // Instantiate the player prefab
+            Player playerObject = Instantiate(playerPrefab, transform);
+            playerObject.SetPlayerID(i + 1);
+            // Set the player appearance before adding to the list
+            int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
+            int hatIndex = i == 0 ? selectedHatIndex : i; // Use selected hat for Player 1, default for others
+
+            playerObject.gameObject.SetActive(true);
+            
+            SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
+            
+            // Add the instantiated GameObject (with Player script) to the players list
+            players.Add(playerObject);
+
+            // Assuming playerPrefab already contains a Player component that will be automatically added
+            Debug.Log($"Player {i + 1} instantiated and appearance set.");
+        }
+        playerPrefab.SetPlayerID(-1);
+    }
+    
+    public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
+    {
+        // Find the body parent object (e.g., "Mesh Object/Bone_Body") for this specific player
+        Transform bodyParent = playerObject.transform.Find("Mesh Object/Bone_Body");
+        Transform hatParent = playerObject.transform.Find("Mesh Object/hats");
+
+        if (bodyParent != null && bodyColors.Length > 0)
+        {
+            // Assuming bodyColors are child objects under "Bone_Body"
+            for (int i = 0; i < bodyColors.Length; i++)
+            {
+                Transform bodyColorTransform = bodyParent.GetChild(i); // Get the child transform for each body color
+                if (i == selectedBodyIndex)
+                {
+                    bodyColorTransform.gameObject.SetActive(true); // Activate the selected body color
+                }
+                else
+                {
+                    bodyColorTransform.gameObject.SetActive(false); // Deactivate the other body colors
+                }
+            }
         }
 
-        // Deactivate unused player objects
-        for (int i = numOfPlayers; i < playerObjects.Count; i++)
+        if (hatParent != null && hats.Length > 0)
         {
-            playerObjects[i].gameObject.SetActive(false);
+            // Assuming hats are child objects under "Bone_Hat"
+            for (int i = 0; i < hats.Length; i++)
+            {
+                Transform hatTransform = hatParent.GetChild(i); // Get the child transform for each hat
+                if (i == selectedHatIndex)
+                {
+                    hatTransform.gameObject.SetActive(true); // Activate the selected hat
+                }
+                else
+                {
+                    hatTransform.gameObject.SetActive(false); // Deactivate the other hats
+                }
+            }
         }
+
+        Debug.Log($"Player appearance set for {playerObject.name}: Body Index {selectedBodyIndex}, Hat Index {selectedHatIndex}");
     }
+
+
 
     public void AssignPlayersToHomes()
     {
