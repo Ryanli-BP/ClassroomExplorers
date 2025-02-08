@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
                 IsResumingMovement = true;
                 break;
 
-            case GameState.PlayerFinishedMoving:
+            case GameState.FinishedMoving:
                 StartTileAction();
                 break;
 
@@ -249,7 +249,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player movement complete");
         PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
         PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete;
-        ChangeState(GameState.PlayerFinishedMoving);
+        ChangeState(GameState.FinishedMoving);
     }
 
     private void OnBossMovementComplete()
@@ -257,7 +257,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Boss movement complete");
         BossMovement BossMovement = BossManager.Instance.activeBoss.Movement;
         BossMovement.OnMovementComplete -= OnBossMovementComplete;
-        ChangeState(GameState.BossTurnEnd);
+        ChangeState(GameState.FinishedMoving);
     }
 
     public void OnCombatTriggered()
@@ -268,19 +268,23 @@ public class GameManager : MonoBehaviour
 
     private void StartTileAction()
     {
-        TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
-
-        if (currentState == GameState.GameEnd) //if reached final level from home tile
+        if(isBossTurn)
         {
-            return;
+            TileManager.Instance.getBossTileAction(BossManager.Instance.activeBoss.Movement.CurrentTile);
+        }
+        else
+        {
+            TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
         }
 
-        if (currentState == GameState.RollingMovementDice) //if land on reroll tile
-        {
+        // Early returns for special cases
+        if (currentState == GameState.GameEnd || currentState == GameState.RollingMovementDice)
             return;
-        }
 
-        ChangeState(GameState.PlayerTurnEnd);
+        // Change state based on turn
+        GameState nextState = isBossTurn ? GameState.BossTurnEnd : GameState.PlayerTurnEnd;
+        ChangeState(nextState);
+
     }
 
     private IEnumerator EndPlayerTurn()
@@ -339,7 +343,7 @@ public enum GameState
     RollingMovementDice,
     BoardMovement,
     PlayerCombat,
-    PlayerFinishedMoving,
+    FinishedMoving,
     PlayerTurnEnd,
     BossTurn,
     BossTurnEnd,

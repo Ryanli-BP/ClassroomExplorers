@@ -6,4 +6,6 @@ public abstract class Entity : MonoBehaviour
     public Status Status { get; protected set; }
     public abstract void LoseHealth(int amount);
     public abstract void Dies();
+
+    public abstract void TeleportTo(Vector3 position, Tile destinationTile);
 }

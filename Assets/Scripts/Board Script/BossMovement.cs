@@ -7,6 +7,7 @@ public class BossMovement : MonoBehaviour
 {
     private Tile currentTile;
     private bool isMoving = false;
+    private bool initialMove = true;
     private int remainingSteps = 0;
     private MovementAnimation movementAnimation;
     public event Action OnMovementComplete;
@@ -69,7 +70,10 @@ public class BossMovement : MonoBehaviour
             Debug.Log($"Remaining steps: {remainingSteps}");
             
             // Handle combat before movement
-            yield return StartCoroutine(HandleBossCombat());
+            if (!initialMove)
+            {
+                yield return StartCoroutine(HandleBossCombat());
+            }
 
             //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
@@ -87,12 +91,17 @@ public class BossMovement : MonoBehaviour
                 break;
             }
 
-            // Always take first available direction for now
-            Direction nextDirection = availableDirections[0];
+            // Randomly select from available directions
+            Direction nextDirection = availableDirections[UnityEngine.Random.Range(0, availableDirections.Count)];
             yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
 
             remainingSteps--;
             yield return new WaitForSeconds(0.5f);
+
+            if (initialMove) //currently, initialMove is a condition for pvpencounter
+            {
+                initialMove = false;
+            }
         }
 
         isMoving = false;
@@ -105,6 +114,13 @@ public class BossMovement : MonoBehaviour
 
         if (nextTile != null)
         {
+
+            if (currentTile != null)
+            {
+                currentTile.BossOnTile = false;
+            }
+
+            nextTile.BossOnTile = true;
             currentTile = nextTile;
             movementAnimation = BossManager.Instance.activeBoss.GetComponent<MovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));

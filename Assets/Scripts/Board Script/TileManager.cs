@@ -60,9 +60,10 @@ public class TileManager : MonoBehaviour
         return availablePortals[randomIndex];
     }
 
-    public void getTileAction(Tile tile)
+    public void getPlayerTileAction(Tile tile)
     {
         var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
         
         switch (tile.GetTileType())
         {
@@ -73,7 +74,7 @@ public class TileManager : MonoBehaviour
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
                 int pointsGained = Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
-                PlayerManager.Instance.GetCurrentPlayer().AddPoints(pointsGained);
+                currentPlayer.AddPoints(pointsGained);
                 UIManager.Instance.DisplayPointChange(pointsGained);
                 UIManager.Instance.DisplayGainStarAnimation(currentPlayerID);
                 break; 
@@ -81,7 +82,7 @@ public class TileManager : MonoBehaviour
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
                 int pointsLost = -(Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
-                PlayerManager.Instance.GetCurrentPlayer().AddPoints(pointsLost);
+                currentPlayer.AddPoints(pointsLost);
                 UIManager.Instance.DisplayPointChange(pointsLost);
                 UIManager.Instance.DisplayLoseStarAnimation();
                 break;
@@ -94,7 +95,7 @@ public class TileManager : MonoBehaviour
             case TileType.Home:
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
-                PlayerManager.Instance.GetCurrentPlayer().Heal(1);
+                currentPlayer.Heal(1);
                 break;
 
             case TileType.Portal:
@@ -102,9 +103,39 @@ public class TileManager : MonoBehaviour
                 Tile destinationTile = GetRandomPortalTile(tile);
                 if (destinationTile != null)
                 {
-                    PlayerManager.Instance.GetCurrentPlayer().TeleportTo(destinationTile.transform.position, destinationTile);
+                    currentPlayer.TeleportTo(destinationTile.transform.position, destinationTile);
                     tile.TilePlayerIDs.Remove(currentPlayerID);
                     destinationTile.TilePlayerIDs.Add(currentPlayerID);
+                    //UIManager.Instance.DisplayTeleportEffect();
+                }
+                break;
+        
+            case TileType.Reroll:
+                Debug.Log("Reroll tile - Player gets another turn");
+                GameManager.Instance.HandleReroll();
+                //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
+                break;
+        }
+    }
+
+    public void getBossTileAction(Tile tile)
+    {
+        Boss currentBoss = BossManager.Instance.activeBoss;
+        
+        switch (tile.GetTileType())
+        {
+            case TileType.Normal:
+                Debug.Log("Boss on Normal tile");
+                break;
+
+            case TileType.Portal:
+                Debug.Log("Portal tile");
+                Tile destinationTile = GetRandomPortalTile(tile);
+                if (destinationTile != null)
+                {
+                    currentBoss.TeleportTo(destinationTile.transform.position, destinationTile);
+                    tile.BossOnTile = false;
+                    destinationTile.BossOnTile = true;
                     //UIManager.Instance.DisplayTeleportEffect();
                 }
                 break;

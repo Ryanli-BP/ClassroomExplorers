@@ -257,7 +257,6 @@ public class PlayerMovement : MonoBehaviour
 
             nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
             currentTile = nextTile;
-
             MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
         }
