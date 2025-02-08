@@ -58,13 +58,12 @@ public class PlayerManager : MonoBehaviour
         {
             // Instantiate the player prefab
             Player playerObject = Instantiate(playerPrefab, transform);
-            
+            playerObject.SetPlayerID(i + 1);
             // Set the player appearance before adding to the list
             int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
             int hatIndex = i == 0 ? selectedHatIndex : i; // Use selected hat for Player 1, default for others
 
             playerObject.gameObject.SetActive(true);
-            playerObject.SetPlayerID(i+1);
             
             SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
             
@@ -74,41 +73,52 @@ public class PlayerManager : MonoBehaviour
             // Assuming playerPrefab already contains a Player component that will be automatically added
             Debug.Log($"Player {i + 1} instantiated and appearance set.");
         }
+        playerPrefab.SetPlayerID(-1);
     }
     
     public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
     {
-        // Assuming the player object has a way to reference its body colors and hats,
-        // let's get the components or child objects related to the appearance.
+        // Find the body parent object (e.g., "Mesh Object/Bone_Body") for this specific player
+        Transform bodyParent = playerObject.transform.Find("Mesh Object/Bone_Body");
+        Transform hatParent = playerObject.transform.Find("Mesh Object/hats");
 
-        // Deactivate all body colors and activate the selected one for the specific player object
-        for (int i = 0; i < bodyColors.Length; i++)
+        if (bodyParent != null && bodyColors.Length > 0)
         {
-            if (i == selectedBodyIndex)
+            // Assuming bodyColors are child objects under "Bone_Body"
+            for (int i = 0; i < bodyColors.Length; i++)
             {
-                bodyColors[i].SetActive(true);  // Activate selected body color on the specific player
-            }
-            else
-            {
-                bodyColors[i].SetActive(false); // Deactivate other body colors
+                Transform bodyColorTransform = bodyParent.GetChild(i); // Get the child transform for each body color
+                if (i == selectedBodyIndex)
+                {
+                    bodyColorTransform.gameObject.SetActive(true); // Activate the selected body color
+                }
+                else
+                {
+                    bodyColorTransform.gameObject.SetActive(false); // Deactivate the other body colors
+                }
             }
         }
 
-        // Deactivate all hats and activate the selected one for the specific player object
-        for (int i = 0; i < hats.Length; i++)
+        if (hatParent != null && hats.Length > 0)
         {
-            if (i == selectedHatIndex)
+            // Assuming hats are child objects under "Bone_Hat"
+            for (int i = 0; i < hats.Length; i++)
             {
-                hats[i].SetActive(true); // Activate selected hat
-            }
-            else
-            {
-                hats[i].SetActive(false); // Deactivate other hats
+                Transform hatTransform = hatParent.GetChild(i); // Get the child transform for each hat
+                if (i == selectedHatIndex)
+                {
+                    hatTransform.gameObject.SetActive(true); // Activate the selected hat
+                }
+                else
+                {
+                    hatTransform.gameObject.SetActive(false); // Deactivate the other hats
+                }
             }
         }
 
         Debug.Log($"Player appearance set for {playerObject.name}: Body Index {selectedBodyIndex}, Hat Index {selectedHatIndex}");
     }
+
 
 
     public void AssignPlayersToHomes()
