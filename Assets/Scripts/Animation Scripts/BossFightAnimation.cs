@@ -4,7 +4,7 @@ using System.Collections;
 public class BossFightAnimation : MonoBehaviour
 {
     [Header("Animation Settings")]
-    [SerializeField] private float attackSpeed = 2.0f;
+    [SerializeField] private float attackSpeed = 4.0f;
     private float baseJumpHeight = 4.5f; // Higher jump for more imposing effect
     private float scaledJumpHeight;
     
@@ -52,7 +52,7 @@ public class BossFightAnimation : MonoBehaviour
         }
 
         // Hold at apex
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.2f);
 
         // Quick stomp down
         journey = 0f;
@@ -74,7 +74,7 @@ public class BossFightAnimation : MonoBehaviour
         }
 
         // Pause after impact
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.15f);
 
         // Return to start position
         journey = 0f;

@@ -29,10 +29,12 @@ public class BossManager : MonoBehaviour
     {
         if (GameConfigManager.Instance.GetCurrentRules().haveBoss)
         {
+            UIManager.Instance.ToggleBossUI(true);
             SpawnBoss();
         }
         else
         {
+            UIManager.Instance.ToggleBossUI(false);
             bossObject.gameObject.SetActive(false);
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class TileManager : MonoBehaviour
     public GameObject highlightOverlayPrefab; // Reference to the highlight overlay prefab
     public List<Tile> allTiles = new List<Tile>();
     private List<GameObject> activeHighlights = new List<GameObject>(); // Store active highlight overlays
+    public bool OnTileActionComplete { get; set; }
 
     private List<Tile> portalTiles = new List<Tile>(); // Add this field
 
@@ -56,7 +58,7 @@ public class TileManager : MonoBehaviour
         availablePortals.Remove(currentTile);
         if (availablePortals.Count == 0) return null;
         
-        int randomIndex = Random.Range(0, availablePortals.Count);
+        int randomIndex = UnityEngine.Random.Range(0, availablePortals.Count);
         return availablePortals[randomIndex];
     }
 
@@ -73,7 +75,7 @@ public class TileManager : MonoBehaviour
 
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                int pointsGained = Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+                int pointsGained = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
                 currentPlayer.AddPoints(pointsGained);
                 UIManager.Instance.DisplayPointChange(pointsGained);
                 UIManager.Instance.DisplayGainStarAnimation(currentPlayerID);
@@ -81,7 +83,7 @@ public class TileManager : MonoBehaviour
 
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
-                int pointsLost = -(Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
+                int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
                 currentPlayer.AddPoints(pointsLost);
                 UIManager.Instance.DisplayPointChange(pointsLost);
                 UIManager.Instance.DisplayLoseStarAnimation();
@@ -89,13 +91,16 @@ public class TileManager : MonoBehaviour
             
             case TileType.Quiz:
                 Debug.Log("Quiz tile");
-                GameManager.Instance.HandleQuizLand();
+                GameManager.Instance.HandleQuizStart();
                 break;
 
             case TileType.Home:
                 Debug.Log("Home tile");
                 PlayerManager.Instance.LevelUpPlayer();
-                currentPlayer.Heal(1);
+                if(currentPlayerID == tile.GetHomePlayerID())
+                {
+                    currentPlayer.Heal(1);
+                }
                 break;
 
             case TileType.Portal:
@@ -115,6 +120,11 @@ public class TileManager : MonoBehaviour
                 GameManager.Instance.HandleReroll();
                 //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
                 break;
+        }
+
+        if (tile.GetTileType() != TileType.Quiz)
+        {
+            OnTileActionComplete = true;
         }
     }
 
@@ -146,6 +156,8 @@ public class TileManager : MonoBehaviour
                 //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
                 break;
         }
+
+        OnTileActionComplete = true;
     }
 
     public List<Tile> HighlightPossibleTiles(Tile startTile, int steps)

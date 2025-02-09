@@ -9,6 +9,7 @@ public class Player : Entity
 
     public const int REVIVAL_COUNT = 3;
     public const int MAX_HEALTH = 10;
+    public const int MAX_LEVEL = 10;
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
@@ -62,6 +63,11 @@ public class Player : Entity
 
     public void LevelUp()
     {
+        if (Level >= MAX_LEVEL)
+        {
+            return;
+        }
+        
         Level += 1;
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);

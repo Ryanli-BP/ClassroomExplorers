@@ -33,7 +33,7 @@ public class PlayerEvadeAnimation : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.2f); // Brief pause
+        yield return new WaitForSeconds(0.5f); // Brief pause
 
         // Return to position
         journey = 0f;

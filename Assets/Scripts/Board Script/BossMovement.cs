@@ -64,6 +64,7 @@ public class BossMovement : MonoBehaviour
     private IEnumerator MoveStepByStep()
     {
         isMoving = true;
+        initialMove = true;
 
         while (remainingSteps >= 0)
         {

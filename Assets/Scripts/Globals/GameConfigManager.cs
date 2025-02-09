@@ -20,6 +20,7 @@ public class ModeRules
 public class GameConfigManager : MonoBehaviour
 {
     [SerializeField] private GameMode currentMode = GameMode.FFA;
+    
     private Dictionary<GameMode, ModeRules> modeRules;
 
     public static GameConfigManager Instance { get; private set; }
@@ -36,6 +37,12 @@ public class GameConfigManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public GameMode CurrentMode 
+    {
+        get => currentMode;
+        set => currentMode = value;
     }
 
     private void InitializeModeRules()
