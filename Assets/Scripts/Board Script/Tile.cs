@@ -40,7 +40,7 @@ public class Tile : MonoBehaviour
         {
             AddPlayer(HomeplayerID);
         }
-        else
+        else if (tileType == TileType.Home)
         {
             tileType = TileType.Normal;
         }
