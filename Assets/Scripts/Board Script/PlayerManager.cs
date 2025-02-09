@@ -80,7 +80,7 @@ public class PlayerManager : MonoBehaviour
     {
         // Find the body parent object (e.g., "Mesh Object/Bone_Body") for this specific player
         Transform bodyParent = playerObject.transform.Find("Mesh Object/Bone_Body");
-        Transform hatParent = playerObject.transform.Find("Mesh Object/hats");
+        Transform hatParent = playerObject.transform.Find("hats");
 
         if (bodyParent != null && bodyColors.Length > 0)
         {
@@ -101,7 +101,7 @@ public class PlayerManager : MonoBehaviour
 
         if (hatParent != null && hats.Length > 0)
         {
-            // Assuming hats are child objects under "Bone_Hat"
+            // Assuming hats are child objects under "hats"
             for (int i = 0; i < hats.Length; i++)
             {
                 Transform hatTransform = hatParent.GetChild(i); // Get the child transform for each hat
