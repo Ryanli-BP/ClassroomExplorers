@@ -37,11 +37,18 @@ public class RoundManager : MonoBehaviour
         Debug.Log($"Round {round}");
         UIManager.Instance.UpdateRound(round);
 
+        // Update buff durations for all players
+        foreach (var player in PlayerManager.Instance.GetPlayerList())
+        {
+            player.UpdateBuffDurations();
+        }
+
         if(PlayerManager.Instance.DeadPlayers.Count > 0)
         {
             IncrementReviveCounter();
         }
     }
+    
 public void IncrementReviveCounter()
 {
     var deadPlayersCopy = new List<Player>(PlayerManager.Instance.DeadPlayers);

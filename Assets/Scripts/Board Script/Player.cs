@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public enum Status { Alive, Dead }
 
@@ -14,6 +15,7 @@ public class Player : Entity
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
+    private PlayerBuffs buffs = new PlayerBuffs();
 
     public int ReviveCounter { get; set; } = 0;
     void Awake()
@@ -47,6 +49,16 @@ public class Player : Entity
     {
         Debug.Log($"Player {playerID} has been assigned ID {id}");
         playerID = id;
+    }
+
+    public void AddBuff(BuffType type, int value, int duration)
+    {
+        buffs.AddBuff(type, value, duration);
+    }
+
+    public void UpdateBuffDurations()
+    {
+        buffs.UpdateBuffDurations();
     }
 
 
@@ -128,4 +140,69 @@ public class Player : Entity
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
+}
+
+[System.Serializable]
+public class Buff
+{
+    public BuffType Type { get; private set; }
+    public int Value { get; private set; }
+    public int RoundsRemaining { get; private set; }
+
+    public Buff(BuffType type, int value, int duration)
+    {
+        Type = type;
+        Value = value;
+        RoundsRemaining = duration;
+    }
+
+    public void DecrementDuration()
+    {
+        RoundsRemaining--;
+    }
+}
+
+public enum BuffType
+{
+    AttackUp,
+    DefenseUp,
+    EvadeUp,
+    ExtraDice,
+    DoublePoints
+}
+
+[System.Serializable]
+public class PlayerBuffs
+{
+    private List<Buff> activeBuffs = new List<Buff>();
+
+    public int AttackBonus => activeBuffs.Where(b => b.Type == BuffType.AttackUp).Sum(b => b.Value);
+    public int DefenseBonus => activeBuffs.Where(b => b.Type == BuffType.DefenseUp).Sum(b => b.Value);
+    public int EvadeBonus => activeBuffs.Where(b => b.Type == BuffType.EvadeUp).Sum(b => b.Value);
+    public bool ExtraDiceRoll => activeBuffs.Any(b => b.Type == BuffType.ExtraDice);
+    public bool DoublePoints => activeBuffs.Any(b => b.Type == BuffType.DoublePoints);
+
+    public void AddBuff(BuffType type, int value, int duration)
+    {
+        activeBuffs.Add(new Buff(type, value, duration));
+    }
+
+    public void UpdateBuffDurations()
+    {
+        foreach (var buff in activeBuffs.ToList())
+        {
+            buff.DecrementDuration();
+            if (buff.RoundsRemaining <= 0)
+            {
+                activeBuffs.Remove(buff);
+            }
+        }
+    }
+
+    public void Reset()
+    {
+        activeBuffs.Clear();
+    }
+
+    public List<Buff> GetActiveBuffs() => activeBuffs;
 }
