@@ -11,6 +11,7 @@ namespace UltimateClean
         [SerializeField] private TextMeshProUGUI text;
         private Image image;
         private SlicedFilledImage slicedImage;
+        public bool finished = false;
 
         private void Awake()
         {
@@ -33,6 +34,7 @@ namespace UltimateClean
         /// </summary>
         public void AnimatePoints(int currentPoints, int levelUpPoints)
         {
+            finished = false;
             StopAllCoroutines();
             StartCoroutine(AnimatePointsRoutine(currentPoints, levelUpPoints));
         }
@@ -56,6 +58,7 @@ namespace UltimateClean
 
             UpdateBar(targetRatio);
             UpdateText(currentPoints, levelUpPoints);
+            finished = true;
         }
 
         private float GetCurrentFill()

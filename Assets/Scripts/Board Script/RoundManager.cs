@@ -48,7 +48,7 @@ public class RoundManager : MonoBehaviour
             IncrementReviveCounter();
         }
     }
-    
+
 public void IncrementReviveCounter()
 {
     var deadPlayersCopy = new List<Player>(PlayerManager.Instance.DeadPlayers);
@@ -75,6 +75,7 @@ public void IncrementReviveCounter()
         foreach (var player in PlayerManager.Instance.GetPlayerList())
         {
             player.AddPoints(roundPoints[roundPointsIndex]);
+            
         }
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.ARFoundation.VisualScripting;
 
 public class DiceManager : MonoBehaviour
 {
@@ -11,8 +12,6 @@ public class DiceManager : MonoBehaviour
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
     [SerializeField] private int testDiceResult = 0;
-
-    private float dicePositionOffset = 0; // Offset for dice position
 
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
@@ -50,10 +49,10 @@ public class DiceManager : MonoBehaviour
         }
     }
 
-
-    public int GetNumDice()
+    public int NumDice
     {
-        return numDice;
+        get { return numDice; }
+        set { numDice = value; }
     }
 
     public void EnableDiceRoll()

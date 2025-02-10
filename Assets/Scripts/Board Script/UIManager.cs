@@ -236,7 +236,7 @@ public class UIManager : MonoBehaviour
         centreDisplayPanel.SetActive(false);
     }
 
-    public void UpdatePlayerPoints(int playerIndex, int points, int levelUpPoints)
+    public IEnumerator UpdatePlayerPoints(int playerIndex, int points, int levelUpPoints)
     {
         var pointsAnimation = playerStatsUIList[playerIndex - 1].pointsBar.GetComponent<PointsAnimation>();
         if (pointsAnimation != null)
@@ -247,6 +247,8 @@ public class UIManager : MonoBehaviour
         {
             Debug.LogError("PointsAnimation component missing in player stats UI");
         }
+
+        yield return new WaitUntil(() => pointsAnimation.finished);
     }
 
     public void UpdatePlayerLevel(int playerIndex, int level)

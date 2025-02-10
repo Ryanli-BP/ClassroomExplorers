@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 
 public enum Status { Alive, Dead }
 
@@ -37,7 +38,7 @@ public class Player : Entity
         // Update UI once UIManager is ready
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
     }
 
     public int getPlayerID()
@@ -66,7 +67,7 @@ public class Player : Entity
     {
         Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
-        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
     }
 
     public void LevelUp()
@@ -79,7 +80,7 @@ public class Player : Entity
         Level += 1;
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
         UIManager.Instance.DisplayLevelUp();
     }
 
