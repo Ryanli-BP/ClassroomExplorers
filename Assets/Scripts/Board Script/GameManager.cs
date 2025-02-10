@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.RoundStart:
-                RoundEvent();
+                StartCoroutine(RoundEvent());
                 break;
 
             case GameState.PlayerTurnStart:
@@ -127,11 +127,16 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.RoundStart);
     }
 
-    private void RoundEvent()
+    private IEnumerator RoundEvent()
     {
         Debug.Log("Starting new round.");
         RoundManager.Instance.IncrementRound();
         RoundManager.Instance.GiveRoundPoints();
+
+        QuizManager.Instance.StartNewQuiz();
+
+        yield return new WaitUntil(() => QuizManager.Instance.OnQuizComplete);
+
         ChangeState(GameState.PlayerTurnStart);
     }
 
@@ -200,19 +205,6 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.RoundStart);
     } 
 
-    public void HandleQuizStart()
-    {
-        UIManager.Instance.SetBoardUIActive(false);
-        QuizManager.Instance.StartNewQuiz();
-    }
-
-    public void HandleQuizEnd()
-    {
-        UIManager.Instance.SetBoardUIActive(true);
-        TileManager.Instance.OnTileActionComplete = true;
-    }
-
-
     private void StartPlayerMovement()
     {
         Debug.Log("Starting player movement");
@@ -261,14 +253,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
+            StartCoroutine(TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile));
         }
 
         // Wait until the action completes
-        while (!TileManager.Instance.OnTileActionComplete)
-        {
-            yield return null;
-        }
+        yield return new WaitUntil(() => TileManager.Instance.OnTileActionComplete);
+   
 
         // Early break for special cases
         if (currentState == GameState.GameEnd || currentState == GameState.RollingMovementDice)

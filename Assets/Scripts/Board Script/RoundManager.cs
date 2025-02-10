@@ -58,6 +58,11 @@ public void IncrementReviveCounter()
 
     public void GiveRoundPoints()
     {
+        if(round == 1)
+        {
+            return;
+        }
+        
         int roundPointsIndex = PlayerManager.Instance.CurrentHighLevel - 1;
 
         foreach (var player in PlayerManager.Instance.GetPlayerList())

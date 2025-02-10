@@ -109,6 +109,11 @@ public class UIManager : MonoBehaviour
         GenereateUIList();
         SetupButtonListeners();
         SetInitialPanelStates();
+
+        foreach(Player player in PlayerManager.Instance.GetPlayerList())
+        {
+            player.InitializePlayerUI();
+        }
     }
 
     private void SetupButtonListeners()
@@ -469,8 +474,8 @@ public class UIManager : MonoBehaviour
         {
             Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
             lastPos = currentPlayer.transform.position;
-            Debug.Log($"Last position: {lastPos}");
             boardUI.SetActive(active);
+            Debug.Log($"Board UI is now {(active ? "active" : "inactive")}");
             if (currentPlayer.transform.position != lastPos)
             {
                 throw new System.Exception("Player position changed while board UI was active");

@@ -16,6 +16,15 @@ namespace UltimateClean
         {
             image = GetComponent<Image>();
             slicedImage = GetComponent<SlicedFilledImage>();
+            
+            // Set initial fill amount to 0
+            if (image != null)
+                image.fillAmount = 0f;
+            else if (slicedImage != null) 
+                slicedImage.fillAmount = 0f;
+                
+            if (text != null)
+                text.text = "0/0";
         }
 
         /// <summary>

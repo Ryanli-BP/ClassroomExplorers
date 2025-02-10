@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,7 +63,7 @@ public class TileManager : MonoBehaviour
         return availablePortals[randomIndex];
     }
 
-    public void getPlayerTileAction(Tile tile)
+    public IEnumerator getPlayerTileAction(Tile tile)
     {
         var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
         Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
@@ -91,7 +92,8 @@ public class TileManager : MonoBehaviour
             
             case TileType.Quiz:
                 Debug.Log("Quiz tile");
-                GameManager.Instance.HandleQuizStart();
+                QuizManager.Instance.StartNewQuiz();
+                yield return new WaitUntil(() => QuizManager.Instance.OnQuizComplete);
                 break;
 
             case TileType.Home:
@@ -122,10 +124,7 @@ public class TileManager : MonoBehaviour
                 break;
         }
 
-        if (tile.GetTileType() != TileType.Quiz)
-        {
             OnTileActionComplete = true;
-        }
     }
 
     public void getBossTileAction(Tile tile)

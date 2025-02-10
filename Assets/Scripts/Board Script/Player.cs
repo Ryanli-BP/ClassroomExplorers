@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 
 public enum Status { Alive, Dead }
+
 public class Player : Entity
 {
     [SerializeField] private int playerID;
@@ -15,7 +16,7 @@ public class Player : Entity
     public int Level { get; set; } = 1;
 
     public int ReviveCounter { get; set; } = 0;
-    void Start()
+    void Awake()
     {
         if (playerID <= PlayerManager.Instance.numOfPlayers)
         {
@@ -24,17 +25,12 @@ public class Player : Entity
             Health = MAX_HEALTH;
             Status = Status.Alive;
 
-            StartCoroutine(InitializePlayerUI());
         }
     }
 
-    private IEnumerator InitializePlayerUI()
+    public void InitializePlayerUI()
     {
-        Debug.Log($"{playerID}");
-        while (UIManager.Instance == null || !GameInitializer.Instance.IsGameInitialized)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
+        Debug.Log($"Initialize playerUI {playerID}");
 
         // Update UI once UIManager is ready
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);

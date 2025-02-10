@@ -20,7 +20,7 @@ public class QuizManager : MonoBehaviour
     private bool isQuizActive = false;
     private int correctAnswerCount = 0;
     private bool isTransitioning = false;
-
+    public bool OnQuizComplete { get; private set; }
     private Player quizPlayer;
 
     public static QuizManager Instance { get; private set; }
@@ -56,6 +56,9 @@ public class QuizManager : MonoBehaviour
     public void StartNewQuiz()
     {
         if (isTransitioning || isQuizActive) return;
+        
+        OnQuizComplete = false;
+        UIManager.Instance.SetBoardUIActive(false);
         StartCoroutine(StartQuizSequence());
     }
 
@@ -119,7 +122,59 @@ public class QuizManager : MonoBehaviour
         HandleQuizComplete();
     }
 
-    private IEnumerator DownloadQuestionCSV()
+    private void EndQuiz()
+    {
+        if (isTransitioning) return;
+        Debug.Log("Quiz ended.");
+        StartCoroutine(EndQuizSequence());
+    }
+
+    private void HandleQuizComplete()
+    {
+        int pointsToAward = correctAnswerCount * 10;
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+        correctAnswerCount = 0;
+
+        if (pointsToAward > 0)
+        {
+            currentPlayer.AddPoints(pointsToAward);
+            UIManager.Instance.DisplayPointChange(pointsToAward);
+            UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
+        }
+
+        OnQuizComplete = true;
+        UIManager.Instance.SetBoardUIActive(true);
+    }
+
+    public void DisplayNextQuestion()
+    {
+        if (!isQuizActive) return;
+
+        currentQuestionIndex = (currentQuestionIndex + 1) % questions.Count;
+        Question q = questions[currentQuestionIndex];
+
+        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex, questions.Count);
+    }
+
+    public bool CheckAnswer(int answerIndex)
+    {
+        if (!isQuizActive) return false;
+        answeredQuestionsCount++;
+        string selectedAnswer = ((char)('A' + answerIndex)).ToString();
+
+        if (selectedAnswer == questions[currentQuestionIndex].answer)
+        {
+            correctAnswerCount++;
+        }
+        return questions[currentQuestionIndex].answer == selectedAnswer;
+    }
+
+    public bool IsQuizActive()
+    {
+        return isQuizActive;
+    }
+
+        private IEnumerator DownloadQuestionCSV()
     {
         string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
         string savePath = Path.Combine(Application.persistentDataPath, "QuestionCSV.csv");
@@ -169,57 +224,6 @@ public class QuizManager : MonoBehaviour
         }
 
         Debug.Log($"Loaded {questions.Count} questions from the CSV.");
-    }
-
-    private void EndQuiz()
-    {
-        if (isTransitioning) return;
-        Debug.Log("Quiz ended.");
-        StartCoroutine(EndQuizSequence());
-    }
-
-    private void HandleQuizComplete()
-    {
-        int pointsToAward = correctAnswerCount * 10;
-        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
-        correctAnswerCount = 0;
-
-        if (pointsToAward > 0)
-        {
-            currentPlayer.AddPoints(pointsToAward);
-            UIManager.Instance.DisplayPointChange(pointsToAward);
-            UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
-        }
-
-        GameManager.Instance.HandleQuizEnd();
-    }
-
-    public void DisplayNextQuestion()
-    {
-        if (!isQuizActive) return;
-
-        currentQuestionIndex = (currentQuestionIndex + 1) % questions.Count;
-        Question q = questions[currentQuestionIndex];
-
-        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex, questions.Count);
-    }
-
-    public bool CheckAnswer(int answerIndex)
-    {
-        if (!isQuizActive) return false;
-        answeredQuestionsCount++;
-        string selectedAnswer = ((char)('A' + answerIndex)).ToString();
-
-        if (selectedAnswer == questions[currentQuestionIndex].answer)
-        {
-            correctAnswerCount++;
-        }
-        return questions[currentQuestionIndex].answer == selectedAnswer;
-    }
-
-    public bool IsQuizActive()
-    {
-        return isQuizActive;
     }
 }
 
