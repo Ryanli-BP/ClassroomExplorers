@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
-    private bool isBossTurn = false;
+    public bool isBossTurn {get; private set;} = false;
 
     public bool IsResumingMovement { get; set; } = false; // Flag such that player don't StartPlayerMovement again after combat->moving state change
     public Action<int> OnDiceRollResultForCombat;
@@ -131,7 +131,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Starting new round.");
         RoundManager.Instance.IncrementRound();
-        RoundManager.Instance.GiveRoundPoints();
+        yield return StartCoroutine(RoundManager.Instance.GiveRoundPoints());
+        RoundManager.Instance.ApplyRoundBuff();
 
         QuizManager.Instance.StartNewQuiz();
 

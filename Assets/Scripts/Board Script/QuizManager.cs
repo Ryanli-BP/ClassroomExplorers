@@ -137,7 +137,7 @@ public class QuizManager : MonoBehaviour
 
         if (pointsToAward > 0)
         {
-            currentPlayer.AddPoints(pointsToAward);
+            StartCoroutine(currentPlayer.AddPoints(pointsToAward));
             UIManager.Instance.DisplayPointChange(pointsToAward);
             UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
         }

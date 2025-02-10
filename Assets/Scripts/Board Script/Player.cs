@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using System.Collections;
 
 public enum Status { Alive, Dead }
 
@@ -16,7 +17,8 @@ public class Player : Entity
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
-    private PlayerBuffs buffs = new PlayerBuffs();
+    private new PlayerBuffs buffs = new PlayerBuffs();
+    public new PlayerBuffs Buffs => buffs;
 
     public int ReviveCounter { get; set; } = 0;
     void Awake()
@@ -28,17 +30,18 @@ public class Player : Entity
             Health = MAX_HEALTH;
             Status = Status.Alive;
 
+            Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test
         }
     }
 
-    public void InitializePlayerUI()
+    public IEnumerator InitializePlayerUI()
     {
         Debug.Log($"Initialize playerUI {playerID}");
 
         // Update UI once UIManager is ready
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
     }
 
     public int getPlayerID()
@@ -52,22 +55,11 @@ public class Player : Entity
         playerID = id;
     }
 
-    public void AddBuff(BuffType type, int value, int duration)
-    {
-        buffs.AddBuff(type, value, duration);
-    }
-
-    public void UpdateBuffDurations()
-    {
-        buffs.UpdateBuffDurations();
-    }
-
-
-    public void AddPoints(int amount)
+    public IEnumerator AddPoints(int amount)
     {
         Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
-        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
     }
 
     public void LevelUp()
@@ -144,66 +136,7 @@ public class Player : Entity
 }
 
 [System.Serializable]
-public class Buff
+public class PlayerBuffs : EntityBuffs
 {
-    public BuffType Type { get; private set; }
-    public int Value { get; private set; }
-    public int RoundsRemaining { get; private set; }
-
-    public Buff(BuffType type, int value, int duration)
-    {
-        Type = type;
-        Value = value;
-        RoundsRemaining = duration;
-    }
-
-    public void DecrementDuration()
-    {
-        RoundsRemaining--;
-    }
-}
-
-public enum BuffType
-{
-    AttackUp,
-    DefenseUp,
-    EvadeUp,
-    ExtraDice,
-    DoublePoints
-}
-
-[System.Serializable]
-public class PlayerBuffs
-{
-    private List<Buff> activeBuffs = new List<Buff>();
-
-    public int AttackBonus => activeBuffs.Where(b => b.Type == BuffType.AttackUp).Sum(b => b.Value);
-    public int DefenseBonus => activeBuffs.Where(b => b.Type == BuffType.DefenseUp).Sum(b => b.Value);
-    public int EvadeBonus => activeBuffs.Where(b => b.Type == BuffType.EvadeUp).Sum(b => b.Value);
-    public bool ExtraDiceRoll => activeBuffs.Any(b => b.Type == BuffType.ExtraDice);
     public bool DoublePoints => activeBuffs.Any(b => b.Type == BuffType.DoublePoints);
-
-    public void AddBuff(BuffType type, int value, int duration)
-    {
-        activeBuffs.Add(new Buff(type, value, duration));
-    }
-
-    public void UpdateBuffDurations()
-    {
-        foreach (var buff in activeBuffs.ToList())
-        {
-            buff.DecrementDuration();
-            if (buff.RoundsRemaining <= 0)
-            {
-                activeBuffs.Remove(buff);
-            }
-        }
-    }
-
-    public void Reset()
-    {
-        activeBuffs.Clear();
-    }
-
-    public List<Buff> GetActiveBuffs() => activeBuffs;
 }

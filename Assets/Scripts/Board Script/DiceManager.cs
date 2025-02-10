@@ -8,7 +8,7 @@ public class DiceManager : MonoBehaviour
 {
     public static DiceManager Instance;
     [SerializeField] private Dice DiceToThrow;
-    [SerializeField] private int numDice = 1;
+    private int numDice;
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
     [SerializeField] private int testDiceResult = 0;
@@ -57,9 +57,21 @@ public class DiceManager : MonoBehaviour
 
     public void EnableDiceRoll()
     {
+        // Set number of dice based on current turn
+        if (GameManager.Instance.isBossTurn)
+        {
+            numDice = 1 + BossManager.Instance.activeBoss.Buffs.ExtraDiceBonus;
+            Debug.Log($"Boss dice count: {numDice} FROM BOBUS {BossManager.Instance.activeBoss.Buffs.ExtraDiceBonus}");
+        }
+        else
+        {
+            numDice = 1 + PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].Buffs.ExtraDiceBonus;
+            Debug.Log($"Player dice count: {numDice} FROM BOBUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].Buffs.ExtraDiceBonus}");
+        }
+
         totalDiceResult = 0;
         canRollDice = true;
-        UIManager.Instance.SetRollDiceButtonVisibility(true); // Show the roll dice button
+        UIManager.Instance.SetRollDiceButtonVisibility(true);
     }
 
     private Vector3 originalGravity;

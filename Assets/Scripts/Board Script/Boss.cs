@@ -4,10 +4,13 @@ public class Boss : Entity
 {
     public BossMovement Movement { get; private set; }
     public const int MAX_HEALTH = 100;
+    private new BossBuffs buffs = new BossBuffs();
+    public new BossBuffs Buffs => buffs;
+
 
     private void Awake()
     {
-        Movement = GetComponent<BossMovement>();
+        Movement = GetComponent<BossMovement>();        
     }
 
     private void Start()
@@ -15,6 +18,8 @@ public class Boss : Entity
         Health = MAX_HEALTH;
         Status = Status.Alive;
         UIManager.Instance.UpdateBossHealth(Health);
+
+        Buffs.AddBuff(BuffType.ExtraDice, 2, 2); //for testing
     }
 
     public override void LoseHealth(int amount)
@@ -44,5 +49,19 @@ public class Boss : Entity
     
         
         Debug.Log($"Boss teleported to position {position}");
+    }
+}
+
+[System.Serializable]
+public class BossBuffs : EntityBuffs
+{
+    public override void AddBuff(BuffType type, int value, int duration)
+    {
+        if (type == BuffType.DoublePoints)
+        {
+            Debug.LogWarning("Cannot add player-specific buffs to a boss");
+            return;
+        }
+        base.AddBuff(type, value, duration);
     }
 }

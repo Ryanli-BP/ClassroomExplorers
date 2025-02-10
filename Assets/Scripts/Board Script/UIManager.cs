@@ -112,7 +112,7 @@ public class UIManager : MonoBehaviour
 
         foreach(Player player in PlayerManager.Instance.GetPlayerList())
         {
-            player.InitializePlayerUI();
+            StartCoroutine(player.InitializePlayerUI());
         }
     }
 
@@ -241,14 +241,12 @@ public class UIManager : MonoBehaviour
         var pointsAnimation = playerStatsUIList[playerIndex - 1].pointsBar.GetComponent<PointsAnimation>();
         if (pointsAnimation != null)
         {
-            pointsAnimation.AnimatePoints(points, levelUpPoints);
+            yield return StartCoroutine(pointsAnimation.AnimatePoints(points, levelUpPoints));
         }
         else
         {
             Debug.LogError("PointsAnimation component missing in player stats UI");
         }
-
-        yield return new WaitUntil(() => pointsAnimation.finished);
     }
 
     public void UpdatePlayerLevel(int playerIndex, int level)

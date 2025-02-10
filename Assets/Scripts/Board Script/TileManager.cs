@@ -77,7 +77,7 @@ public class TileManager : MonoBehaviour
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
                 int pointsGained = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
-                currentPlayer.AddPoints(pointsGained);
+                StartCoroutine(currentPlayer.AddPoints(pointsGained));
                 UIManager.Instance.DisplayPointChange(pointsGained);
                 UIManager.Instance.DisplayGainStarAnimation(currentPlayerID);
                 break; 
@@ -85,7 +85,7 @@ public class TileManager : MonoBehaviour
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
                 int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
-                currentPlayer.AddPoints(pointsLost);
+                StartCoroutine(currentPlayer.AddPoints(pointsLost));
                 UIManager.Instance.DisplayPointChange(pointsLost);
                 UIManager.Instance.DisplayLoseStarAnimation();
                 break;
