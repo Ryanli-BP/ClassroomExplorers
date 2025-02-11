@@ -22,10 +22,11 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            _photonView = GetComponent<PhotonView>(); // Get PhotonView reference
+            _photonView = GetComponent<PhotonView>();  // Get PhotonView reference
             if (_photonView == null)
             {
-                _photonView = gameObject.AddComponent<PhotonView>();
+                Debug.LogError("PhotonView component missing from GameManager!");
+                _photonView = gameObject.AddComponent<PhotonView>();  // Auto-add if missing
             }
             DontDestroyOnLoad(gameObject);
         }
@@ -34,30 +35,50 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    public void StartGame()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _photonView.RPC("RPCChangeState", RpcTarget.All, GameState.GameSetup);
+        }
+    }
+    public void InitializeGame()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+        
+        if (_photonView == null)
+        {
+            Debug.LogError("PhotonView is null in GameManager!");
+            return;
+        }
+        
+        _photonView.RPC("RPCChangeState", RpcTarget.All, GameState.GameSetup);
+    
+    }
     private void Start()
     {
-        while (!PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsConnected)
         {
             Debug.Log("Waiting for network connection...");
             return;
         }
-
         if (PhotonNetwork.IsMasterClient)
         {
-            _photonView.RPC("RPCChangeState", RpcTarget.All, GameState.GameSetup);
+            StartGame();
         }
     }
 
     [PunRPC]
     private void RPCChangeState(GameState newState)
     {
+        Debug.Log($"[NetworkSync] Client {PhotonNetwork.LocalPlayer.ActorNumber} received state change to {newState}");
         ChangeState(newState);
     }
 
     private void ChangeState(GameState newState)
     {
         if (!PhotonNetwork.IsMasterClient) return;
+        Debug.Log($"[NetworkSync] Client {PhotonNetwork.LocalPlayer.ActorNumber} changing state from {currentState} to {newState}");
         
         Debug.Log($"Changing state from {currentState} to {newState}");
         currentState = newState;
