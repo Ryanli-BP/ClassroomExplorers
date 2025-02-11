@@ -1,8 +1,12 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using System.Collections;
 
 public enum Status { Alive, Dead }
+
 public class Player : Entity
 {
     [SerializeField] private int playerID;
@@ -13,33 +17,35 @@ public class Player : Entity
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
+    [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
+    public PlayerBuffs PlayerBuffs => playerBuffs;
 
     public int ReviveCounter { get; set; } = 0;
-    void Start()
+    void Awake()
     {
-        if (playerID <= PlayerManager.Instance.numOfPlayers)
+        if (playerID <= GameConfigManager.Instance.numOfPlayers)
         {
             Points = 0;
             Level = 1;
             Health = MAX_HEALTH;
             Status = Status.Alive;
 
-            StartCoroutine(InitializePlayerUI());
+            /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
+            Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
+            Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
+            Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
+            Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
         }
     }
 
-    private IEnumerator InitializePlayerUI()
+    public IEnumerator InitializePlayerUI()
     {
-        Debug.Log($"{playerID}");
-        while (UIManager.Instance == null || !GameInitializer.Instance.IsGameInitialized)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
+        Debug.Log($"Initialize playerUI {playerID}");
 
         // Update UI once UIManager is ready
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
     }
 
     public int getPlayerID()
@@ -53,12 +59,21 @@ public class Player : Entity
         playerID = id;
     }
 
-
-    public void AddPoints(int amount)
+    public IEnumerator AddPoints(int amount)
     {
         Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
-        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+    }
+
+    public override void AddBuff(BuffType type, int value, int duration)
+    {
+        playerBuffs.AddBuff(type, value, duration);
+    }
+
+    public override void UpdateBuffDurations()
+    {
+        playerBuffs.UpdateBuffDurations();
     }
 
     public void LevelUp()
@@ -71,8 +86,8 @@ public class Player : Entity
         Level += 1;
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
-        UIManager.Instance.DisplayLevelUp();
+        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+        StartCoroutine(UIManager.Instance.DisplayLevelUp());
     }
 
     public override void LoseHealth(int amount)
@@ -132,4 +147,11 @@ public class Player : Entity
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
+}
+
+[System.Serializable]
+public class PlayerBuffs : EntityBuffs
+{
+    public bool TriplePoints => activeBuffs.Any(b => b.Type == BuffType.TriplePoints);
+    public bool DoublePoints => activeBuffs.Any(b => b.Type == BuffType.DoublePoints) && !TriplePoints;
 }

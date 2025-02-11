@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 3607773573984527308}
   - component: {fileID: 636987210}
   m_Layer: 5
-  m_Name: Notification - Sharp Rounded
+  m_Name: Notification - Sharp Rounded 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

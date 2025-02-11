@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,7 +63,16 @@ public class TileManager : MonoBehaviour
         return availablePortals[randomIndex];
     }
 
-    public void getPlayerTileAction(Tile tile)
+    private int getBonus(Player player)
+    {   
+        if (player.PlayerBuffs.TriplePoints)
+            return 3;
+        if (player.PlayerBuffs.DoublePoints)
+            return 2;
+        return 1;
+    }
+
+    public IEnumerator getPlayerTileAction(Tile tile)
     {
         var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
         Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
@@ -75,23 +85,31 @@ public class TileManager : MonoBehaviour
 
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                int pointsGained = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
-                currentPlayer.AddPoints(pointsGained);
-                UIManager.Instance.DisplayPointChange(pointsGained);
+                int basePoints = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+                int multiplier = getBonus(currentPlayer);
+                int pointsGained = basePoints * multiplier;
+                
+                UIManager.Instance.SetBonusUIValue(multiplier);
+                yield return StartCoroutine(UIManager.Instance.DisplayPointChange(basePoints)); //base points because the UI deal with bonus
                 UIManager.Instance.DisplayGainStarAnimation(currentPlayerID);
-                break; 
+
+                StartCoroutine(currentPlayer.AddPoints(pointsGained));
+                break;
 
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
                 int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
-                currentPlayer.AddPoints(pointsLost);
-                UIManager.Instance.DisplayPointChange(pointsLost);
+                
+                StartCoroutine(UIManager.Instance.DisplayPointChange(pointsLost));
                 UIManager.Instance.DisplayLoseStarAnimation();
+
+                StartCoroutine(currentPlayer.AddPoints(pointsLost));
                 break;
             
             case TileType.Quiz:
                 Debug.Log("Quiz tile");
-                GameManager.Instance.HandleQuizStart();
+                QuizManager.Instance.StartNewQuiz();
+                yield return new WaitUntil(() => QuizManager.Instance.OnQuizComplete);
                 break;
 
             case TileType.Home:
@@ -122,10 +140,7 @@ public class TileManager : MonoBehaviour
                 break;
         }
 
-        if (tile.GetTileType() != TileType.Quiz)
-        {
             OnTileActionComplete = true;
-        }
     }
 
     public void getBossTileAction(Tile tile)

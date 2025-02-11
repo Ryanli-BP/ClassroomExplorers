@@ -16,16 +16,25 @@ namespace UltimateClean
         {
             image = GetComponent<Image>();
             slicedImage = GetComponent<SlicedFilledImage>();
+            
+            // Set initial fill amount to 0
+            if (image != null)
+                image.fillAmount = 0f;
+            else if (slicedImage != null) 
+                slicedImage.fillAmount = 0f;
+                
+            if (text != null)
+                text.text = "0/0";
         }
 
         /// <summary>
         /// Animate the points bar fill from current fill to (currentPoints / levelUpPoints).
         /// The bar is clamped at 100% even if currentPoints > levelUpPoints.
         /// </summary>
-        public void AnimatePoints(int currentPoints, int levelUpPoints)
+        public IEnumerator AnimatePoints(int currentPoints, int levelUpPoints)
         {
             StopAllCoroutines();
-            StartCoroutine(AnimatePointsRoutine(currentPoints, levelUpPoints));
+            yield return StartCoroutine(AnimatePointsRoutine(currentPoints, levelUpPoints));
         }
 
         private IEnumerator AnimatePointsRoutine(int currentPoints, int levelUpPoints)

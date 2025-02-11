@@ -36,7 +36,7 @@ public class Tile : MonoBehaviour
     void Start()
     {
 
-        if(HomeplayerID != 0 && HomeplayerID <= PlayerManager.Instance.numOfPlayers)
+        if(HomeplayerID != 0 && HomeplayerID <= GameConfigManager.Instance.numOfPlayers)
         {
             AddPlayer(HomeplayerID);
         }

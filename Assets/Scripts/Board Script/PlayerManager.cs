@@ -6,13 +6,6 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
 
-    [SerializeField] private int _numOfPlayers = 2; // Backing field
-    public int numOfPlayers
-    {
-        get => _numOfPlayers;
-        set => _numOfPlayers = value;
-    }
-
     [SerializeField] private Player playerPrefab;  // Main player prefab
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
     public GameObject[] hats; // No need to serialize if not exposed to the Inspector
@@ -21,7 +14,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> homeObjects;
 
-    [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 40 };
+    [SerializeField] private List<int> levelUpPoints = new List<int> { 10, 25, 50 };
 
     public int CurrentPlayerID { get; set; } = 1;
 
@@ -54,7 +47,7 @@ public class PlayerManager : MonoBehaviour
         int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
         int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
 
-        for (int i = 0; i < numOfPlayers; i++)
+        for (int i = 0; i < GameConfigManager.Instance.numOfPlayers; i++)
         {
             // Instantiate the player prefab
             Player playerObject = Instantiate(playerPrefab, transform);

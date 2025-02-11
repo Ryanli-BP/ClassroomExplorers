@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
-    private bool isBossTurn = false;
+    public bool isBossTurn {get; private set;} = false;
 
     public bool IsResumingMovement { get; set; } = false; // Flag such that player don't StartPlayerMovement again after combat->moving state change
     public Action<int> OnDiceRollResultForCombat;
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.RoundStart:
-                RoundEvent();
+                StartCoroutine(RoundEvent());
                 break;
 
             case GameState.PlayerTurnStart:
@@ -55,11 +55,15 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.RollingMovementDice:
-                EnableMovementDiceRoll();
 
                 if (isBossTurn)
                 {
-                    DiceManager.Instance.RollDice();
+                    DiceManager.Instance.EnableDiceRoll(true);
+                    DiceManager.Instance.RollDice(); //automatical dice roll for Boss
+                }
+                else
+                {
+                    DiceManager.Instance.EnableDiceRoll(false);
                 }
                 break;
 
@@ -127,11 +131,17 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.RoundStart);
     }
 
-    private void RoundEvent()
+    private IEnumerator RoundEvent()
     {
         Debug.Log("Starting new round.");
         RoundManager.Instance.IncrementRound();
-        RoundManager.Instance.GiveRoundPoints();
+        yield return StartCoroutine(RoundManager.Instance.GiveRoundPoints());
+        RoundManager.Instance.ApplyRoundBuff();
+
+        QuizManager.Instance.StartNewQuiz();
+
+        yield return new WaitUntil(() => QuizManager.Instance.OnQuizComplete);
+
         ChangeState(GameState.PlayerTurnStart);
     }
 
@@ -158,15 +168,10 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.RollingMovementDice);
     }
 
-    private void EnableMovementDiceRoll()
-    {
-        DiceManager.Instance.EnableDiceRoll();
-    }
-
-    public void OnDiceRollComplete()
+    public IEnumerator OnDiceRollComplete()
     {
         int totalDiceResult = DiceManager.Instance.GetTotalDiceResult();
-        UIManager.Instance.DisplayDiceTotalResult(totalDiceResult);
+        yield return StartCoroutine(UIManager.Instance.DisplayDiceTotalResult(totalDiceResult));
 
         if (currentState == GameState.PlayerCombat && OnDiceRollResultForCombat != null)
         {
@@ -199,19 +204,6 @@ public class GameManager : MonoBehaviour
         isBossTurn = false;
         ChangeState(GameState.RoundStart);
     } 
-
-    public void HandleQuizStart()
-    {
-        UIManager.Instance.SetBoardUIActive(false);
-        QuizManager.Instance.StartNewQuiz();
-    }
-
-    public void HandleQuizEnd()
-    {
-        UIManager.Instance.SetBoardUIActive(true);
-        TileManager.Instance.OnTileActionComplete = true;
-    }
-
 
     private void StartPlayerMovement()
     {
@@ -261,14 +253,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
+            StartCoroutine(TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile));
         }
 
         // Wait until the action completes
-        while (!TileManager.Instance.OnTileActionComplete)
-        {
-            yield return null;
-        }
+        yield return new WaitUntil(() => TileManager.Instance.OnTileActionComplete);
+   
 
         // Early break for special cases
         if (currentState == GameState.GameEnd || currentState == GameState.RollingMovementDice)

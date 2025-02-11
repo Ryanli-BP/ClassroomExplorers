@@ -2,22 +2,21 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.ARFoundation.VisualScripting;
 
 public class DiceManager : MonoBehaviour
 {
     public static DiceManager Instance;
     [SerializeField] private Dice DiceToThrow;
-    [SerializeField] private int numDice = 1;
+    private int numDice;
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
     [SerializeField] private int testDiceResult = 0;
 
-    private float dicePositionOffset = 0; // Offset for dice position
-
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
     private int totalDiceResult; // Tracks the total sum of dice rolls
-    private bool canRollDice = false; // Flag to control dice rolling
+    private bool canRollDice = false; // Flag to control dice rollin
 
     private void Awake()
     {
@@ -50,17 +49,29 @@ public class DiceManager : MonoBehaviour
         }
     }
 
-
-    public int GetNumDice()
+    public int NumDice
     {
-        return numDice;
+        get { return numDice; }
+        set { numDice = value; }
     }
 
-    public void EnableDiceRoll()
+    public void EnableDiceRoll(bool isBossRollingDice)
     {
+        // Set number of dice based on current turn
+        if (isBossRollingDice)
+        {
+            numDice = 1 + BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus;
+            Debug.Log($"Boss dice count: {numDice} FROM BONUS {BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus}");
+        }
+        else
+        {
+            numDice = 1 + PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus;
+            Debug.Log($"Player dice count: {numDice} FROM BONUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus}");
+        }
+
         totalDiceResult = 0;
         canRollDice = true;
-        UIManager.Instance.SetRollDiceButtonVisibility(true); // Show the roll dice button
+        UIManager.Instance.SetRollDiceButtonVisibility(true);
     }
 
     private Vector3 originalGravity;
@@ -107,7 +118,7 @@ public class DiceManager : MonoBehaviour
         {
             // Reset the gravity to its original value
             Physics.gravity = originalGravity;
-            GameManager.Instance.OnDiceRollComplete(); // Directly call the GameManager method
+            StartCoroutine(GameManager.Instance.OnDiceRollComplete()); // Directly call the GameManager method
         }
     }
 
