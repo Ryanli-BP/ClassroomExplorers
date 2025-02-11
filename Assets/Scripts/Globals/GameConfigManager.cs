@@ -20,6 +20,12 @@ public class ModeRules
 public class GameConfigManager : MonoBehaviour
 {
     [SerializeField] private GameMode currentMode = GameMode.FFA;
+    [SerializeField] private int _numOfPlayers = 2; // Backing field
+    public int numOfPlayers
+    {
+        get => _numOfPlayers;
+        private set => _numOfPlayers = value;
+    }
     
     private Dictionary<GameMode, ModeRules> modeRules;
 
@@ -76,9 +82,9 @@ public class GameConfigManager : MonoBehaviour
         };
     }
 
-    public void SetGameMode(GameMode mode)
+    public int GetNumOfPlayers()
     {
-        currentMode = mode;
+        return numOfPlayers;
     }
 
     public ModeRules GetCurrentRules()

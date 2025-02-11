@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -170,12 +169,12 @@ public class CombatManager : MonoBehaviour
     {
         if (entity is Player player)
         {
-            return isAttacking ? player.Buffs.AttackBonus :
-                (isEvade == true ? player.Buffs.EvadeBonus : player.Buffs.DefenseBonus);
+            return isAttacking ? player.PlayerBuffs.AttackBonus :
+                (isEvade == true ? player.PlayerBuffs.EvadeBonus : player.PlayerBuffs.DefenseBonus);
         }
         else if (entity is Boss boss)
         {
-            return isAttacking ? boss.Buffs.AttackBonus : boss.Buffs.DefenseBonus;
+            return isAttacking ? boss.BossBuffs.AttackBonus : boss.BossBuffs.DefenseBonus;
         }
 
         return 0;

@@ -82,7 +82,7 @@ public class RoundManager : MonoBehaviour
         }
         if (GameConfigManager.Instance.GetCurrentRules().haveBoss)
         {
-            BossManager.Instance.activeBoss.Buffs.UpdateBuffDurations();
+            BossManager.Instance.activeBoss.BossBuffs.UpdateBuffDurations();
         }
 
 

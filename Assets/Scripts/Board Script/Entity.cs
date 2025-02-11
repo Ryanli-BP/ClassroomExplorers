@@ -6,22 +6,13 @@ public abstract class Entity : MonoBehaviour
 {
     public int Health { get; protected set; }
     public Status Status { get; protected set; }
-    protected EntityBuffs buffs = new EntityBuffs();
-    public EntityBuffs Buffs => buffs;
 
     public abstract void LoseHealth(int amount);
     public abstract void Dies();
     public abstract void TeleportTo(Vector3 position, Tile destinationTile);
 
-    public virtual void AddBuff(BuffType type, int value, int duration)
-    {
-        buffs.AddBuff(type, value, duration);
-    }
-
-    public virtual void UpdateBuffDurations()
-    {
-        buffs.UpdateBuffDurations();
-    }
+    public abstract void AddBuff(BuffType type, int value, int duration);
+    public abstract void UpdateBuffDurations();
 }
 
 [System.Serializable]
@@ -52,6 +43,7 @@ public enum BuffType
     EvadeUp,
     ExtraDice,
     DoublePoints, // Only used by Players
+    TriplePoints  // Only used by Players
 }
 
 [System.Serializable]

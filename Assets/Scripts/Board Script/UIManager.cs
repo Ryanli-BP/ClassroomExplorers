@@ -42,6 +42,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject BossHealthBarPanel;
     [SerializeField] private TextMeshProUGUI roundDisplayText;
     [SerializeField] private TextMeshProUGUI currentTurnText; 
+    [SerializeField] private GameObject NotificationBar;
+    [SerializeField] private TextMeshProUGUI NotificationText;
 
     [SerializeField] private TextMeshProUGUI reviveCounterText;
     private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
@@ -160,7 +162,7 @@ public class UIManager : MonoBehaviour
 
         SetAvatarInactive();
         
-        int numPlayers = PlayerManager.Instance.numOfPlayers;
+        int numPlayers = GameConfigManager.Instance.numOfPlayers;
 
         for(int i = 0; i < numPlayers && i < playerUIPrefab.Count; i++)
         {
@@ -376,6 +378,14 @@ public class UIManager : MonoBehaviour
         }
 
         Destroy(damageText.gameObject);
+    }
+
+    public IEnumerator DisplayRewardNotification(string message)
+    {
+        NotificationBar.SetActive(true);
+        NotificationText.text = message;
+        yield return new WaitForSeconds(1f);
+        NotificationBar.SetActive(false);
     }
 
     public void UpdateRound(int roundNumber)

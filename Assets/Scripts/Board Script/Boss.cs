@@ -4,8 +4,8 @@ public class Boss : Entity
 {
     public BossMovement Movement { get; private set; }
     public const int MAX_HEALTH = 100;
-    private new BossBuffs buffs = new BossBuffs();
-    public new BossBuffs Buffs => buffs;
+    [SerializeField] private BossBuffs bossBuffs = new BossBuffs();
+    public BossBuffs BossBuffs => bossBuffs;
 
 
     private void Awake()
@@ -19,9 +19,9 @@ public class Boss : Entity
         Status = Status.Alive;
         UIManager.Instance.UpdateBossHealth(Health);
 
-        Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
+        /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
         Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
-        Buffs.AddBuff(BuffType.ExtraDice, 2, 2); //for testing
+        Buffs.AddBuff(BuffType.ExtraDice, 2, 2); //for testing*/
     }
 
     public override void LoseHealth(int amount)
@@ -36,6 +36,16 @@ public class Boss : Entity
         Status = Status.Dead;
         Debug.Log("Boss has been defeated!");
         GameManager.Instance.WinGameConditionAchieved();
+    }
+
+    public override void AddBuff(BuffType type, int value, int duration)
+    {
+        bossBuffs.AddBuff(type, value, duration);
+    }
+
+    public override void UpdateBuffDurations()
+    {
+        bossBuffs.UpdateBuffDurations();
     }
 
     public override void TeleportTo(Vector3 position, Tile destinationTile)

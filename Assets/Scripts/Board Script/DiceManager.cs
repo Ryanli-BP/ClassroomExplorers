@@ -60,13 +60,13 @@ public class DiceManager : MonoBehaviour
         // Set number of dice based on current turn
         if (isBossRollingDice)
         {
-            numDice = 1 + BossManager.Instance.activeBoss.Buffs.ExtraDiceBonus;
-            Debug.Log($"Boss dice count: {numDice} FROM BONUS {BossManager.Instance.activeBoss.Buffs.ExtraDiceBonus}");
+            numDice = 1 + BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus;
+            Debug.Log($"Boss dice count: {numDice} FROM BONUS {BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus}");
         }
         else
         {
-            numDice = 1 + PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].Buffs.ExtraDiceBonus;
-            Debug.Log($"Player dice count: {numDice} FROM BONUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].Buffs.ExtraDiceBonus}");
+            numDice = 1 + PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus;
+            Debug.Log($"Player dice count: {numDice} FROM BONUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus}");
         }
 
         totalDiceResult = 0;

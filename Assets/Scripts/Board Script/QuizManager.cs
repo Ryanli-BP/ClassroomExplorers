@@ -22,6 +22,7 @@ public class QuizManager : MonoBehaviour
     private bool isTransitioning = false;
     public bool OnQuizComplete { get; private set; }
     private Player quizPlayer;
+    private bool questionsLoaded = false;
 
     public static QuizManager Instance { get; private set; }
 
@@ -39,6 +40,11 @@ public class QuizManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartCoroutine(PreloadQuestions());
+    }
+
     private void Update()
     {
         if (isQuizActive)
@@ -51,6 +57,12 @@ public class QuizManager : MonoBehaviour
                 EndQuiz();
             }
         }
+    }
+    private IEnumerator PreloadQuestions()
+    {
+        yield return StartCoroutine(DownloadQuestionCSV());
+        questionsLoaded = true;
+        Debug.Log("Quiz questions preloaded successfully");
     }
 
     public void StartNewQuiz()
@@ -65,7 +77,12 @@ public class QuizManager : MonoBehaviour
     private IEnumerator StartQuizSequence()
     {
         isTransitioning = true;
-        yield return StartCoroutine(DownloadQuestionCSV());
+        if (!questionsLoaded)
+        {
+            Debug.LogWarning("Questions not loaded yet, waiting...");
+            yield return new WaitUntil(() => questionsLoaded);
+        }
+        //yield return StartCoroutine(DownloadQuestionCSV());
 
         if (questions == null || questions.Count == 0)
         {
@@ -133,17 +150,19 @@ public class QuizManager : MonoBehaviour
     {
         int pointsToAward = correctAnswerCount * 10;
         Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+
+        QuizReward rewardTier = EvaluateQuizPerformance();
+        Debug.Log($"{rewardTier}");
+        RewardManager.Instance.GiveReward(rewardTier, currentPlayer);
+
         correctAnswerCount = 0;
-
-        if (pointsToAward > 0)
-        {
-            StartCoroutine(currentPlayer.AddPoints(pointsToAward));
-            StartCoroutine(UIManager.Instance.DisplayPointChange(pointsToAward));
-            UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
-        }
-
         OnQuizComplete = true;
         UIManager.Instance.SetBoardUIActive(true);
+    }
+
+    public QuizReward EvaluateQuizPerformance()
+    {
+        return (QuizReward)Random.Range(0, 4);
     }
 
     public void DisplayNextQuestion()
@@ -174,7 +193,7 @@ public class QuizManager : MonoBehaviour
         return isQuizActive;
     }
 
-        private IEnumerator DownloadQuestionCSV()
+    private IEnumerator DownloadQuestionCSV()
     {
         string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
         string savePath = Path.Combine(Application.persistentDataPath, "QuestionCSV.csv");

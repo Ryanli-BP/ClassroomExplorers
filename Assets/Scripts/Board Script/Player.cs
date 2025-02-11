@@ -17,24 +17,24 @@ public class Player : Entity
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
-    private new PlayerBuffs buffs = new PlayerBuffs();
-    public new PlayerBuffs Buffs => buffs;
+    [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
+    public PlayerBuffs PlayerBuffs => playerBuffs;
 
     public int ReviveCounter { get; set; } = 0;
     void Awake()
     {
-        if (playerID <= PlayerManager.Instance.numOfPlayers)
+        if (playerID <= GameConfigManager.Instance.numOfPlayers)
         {
             Points = 0;
             Level = 1;
             Health = MAX_HEALTH;
             Status = Status.Alive;
 
-            Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
+            /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
             Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
             Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
             Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
-            Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test
+            Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
         }
     }
 
@@ -64,6 +64,16 @@ public class Player : Entity
         Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
         yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+    }
+
+    public override void AddBuff(BuffType type, int value, int duration)
+    {
+        playerBuffs.AddBuff(type, value, duration);
+    }
+
+    public override void UpdateBuffDurations()
+    {
+        playerBuffs.UpdateBuffDurations();
     }
 
     public void LevelUp()
@@ -142,5 +152,6 @@ public class Player : Entity
 [System.Serializable]
 public class PlayerBuffs : EntityBuffs
 {
-    public bool DoublePoints => activeBuffs.Any(b => b.Type == BuffType.DoublePoints);
+    public bool TriplePoints => activeBuffs.Any(b => b.Type == BuffType.TriplePoints);
+    public bool DoublePoints => activeBuffs.Any(b => b.Type == BuffType.DoublePoints) && !TriplePoints;
 }

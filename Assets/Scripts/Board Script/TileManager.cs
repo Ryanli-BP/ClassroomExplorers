@@ -64,8 +64,12 @@ public class TileManager : MonoBehaviour
     }
 
     private int getBonus(Player player)
-    {
-        return player.Buffs.DoublePoints ? 2 : 1; // Returns 2 if DoublePoints is active, 1 otherwise
+    {   
+        if (player.PlayerBuffs.TriplePoints)
+            return 3;
+        if (player.PlayerBuffs.DoublePoints)
+            return 2;
+        return 1;
     }
 
     public IEnumerator getPlayerTileAction(Tile tile)
