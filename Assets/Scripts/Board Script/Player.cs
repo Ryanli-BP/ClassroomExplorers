@@ -33,6 +33,7 @@ public class Player : Entity
             Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
             Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
             Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
+            Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
             Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test
         }
     }
@@ -76,7 +77,7 @@ public class Player : Entity
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
         StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
-        UIManager.Instance.DisplayLevelUp();
+        StartCoroutine(UIManager.Instance.DisplayLevelUp());
     }
 
     public override void LoseHealth(int amount)

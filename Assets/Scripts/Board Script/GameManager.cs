@@ -168,10 +168,10 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.RollingMovementDice);
     }
 
-    public void OnDiceRollComplete()
+    public IEnumerator OnDiceRollComplete()
     {
         int totalDiceResult = DiceManager.Instance.GetTotalDiceResult();
-        UIManager.Instance.DisplayDiceTotalResult(totalDiceResult);
+        yield return StartCoroutine(UIManager.Instance.DisplayDiceTotalResult(totalDiceResult));
 
         if (currentState == GameState.PlayerCombat && OnDiceRollResultForCombat != null)
         {

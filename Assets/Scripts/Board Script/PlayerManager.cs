@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> homeObjects;
 
-    [SerializeField] private List<int> levelUpPoints = new List<int> { 5, 15, 40 };
+    [SerializeField] private List<int> levelUpPoints = new List<int> { 10, 25, 50 };
 
     public int CurrentPlayerID { get; set; } = 1;
 

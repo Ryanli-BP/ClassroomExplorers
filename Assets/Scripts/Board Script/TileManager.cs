@@ -63,6 +63,11 @@ public class TileManager : MonoBehaviour
         return availablePortals[randomIndex];
     }
 
+    private int getBonus(Player player)
+    {
+        return player.Buffs.DoublePoints ? 2 : 1; // Returns 2 if DoublePoints is active, 1 otherwise
+    }
+
     public IEnumerator getPlayerTileAction(Tile tile)
     {
         var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
@@ -76,18 +81,25 @@ public class TileManager : MonoBehaviour
 
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                int pointsGained = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
-                StartCoroutine(currentPlayer.AddPoints(pointsGained));
-                UIManager.Instance.DisplayPointChange(pointsGained);
+                int basePoints = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+                int multiplier = getBonus(currentPlayer);
+                int pointsGained = basePoints * multiplier;
+                
+                UIManager.Instance.SetBonusUIValue(multiplier);
+                yield return StartCoroutine(UIManager.Instance.DisplayPointChange(basePoints)); //base points because the UI deal with bonus
                 UIManager.Instance.DisplayGainStarAnimation(currentPlayerID);
-                break; 
+
+                StartCoroutine(currentPlayer.AddPoints(pointsGained));
+                break;
 
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
                 int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
-                StartCoroutine(currentPlayer.AddPoints(pointsLost));
-                UIManager.Instance.DisplayPointChange(pointsLost);
+                
+                StartCoroutine(UIManager.Instance.DisplayPointChange(pointsLost));
                 UIManager.Instance.DisplayLoseStarAnimation();
+
+                StartCoroutine(currentPlayer.AddPoints(pointsLost));
                 break;
             
             case TileType.Quiz:

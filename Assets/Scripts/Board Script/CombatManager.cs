@@ -163,7 +163,6 @@ public class CombatManager : MonoBehaviour
     private void ResetUI()
     {
         UIManager.Instance.SetRollDiceButtonText("Roll Dice");
-        UIManager.Instance.SetDiceBonus(0);
         UIManager.Instance.SetEvadeButtonVisibility(false);
     }
 
@@ -294,7 +293,7 @@ public class CombatManager : MonoBehaviour
         bool isComplete = false;
 
         // Set the bonus for the display alongside dice roll
-        UIManager.Instance.SetDiceBonus(bonus);
+        UIManager.Instance.SetBonusUIValue(bonus);
 
         // Single callback for the dice roll
         GameManager.Instance.OnDiceRollResultForCombat = (result) => 

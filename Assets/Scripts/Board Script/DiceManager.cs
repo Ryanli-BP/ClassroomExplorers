@@ -118,7 +118,7 @@ public class DiceManager : MonoBehaviour
         {
             // Reset the gravity to its original value
             Physics.gravity = originalGravity;
-            GameManager.Instance.OnDiceRollComplete(); // Directly call the GameManager method
+            StartCoroutine(GameManager.Instance.OnDiceRollComplete()); // Directly call the GameManager method
         }
     }
 

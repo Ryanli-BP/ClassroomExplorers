@@ -35,6 +35,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button continueMovingButton;
 
     [SerializeField] private GameObject centreDisplayPanel;
+    [SerializeField] private TextMeshProUGUI centreDisplayText;
+    [SerializeField] private TextMeshProUGUI BonusDisplayText;
     [SerializeField] private List<GameObject> playerUIPrefab = new List<GameObject>();
     [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
     [SerializeField] private GameObject BossHealthBarPanel;
@@ -206,50 +208,79 @@ public class UIManager : MonoBehaviour
         rollDiceButton.GetComponentInChildren<TextMeshProUGUI>().text = text;
     }
 
-    private int bonusValue = 0;
+    private int bonusValue = 0; //Combat and star bonuses
 
-    public void SetDiceBonus(int bonus)
+    public void SetBonusUIValue(int bonus)
     {
         bonusValue = bonus;
     }
 
-    public async void DisplayDiceTotalResult(int baseResult)
+    public IEnumerator DisplayDiceTotalResult(int diceResult)
     {
         centreDisplayPanel.SetActive(true);
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{baseResult}";
-        await Task.Delay(500);
+        centreDisplayText.text = $"{diceResult}";
+        yield return new WaitForSeconds(0.5f);
 
         if (bonusValue > 0)
         {
-            string colorTag = "<color=#00FF00>";
-            centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{colorTag}+{bonusValue}</color>";
-            await Task.Delay(500);
-            centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{baseResult + bonusValue}";
-            await Task.Delay(500);
+            yield return StartCoroutine(DisplayBonusValue(diceResult, "+"));
         }
 
         centreDisplayPanel.SetActive(false);
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }
 
-    public async void DisplayPointChange(int pointsChange)
+    public IEnumerator DisplayBonusValue(int baseResult, string operation)
     {
-        centreDisplayPanel.SetActive(true);
-        string originalColor = centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().color.ToHexString(); // Store the original color
-        string colorTag = pointsChange > 0 ? "<color=#FFFF9B>" : "<color=#8BBFFF>";
-        string symbol = pointsChange > 0 ? "+" : "";
+        Color currentColor = centreDisplayText.color;
+        BonusDisplayText.color = currentColor;
+        
+        string displayOperation = operation == "*" ? "X" : operation; //either * or +, if * then display X
+        BonusDisplayText.text = $"{displayOperation}{bonusValue}";
+        yield return new WaitForSeconds(0.5f);
 
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{colorTag}{symbol}{pointsChange}</color>";
-        await Task.Delay(500); 
-        centreDisplayPanel.SetActive(false);
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().color = originalColor.ToColor(); // Restore the original color
+        int finalResult = operation switch
+        {
+            "*" => baseResult * bonusValue,
+            "+" => baseResult + bonusValue,
+            _ => baseResult + bonusValue
+        };
+
+        BonusDisplayText.text = "";
+        centreDisplayText.text = $"{finalResult}";
+        yield return new WaitForSeconds(0.5f);
+        
+        bonusValue = 0;
     }
 
-    public async void DisplayLevelUp()
+    public IEnumerator DisplayPointChange(int pointsChange)
+    {
+        centreDisplayPanel.SetActive(true);
+        Color originalColor = centreDisplayText.color;
+        
+        // Set color based on positive/negative points
+        centreDisplayText.color = pointsChange > 0 ? 
+            new Color(1f, 1f, 0.61f) : // #FFFF9B (yellow)
+            new Color(0.545f, 0.749f, 1f); // #8BBFFF (blue)
+        
+        string symbol = pointsChange > 0 ? "+" : "";
+        centreDisplayText.text = $"{symbol}{pointsChange}";
+        yield return new WaitForSeconds(0.5f);
+
+        if (bonusValue > 1)
+        {
+            yield return StartCoroutine(DisplayBonusValue(pointsChange, "*"));
+        }
+        
+        centreDisplayPanel.SetActive(false);
+        centreDisplayText.color = originalColor;
+    }
+
+    public IEnumerator DisplayLevelUp()
     {
         centreDisplayPanel.SetActive(true);
         centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Level Up!";
-        await Task.Delay(500); 
+        yield return new WaitForSeconds(0.5f);
         centreDisplayPanel.SetActive(false);
     }
 
@@ -317,7 +348,7 @@ public class UIManager : MonoBehaviour
         pointStarAnimation.AnimateLosePointStar(starInstance);
     }
 
-    public async void DisplayDamageNumber(Vector3 position, int damage)
+    public IEnumerator DisplayDamageNumber(Vector3 position, int damage)
     {
         TextMeshProUGUI damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
         damageText.text = $"-{damage}";
@@ -325,9 +356,7 @@ public class UIManager : MonoBehaviour
         Vector3 screenPos = Camera.main.WorldToScreenPoint(position);
         damageText.transform.position = screenPos + new Vector3(0, 50, 0);
 
-        // Longer duration and delayed fade
         float duration = 1f;
-        float fadeStartTime = duration * 0.5f; // Start fading halfway through
         float startTime = Time.time;
         Color textColor = damageText.color;
 
@@ -336,15 +365,14 @@ public class UIManager : MonoBehaviour
             float progress = (Time.time - startTime) / duration;
             damageText.transform.position += Vector3.up * Time.deltaTime * 50f;
 
-            // Only fade in the second half of the animation
             if (progress > 0.5f)
             {
-                float fadeProgress = (progress - 0.5f) * 1f; // Normalize fade progress to 0-1
+                float fadeProgress = (progress - 0.5f) * 1f;
                 textColor.a = 1 - fadeProgress;
                 damageText.color = textColor;
             }
 
-            await Task.Yield();
+            yield return null;
         }
 
         Destroy(damageText.gameObject);
