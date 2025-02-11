@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Photon.Pun;
 
 [DefaultExecutionOrder(20)]
 public class GameManager : MonoBehaviour
@@ -9,28 +10,55 @@ public class GameManager : MonoBehaviour
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
     private bool isBossTurn = false;
+    private PhotonView _photonView;
 
     public bool IsResumingMovement { get; set; } = false; // Flag such that player don't StartPlayerMovement again after combat->moving state change
     public Action<int> OnDiceRollResultForCombat;
     public Action<bool> OnDiceResultDisplayForCombat; // New action to notify when dice result display finishes.
 
 
-
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            _photonView = GetComponent<PhotonView>(); // Get PhotonView reference
+            if (_photonView == null)
+            {
+                _photonView = gameObject.AddComponent<PhotonView>();
+            }
+            DontDestroyOnLoad(gameObject);
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
-        ChangeState(GameState.GameSetup);
+        while (!PhotonNetwork.IsConnected)
+        {
+            Debug.Log("Waiting for network connection...");
+            return;
+        }
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _photonView.RPC("RPCChangeState", RpcTarget.All, GameState.GameSetup);
+        }
+    }
+
+    [PunRPC]
+    private void RPCChangeState(GameState newState)
+    {
+        ChangeState(newState);
     }
 
     private void ChangeState(GameState newState)
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+        
         Debug.Log($"Changing state from {currentState} to {newState}");
         currentState = newState;
         OnStateChanged(newState);

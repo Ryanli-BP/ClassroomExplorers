@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 
 public enum Status { Alive, Dead }
 public class Player : Entity
@@ -40,6 +41,23 @@ public class Player : Entity
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
         UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level));
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // Send data
+            stream.SendNext(Points);
+            stream.SendNext(Level);
+            stream.SendNext(Health);
+        }
+        else
+        {
+            // Receive data 
+            Points = (int)stream.ReceiveNext();
+            Level = (int)stream.ReceiveNext();
+            Health = (int)stream.ReceiveNext();
+        }
     }
 
     public int getPlayerID()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Photon.Pun;
 
 [DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
@@ -72,6 +73,20 @@ public class PlayerManager : MonoBehaviour
 
             // Assuming playerPrefab already contains a Player component that will be automatically added
             Debug.Log($"Player {i + 1} instantiated and appearance set.");
+        }
+        if (PhotonNetwork.IsMasterClient)
+        {
+            for (int i = 0; i < numOfPlayers; i++) 
+            {
+                Player playerObject = PhotonNetwork.Instantiate(
+                    playerPrefab.name,
+                    Vector3.zero,
+                    Quaternion.identity
+                ).GetComponent<Player>();
+                
+                playerObject.SetPlayerID(i + 1);
+                players.Add(playerObject);
+            }
         }
         playerPrefab.SetPlayerID(-1);
     }
