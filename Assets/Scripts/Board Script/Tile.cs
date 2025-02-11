@@ -30,12 +30,19 @@ public class Tile : MonoBehaviour
         set => _TilePlayerIDs = value;
     }
 
+    public bool BossOnTile { get; set; } = false;
+
 
     void Start()
     {
+
         if(HomeplayerID != 0 && HomeplayerID <= PlayerManager.Instance.numOfPlayers)
         {
             AddPlayer(HomeplayerID);
+        }
+        else if (tileType == TileType.Home)
+        {
+            tileType = TileType.Normal;
         }
     }
 

@@ -29,7 +29,7 @@ namespace UltimateClean
             StartCoroutine(AnimateHealthRoutine(newHealth, maxHealth));
         }
 
-        private IEnumerator AnimateHealthRoutine(int newHealth, int maxHealth)
+        private IEnumerator AnimateHealthRoutine(int newHealth, int maxHealth) 
         {
             float startFill = GetCurrentFill();
             float endFill = (float)newHealth / maxHealth;
@@ -41,13 +41,13 @@ namespace UltimateClean
                 float ratio = Mathf.Lerp(startFill, endFill, elapsed / duration);
 
                 UpdateFill(ratio);
-                UpdateText(ratio);
+                UpdateText(Mathf.RoundToInt(ratio * maxHealth), maxHealth);
 
                 yield return null;
             }
 
             UpdateFill(endFill);
-            UpdateText(endFill);
+            UpdateText(newHealth, maxHealth);
         }
 
         private float GetCurrentFill()
@@ -67,13 +67,11 @@ namespace UltimateClean
                 slicedImage.fillAmount = ratio;
         }
 
-        private void UpdateText(float ratio)
+        private void UpdateText(int currentHealth, int maxHealth)
         {
-            int percentage = Mathf.RoundToInt(ratio * 100);
-            if (text != null && percentage != lastPercentage)
+            if (text != null)
             {
-                lastPercentage = percentage;
-                text.text = $"{lastPercentage}%";
+                text.text = $"{currentHealth}/{maxHealth}";
             }
         }
     }

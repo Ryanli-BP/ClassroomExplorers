@@ -13,8 +13,11 @@ public class PlayerManager : MonoBehaviour
         set => _numOfPlayers = value;
     }
 
-    [SerializeField] private List<Player> playerPrefabs;
-    private List<Player> players = new List<Player>(); // List of actual players in the game
+    [SerializeField] private Player playerPrefab;  // Main player prefab
+    public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
+    public GameObject[] hats; // No need to serialize if not exposed to the Inspector
+
+    private List<Player> players = new List<Player>();
 
     [SerializeField] private List<GameObject> homeObjects;
 
@@ -43,21 +46,80 @@ public class PlayerManager : MonoBehaviour
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
-    private void InitialisePlayers(){
+    private void InitialisePlayers()
+    {
         players.Clear();
 
-        // Instantiate the number of players specified by the user
+        // Retrieve selected player information from the previous scene
+        int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
+        int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
+
         for (int i = 0; i < numOfPlayers; i++)
         {
-            Player newPlayer = Instantiate(playerPrefabs[i % playerPrefabs.Count],
-            Vector3.zero,
-            ARBoardPlacement.boardRotation); // Ensure it loops if more players than prefabs
-            newPlayer.transform.localScale = newPlayer.transform.localScale * ARBoardPlacement.worldScale; 
-            players.Add(newPlayer);
-            newPlayer.gameObject.SetActive(true); // Ensure player is active in the scene
-            Debug.Log($"Player {newPlayer.getPlayerID()} created.");
+            // Instantiate the player prefab
+            Player playerObject = Instantiate(playerPrefab, transform);
+            playerObject.SetPlayerID(i + 1);
+            // Set the player appearance before adding to the list
+            int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
+            int hatIndex = i == 0 ? selectedHatIndex : i; // Use selected hat for Player 1, default for others
+
+            playerObject.gameObject.SetActive(true);
+            
+            SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
+            
+            // Add the instantiated GameObject (with Player script) to the players list
+            players.Add(playerObject);
+
+            // Assuming playerPrefab already contains a Player component that will be automatically added
+            Debug.Log($"Player {i + 1} instantiated and appearance set.");
         }
+        playerPrefab.SetPlayerID(-1);
     }
+    
+    public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
+    {
+        // Find the body parent object (e.g., "Mesh Object/Bone_Body") for this specific player
+        Transform bodyParent = playerObject.transform.Find("Mesh Object/Bone_Body");
+        Transform hatParent = playerObject.transform.Find("hats");
+
+        if (bodyParent != null && bodyColors.Length > 0)
+        {
+            // Assuming bodyColors are child objects under "Bone_Body"
+            for (int i = 0; i < bodyColors.Length; i++)
+            {
+                Transform bodyColorTransform = bodyParent.GetChild(i); // Get the child transform for each body color
+                if (i == selectedBodyIndex)
+                {
+                    bodyColorTransform.gameObject.SetActive(true); // Activate the selected body color
+                }
+                else
+                {
+                    bodyColorTransform.gameObject.SetActive(false); // Deactivate the other body colors
+                }
+            }
+        }
+
+        if (hatParent != null && hats.Length > 0)
+        {
+            // Assuming hats are child objects under "hats"
+            for (int i = 0; i < hats.Length; i++)
+            {
+                Transform hatTransform = hatParent.GetChild(i); // Get the child transform for each hat
+                if (i == selectedHatIndex)
+                {
+                    hatTransform.gameObject.SetActive(true); // Activate the selected hat
+                }
+                else
+                {
+                    hatTransform.gameObject.SetActive(false); // Deactivate the other hats
+                }
+            }
+        }
+
+        Debug.Log($"Player appearance set for {playerObject.name}: Body Index {selectedBodyIndex}, Hat Index {selectedHatIndex}");
+    }
+
+
 
     public void AssignPlayersToHomes()
     {
@@ -165,7 +227,13 @@ public class PlayerManager : MonoBehaviour
             int currentPoints = currentPlayer.Points;
             int currentLevel = currentPlayer.Level;
 
-            if (currentLevel < levelUpPoints.Count + 1 && currentPoints >= levelUpPoints[currentLevel - 1])
+            if (currentLevel >= Player.MAX_LEVEL)
+            {
+                Debug.Log($"Player {currentPlayer.getPlayerID()} is already at the maximum level.");
+                return;
+            }
+
+            if (currentLevel < Player.MAX_LEVEL && currentPoints >= levelUpPoints[currentLevel - 1])
             {
                 Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {levelUpPoints[currentLevel - 1]}");
                 currentPlayer.LevelUp();
@@ -176,9 +244,9 @@ public class PlayerManager : MonoBehaviour
                 }
 
                 // Check if the player has reached the last level
-                if (currentPlayer.Level == levelUpPoints.Count + 1)
+                if (currentPlayer.Level == Player.MAX_LEVEL && GameConfigManager.Instance.CurrentMode == GameMode.FFA)
                 {
-                    GameManager.Instance.FinalLevelAchieved();
+                    GameManager.Instance.WinGameConditionAchieved();
                     Debug.Log("Game End: Player has reached the maximum level.");
                 }
             }

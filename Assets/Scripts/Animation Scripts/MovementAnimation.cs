@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayerMovementAnimation : MonoBehaviour
+public class MovementAnimation : MonoBehaviour
 {
     [Header("Animation Settings")]
     [SerializeField] private float moveSpeed = 5f;

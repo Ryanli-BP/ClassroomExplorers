@@ -37,8 +37,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject centreDisplayPanel;
     [SerializeField] private List<GameObject> playerUIPrefab = new List<GameObject>();
     [SerializeField] private List<PlayerStatsUI> playerStatsUIList = new List<PlayerStatsUI>();
+    [SerializeField] private GameObject BossHealthBarPanel;
     [SerializeField] private TextMeshProUGUI roundDisplayText;
-    [SerializeField] private TextMeshProUGUI currentPlayerTurnText; 
+    [SerializeField] private TextMeshProUGUI currentTurnText; 
 
     [SerializeField] private TextMeshProUGUI reviveCounterText;
     private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
@@ -51,6 +52,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject starPrefab; // Reference to the star prefab
     [SerializeField] private TextMeshProUGUI damageTextPrefab;
     [SerializeField] private Canvas mainCanvas; // Reference to the main canvas
+
+    [SerializeField] private GameObject healPromptPanel;
+    [SerializeField] private Button healButton;
+    [SerializeField] private Button skipHealButton;
 
     [SerializeField] private GameObject boardUI;
 
@@ -253,8 +258,26 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("PointsAnimation component missing in player stats UI");
+            Debug.LogError("HealthAnimation component missing in player stats UI");
         }
+    }
+
+    public void UpdateBossHealth( int health)
+    {
+        var healthAnimation = BossHealthBarPanel.transform.Find("healthBar").GetComponent<HealthAnimation>();
+        if (healthAnimation != null)
+        {
+            healthAnimation.AnimateHealth(health, Boss.MAX_HEALTH);
+        }
+        else
+        {
+            Debug.LogError("HealthAnimation component missing in Boss healthbar");
+        }
+    }
+
+    public void ToggleBossUI(bool active)
+    {
+        BossHealthBarPanel.SetActive(active);
     }
 
     public void DisplayGainStarAnimation(int playerIndex)
@@ -312,7 +335,12 @@ public class UIManager : MonoBehaviour
     
     public void UpdateCurrentPlayerTurn(int playerID)
     {
-        currentPlayerTurnText.text = $"Player {playerID}'s Turn";
+        currentTurnText.text = $"Player {playerID}'s Turn";
+    }
+
+    public void DisplayBossTurn()
+    {
+        currentTurnText.text = "Boss's Turn";
     }
 
     public void UpdateReviveCounter(int playerID, int reviveCounter)
@@ -414,6 +442,23 @@ public class UIManager : MonoBehaviour
 
         continueMovingButton.onClick.AddListener(() => {
             pvpPromptPanel.SetActive(false);
+            onPlayerChoice(false);
+        });
+    }
+
+    public void ShowHealingPrompt(Action<bool> onPlayerChoice)
+    {
+        healPromptPanel.SetActive(true);
+        healButton.onClick.RemoveAllListeners();
+        skipHealButton.onClick.RemoveAllListeners();
+
+        healButton.onClick.AddListener(() => {
+            healPromptPanel.SetActive(false);
+            onPlayerChoice(true);
+        });
+
+        skipHealButton.onClick.AddListener(() => {
+            healPromptPanel.SetActive(false);
             onPlayerChoice(false);
         });
     }

@@ -6,12 +6,23 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Tile currentTile; // Assign the starting tile in the Inspector
+    private Tile currentTile; 
     private Direction _lastDirection; // To track the direction the player came from
     private bool isMoving = false;
-    private bool initialMove = true; //One time flag for removing TilePlayerID
+    private bool initialMove; //One time flag for avoiding some actions intially for movement
     private int remainingSteps = 0;
     public event Action OnMovementComplete;
+    private bool canFightPlayers;
+    private bool canHealPlayers;
+    private bool haveBoss;
+
+    void Start()
+    {
+        ModeRules currentRules = GameConfigManager.Instance.GetCurrentRules();
+        canFightPlayers = currentRules.canFightPlayers;
+        canHealPlayers = currentRules.canHealPlayers;
+        haveBoss = currentRules.haveBoss;
+    }
 
     public Tile CurrentTile
     {
@@ -31,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator HandlePvPEncounter()
     {
-        if (currentTile.TilePlayerIDs.Count > 0 && !initialMove)
+        if (currentTile.TilePlayerIDs.Count > 0)
         Debug.Log($"Players on tile: [{string.Join(", ", currentTile.TilePlayerIDs)}]");
         {
             foreach (int tilePlayerID in currentTile.TilePlayerIDs)
@@ -60,14 +71,95 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Debug.Log("Player chose to fight.");
                     GameManager.Instance.OnCombatTriggered();
-                    yield return StartCoroutine(CombatManager.Instance.HandleFight(tilePlayerID, PlayerManager.Instance.CurrentPlayerID));
+                    yield return StartCoroutine(CombatManager.Instance.HandleFight(PlayerManager.Instance.GetCurrentPlayer(), PlayerManager.Instance.GetPlayerByID(tilePlayerID)));
                     GameManager.Instance.IsResumingMovement = false;
+
+                    remainingSteps = 0; // Stop movement after combat
                     
                     if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
                     {
                         isMoving = false;
                         yield break; // Exit if current player dies
                     }
+                }
+                else
+                {
+                    Debug.Log("Player chose to continue moving.");
+                }
+            }
+        }
+    }
+
+    private IEnumerator HandleBossEncounter()
+    {
+        if (currentTile.BossOnTile)
+        {
+            Debug.Log("Boss encountered on tile");
+            bool? playerChoice = null;
+
+            yield return StartCoroutine(PromptManager.Instance.HandlePvP((choice) => {
+                playerChoice = choice;
+            }));
+
+            while (playerChoice == null)
+            {
+                yield return null;
+            }
+
+            if (playerChoice == true)
+            {
+                Debug.Log("Player chose to fight boss.");
+                GameManager.Instance.OnCombatTriggered();
+                yield return StartCoroutine(CombatManager.Instance.HandleFight(PlayerManager.Instance.GetCurrentPlayer(), BossManager.Instance.activeBoss));
+                GameManager.Instance.IsResumingMovement = false;
+
+                remainingSteps = 0; // Stop movement after combat
+                
+                if (PlayerManager.Instance.GetCurrentPlayer().Status == Status.Dead)
+                {
+                    isMoving = false;
+                    yield break;
+                }
+            }
+            else
+            {
+                Debug.Log("Player chose to continue moving.");
+            }
+        }
+    }
+
+    private IEnumerator HandleHealEncounter()
+    {
+        if (currentTile.TilePlayerIDs.Count > 0)
+        {
+            foreach (int tilePlayerID in currentTile.TilePlayerIDs)
+            {
+                // Skip if it's the current player or if the player on tile is dead
+                if (tilePlayerID == PlayerManager.Instance.CurrentPlayerID ||
+                    PlayerManager.Instance.GetPlayerByID(tilePlayerID).Status != Status.Alive)
+                {
+                    continue;
+                }
+
+                Debug.Log($"Player {tilePlayerID} can be healed on this tile.");
+                bool? playerChoice = null;
+
+                yield return StartCoroutine(PromptManager.Instance.HandleHealing((choice) => {
+                    playerChoice = choice;
+                }));
+
+                while (playerChoice == null)
+                {
+                    yield return null;
+                }
+
+                if (playerChoice == true)
+                {
+                    Debug.Log($"Player chose to heal Player {tilePlayerID}.");
+                    Player otherPlayer = PlayerManager.Instance.GetPlayerByID(tilePlayerID);
+                    otherPlayer.Heal(2);
+                    remainingSteps = 0; // Stop movement after healing
+                    break; // Exit after healing one player
                 }
                 else
                 {
@@ -98,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleCrossroads(List<Direction> availableDirections)
+    private IEnumerator HandlePaths(List<Direction> availableDirections)
     {
         if (availableDirections.Count > 1)
         {
@@ -128,6 +220,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isMoving = true;
         bool initialOnHome = true;
+        initialMove = true;
 
         while (remainingSteps >= 0)
         {
@@ -139,11 +232,26 @@ public class PlayerMovement : MonoBehaviour
                 Debug.LogError("No valid directions found! Player cannot move.");
                 break;
             }
-            if(!initialMove) //cannoy challenge on first move
+
+            if (!initialMove)
             {
-                yield return StartCoroutine(HandlePvPEncounter()); //isMoving is set to false if dead
+                if (canFightPlayers)
+                {
+                    yield return StartCoroutine(HandlePvPEncounter());
+                }
+                else if (canHealPlayers)
+                {
+                    yield return StartCoroutine(HandleHealEncounter());
+                }
+                
+                if (haveBoss)
+                {
+                    yield return StartCoroutine(HandleBossEncounter());
+                }
+
             }
             
+            //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
                 isMoving = false;
@@ -155,7 +263,7 @@ public class PlayerMovement : MonoBehaviour
             if (!isMoving) { break; }
             initialOnHome = false;
 
-            yield return StartCoroutine(HandleCrossroads(availableDirections));
+            yield return StartCoroutine(HandlePaths(availableDirections));
 
             remainingSteps--;
             yield return new WaitForSeconds(0.05f);
@@ -169,16 +277,7 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
         initialMove = true;
 
-        // Check if landed on a quiz tile
-        if (currentTile.GetTileType() == TileType.Quiz)
-        {
-            GameManager.Instance.HandleQuizLand();
-            // OnMovementComplete actioin will be disabled after quiz completion via GameManager with HandleQuizEnd() instead
-        }
-        else
-        {
-            OnMovementComplete?.Invoke();
-        }        
+            OnMovementComplete?.Invoke();      
     }
 
 
@@ -196,8 +295,7 @@ public class PlayerMovement : MonoBehaviour
 
             nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
             currentTile = nextTile;
-
-            PlayerMovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovementAnimation>();
+            MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
         }
         else

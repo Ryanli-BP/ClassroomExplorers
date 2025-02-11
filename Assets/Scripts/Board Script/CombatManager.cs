@@ -9,7 +9,7 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] private GameObject arCamera; // Reference to the AR camera
 
-
+    //FirstTA means FIRST TO ACT, SecondTA means SECOND TO ACT
 
     private void Awake()
     {
@@ -19,47 +19,44 @@ public class CombatManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public IEnumerator HandleFight(int opponentPlayerID, int currentPlayerID)
+    public IEnumerator HandleFight(Entity FirstTA, Entity SecondTA)
     {
         // Record original positions
-        Player currentPlayer = PlayerManager.Instance.GetPlayerByID(currentPlayerID);
-        Player opponentPlayer = PlayerManager.Instance.GetPlayerByID(opponentPlayerID);
-
-        Vector3 originalCurrentPlayerPosition = currentPlayer.gameObject.transform.position;
-        Vector3 originalOpponentPlayerPosition = opponentPlayer.gameObject.transform.position;
-        Quaternion originalCurrentPlayerRotation = currentPlayer.gameObject.transform.rotation;
-        Quaternion originalOpponentPlayerRotation = opponentPlayer.gameObject.transform.rotation;
+        Vector3 originalFirstTAPosition = FirstTA.transform.position;
+        Vector3 originalSecondTAPosition = SecondTA.transform.position;
+        Quaternion originalFirstTARotation = FirstTA.transform.rotation;
+        Quaternion originalSecondTARotation = SecondTA.transform.rotation;
         Vector3 originalCameraPosition = arCamera.transform.position;
 
         // Teleport to fighting area
-        TeleportToFightingArea(currentPlayer, opponentPlayer);
+        TeleportToFightingArea(FirstTA, SecondTA);
 
-        yield return StartCoroutine(PlayerCombat(currentPlayer, opponentPlayer));
-        Debug.Log("Teleporting back to board...");
-
+        yield return StartCoroutine(CombatSequence(FirstTA, SecondTA));
+        
         // Teleport back to board
-        TeleportBackToBoard(currentPlayer, opponentPlayer, originalCurrentPlayerPosition, originalOpponentPlayerPosition, originalCurrentPlayerRotation, originalOpponentPlayerRotation, originalCameraPosition);
+        TeleportBackToBoard(FirstTA, SecondTA, originalFirstTAPosition, originalSecondTAPosition, 
+            originalFirstTARotation, originalSecondTARotation, originalCameraPosition);
     }
 
-    private void TeleportToFightingArea(Player currentPlayer, Player opponentPlayer)
+    private void TeleportToFightingArea(Entity FirstTA, Entity SecondTA)
     {
-        
         arCamera.transform.position = ArenaManager.Instance.GetCombatCameraPosition();
-        currentPlayer.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
-        opponentPlayer.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
+        FirstTA.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
+        SecondTA.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
         
-        currentPlayer.transform.LookAt(opponentPlayer.transform);
-        currentPlayer.transform.Rotate(0, 180, 0);
-        opponentPlayer.transform.LookAt(currentPlayer.transform);
-        opponentPlayer.transform.Rotate(0, 180, 0);
+        FirstTA.transform.LookAt(SecondTA.transform);
+        FirstTA.transform.Rotate(0, 180, 0);
+        SecondTA.transform.LookAt(FirstTA.transform);
+        SecondTA.transform.Rotate(0, 180, 0);
     }
 
-    private void TeleportBackToBoard(Player currentPlayer, Player opponentPlayer, Vector3 originalCurrentPlayerPosition, Vector3 originalOpponentPlayerPosition, Quaternion originalCurrentPlayerRotation, Quaternion originalOpponentPlayerRotation, Vector3 originalCameraPosition)
+    private void TeleportBackToBoard(Entity FirstTA, Entity SecondTA, Vector3 originalFirstTAPosition, 
+        Vector3 originalSecondTAPosition, Quaternion originalFirstTARotation, 
+        Quaternion originalSecondTARotation, Vector3 originalCameraPosition)
     {
-        if (PlatformUtils.IsRunningOnPC()) //for camera
+        if (PlatformUtils.IsRunningOnPC())
         {
             arCamera.transform.position = ArenaManager.Instance.GetBoardCameraPosition();
-
         }
         else
         {
@@ -67,157 +64,202 @@ public class CombatManager : MonoBehaviour
             arCamera.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        currentPlayer.transform.position = originalCurrentPlayerPosition;
-        opponentPlayer.transform.position = originalOpponentPlayerPosition;
-        currentPlayer.transform.rotation = originalCurrentPlayerRotation;
-        opponentPlayer.transform.rotation = originalOpponentPlayerRotation;
+        FirstTA.transform.position = originalFirstTAPosition;
+        SecondTA.transform.position = originalSecondTAPosition;
+        FirstTA.transform.rotation = originalFirstTARotation;
+        SecondTA.transform.rotation = originalSecondTARotation;
     }
 
-    public IEnumerator PlayerCombat(Player currentPlayer, Player opponentPlayer)
+    private IEnumerator CombatSequence(Entity FirstTA, Entity SecondTA)
     {
-        for (int i = 0; i < 2; i++)
+        bool BossisFirstTA = FirstTA is Boss;
+        bool BossisSecondTA = SecondTA is Boss;
+
+        for (int turn = 0; turn < 2; turn++)
         {
             int atkValue = 0;
             int dfdValue = 0;
             bool? isEvade = null;
             int evdValue = 0;
 
-            //Leverages the RolDiceButton for attack and defend by simply changing the text
-            UIManager.Instance.SetRollDiceButtonText("Attack");
-            Debug.Log("enabling dice within combat");
-            DiceManager.Instance.EnableDiceRoll();
-            yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
-
-            UIManager.Instance.SetRollDiceButtonText("Defend");
-            DiceManager.Instance.EnableDiceRoll();
-            UIManager.Instance.SetEvadeButtonVisibility(true);
-           
-            // Wait for player to choose between defend and evade
-            UIManager.Instance.rollDiceButton.onClick.AddListener(() => isEvade = false);
-            UIManager.Instance.evadeButton.onClick.AddListener(() => isEvade = true);
-
-            yield return new WaitUntil(() => isEvade != null);
-            UIManager.Instance.SetEvadeButtonVisibility(false);
-
-            if (isEvade == true)
+            // Attack Phase
+            if ((turn == 0 && BossisFirstTA) || (turn == 1 && BossisSecondTA))
             {
-                yield return StartCoroutine(RollForCombatValue(result => evdValue = result));
-                Debug.Log($"Combat result: Attack = {atkValue}, Evade = {evdValue}");
+                // Automatic boss attack roll
+                DiceManager.Instance.EnableDiceRoll();
+                DiceManager.Instance.RollDice();
+                yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
             }
             else
             {
+                // Player attack roll
+                UIManager.Instance.SetRollDiceButtonText("Attack");
+                DiceManager.Instance.EnableDiceRoll();
+                yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
+            }
+
+            // Defense Phase
+            if ((turn == 0 && BossisSecondTA) || (turn == 1 && BossisFirstTA))
+            {
+                // Automatic boss defense roll (bosses always defend, never evade)
+                isEvade = false;
+                DiceManager.Instance.EnableDiceRoll();
+                DiceManager.Instance.RollDice();
                 yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
-                Debug.Log($"Combat result: Attack = {atkValue}, Defense = {dfdValue}");
-            }
-
-            //Attack "animation"
-            if (i == 0)
-            {
-                var swordObject = currentPlayer.transform.GetChild(0).gameObject;
-                swordObject.SetActive(true);
-
-                if (isEvade == true)
-                {
-                    // Start both animations simultaneously
-                    IEnumerator attackAnim = currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition());
-                    IEnumerator evadeAnim = null;
-                    
-                    if (evdValue > atkValue)
-                    {
-                        evadeAnim = opponentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade();
-                        StartCoroutine(evadeAnim);
-                    }
-                    
-                    yield return attackAnim;
-                    if (evadeAnim != null)
-                    {
-                        while (opponentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
-                        {
-                            yield return null;
-                        }
-                    }
-                }
-                else
-                {
-                    var shieldObject = opponentPlayer.transform.GetChild(1).gameObject;
-                    shieldObject.SetActive(true);
-                    yield return StartCoroutine(currentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatOpponentPosition()));
-                    shieldObject.SetActive(false);
-                }
-                
-                swordObject.SetActive(false);
             }
             else
             {
-                var swordObject = opponentPlayer.transform.GetChild(0).gameObject;
-                swordObject.SetActive(true);
-                
-                if (isEvade == true)
-                {
-                    IEnumerator attackAnim = opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition());
-                    IEnumerator evadeAnim = null;
-                    
-                    if (evdValue > atkValue)
-                    {
-                        evadeAnim = currentPlayer.GetComponent<PlayerEvadeAnimation>().PerformEvade(false);
-                        StartCoroutine(evadeAnim);
-                    }
-                    
-                    yield return attackAnim;
-                    if (evadeAnim != null)
-                    {
-                        while (currentPlayer.GetComponent<PlayerEvadeAnimation>().IsEvading)
-                        {
-                            yield return null;
-                        }
-                    }
-                }
-                else
-                {
-                    var shieldObject = currentPlayer.transform.GetChild(1).gameObject;
-                    shieldObject.SetActive(true);
-                    yield return StartCoroutine(opponentPlayer.GetComponent<PlayerFightAnimation>().PerformAttack(ArenaManager.Instance.GetCombatPlayerPosition()));
-                    shieldObject.SetActive(false);
-                }
-                
-                swordObject.SetActive(false);
-            }
-
-            Player targetPlayer = (i == 0) ? opponentPlayer : currentPlayer;
+                // Player defense/evade choice
+                UIManager.Instance.SetRollDiceButtonText("Defend");
+                DiceManager.Instance.EnableDiceRoll();
+                UIManager.Instance.SetEvadeButtonVisibility(true);
             
-            //Calculate damage
-            if (isEvade == true)
-            {
-                int damage = (evdValue > atkValue) ? 0 : atkValue;
-                targetPlayer.LoseHealth(damage);
-                if (damage > 0)
+                UIManager.Instance.rollDiceButton.onClick.AddListener(() => isEvade = false);
+                UIManager.Instance.evadeButton.onClick.AddListener(() => isEvade = true);
+
+                yield return new WaitUntil(() => isEvade != null);
+                UIManager.Instance.SetEvadeButtonVisibility(false);
+
+                if (isEvade == true)
                 {
-                    UIManager.Instance.DisplayDamageNumber(targetPlayer.transform.position, damage);
-                    yield return new WaitForSeconds(1f);
+                    yield return StartCoroutine(RollForCombatValue(result => evdValue = result));
+                }
+                else
+                {
+                    yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
                 }
             }
-            else
-            {
-                int damage = Math.Max(1, atkValue - dfdValue);
-                targetPlayer.LoseHealth(damage);
-                UIManager.Instance.DisplayDamageNumber(targetPlayer.transform.position, damage);
-                yield return new WaitForSeconds(1f);
-            }
 
-            //Trigger death if die
-            if (currentPlayer.Health <= 0)
+            Entity target = (turn == 0) ? SecondTA : FirstTA;
+
+            yield return StartCoroutine(PerformCombatAnimation(FirstTA, SecondTA, isEvade, atkValue, evdValue, turn == 1));
+            
+            yield return StartCoroutine(ApplyDamage(target, isEvade, atkValue, dfdValue, evdValue));
+
+            yield return new WaitForSeconds(0.4f);
+
+            if (FirstTA.Health <= 0)
             {
-                currentPlayer.Dies();
+                FirstTA.Dies();
                 break;
             }
-            else if (opponentPlayer.Health <= 0)
+            else if (SecondTA.Health <= 0)
             {
-                opponentPlayer.Dies();
+                SecondTA.Dies();
                 break;
             }
         }
+
         UIManager.Instance.SetRollDiceButtonText("Roll Dice");
         GameManager.Instance.HandleCombatEnd();
+    }
+
+    private IEnumerator PerformAttackAnimation(Entity attacker, Entity target)
+    {
+        var attackerPos = target.transform.position;
+
+        if (attacker is Boss)
+        {
+            yield return StartCoroutine(attacker.GetComponent<BossFightAnimation>().PerformAttack(attackerPos));
+        }
+        else
+        {
+            var swordObject = attacker.transform.GetChild(0).gameObject;
+            swordObject.SetActive(true);
+            yield return StartCoroutine(attacker.GetComponent<PlayerFightAnimation>().PerformAttack(attackerPos));
+            swordObject.SetActive(false);
+        }
+    }
+
+    private IEnumerator PerformDefendAnimation(Entity defender)
+    {
+        if (defender is Boss)
+        {
+            // TODO: Implement boss defense animation if needed
+            yield break;
+        }
+
+        var shieldObject = defender.transform.GetChild(1).gameObject;
+        shieldObject.SetActive(true);
+        yield return new WaitForSeconds(1f); // Animation duration
+        shieldObject.SetActive(false);
+    }
+
+    private IEnumerator PerformEvadeAnimation(Entity defender, bool evadeRight)
+    {
+        if (defender is Boss)
+        {
+            yield break;
+        }
+
+        yield return StartCoroutine(defender.GetComponent<PlayerEvadeAnimation>().PerformEvade(evadeRight));
+    }
+
+    private IEnumerator NoAnimation()
+    {
+        yield break;
+    }
+
+    //Basically, the initial FirstTA is FirstTA, the "SecondTA" then counter-attacks. so both attack/defends
+        //it's only indictative of the order of how the fight happens(bad naming I know, bit lazy to change now)
+    private IEnumerator PerformCombatAnimation(Entity FirstTA, Entity SecondTA, bool? isEvade, int atkValue, int evdValue, bool isTurn1)
+    {
+        Entity attacker = isTurn1 ? SecondTA : FirstTA;
+        Entity defender = isTurn1 ? FirstTA : SecondTA;
+
+        // Start both animations simultaneously
+        IEnumerator attackAnim = PerformAttackAnimation(attacker, defender);
+        IEnumerator defendAnim;
+
+        if (defender is Boss)
+        {
+            defendAnim = PerformDefendAnimation(defender);
+        }
+
+        else if (isEvade == true)
+        {
+            defendAnim = evdValue > atkValue ? 
+                PerformEvadeAnimation(defender, isTurn1) : 
+                NoAnimation();
+        }
+        else
+        {
+            defendAnim = PerformDefendAnimation(defender);
+        }
+
+        // Run both animations concurrently
+        StartCoroutine(attackAnim);
+        StartCoroutine(defendAnim);
+
+        // Wait for both animations to complete
+        while (attacker.GetComponent<PlayerFightAnimation>()?.IsAttacking == true || 
+            attacker.GetComponent<BossFightAnimation>()?.IsAttacking == true ||
+            defender.GetComponent<PlayerEvadeAnimation>()?.IsEvading == true)
+        {
+            yield return null;
+        }
+    }
+
+    private IEnumerator ApplyDamage(Entity target, bool? isEvade, int atkValue, int dfdValue, int evdValue)
+    {
+        int damage;
+        if (isEvade.HasValue && isEvade.Value) // Evade Calculation
+        {
+            damage = (evdValue > atkValue) ? 0 : atkValue;
+            target.LoseHealth(damage);
+            if (damage > 0)
+            {
+                UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
+                yield return new WaitForSeconds(1f);
+            }
+        }
+        else //Defend Calculation
+        {
+            damage = Math.Max(1, atkValue - dfdValue);
+            target.LoseHealth(damage);
+            UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
+            yield return new WaitForSeconds(1f);
+        }
     }
 
     private IEnumerator RollForCombatValue(System.Action<int> callback)

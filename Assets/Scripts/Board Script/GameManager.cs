@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private GameState currentState;
     public static event Action<GameState> OnGameStateChanged;
+    private bool isBossTurn = false;
 
     public bool IsResumingMovement { get; set; } = false; // Flag such that player don't StartPlayerMovement again after combat->moving state change
     public Action<int> OnDiceRollResultForCombat;
@@ -53,11 +54,21 @@ public class GameManager : MonoBehaviour
                 StartPlayerTurn();
                 break;
 
-            case GameState.PlayerRollingMovementDice:
+            case GameState.RollingMovementDice:
                 EnableMovementDiceRoll();
+
+                if (isBossTurn)
+                {
+                    DiceManager.Instance.RollDice();
+                }
                 break;
 
-            case GameState.PlayerMovement:
+            case GameState.BoardMovement:
+                if (isBossTurn)
+                {
+                    StartBossMovement();
+                }
+                else
                 if (!IsResumingMovement)
                 {
                     StartPlayerMovement();
@@ -72,20 +83,20 @@ public class GameManager : MonoBehaviour
                 IsResumingMovement = true;
                 break;
 
-            case GameState.PlayerFinishedMoving:
-                StartTileAction();
+            case GameState.FinishedMoving:
+                StartCoroutine(StartTileAction());
                 break;
 
             case GameState.PlayerTurnEnd:
-                EndPlayerTurn();
+                StartCoroutine(EndPlayerTurn());
+                break;
+
+            case GameState.BossTurn:
+                StartBossTurn();
                 break;
             
-            case GameState.PlayerLandQuiz:
-                HandleQuizStart();
-                break;
-            
-            case GameState.PlayerEndQuiz:
-                HandleQuizEnd();
+            case GameState.BossTurnEnd:
+                HandleBossTurnEnd();
                 break;
 
             case GameState.GameEnd:
@@ -135,9 +146,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            ChangeState(GameState.PlayerRollingMovementDice);
+            ChangeState(GameState.RollingMovementDice);
         }
         
+    }
+
+    public void StartBossTurn()
+    {
+        UIManager.Instance.DisplayBossTurn();
+        isBossTurn = true;
+        ChangeState(GameState.RollingMovementDice);
     }
 
     private void EnableMovementDiceRoll()
@@ -159,9 +177,9 @@ public class GameManager : MonoBehaviour
 
     public void HandleDiceResultDisplayFinished()
     {
-        if (currentState == GameState.PlayerRollingMovementDice)
+        if (currentState == GameState.RollingMovementDice)
         {
-            ChangeState(GameState.PlayerMovement);
+            ChangeState(GameState.BoardMovement);
         }
         else if (currentState == GameState.PlayerCombat)
         {
@@ -172,13 +190,15 @@ public class GameManager : MonoBehaviour
 
     public void HandleCombatEnd()
     {
-        ChangeState(GameState.PlayerMovement);
+        ChangeState(GameState.BoardMovement);
     }
 
-    public void HandleQuizLand()
+    public void HandleBossTurnEnd()
     {
-    ChangeState(GameState.PlayerLandQuiz);
-    }   
+        UIManager.Instance.UpdateCurrentPlayerTurn(RoundManager.Instance.Turn);
+        isBossTurn = false;
+        ChangeState(GameState.RoundStart);
+    } 
 
     public void HandleQuizStart()
     {
@@ -189,9 +209,7 @@ public class GameManager : MonoBehaviour
     public void HandleQuizEnd()
     {
         UIManager.Instance.SetBoardUIActive(true);
-        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>(); 
-        PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete; //unsubscribe from action becuase OnPlayerMovementComplete is not called if land on quiz tile
-        ChangeState(GameState.PlayerTurnEnd);
+        TileManager.Instance.OnTileActionComplete = true;
     }
 
 
@@ -203,12 +221,28 @@ public class GameManager : MonoBehaviour
         PlayerManager.Instance.StartPlayerMovement(DiceManager.Instance.GetTotalDiceResult());
     }
 
+    private void StartBossMovement()
+    {
+        Debug.Log("Starting boss movement");
+        BossMovement BossMovement = BossManager.Instance.activeBoss.Movement;
+        BossMovement.OnMovementComplete += OnBossMovementComplete;
+        BossManager.Instance.StartBossMovement(DiceManager.Instance.GetTotalDiceResult());
+    }
+
     private void OnPlayerMovementComplete()
     {
         Debug.Log("Player movement complete");
         PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
         PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete;
-        ChangeState(GameState.PlayerFinishedMoving);
+        ChangeState(GameState.FinishedMoving);
+    }
+
+    private void OnBossMovementComplete()
+    {
+        Debug.Log("Boss movement complete");
+        BossMovement BossMovement = BossManager.Instance.activeBoss.Movement;
+        BossMovement.OnMovementComplete -= OnBossMovementComplete;
+        ChangeState(GameState.FinishedMoving);
     }
 
     public void OnCombatTriggered()
@@ -217,32 +251,53 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.PlayerCombat);
     }
 
-    private void StartTileAction()
+    private IEnumerator StartTileAction()
     {
-        TileManager.Instance.getTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
+        TileManager.Instance.OnTileActionComplete = false;
 
-        if (currentState == GameState.GameEnd) //if reached final level from home tile
+        if(isBossTurn)
         {
-            return;
+            TileManager.Instance.getBossTileAction(BossManager.Instance.activeBoss.Movement.CurrentTile);
+        }
+        else
+        {
+            TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
         }
 
-        if (currentState == GameState.PlayerRollingMovementDice) //if land on reroll tile
+        // Wait until the action completes
+        while (!TileManager.Instance.OnTileActionComplete)
         {
-            return;
+            yield return null;
         }
 
-        ChangeState(GameState.PlayerTurnEnd);
+        // Early break for special cases
+        if (currentState == GameState.GameEnd || currentState == GameState.RollingMovementDice)
+            yield break;
+
+        // Change state based on turn
+        GameState nextState = isBossTurn ? GameState.BossTurnEnd : GameState.PlayerTurnEnd;
+        ChangeState(nextState);
     }
 
-    private void EndPlayerTurn()
+    private IEnumerator EndPlayerTurn()
     {
+        yield return new WaitForSeconds(0.5f);
+
         Debug.Log($"Player {PlayerManager.Instance.GetCurrentPlayer().getPlayerID()}'s turn ended.");
         PlayerManager.Instance.GoNextPlayer();
         RoundManager.Instance.IncrementTurn();
 
         if (RoundManager.Instance.Turn == 1)
         {
-            ChangeState(GameState.RoundStart);
+            // All players have taken their turn, now it's boss turn
+            if (GameConfigManager.Instance.GetCurrentRules().haveBoss)
+            {
+                ChangeState(GameState.BossTurn);
+            }
+            else
+            {
+                ChangeState(GameState.RoundStart);
+            }
         }
         else
         {
@@ -254,10 +309,10 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Player landed on reroll tile - starting new roll");
         IsResumingMovement = false;
-        ChangeState(GameState.PlayerRollingMovementDice);
+        ChangeState(GameState.RollingMovementDice);
     }
 
-    public void FinalLevelAchieved()
+    public void WinGameConditionAchieved()
     {
         ChangeState(GameState.GameEnd);
     }
@@ -272,13 +327,12 @@ public enum GameState
     GameSetup,
     RoundStart,
     PlayerTurnStart,
-    PlayerRollingMovementDice,
-    PlayerMovement,
+    RollingMovementDice,
+    BoardMovement,
     PlayerCombat,
-    PlayerFinishedMoving,
+    FinishedMoving,
     PlayerTurnEnd,
-    PlayerLandQuiz, 
-    PlayerInQuiz,
-    PlayerEndQuiz,
+    BossTurn,
+    BossTurnEnd,
     GameEnd
 }

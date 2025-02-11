@@ -3,17 +3,16 @@ using UnityEngine;
 using System.Collections;
 
 public enum Status { Alive, Dead }
-public class Player : MonoBehaviour
+public class Player : Entity
 {
     [SerializeField] private int playerID;
 
     public const int REVIVAL_COUNT = 3;
     public const int MAX_HEALTH = 10;
+    public const int MAX_LEVEL = 10;
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
-    public int Health { get; set; }
-    public Status Status { get; set; }
 
     public int ReviveCounter { get; set; } = 0;
     void Start()
@@ -31,6 +30,7 @@ public class Player : MonoBehaviour
 
     private IEnumerator InitializePlayerUI()
     {
+        Debug.Log($"{playerID}");
         while (UIManager.Instance == null || !GameInitializer.Instance.IsGameInitialized)
         {
             yield return new WaitForSeconds(0.1f);
@@ -47,6 +47,13 @@ public class Player : MonoBehaviour
         return playerID;
     }
 
+    public void SetPlayerID(int id)
+    {
+        Debug.Log($"Player {playerID} has been assigned ID {id}");
+        playerID = id;
+    }
+
+
     public void AddPoints(int amount)
     {
         Points = Math.Max(0, Points + amount);
@@ -56,6 +63,11 @@ public class Player : MonoBehaviour
 
     public void LevelUp()
     {
+        if (Level >= MAX_LEVEL)
+        {
+            return;
+        }
+        
         Level += 1;
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
@@ -63,14 +75,14 @@ public class Player : MonoBehaviour
         UIManager.Instance.DisplayLevelUp();
     }
 
-    public void LoseHealth(int amount)
+    public override void LoseHealth(int amount)
     {
-        Health = Math.Max(0,Health - amount);
+        Health = Mathf.Max(0, Health - amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
-    public void Dies()
+    public override void Dies()
     {
         Status = Status.Dead;
         PlayerManager.Instance.DeadPlayers.Add(this);
@@ -95,10 +107,10 @@ public class Player : MonoBehaviour
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
-    public void TeleportTo(Vector3 position, Tile destinationTile)
+    public override void TeleportTo(Vector3 position, Tile destinationTile)
     {
         // Adjust Y position for proper height above tile
-        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.2f, position.z);
+        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.2f * ARBoardPlacement.worldScale, position.z);
         
         // Update player position
         transform.position = teleportPosition;
@@ -110,7 +122,7 @@ public class Player : MonoBehaviour
         Debug.Log($"Player {playerID} teleported to position {position}");
     }
 
-    public void HealPLayer(int amount)
+    public void Heal(int amount)
     {
         if (Status == Status.Dead) //cannot heal a dead player
         {
