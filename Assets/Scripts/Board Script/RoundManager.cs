@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [DefaultExecutionOrder(-10)]
 public class RoundManager : MonoBehaviour
@@ -42,27 +43,48 @@ public class RoundManager : MonoBehaviour
             IncrementReviveCounter();
         }
     }
-public void IncrementReviveCounter()
-{
-    var deadPlayersCopy = new List<Player>(PlayerManager.Instance.DeadPlayers);
 
-    foreach (var player in deadPlayersCopy)
+    public void IncrementReviveCounter()
     {
-        player.IncrementReviveCounter();
-        if (player.ReviveCounter == Player.REVIVAL_COUNT)
+        var deadPlayersCopy = new List<Player>(PlayerManager.Instance.DeadPlayers);
+
+        foreach (var player in deadPlayersCopy)
         {
-            player.Revives();
+            player.IncrementReviveCounter();
+            if (player.ReviveCounter == Player.REVIVAL_COUNT)
+            {
+                player.Revives();
+            }
         }
     }
-}
 
-    public void GiveRoundPoints()
+    public IEnumerator GiveRoundPoints()
     {
+        if(round == 1)
+        {
+            yield break;
+        }
+        
         int roundPointsIndex = PlayerManager.Instance.CurrentHighLevel - 1;
 
         foreach (var player in PlayerManager.Instance.GetPlayerList())
         {
-            player.AddPoints(roundPoints[roundPointsIndex]);
+            yield return StartCoroutine(player.AddPoints(roundPoints[roundPointsIndex]));
+
         }
+    }
+
+    public void ApplyRoundBuff()
+    {
+        foreach (var player in PlayerManager.Instance.GetPlayerList())
+        {
+            player.UpdateBuffDurations(); //automatically disable buffs when duration over
+        }
+        if (GameConfigManager.Instance.GetCurrentRules().haveBoss)
+        {
+            BossManager.Instance.activeBoss.BossBuffs.UpdateBuffDurations();
+        }
+
+
     }
 }

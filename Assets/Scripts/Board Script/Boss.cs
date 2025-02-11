@@ -4,10 +4,13 @@ public class Boss : Entity
 {
     public BossMovement Movement { get; private set; }
     public const int MAX_HEALTH = 100;
+    [SerializeField] private BossBuffs bossBuffs = new BossBuffs();
+    public BossBuffs BossBuffs => bossBuffs;
+
 
     private void Awake()
     {
-        Movement = GetComponent<BossMovement>();
+        Movement = GetComponent<BossMovement>();        
     }
 
     private void Start()
@@ -15,6 +18,10 @@ public class Boss : Entity
         Health = MAX_HEALTH;
         Status = Status.Alive;
         UIManager.Instance.UpdateBossHealth(Health);
+
+        /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
+        Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
+        Buffs.AddBuff(BuffType.ExtraDice, 2, 2); //for testing*/
     }
 
     public override void LoseHealth(int amount)
@@ -31,6 +38,16 @@ public class Boss : Entity
         GameManager.Instance.WinGameConditionAchieved();
     }
 
+    public override void AddBuff(BuffType type, int value, int duration)
+    {
+        bossBuffs.AddBuff(type, value, duration);
+    }
+
+    public override void UpdateBuffDurations()
+    {
+        bossBuffs.UpdateBuffDurations();
+    }
+
     public override void TeleportTo(Vector3 position, Tile destinationTile)
     {
         // Adjust Y position for proper height above tile
@@ -44,5 +61,19 @@ public class Boss : Entity
     
         
         Debug.Log($"Boss teleported to position {position}");
+    }
+}
+
+[System.Serializable]
+public class BossBuffs : EntityBuffs
+{
+    public override void AddBuff(BuffType type, int value, int duration)
+    {
+        if (type == BuffType.DoublePoints)
+        {
+            Debug.LogWarning("Cannot add player-specific buffs to a boss");
+            return;
+        }
+        base.AddBuff(type, value, duration);
     }
 }

@@ -14,14 +14,15 @@ public class QuizManager : MonoBehaviour
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
-    public float quizDuration = 60f; // Duration of the quiz in seconds
+    private float quizDuration = 5f; // Duration of the quiz in seconds
     private int answeredQuestionsCount = 0;  
     private float timeRemaining;
     private bool isQuizActive = false;
     private int correctAnswerCount = 0;
     private bool isTransitioning = false;
-
+    public bool OnQuizComplete { get; private set; }
     private Player quizPlayer;
+    private bool questionsLoaded = false;
 
     public static QuizManager Instance { get; private set; }
 
@@ -39,6 +40,11 @@ public class QuizManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        StartCoroutine(PreloadQuestions());
+    }
+
     private void Update()
     {
         if (isQuizActive)
@@ -52,17 +58,31 @@ public class QuizManager : MonoBehaviour
             }
         }
     }
+    private IEnumerator PreloadQuestions()
+    {
+        yield return StartCoroutine(DownloadQuestionCSV());
+        questionsLoaded = true;
+        Debug.Log("Quiz questions preloaded successfully");
+    }
 
     public void StartNewQuiz()
     {
         if (isTransitioning || isQuizActive) return;
+        
+        OnQuizComplete = false;
+        UIManager.Instance.SetBoardUIActive(false);
         StartCoroutine(StartQuizSequence());
     }
 
     private IEnumerator StartQuizSequence()
     {
         isTransitioning = true;
-        yield return StartCoroutine(DownloadQuestionCSV());
+        if (!questionsLoaded)
+        {
+            Debug.LogWarning("Questions not loaded yet, waiting...");
+            yield return new WaitUntil(() => questionsLoaded);
+        }
+        //yield return StartCoroutine(DownloadQuestionCSV());
 
         if (questions == null || questions.Count == 0)
         {
@@ -119,6 +139,60 @@ public class QuizManager : MonoBehaviour
         HandleQuizComplete();
     }
 
+    private void EndQuiz()
+    {
+        if (isTransitioning) return;
+        Debug.Log("Quiz ended.");
+        StartCoroutine(EndQuizSequence());
+    }
+
+    private void HandleQuizComplete()
+    {
+        int pointsToAward = correctAnswerCount * 10;
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+
+        QuizReward rewardTier = EvaluateQuizPerformance();
+        Debug.Log($"{rewardTier}");
+        RewardManager.Instance.GiveReward(rewardTier, currentPlayer);
+
+        correctAnswerCount = 0;
+        OnQuizComplete = true;
+        UIManager.Instance.SetBoardUIActive(true);
+    }
+
+    public QuizReward EvaluateQuizPerformance()
+    {
+        return (QuizReward)Random.Range(0, 4);
+    }
+
+    public void DisplayNextQuestion()
+    {
+        if (!isQuizActive) return;
+
+        currentQuestionIndex = (currentQuestionIndex + 1) % questions.Count;
+        Question q = questions[currentQuestionIndex];
+
+        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex, questions.Count);
+    }
+
+    public bool CheckAnswer(int answerIndex)
+    {
+        if (!isQuizActive) return false;
+        answeredQuestionsCount++;
+        string selectedAnswer = ((char)('A' + answerIndex)).ToString();
+
+        if (selectedAnswer == questions[currentQuestionIndex].answer)
+        {
+            correctAnswerCount++;
+        }
+        return questions[currentQuestionIndex].answer == selectedAnswer;
+    }
+
+    public bool IsQuizActive()
+    {
+        return isQuizActive;
+    }
+
     private IEnumerator DownloadQuestionCSV()
     {
         string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
@@ -169,57 +243,6 @@ public class QuizManager : MonoBehaviour
         }
 
         Debug.Log($"Loaded {questions.Count} questions from the CSV.");
-    }
-
-    private void EndQuiz()
-    {
-        if (isTransitioning) return;
-        Debug.Log("Quiz ended.");
-        StartCoroutine(EndQuizSequence());
-    }
-
-    private void HandleQuizComplete()
-    {
-        int pointsToAward = correctAnswerCount * 10;
-        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
-        correctAnswerCount = 0;
-
-        if (pointsToAward > 0)
-        {
-            currentPlayer.AddPoints(pointsToAward);
-            UIManager.Instance.DisplayPointChange(pointsToAward);
-            UIManager.Instance.DisplayGainStarAnimation(currentPlayer.getPlayerID());
-        }
-
-        GameManager.Instance.HandleQuizEnd();
-    }
-
-    public void DisplayNextQuestion()
-    {
-        if (!isQuizActive) return;
-
-        currentQuestionIndex = (currentQuestionIndex + 1) % questions.Count;
-        Question q = questions[currentQuestionIndex];
-
-        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex, questions.Count);
-    }
-
-    public bool CheckAnswer(int answerIndex)
-    {
-        if (!isQuizActive) return false;
-        answeredQuestionsCount++;
-        string selectedAnswer = ((char)('A' + answerIndex)).ToString();
-
-        if (selectedAnswer == questions[currentQuestionIndex].answer)
-        {
-            correctAnswerCount++;
-        }
-        return questions[currentQuestionIndex].answer == selectedAnswer;
-    }
-
-    public bool IsQuizActive()
-    {
-        return isQuizActive;
     }
 }
 

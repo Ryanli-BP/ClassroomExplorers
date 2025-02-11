@@ -115,7 +115,7 @@ public class Dice : MonoBehaviour
         var randZ = Random.Range(-1f, 1f);
         rb.AddTorque(new Vector3(randX, randY, randZ) * (scaledRollForce + randomVar), ForceMode.Impulse);
 
-        if (DiceManager.Instance.GetNumDice() == 1)
+        if (DiceManager.Instance.NumDice == 1)
         {
             var initialRandomForce = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)) * scaledThrowForce;
             rb.AddForce(initialRandomForce, ForceMode.Impulse);
