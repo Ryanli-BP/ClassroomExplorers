@@ -14,7 +14,7 @@ public class QuizManager : MonoBehaviour
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
-    public float quizDuration = 60f; // Duration of the quiz in seconds
+    private float quizDuration = 60f; // Duration of the quiz in seconds
     private int answeredQuestionsCount = 0;  
     private float timeRemaining;
     private bool isQuizActive = false;

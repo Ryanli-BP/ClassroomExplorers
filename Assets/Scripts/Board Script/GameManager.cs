@@ -55,11 +55,15 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.RollingMovementDice:
-                EnableMovementDiceRoll();
 
                 if (isBossTurn)
                 {
-                    DiceManager.Instance.RollDice();
+                    DiceManager.Instance.EnableDiceRoll(true);
+                    DiceManager.Instance.RollDice(); //automatical dice roll for Boss
+                }
+                else
+                {
+                    DiceManager.Instance.EnableDiceRoll(false);
                 }
                 break;
 
@@ -162,11 +166,6 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.DisplayBossTurn();
         isBossTurn = true;
         ChangeState(GameState.RollingMovementDice);
-    }
-
-    private void EnableMovementDiceRoll()
-    {
-        DiceManager.Instance.EnableDiceRoll();
     }
 
     public void OnDiceRollComplete()

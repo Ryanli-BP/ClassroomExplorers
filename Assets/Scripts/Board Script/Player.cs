@@ -30,6 +30,9 @@ public class Player : Entity
             Health = MAX_HEALTH;
             Status = Status.Alive;
 
+            Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
+            Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
+            Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
             Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test
         }
     }

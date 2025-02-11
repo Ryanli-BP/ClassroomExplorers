@@ -86,16 +86,18 @@ public class CombatManager : MonoBehaviour
             if ((turn == 0 && BossisFirstTA) || (turn == 1 && BossisSecondTA))
             {
                 // Automatic boss attack roll
-                DiceManager.Instance.EnableDiceRoll();
+                DiceManager.Instance.EnableDiceRoll(true);
                 DiceManager.Instance.RollDice();
-                yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
+                int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, true, null);
+                yield return StartCoroutine(RollForCombatValue(result => atkValue = result, bonus));
             }
             else
             {
                 // Player attack roll
                 UIManager.Instance.SetRollDiceButtonText("Attack");
-                DiceManager.Instance.EnableDiceRoll();
-                yield return StartCoroutine(RollForCombatValue(result => atkValue = result));
+                DiceManager.Instance.EnableDiceRoll(false);
+                int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, true, null);
+                yield return StartCoroutine(RollForCombatValue(result => atkValue = result, bonus));
             }
 
             // Defense Phase
@@ -103,15 +105,16 @@ public class CombatManager : MonoBehaviour
             {
                 // Automatic boss defense roll (bosses always defend, never evade)
                 isEvade = false;
-                DiceManager.Instance.EnableDiceRoll();
+                DiceManager.Instance.EnableDiceRoll(true);
                 DiceManager.Instance.RollDice();
-                yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
+                int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, false);
+                yield return StartCoroutine(RollForCombatValue(result => dfdValue = result, bonus));
             }
             else
             {
                 // Player defense/evade choice
                 UIManager.Instance.SetRollDiceButtonText("Defend");
-                DiceManager.Instance.EnableDiceRoll();
+                DiceManager.Instance.EnableDiceRoll(false);
                 UIManager.Instance.SetEvadeButtonVisibility(true);
             
                 UIManager.Instance.rollDiceButton.onClick.AddListener(() => isEvade = false);
@@ -122,11 +125,13 @@ public class CombatManager : MonoBehaviour
 
                 if (isEvade == true)
                 {
-                    yield return StartCoroutine(RollForCombatValue(result => evdValue = result));
+                    int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, true);
+                    yield return StartCoroutine(RollForCombatValue(result => evdValue = result, bonus));
                 }
                 else
                 {
-                    yield return StartCoroutine(RollForCombatValue(result => dfdValue = result));
+                    int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, false);
+                    yield return StartCoroutine(RollForCombatValue(result => dfdValue = result, bonus));
                 }
             }
 
@@ -138,6 +143,7 @@ public class CombatManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.4f);
 
+            //Check if DIE
             if (FirstTA.Health <= 0)
             {
                 FirstTA.Dies();
@@ -150,8 +156,30 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        UIManager.Instance.SetRollDiceButtonText("Roll Dice");
+        ResetUI();
         GameManager.Instance.HandleCombatEnd();
+    }
+
+    private void ResetUI()
+    {
+        UIManager.Instance.SetRollDiceButtonText("Roll Dice");
+        UIManager.Instance.SetDiceBonus(0);
+        UIManager.Instance.SetEvadeButtonVisibility(false);
+    }
+
+    private int GetBonus(Entity entity, bool isAttacking, bool? isEvade)
+    {
+        if (entity is Player player)
+        {
+            return isAttacking ? player.Buffs.AttackBonus :
+                (isEvade == true ? player.Buffs.EvadeBonus : player.Buffs.DefenseBonus);
+        }
+        else if (entity is Boss boss)
+        {
+            return isAttacking ? boss.Buffs.AttackBonus : boss.Buffs.DefenseBonus;
+        }
+
+        return 0;
     }
 
     private IEnumerator PerformAttackAnimation(Entity attacker, Entity target)
@@ -200,8 +228,6 @@ public class CombatManager : MonoBehaviour
         yield break;
     }
 
-    //Basically, the initial FirstTA is FirstTA, the "SecondTA" then counter-attacks. so both attack/defends
-        //it's only indictative of the order of how the fight happens(bad naming I know, bit lazy to change now)
     private IEnumerator PerformCombatAnimation(Entity FirstTA, Entity SecondTA, bool? isEvade, int atkValue, int evdValue, bool isTurn1)
     {
         Entity attacker = isTurn1 ? SecondTA : FirstTA;
@@ -262,32 +288,31 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private IEnumerator RollForCombatValue(System.Action<int> callback)
+    private IEnumerator RollForCombatValue(System.Action<int> callback, int bonus)
     {
-        bool diceRollComplete = false;
-        bool diceDisplayComplete = false;
         int diceResult = 0;
+        bool isComplete = false;
 
-        // Set up the callback to handle the result of the dice roll
-        GameManager.Instance.OnDiceRollResultForCombat = (result) =>
+        // Set the bonus for the display alongside dice roll
+        UIManager.Instance.SetDiceBonus(bonus);
+
+        // Single callback for the dice roll
+        GameManager.Instance.OnDiceRollResultForCombat = (result) => 
         {
             diceResult = result;
-            diceRollComplete = true;
         };
 
-        // Wait for the dice roll to complete
-        yield return new WaitUntil(() => diceRollComplete);
-
-        // Set up the callback to handle the display completion
-        GameManager.Instance.OnDiceResultDisplayForCombat = (result) =>
+        // Single callback for display completion
+        GameManager.Instance.OnDiceResultDisplayForCombat = (_) => 
         {
-            diceDisplayComplete = result; // Set the flag to true when the display is complete
+            isComplete = true;
         };
 
-        // Wait until the dice result display is finished
-        yield return new WaitUntil(() => diceDisplayComplete);
+        // Wait for the entire process to complete
+        yield return new WaitUntil(() => isComplete);
 
-        // Use the callback to return the dice result
-        callback(diceResult);
+        int finalresult = diceResult + bonus;
+
+        callback(finalresult);
     }
 }

@@ -16,7 +16,7 @@ public class DiceManager : MonoBehaviour
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
     private int totalDiceResult; // Tracks the total sum of dice rolls
-    private bool canRollDice = false; // Flag to control dice rolling
+    private bool canRollDice = false; // Flag to control dice rollin
 
     private void Awake()
     {
@@ -55,18 +55,18 @@ public class DiceManager : MonoBehaviour
         set { numDice = value; }
     }
 
-    public void EnableDiceRoll()
+    public void EnableDiceRoll(bool isBossRollingDice)
     {
         // Set number of dice based on current turn
-        if (GameManager.Instance.isBossTurn)
+        if (isBossRollingDice)
         {
             numDice = 1 + BossManager.Instance.activeBoss.Buffs.ExtraDiceBonus;
-            Debug.Log($"Boss dice count: {numDice} FROM BOBUS {BossManager.Instance.activeBoss.Buffs.ExtraDiceBonus}");
+            Debug.Log($"Boss dice count: {numDice} FROM BONUS {BossManager.Instance.activeBoss.Buffs.ExtraDiceBonus}");
         }
         else
         {
             numDice = 1 + PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].Buffs.ExtraDiceBonus;
-            Debug.Log($"Player dice count: {numDice} FROM BOBUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].Buffs.ExtraDiceBonus}");
+            Debug.Log($"Player dice count: {numDice} FROM BONUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].Buffs.ExtraDiceBonus}");
         }
 
         totalDiceResult = 0;

@@ -206,11 +206,28 @@ public class UIManager : MonoBehaviour
         rollDiceButton.GetComponentInChildren<TextMeshProUGUI>().text = text;
     }
 
-    public async void DisplayDiceTotalResult(int totalResult)
+    private int bonusValue = 0;
+
+    public void SetDiceBonus(int bonus)
+    {
+        bonusValue = bonus;
+    }
+
+    public async void DisplayDiceTotalResult(int baseResult)
     {
         centreDisplayPanel.SetActive(true);
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{totalResult}";
-        await Task.Delay(500); 
+        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{baseResult}";
+        await Task.Delay(500);
+
+        if (bonusValue > 0)
+        {
+            string colorTag = "<color=#00FF00>";
+            centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{colorTag}+{bonusValue}</color>";
+            await Task.Delay(500);
+            centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = $"{baseResult + bonusValue}";
+            await Task.Delay(500);
+        }
+
         centreDisplayPanel.SetActive(false);
         GameManager.Instance.HandleDiceResultDisplayFinished();
     }

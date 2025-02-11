@@ -19,6 +19,8 @@ public class Boss : Entity
         Status = Status.Alive;
         UIManager.Instance.UpdateBossHealth(Health);
 
+        Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
+        Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
         Buffs.AddBuff(BuffType.ExtraDice, 2, 2); //for testing
     }
 
