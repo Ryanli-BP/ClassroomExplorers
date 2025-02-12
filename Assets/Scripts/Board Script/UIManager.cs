@@ -384,7 +384,7 @@ public class UIManager : MonoBehaviour
     {
         NotificationBar.SetActive(true);
         NotificationText.text = message;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         NotificationBar.SetActive(false);
     }
 
