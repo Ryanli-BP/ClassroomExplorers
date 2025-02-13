@@ -6,6 +6,8 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
 
+    public const float AboveTileOffset = 0.7f; // Offset to place player above the tile
+
     [SerializeField] private Player playerPrefab;  // Main player prefab
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
     public GameObject[] hats; // No need to serialize if not exposed to the Inspector
@@ -50,7 +52,11 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < GameConfigManager.Instance.numOfPlayers; i++)
         {
             // Instantiate the player prefab
-            Player playerObject = Instantiate(playerPrefab, transform);
+            Player playerObject = Instantiate(playerPrefab, 
+                                transform.position, 
+                                ARBoardPlacement.boardRotation * transform.rotation);
+            playerObject.transform.localScale = playerObject.transform.localScale * ARBoardPlacement.worldScale;
+
             playerObject.SetPlayerID(i + 1);
             // Set the player appearance before adding to the list
             int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
@@ -197,7 +203,7 @@ public class PlayerManager : MonoBehaviour
         if (homeTile != null)
         {
             Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += 0.2f * ARBoardPlacement.worldScale; // Adjust Y offset
+            homePosition.y += AboveTileOffset * ARBoardPlacement.worldScale; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");

@@ -4,18 +4,27 @@ using System;
 using UnityEditor;
 
 [Serializable]
+public class ArrowData
+{
+    public float x;
+    public float z;
+    public string rotation; // Rotation in direction
+}
+
+[Serializable]
 public class BoardData
 {
     public int width;
     public int height;
     public TileData[] tiles;
+    public ArrowData[] arrows;
 }
 
 [Serializable]
 public class TileData
 {
     public int x;
-    public int z;  // Changed from y to z
+    public int z; 
     public int type;
     public string[] connections;
     public int homePlayerID;
@@ -35,9 +44,24 @@ public class BoardGenerator : MonoBehaviour
     public Material portalTileMaterial;
     public Material rerollTileMaterial;
 
+    [Header("Arrow Prefab")]
+    public GameObject arrowPrefab;
+
     private const string BOARD_LAYOUT_PATH = "boardLayout";
     private const float TILE_SPACING = 1f;
     private const float Y_POSITION = -0.5f;  // Default Y position for all tiles
+    private const float ARROW_Y_POSITION = 0f;  // Default Y position for all arrows
+    private const float ARROW_DEFAULT_X_ROTATION = 90f;
+    private const float ARROW_DEFAULT_Z_ROTATION = 0f;
+    private const float ARROW_DEFAULT_SCALE = 15f;
+
+    private Dictionary<string, float> directionToAngle = new Dictionary<string, float>
+    {
+        {"north", 90f},
+        {"east", 180f},
+        {"south", 270f},
+        {"west", 0f}
+    };
 
     private Dictionary<string, Direction> directionMap = new Dictionary<string, Direction>
     {
@@ -76,6 +100,7 @@ public class BoardGenerator : MonoBehaviour
             );
             
             GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, tileContainer.transform);
+            tileObj.transform.localScale = Vector3.one * 1; //put ARBoardPlacement.worldScale back after testing
             Tile tile = tileObj.GetComponent<Tile>();
             
             // Store tile reference using X and Z coordinates
@@ -91,6 +116,36 @@ public class BoardGenerator : MonoBehaviour
                 SerializedProperty homePlayerIDProperty = serializedTile.FindProperty("HomeplayerID");
                 homePlayerIDProperty.intValue = tileData.homePlayerID;
                 serializedTile.ApplyModifiedProperties();
+            }
+        }
+
+        //Create all arrows
+        if (boardData.arrows != null)
+        {
+            foreach (ArrowData arrowData in boardData.arrows)
+            {
+                Vector3 position = new Vector3(
+                    arrowData.x * TILE_SPACING,
+                    ARROW_Y_POSITION,
+                    arrowData.z * TILE_SPACING
+                );
+
+                // Get rotation angle from direction string
+                float yRotation = directionToAngle[arrowData.rotation.ToLower()];
+                
+                Quaternion rotation = Quaternion.Euler(
+                    ARROW_DEFAULT_X_ROTATION,
+                    yRotation,
+                    ARROW_DEFAULT_Z_ROTATION
+                );
+
+                GameObject arrowObj = Instantiate(arrowPrefab, 
+                    position, 
+                    rotation, 
+                    tileContainer.transform);
+
+                // Apply both the default scale and the AR world scale
+                arrowObj.transform.localScale = Vector3.one * ARROW_DEFAULT_SCALE * 1; //put ARBoardPlacement.worldScale back after testing
             }
         }
 
