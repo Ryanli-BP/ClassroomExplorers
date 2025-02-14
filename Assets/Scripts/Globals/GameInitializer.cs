@@ -68,6 +68,23 @@ public class GameInitializer : MonoBehaviour
         IsGameInitialized = true;
         OnGameInitialized?.Invoke();
     }
+
+    public bool IsManagerReady(string managerName)
+    {
+        switch (managerName)
+        {
+            case "UIManager":
+                return isUIManagerReady;
+            case "PlayerManager":
+                return isPlayerManagerReady;
+            case "TileManager":
+                return isTileManagerReady;
+            case "RoundManager":
+                return isRoundManagerReady;
+            default:
+                return false;
+        }
+    }
 }
 
 public static class PlatformUtils

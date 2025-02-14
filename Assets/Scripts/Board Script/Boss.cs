@@ -51,7 +51,7 @@ public class Boss : Entity
     public override void TeleportTo(Vector3 position, Tile destinationTile)
     {
         // Adjust Y position for proper height above tile
-        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.2f * ARBoardPlacement.worldScale, position.z);
+        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.7f * ARBoardPlacement.worldScale, position.z);
         
         // Update player position
         transform.position = teleportPosition;

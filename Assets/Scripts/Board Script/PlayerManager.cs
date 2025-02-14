@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
@@ -33,10 +34,13 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameInitializer.Instance.IsManagerReady("TileManager"));
+
+
         InitialisePlayers();
-        AssignPlayersToHomes();
+        //AssignPlayersToHomes();
         SpawnAllPlayersAtHome();
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
@@ -120,32 +124,17 @@ public class PlayerManager : MonoBehaviour
 
 
 
-    public void AssignPlayersToHomes()
+    /*public void AssignPlayersToHomes()
     {
-        // Iterate over the players and assign them to a home
-        for (int i = 0; i < players.Count; i++)
+        // Ensure we don't try to access more homes than exist
+        int maxHomes = Mathf.Min(players.Count, homeObjects.Count);
+        
+        // Activate/deactivate all homes in one pass
+        for (int i = 0; i < homeObjects.Count; i++)
         {
-            // Assuming home objects are assigned sequentially, you can modify this logic
-            if (i < homeObjects.Count)
-            {
-                // Show the corresponding home object for the player
-                homeObjects[i].SetActive(true);
-            }
+            homeObjects[i].SetActive(i < maxHomes);
         }
-
-        // Hide homes for unassigned players
-        HideUnassignedHomes(homeObjects, players.Count);
-    }
-
-    public void HideUnassignedHomes(List<GameObject> homeObjects, int assignedPlayerCount)
-    {
-        // Iterate through all home objects
-        for (int i = assignedPlayerCount; i < homeObjects.Count; i++)
-        {
-            // Hide any remaining homes that aren't assigned to players
-            homeObjects[i].SetActive(false);
-        }
-    }
+    }*/
 
     public List<Player> GetPlayerList()
     {

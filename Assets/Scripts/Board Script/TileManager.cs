@@ -30,8 +30,10 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => BoardGenerator.BoardGenFinished == true);
+        
         if (tileContainer != null)
         {
             allTiles.AddRange(tileContainer.GetComponentsInChildren<Tile>());
@@ -86,10 +88,15 @@ public class TileManager : MonoBehaviour
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
                 int basePoints = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+
                 int multiplier = getBonus(currentPlayer);
                 int pointsGained = basePoints * multiplier;
-                
-                UIManager.Instance.SetBonusUIValue(multiplier);
+
+                if (multiplier > 1)
+                {
+                    UIManager.Instance.SetBonusUIValue(multiplier);
+                }
+
                 yield return StartCoroutine(UIManager.Instance.DisplayPointChange(basePoints)); //base points because the UI deal with bonus
                 UIManager.Instance.DisplayGainStarAnimation(currentPlayerID);
 

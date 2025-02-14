@@ -55,6 +55,8 @@ public class BoardGenerator : MonoBehaviour
     private const float ARROW_DEFAULT_Z_ROTATION = 0f;
     private const float ARROW_DEFAULT_SCALE = 15f;
 
+    public static bool BoardGenFinished { get; private set; } = false;
+
     private Dictionary<string, float> directionToAngle = new Dictionary<string, float>
     {
         {"north", 90f},
@@ -173,6 +175,10 @@ public class BoardGenerator : MonoBehaviour
 
             serializedTile.ApplyModifiedProperties();
         }
+
+        tileContainer.transform.localScale = Vector3.one * 1.8f * ARBoardPlacement.worldScale;
+
+        BoardGenFinished = true;
     }
 
     private Vector2Int GetTargetPosition(Vector2Int current, Direction direction)
