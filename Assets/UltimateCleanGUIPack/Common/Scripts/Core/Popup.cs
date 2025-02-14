@@ -12,12 +12,14 @@ namespace UltimateClean
         public float destroyTime = 0.5f;
 
         private GameObject m_background;
+        private int playerID;
 
         // Reference to text field inside popup UI (assign in Inspector)
         public TextMeshProUGUI playerInfoText; 
 
         public void Open()
         {
+            Debug.Log($"Player ID on infoPage: {playerID}");
             AddBackground();
         }
 
@@ -36,6 +38,9 @@ namespace UltimateClean
         // New Method: Set Player Info
         public void SetPlayerInfo(int playerID)
         {
+            this.playerID = playerID; // Assign the player ID here
+
+            // Update the text field in the popup
             if (playerInfoText != null)
             {
                 playerInfoText.text = $"Player ID: {playerID}";
