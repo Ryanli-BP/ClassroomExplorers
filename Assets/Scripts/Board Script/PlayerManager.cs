@@ -62,7 +62,7 @@ public class PlayerManager : MonoBehaviour
             
             SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
             playerObject.gameObject.layer = LayerMask.NameToLayer("AvatarOnly");
-            avatarGenerator.GenerateAvatar(playerObject.gameObject);
+            avatarGenerator.GenerateAvatar(playerObject.gameObject, i);
             
             // Add the instantiated GameObject (with Player script) to the players list
             players.Add(playerObject);

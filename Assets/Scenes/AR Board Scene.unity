@@ -18895,7 +18895,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderTexture: {fileID: 8400000, guid: f534d10fabac147969a4719343ff54be, type: 2}
-  avatarDisplay: {fileID: 1832362817}
+  avatarDisplays:
+  - {fileID: 1832362817}
+  - {fileID: 569691091}
+  - {fileID: 1448875140}
+  - {fileID: 915597031}
+  - {fileID: 505113978}
+  - {fileID: 2119446010}
 --- !u!1001 &2107093683
 PrefabInstance:
   m_ObjectHideFlags: 0

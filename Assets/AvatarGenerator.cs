@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class AvatarGenerator : MonoBehaviour
 {
     public RenderTexture renderTexture;  // Assign this in Unity Inspector
-    public RawImage avatarDisplay;      // UI Element where avatar is shown
+    [SerializeField] public List<RawImage> avatarDisplays;  // UI Element where avatar is shown
     private Camera avatarCamera;         // Camera that will capture the player's model
 
-    public void GenerateAvatar(GameObject player)
+    public void GenerateAvatar(GameObject player, int avatarIndex)
     {
         if (avatarCamera == null)
         {
@@ -29,7 +30,6 @@ public class AvatarGenerator : MonoBehaviour
             light.intensity = 1.5f;  // Increase brightness if too dim
         }
 
-
         // Get player's renderer bounds to center the camera correctly
         Renderer playerRenderer = player.GetComponentInChildren<Renderer>();
         if (playerRenderer == null)
@@ -39,7 +39,7 @@ public class AvatarGenerator : MonoBehaviour
         }
 
         Bounds bounds = playerRenderer.bounds;
-        
+
         // Calculate best camera position (slightly in front)
         Vector3 cameraPosition = bounds.center + new Vector3(0, 0f, -1.5f); // Adjust as needed
         avatarCamera.transform.position = cameraPosition;
@@ -55,7 +55,17 @@ public class AvatarGenerator : MonoBehaviour
         avatarTexture.Apply();
         RenderTexture.active = null;
 
-        // Assign the generated texture to the UI
-        avatarDisplay.texture = avatarTexture;
+        // Ensure the avatarDisplays list has enough elements
+        if (avatarDisplays.Count > avatarIndex)
+        {
+            // Assign the generated texture to the correct RawImage UI element
+            avatarDisplays[avatarIndex].texture = avatarTexture;
+        }
+        else
+        {
+            Debug.LogError("Avatar display index is out of bounds.");
+        }
+
+        Debug.Log($"Avatar generated for player {avatarIndex + 1}");
     }
 }
