@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
     public AvatarGenerator avatarGenerator;
+
+    public const float AboveTileOffset = 0.7f; // Offset to place player above the tile
 
     [SerializeField] private Player playerPrefab;  // Main player prefab
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
@@ -32,10 +35,13 @@ public class PlayerManager : MonoBehaviour
 
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameInitializer.Instance.IsManagerReady("TileManager"));
+
+
         InitialisePlayers();
-        AssignPlayersToHomes();
+        //AssignPlayersToHomes();
         SpawnAllPlayersAtHome();
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
@@ -51,8 +57,11 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < GameConfigManager.Instance.numOfPlayers; i++)
         {
             // Instantiate the player prefab
-            Player playerObject = Instantiate(playerPrefab, transform);
-            // change the layer for avatar generation
+            Player playerObject = Instantiate(playerPrefab, 
+                                transform.position, 
+                                ARBoardPlacement.boardRotation * transform.rotation);
+            playerObject.transform.localScale = playerObject.transform.localScale * ARBoardPlacement.worldScale;
+
             playerObject.SetPlayerID(i + 1);
             // Set the player appearance before adding to the list
             int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
@@ -117,32 +126,17 @@ public class PlayerManager : MonoBehaviour
 
 
 
-    public void AssignPlayersToHomes()
+    /*public void AssignPlayersToHomes()
     {
-        // Iterate over the players and assign them to a home
-        for (int i = 0; i < players.Count; i++)
+        // Ensure we don't try to access more homes than exist
+        int maxHomes = Mathf.Min(players.Count, homeObjects.Count);
+        
+        // Activate/deactivate all homes in one pass
+        for (int i = 0; i < homeObjects.Count; i++)
         {
-            // Assuming home objects are assigned sequentially, you can modify this logic
-            if (i < homeObjects.Count)
-            {
-                // Show the corresponding home object for the player
-                homeObjects[i].SetActive(true);
-            }
+            homeObjects[i].SetActive(i < maxHomes);
         }
-
-        // Hide homes for unassigned players
-        HideUnassignedHomes(homeObjects, players.Count);
-    }
-
-    public void HideUnassignedHomes(List<GameObject> homeObjects, int assignedPlayerCount)
-    {
-        // Iterate through all home objects
-        for (int i = assignedPlayerCount; i < homeObjects.Count; i++)
-        {
-            // Hide any remaining homes that aren't assigned to players
-            homeObjects[i].SetActive(false);
-        }
-    }
+    }*/
 
     public List<Player> GetPlayerList()
     {
@@ -200,7 +194,7 @@ public class PlayerManager : MonoBehaviour
         if (homeTile != null)
         {
             Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += 0.2f * ARBoardPlacement.worldScale; // Adjust Y offset
+            homePosition.y += AboveTileOffset * ARBoardPlacement.worldScale; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");

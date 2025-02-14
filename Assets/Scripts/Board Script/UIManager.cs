@@ -102,12 +102,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator WaitForManagersToInitialize() //This is not strictly needed but it's safer this way
     {
         // Wait for all required managers
-        while (PlayerManager.Instance == null || 
-               GameManager.Instance == null ||
-               TileManager.Instance == null)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
+        yield return new WaitUntil(() => GameInitializer.Instance.IsManagerReady("PlayerManager"));
 
         // Initialize UI elements
         GenereateUIList();
@@ -214,6 +209,7 @@ public class UIManager : MonoBehaviour
 
     public void SetBonusUIValue(int bonus)
     {
+        Debug.Log($"Bonus value set to {bonus}");
         bonusValue = bonus;
     }
 

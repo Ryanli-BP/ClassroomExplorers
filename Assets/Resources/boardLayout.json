@@ -1,83 +1,116 @@
 {
-    "width": 6,
-    "height": 6,
+    "width": 12,
+    "height": 12,
     "tiles": [
-        {
-            "x": 0,
-            "z": 0,
-            "type": 4,
-            "connections": ["east"],
-            "homePlayerID": 1
-        },
-        {
-            "x": 1,
-            "z": 0,
-            "type": 2,
-            "connections": ["west", "east"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 2,
-            "z": 0,
-            "type": 1,
-            "connections": ["west", "north"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 2,
-            "z": 1,
-            "type": 5,
-            "connections": ["south", "north"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 2,
-            "z": 2,
-            "type": 6,
-            "connections": ["south", "east"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 3,
-            "z": 2,
-            "type": 3,
-            "connections": ["west", "east"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 4,
-            "z": 2,
-            "type": 6,
-            "connections": ["west", "north"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 4,
-            "z": 3,
-            "type": 7,
-            "connections": ["south", "east"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 5,
-            "z": 3,
-            "type": 1,
-            "connections": ["west", "north"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 5,
-            "z": 4,
-            "type": 2,
-            "connections": ["south", "north"],
-            "homePlayerID": 0
-        },
-        {
-            "x": 5,
-            "z": 5,
-            "type": 4,
-            "connections": ["south"],
-            "homePlayerID": 2
-        }
+        {"x": -3, "z": 6, "type": 6, "connections": ["south"], "homePlayerID": 0},
+        {"x": -2, "z": 6, "type": 2, "connections": ["west"], "homePlayerID": 0},
+        {"x": -1, "z": 6, "type": 5, "connections": ["west"], "homePlayerID": 0},
+        {"x": 0, "z": 6, "type": 7, "connections": ["west"], "homePlayerID": 0},
+        {"x": 1, "z": 6, "type": 1, "connections": ["west"], "homePlayerID": 0},
+
+        {"x": -5, "z": 5, "type": 4, "connections": ["south"], "homePlayerID": 1},
+        {"x": -4, "z": 5, "type": 3, "connections": ["west"], "homePlayerID": 0},
+        {"x": -3, "z": 5, "type": 5, "connections": ["west"], "homePlayerID": 0},
+        {"x": 1, "z": 5, "type": 2, "connections": ["south", "north"], "homePlayerID": 0},
+        {"x": 2, "z": 5, "type": 1, "connections": ["west"], "homePlayerID": 0},
+        {"x": 3, "z": 5, "type": 5, "connections": ["west"], "homePlayerID": 0},
+        {"x": 4, "z": 5, "type": 4, "connections": ["west"], "homePlayerID": 2},
+
+        {"x": -5, "z": 4, "type": 5, "connections": ["south"], "homePlayerID": 0},
+        {"x": -3, "z": 4, "type": 2, "connections": ["north"], "homePlayerID": 0},
+        {"x": 1, "z": 4, "type": 3, "connections": ["south"], "homePlayerID": 0},
+        {"x": 4, "z": 4, "type": 3, "connections": ["north"], "homePlayerID": 0},
+
+        {"x": -5, "z": 3, "type": 1, "connections": ["south"], "homePlayerID": 0},
+        {"x": -3, "z": 3, "type": 5, "connections": ["north", "south"], "homePlayerID": 0},
+        {"x": -2, "z": 3, "type": 1, "connections": ["west"], "homePlayerID": 0},
+        {"x": -1, "z": 3, "type": 1, "connections": ["west"], "homePlayerID": 0},
+        {"x": 0, "z": 3, "type": 1, "connections": ["west"], "homePlayerID": 0},
+        {"x": 1, "z": 3, "type": 6, "connections": ["west"], "homePlayerID": 0},
+        {"x": 2, "z": 3, "type": 5, "connections": ["east", "west"], "homePlayerID": 0},
+        {"x": 3, "z": 3, "type": 2, "connections": ["east"], "homePlayerID": 0},
+        {"x": 4, "z": 3, "type": 5, "connections": ["north"], "homePlayerID": 0},
+        {"x": 5, "z": 3, "type": 6, "connections": ["west"], "homePlayerID": 0},
+
+        {"x": -6, "z": 2, "type": 1, "connections": ["south"], "homePlayerID": 0},
+        {"x": -5, "z": 2, "type": 2, "connections": ["west", "east"], "homePlayerID": 0},
+        {"x": -4, "z": 2, "type": 3, "connections": ["east"], "homePlayerID": 0},
+        {"x": -3, "z": 2, "type": 6, "connections": ["south"], "homePlayerID": 0},
+        {"x": 2, "z": 2, "type": 1, "connections": ["north"], "homePlayerID": 0},
+        {"x": 5, "z": 2, "type": 2, "connections": ["north"], "homePlayerID": 1},
+
+        {"x": -6, "z": 1, "type": 7, "connections": ["south"], "homePlayerID": 0},
+        {"x": -3, "z": 1, "type": 1, "connections": ["west", "east"], "homePlayerID": 0},
+        {"x": 2, "z": 1, "type": 1, "connections": ["east"], "homePlayerID": 0},
+        {"x": 5, "z": 1, "type": 4, "connections": ["south"], "homePlayerID": 3},
+
+        {"x": -6, "z": 0, "type": 4, "connections": ["south"], "homePlayerID": 4},
+        {"x": -3, "z": 0, "type": 1, "connections": ["west", "east"], "homePlayerID": 0},
+        {"x": 2, "z": 0, "type": 1, "connections": ["east"], "homePlayerID": 0},
+        {"x": 5, "z": 0, "type": 7, "connections": ["south"], "homePlayerID": 0},
+
+        {"x": -6, "z": -1, "type": 2, "connections": ["south"], "homePlayerID": 0},
+        {"x": -3, "z": -1, "type": 1, "connections": ["south"], "homePlayerID": 0},
+        {"x": 2, "z": -1, "type": 6, "connections": ["north"], "homePlayerID": 0},
+        {"x": 3, "z": -1, "type": 3, "connections": ["west"], "homePlayerID": 0},
+        {"x": 4, "z": -1, "type": 2, "connections": ["east", "west"], "homePlayerID": 0},
+        {"x": 5, "z": -1, "type": 1, "connections": ["north"], "homePlayerID": 0},
+
+        {"x": -6, "z": -2, "type": 6, "connections": ["east"], "homePlayerID": 0},
+        {"x": -5, "z": -2, "type": 5, "connections": ["south"], "homePlayerID": 0},
+        {"x": -4, "z": -2, "type": 2, "connections": ["west"], "homePlayerID": 0},
+        {"x": -3, "z": -2, "type": 5, "connections": ["west", "east"], "homePlayerID": 0},
+        {"x": -2, "z": -2, "type": 6, "connections": ["east"], "homePlayerID": 0},
+        {"x": -1, "z": -2, "type": 1, "connections": ["east"], "homePlayerID": 1},
+        {"x": 0, "z": -2, "type": 1, "connections": ["east"], "homePlayerID": 0},
+        {"x": 1, "z": -2, "type": 1, "connections": ["east"], "homePlayerID": 0},
+        {"x": 2, "z": -2, "type": 5, "connections": ["south", "north"], "homePlayerID": 0},
+        {"x": 4, "z": -2, "type": 1, "connections": ["north"], "homePlayerID": 0},
+
+        {"x": -5, "z": -3, "type": 3, "connections": ["south"], "homePlayerID": 0},
+        {"x": -2, "z": -3, "type": 3, "connections": ["north"], "homePlayerID": 0},
+        {"x": 2, "z": -3, "type": 2, "connections": ["south"], "homePlayerID": 0},
+        {"x": 4, "z": -3, "type": 5, "connections": ["north"], "homePlayerID": 0},
+
+        {"x": -5, "z": -4, "type": 4, "connections": ["east"], "homePlayerID": 5},
+        {"x": -4, "z": -4, "type": 5, "connections": ["east"], "homePlayerID": 0},
+        {"x": -3, "z": -4, "type": 1, "connections": ["east"], "homePlayerID": 0},
+        {"x": -2, "z": -4, "type": 2, "connections": ["south", "north"], "homePlayerID": 0},
+        {"x": 2, "z": -4, "type": 5, "connections": ["east"], "homePlayerID": 0},
+        {"x": 3, "z": -4, "type": 3, "connections": ["east"], "homePlayerID": 0},
+        {"x": 4, "z": -4, "type": 4, "connections": ["north"], "homePlayerID": 6},
+
+        {"x": -2, "z": -5, "type": 1, "connections": ["east"], "homePlayerID": 0},
+        {"x": -1, "z": -5, "type": 7, "connections": ["east"], "homePlayerID": 0},
+        {"x": 0, "z": -5, "type": 5, "connections": ["east"], "homePlayerID": 0},
+        {"x": 1, "z": -5, "type": 2, "connections": ["south", "north"], "homePlayerID": 0},
+        {"x": 2, "z": -5, "type": 6, "connections": ["east"], "homePlayerID": 0}
+
+    ],
+    "arrows": [
+        {"x": 1, "z": 5.5, "rotation": "north"},
+        {"x": -3.5, "z": 5, "rotation": "west"},
+        {"x": 1, "z": 4.5, "rotation": "south"},
+        {"x": -3, "z": 3.5, "rotation": "north"},
+        {"x": 4, "z": 3.5, "rotation": "north"},
+        {"x": 0.5, "z": 3, "rotation": "west"},
+        {"x": 1.5, "z": 3, "rotation": "west"},
+        {"x": 2.5, "z": 3, "rotation": "east"},
+        {"x": -3, "z": 2.5, "rotation": "south"},
+        {"x": -5.5, "z": 2, "rotation": "west"},
+        {"x": -4.5, "z": 2, "rotation": "east"},
+        {"x": -3, "z": 1.5, "rotation": "south"},
+        {"x": 2, "z": -0.5, "rotation": "north"},
+        {"x": 3.5, "z": -1, "rotation": "west"},
+        {"x": 4.5, "z": -1, "rotation": "east"},
+        {"x": 2, "z": -1.5, "rotation": "north"},
+        {"x": -3.5, "z": -2, "rotation": "west"},
+        {"x": -2.5, "z": -2, "rotation": "east"},
+        {"x": -1.5, "z": -2, "rotation": "east"},
+        {"x": -5, "z": -2.5, "rotation": "south"},
+        {"x": 2, "z": -2.5, "rotation": "south"},
+        {"x": -2, "z": -3.5, "rotation": "north"},
+        {"x": 2.5, "z": -4, "rotation": "east"},
+        {"x": -2, "z": -4.5, "rotation": "south"}
     ]
 }

@@ -240,6 +240,54 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &787033431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 787033433}
+  - component: {fileID: 787033432}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &787033432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787033431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a41c841d747bebc4dbfca5f9dd2cb1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileContainer: {fileID: 1812215593}
+  darkOverlayPrefab: {fileID: 0}
+  highlightOverlayPrefab: {fileID: 0}
+  allTiles: []
+--- !u!4 &787033433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787033431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.4391621, y: 1.9508476, z: -3.3090608}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1289877997
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,6 +299,7 @@ GameObject:
   - component: {fileID: 1289878000}
   - component: {fileID: 1289877999}
   - component: {fileID: 1289877998}
+  - component: {fileID: 1289878001}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -325,13 +374,57 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1289877997}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
+--- !u!114 &1289878001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289877997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &1812215593
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 1812215593}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1149075, y: -1.8705951, z: 1.6863977}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -398,10 +491,11 @@ MonoBehaviour:
   normalTileMaterial: {fileID: 2100000, guid: 343f1e39e8b940940b17adbee8bfa54a, type: 2}
   gainPointTileMaterial: {fileID: 2100000, guid: 3e2417c2e7cf95043b5b76851fac171e, type: 2}
   dropPointTileMaterial: {fileID: 2100000, guid: e2d39f2c3113e8b45a934288da3399b3, type: 2}
-  homeTileMaterial: {fileID: 2100000, guid: 343f1e39e8b940940b17adbee8bfa54a, type: 2}
+  homeTileMaterial: {fileID: 2100000, guid: 0c39f36da91a1ac45bb229b3a06a794c, type: 2}
   quizTileMaterial: {fileID: 2100000, guid: 396afb3b11b4240499787db34d90845a, type: 2}
   portalTileMaterial: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
   rerollTileMaterial: {fileID: 2100000, guid: b86f88e96d38d7a419087aa02d29dd4c, type: 2}
+  arrowPrefab: {fileID: 7834789406746053056, guid: 1d8c0d560492d3144a1af957f617d886, type: 3}
 --- !u!4 &2125988001
 Transform:
   m_ObjectHideFlags: 0
@@ -439,3 +533,4 @@ SceneRoots:
   - {fileID: 332135772}
   - {fileID: 2125988001}
   - {fileID: 1812215594}
+  - {fileID: 787033433}
