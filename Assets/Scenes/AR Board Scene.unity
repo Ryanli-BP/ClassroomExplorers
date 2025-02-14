@@ -3236,6 +3236,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IconButton - Filled - cyan
       objectReference: {fileID: 0}
+    - target: {fileID: 1342446228181343551, guid: 410afebfd531f402f9f9f9a7cc8208cb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3872,6 +3876,10 @@ PrefabInstance:
       propertyPath: _numOfPlayers
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      propertyPath: avatarGenerator
+      value: 
+      objectReference: {fileID: 2087208022}
     - target: {fileID: 8965464250907567936, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       propertyPath: hats.Array.size
       value: 8
@@ -9035,7 +9043,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1001776129
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9057,9 +9065,9 @@ RectTransform:
   - {fileID: 553564489}
   m_Father: {fileID: 2087208018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -350}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1005056032
@@ -16750,7 +16758,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: b31b7d8df8832d14b9c4622664931817, type: 3}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -18807,6 +18815,7 @@ GameObject:
   - component: {fileID: 2087208018}
   - component: {fileID: 2087208021}
   - component: {fileID: 2087208019}
+  - component: {fileID: 2087208022}
   m_Layer: 5
   m_Name: Avatars
   m_TagString: Untagged
@@ -18873,6 +18882,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2087208017}
   m_CullTransparentMesh: 1
+--- !u!114 &2087208022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087208017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318946c9a90bb4562980e5254ccf9ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderTexture: {fileID: 8400000, guid: f534d10fabac147969a4719343ff54be, type: 2}
+  avatarDisplay: {fileID: 1832362817}
 --- !u!1001 &2107093683
 PrefabInstance:
   m_ObjectHideFlags: 0

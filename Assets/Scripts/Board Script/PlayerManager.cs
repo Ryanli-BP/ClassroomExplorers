@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
+    public AvatarGenerator avatarGenerator;
 
     [SerializeField] private Player playerPrefab;  // Main player prefab
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
@@ -51,6 +52,7 @@ public class PlayerManager : MonoBehaviour
         {
             // Instantiate the player prefab
             Player playerObject = Instantiate(playerPrefab, transform);
+            // change the layer for avatar generation
             playerObject.SetPlayerID(i + 1);
             // Set the player appearance before adding to the list
             int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
@@ -59,6 +61,8 @@ public class PlayerManager : MonoBehaviour
             playerObject.gameObject.SetActive(true);
             
             SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
+            playerObject.gameObject.layer = LayerMask.NameToLayer("AvatarOnly");
+            avatarGenerator.GenerateAvatar(playerObject.gameObject);
             
             // Add the instantiated GameObject (with Player script) to the players list
             players.Add(playerObject);
