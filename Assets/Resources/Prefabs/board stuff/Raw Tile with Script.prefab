@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5178368228588049403}
   - component: {fileID: 5372959252586001785}
   - component: {fileID: 3921019634591393960}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Raw Tile with Script
   m_TagString: Untagged
   m_Icon: {fileID: 0}

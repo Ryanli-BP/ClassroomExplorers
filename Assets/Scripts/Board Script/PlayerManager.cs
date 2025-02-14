@@ -43,6 +43,11 @@ public class PlayerManager : MonoBehaviour
         InitialisePlayers();
         //AssignPlayersToHomes();
         SpawnAllPlayersAtHome();
+        // Generate avatars after players list is fully populated
+        for (int i = 0; i < players.Count; i++)
+        {
+            avatarGenerator.GenerateAvatar(players[i].gameObject, i);
+        }
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
@@ -70,7 +75,6 @@ public class PlayerManager : MonoBehaviour
             playerObject.gameObject.SetActive(true);
             
             SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
-            avatarGenerator.GenerateAvatar(playerObject.gameObject, i);
             
             // Add the instantiated GameObject (with Player script) to the players list
             players.Add(playerObject);
