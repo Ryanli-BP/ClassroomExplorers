@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using UnityEditor;
+using UnityEngine.Rendering;
 
 [Serializable]
 public class ArrowData
@@ -54,6 +55,8 @@ public class BoardGenerator : MonoBehaviour
     private const float ARROW_DEFAULT_X_ROTATION = 90f;
     private const float ARROW_DEFAULT_Z_ROTATION = 0f;
     private const float ARROW_DEFAULT_SCALE = 15f;
+
+    public const float BoardScale = 1.8f;
 
     public static bool BoardGenFinished { get; private set; } = false;
 
@@ -176,7 +179,7 @@ public class BoardGenerator : MonoBehaviour
             serializedTile.ApplyModifiedProperties();
         }
 
-        tileContainer.transform.localScale = Vector3.one * 1.8f * ARBoardPlacement.worldScale;
+        tileContainer.transform.localScale = Vector3.one * BoardScale * ARBoardPlacement.worldScale;
 
         BoardGenFinished = true;
     }
