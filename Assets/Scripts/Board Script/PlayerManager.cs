@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     public AvatarGenerator avatarGenerator;
 
-    public const float AboveTileOffset = 0.7f; // Offset to place player above the tile
+    public const float AboveTileOffset = 0.5f; // Offset to place player above the tile
 
     [SerializeField] private Player playerPrefab;  // Main player prefab
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
@@ -194,7 +194,7 @@ public class PlayerManager : MonoBehaviour
         if (homeTile != null)
         {
             Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += AboveTileOffset * ARBoardPlacement.worldScale; // Adjust Y offset
+            homePosition.y += AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");

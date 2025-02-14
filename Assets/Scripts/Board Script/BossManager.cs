@@ -5,6 +5,7 @@ public class BossManager : MonoBehaviour
 {
     public static BossManager Instance;
     [SerializeField] private Boss bossObject;
+    public const float AboveTileOffset = 0.5f;
     public Boss activeBoss { get; private set; }
 
     private void Awake()
@@ -43,17 +44,19 @@ public class BossManager : MonoBehaviour
     {
         bossObject.gameObject.SetActive(true);
         activeBoss = bossObject;
-        SpawnBossAtStartTile();
+        StartCoroutine(SpawnBossAtStartTile());
     }
 
-    private void SpawnBossAtStartTile()
+    private IEnumerator SpawnBossAtStartTile()
     {
+        yield return new WaitUntil(() => GameInitializer.Instance.IsManagerReady("TileManager"));
+
         Tile startTile = TileManager.Instance.allTiles[0];
         startTile.BossOnTile = true;
         if (startTile != null)
         {
             Vector3 spawnPosition = startTile.transform.position;
-            spawnPosition.y += 0.2f * ARBoardPlacement.worldScale;
+            spawnPosition.y += AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale;
             activeBoss.transform.position = spawnPosition;
             activeBoss.Movement.CurrentTile = startTile;
             Debug.Log("Boss spawned at start tile");

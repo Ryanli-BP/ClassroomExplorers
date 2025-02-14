@@ -13807,8 +13807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35d3f9bae4da8f4695386cd83b75591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMode: 0
-  _numOfPlayers: 2
+  currentMode: 2
+  _numOfPlayers: 5
 --- !u!4 &1482619883
 Transform:
   m_ObjectHideFlags: 0
@@ -14910,7 +14910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 142067106561908870, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 142067106561908871, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
       propertyPath: m_Pivot.x
@@ -14978,7 +14978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 142067106561908871, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -250
+      value: -175
       objectReference: {fileID: 0}
     - target: {fileID: 142067106561908871, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14991,6 +14991,10 @@ PrefabInstance:
     - target: {fileID: 142067106561908871, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8894976897323349693, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 250
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
