@@ -237,13 +237,19 @@ public class TileManager : MonoBehaviour
     {
         if (highlightOverlayPrefab != null)
         {
-            
+            float heightOffset = 0.5f * BoardGenerator.BoardScale * ARBoardPlacement.worldScale;
+            Vector3 tileCenter = tile.transform.position;
+            Vector3 overlayPosition = new Vector3(
+                tileCenter.x,
+                tileCenter.y + heightOffset + 0.002f,
+                tileCenter.z
+            );
+
             Quaternion highlightRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(90, 0, 0);
-            GameObject highlight = Instantiate(highlightOverlayPrefab, 
-            tile.transform.position + new Vector3(0, 0.005f, 0), 
-            highlightRotation);
+            GameObject highlight = Instantiate(highlightOverlayPrefab, overlayPosition, highlightRotation);
                 
-            highlight.transform.localScale = highlight.transform.localScale * ARBoardPlacement.worldScale;
+            // Use the prefab's original scale multiplied by board scale
+            highlight.transform.localScale = ARBoardPlacement.worldScale * BoardGenerator.BoardScale * highlightOverlayPrefab.transform.localScale;
             highlight.SetActive(true);
             activeHighlights.Add(highlight);
         }
@@ -261,10 +267,16 @@ public class TileManager : MonoBehaviour
         {
             if (!validTiles.Contains(tile))
             {
-                GameObject darkOverlay = Instantiate(darkOverlayPrefab, 
-                tile.transform.position + new Vector3(0, 0.003f, 0), 
-                ARBoardPlacement.boardRotation);
-                darkOverlay.transform.localScale = darkOverlay.transform.localScale * ARBoardPlacement.worldScale;
+                float heightOffset = 0.5f * BoardGenerator.BoardScale * ARBoardPlacement.worldScale;
+                Vector3 tileCenter = tile.transform.position;
+                Vector3 overlayPosition = new Vector3(
+                    tileCenter.x,
+                    tileCenter.y + heightOffset + 0.001f, // Small additional offset to prevent z-fighting
+                    tileCenter.z
+                );
+
+                GameObject darkOverlay = Instantiate(darkOverlayPrefab, overlayPosition, ARBoardPlacement.boardRotation);
+                darkOverlay.transform.localScale = ARBoardPlacement.worldScale * BoardGenerator.BoardScale * darkOverlayPrefab.transform.localScale;
                 darkOverlay.SetActive(true);
                 activeDarkOverlays.Add(darkOverlay);
             }
