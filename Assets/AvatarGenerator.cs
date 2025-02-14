@@ -48,7 +48,10 @@ public class AvatarGenerator : MonoBehaviour
         avatarCamera.transform.LookAt(bounds.center + Vector3.up * 0f); // Focus on upper body
 
         // Render the image
+        RenderTexture.active = renderTexture;
+        GL.Clear(true, true, Color.clear);
         avatarCamera.Render();
+        RenderTexture.active = null;
 
         // Convert the RenderTexture to a UI image
         Texture2D avatarTexture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false);
