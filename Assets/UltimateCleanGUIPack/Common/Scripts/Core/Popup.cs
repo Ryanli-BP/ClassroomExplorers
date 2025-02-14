@@ -1,24 +1,20 @@
-// Copyright (C) 2019 gamevanilla - All rights reserved.
-// This code can only be used under the standard Unity Asset Store EULA,
-// a copy of which is available at https://unity.com/legal/as-terms.
-
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+
+using TMPro; // If using TextMeshPro
 
 namespace UltimateClean
 {
-    /// <summary>
-    // This class is responsible for popup management. Popups follow the traditional behavior of
-    // automatically blocking the input on elements behind it and adding a background texture.
-    /// </summary>
     public class Popup : MonoBehaviour
     {
         public Color backgroundColor = new Color(10.0f / 255.0f, 10.0f / 255.0f, 10.0f / 255.0f, 0.6f);
-
         public float destroyTime = 0.5f;
 
         private GameObject m_background;
+
+        // Reference to text field inside popup UI (assign in Inspector)
+        public TextMeshProUGUI playerInfoText; 
 
         public void Open()
         {
@@ -37,10 +33,19 @@ namespace UltimateClean
             StartCoroutine(RunPopupDestroy());
         }
 
-        // We destroy the popup automatically 0.5 seconds after closing it.
-        // The destruction is performed asynchronously via a coroutine. If you
-        // want to destroy the popup at the exact time its closing animation is
-        // finished, you can use an animation event instead.
+        // New Method: Set Player Info
+        public void SetPlayerInfo(int playerID)
+        {
+            if (playerInfoText != null)
+            {
+                playerInfoText.text = $"Player ID: {playerID}";
+            }
+            else
+            {
+                Debug.LogWarning("Player Info Text is not assigned!");
+            }
+        }
+
         private IEnumerator RunPopupDestroy()
         {
             yield return new WaitForSeconds(destroyTime);
@@ -58,12 +63,9 @@ namespace UltimateClean
             var image = m_background.AddComponent<Image>();
             var rect = new Rect(0, 0, bgTex.width, bgTex.height);
             var sprite = Sprite.Create(bgTex, rect, new Vector2(0.5f, 0.5f), 1);
-            // Clone the material, which is the default UI material, to avoid changing it permanently.
             image.material = new Material(image.material);
             image.material.mainTexture = bgTex;
             image.sprite = sprite;
-            var newColor = image.color;
-            image.color = newColor;
             image.canvasRenderer.SetAlpha(0.0f);
             image.CrossFadeAlpha(1.0f, 0.4f, false);
 
