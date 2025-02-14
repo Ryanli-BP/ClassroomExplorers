@@ -16,6 +16,7 @@ namespace UltimateClean
         public virtual void OpenPopup()
         {
             int playerID = GetPlayerIDFromName(); // Extract Player ID
+            Debug.Log($"Player ID on infoPage: {playerID}");
 
             m_popup = Instantiate(popupPrefab, m_canvas.transform, false);
             m_popup.SetActive(true);
@@ -36,7 +37,7 @@ namespace UltimateClean
             string[] nameParts = objectName.Split(' '); 
             if (nameParts.Length > 1 && int.TryParse(nameParts[1], out int id))
             {
-                return id; // Extracted Player ID
+                return id-1; // Extracted Player ID
             }
             return -1; // Invalid ID if parsing fails
         }
