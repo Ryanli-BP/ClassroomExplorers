@@ -6,6 +6,7 @@ using System.Collections;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
+    public AvatarGenerator avatarGenerator;
 
     public const float AboveTileOffset = 0.7f; // Offset to place player above the tile
 
@@ -69,6 +70,7 @@ public class PlayerManager : MonoBehaviour
             playerObject.gameObject.SetActive(true);
             
             SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
+            avatarGenerator.GenerateAvatar(playerObject.gameObject, i);
             
             // Add the instantiated GameObject (with Player script) to the players list
             players.Add(playerObject);
