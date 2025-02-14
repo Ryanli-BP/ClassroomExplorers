@@ -19,6 +19,8 @@ public class AvatarGenerator : MonoBehaviour
             avatarCamera.backgroundColor = Color.clear;  // Transparent background
             avatarCamera.orthographic = false;  // Use perspective for better 3D effect
             avatarCamera.targetTexture = renderTexture;
+            
+            avatarCamera.cullingMask = ~(1 << LayerMask.NameToLayer("Background"));
         }
 
         if (GameObject.Find("AvatarLight") == null) // Avoid creating multiple lights
