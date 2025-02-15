@@ -10,7 +10,7 @@ namespace UltimateClean
     {
         public RawImage avatarDisplay;
         public GameObject healthBar;
-        public TextMeshProUGUI pointsBar;
+        public GameObject pointsBar;
         public TextMeshProUGUI levelText;
         public TextMeshProUGUI AttackBonus;
         public TextMeshProUGUI DefenseBonus;
@@ -117,6 +117,7 @@ namespace UltimateClean
                     triplePointsBuff.SetActive(false);  // Hide the TriplePoints buff
                 }
 
+                //health bar display
                 var healthAnimation = healthBar.GetComponent<HealthAnimation>();
                 if (healthAnimation != null)
                 {
@@ -127,7 +128,18 @@ namespace UltimateClean
                     Debug.LogError("HealthAnimation component missing on healthBar GameObject.");
                 }
 
-                pointsBar.text = $"{player.Points}";
+                // Animate Points Bar
+                var pointsAnimation = pointsBar.GetComponent<PointsAnimation>();
+                if (pointsAnimation != null)
+                {
+                    pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetLevelUpPoints(player.Level));
+                }
+                else
+                {
+                    Debug.LogError("PointsAnimation component missing on pointsBar GameObject.");
+                }
+
+
                 levelText.text = $"Level: {player.Level}";
 
                 // Display attack, defense, and evade bonuses
