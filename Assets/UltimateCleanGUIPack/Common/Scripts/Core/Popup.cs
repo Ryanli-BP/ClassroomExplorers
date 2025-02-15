@@ -9,7 +9,7 @@ namespace UltimateClean
     public class Popup : MonoBehaviour
     {
         public RawImage avatarDisplay;
-        public TextMeshProUGUI healthBar;
+        public GameObject healthBar;
         public TextMeshProUGUI pointsBar;
         public TextMeshProUGUI levelText;
         public TextMeshProUGUI AttackBonus;
@@ -117,8 +117,16 @@ namespace UltimateClean
                     triplePointsBuff.SetActive(false);  // Hide the TriplePoints buff
                 }
 
-                // Display health, points, and level
-                healthBar.text = $"{player.Health}/10";
+                var healthAnimation = healthBar.GetComponent<HealthAnimation>();
+                if (healthAnimation != null)
+                {
+                    healthAnimation.AnimateHealth(player.Health, Player.MAX_HEALTH);
+                }
+                else
+                {
+                    Debug.LogError("HealthAnimation component missing on healthBar GameObject.");
+                }
+
                 pointsBar.text = $"{player.Points}";
                 levelText.text = $"Level: {player.Level}";
 
