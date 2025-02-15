@@ -13823,7 +13823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35d3f9bae4da8f4695386cd83b75591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMode: 2
+  currentMode: 0
   _numOfPlayers: 2
 --- !u!4 &1482619883
 Transform:

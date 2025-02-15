@@ -132,7 +132,8 @@ namespace UltimateClean
                 var pointsAnimation = pointsBar.GetComponent<PointsAnimation>();
                 if (pointsAnimation != null)
                 {
-                    pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetLevelUpPoints(player.Level));
+                    // Ensure AnimatePoints is a coroutine and start it
+                    StartCoroutine(pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetLevelUpPoints(player.Level)));
                 }
                 else
                 {
