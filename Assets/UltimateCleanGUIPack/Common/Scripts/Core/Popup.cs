@@ -8,8 +8,9 @@ namespace UltimateClean
 {
     public class Popup : MonoBehaviour
     {
-        public TextMeshProUGUI healthBar;
-        public TextMeshProUGUI pointsBar;
+        public RawImage avatarDisplay;
+        public GameObject healthBar;
+        public GameObject pointsBar;
         public TextMeshProUGUI levelText;
         public TextMeshProUGUI AttackBonus;
         public TextMeshProUGUI DefenseBonus;
@@ -81,6 +82,15 @@ namespace UltimateClean
             }
         }
 
+        public void SetAvatarImage(Texture texture){
+            if(avatarDisplay != null){
+                avatarDisplay.texture = texture;
+            }
+            else{
+                Debug.Log("Avatar display RawImage not assigned in the pop up prefab.");
+            }
+        }
+
         private void DisplayPlayerInfo()
         {
             if (healthBar != null && pointsBar != null && levelText != null && player != null)
@@ -107,9 +117,30 @@ namespace UltimateClean
                     triplePointsBuff.SetActive(false);  // Hide the TriplePoints buff
                 }
 
-                // Display health, points, and level
-                healthBar.text = $"{player.Health}/10";
-                pointsBar.text = $"{player.Points}";
+                //health bar display
+                var healthAnimation = healthBar.GetComponent<HealthAnimation>();
+                if (healthAnimation != null)
+                {
+                    healthAnimation.AnimateHealth(player.Health, Player.MAX_HEALTH);
+                }
+                else
+                {
+                    Debug.LogError("HealthAnimation component missing on healthBar GameObject.");
+                }
+
+                // Animate Points Bar
+                var pointsAnimation = pointsBar.GetComponent<PointsAnimation>();
+                if (pointsAnimation != null)
+                {
+                    // Ensure AnimatePoints is a coroutine and start it
+                    StartCoroutine(pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetLevelUpPoints(player.Level)));
+                }
+                else
+                {
+                    Debug.LogError("PointsAnimation component missing on pointsBar GameObject.");
+                }
+
+
                 levelText.text = $"Level: {player.Level}";
 
                 // Display attack, defense, and evade bonuses
