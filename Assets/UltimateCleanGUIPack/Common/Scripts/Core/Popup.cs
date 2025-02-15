@@ -1,25 +1,56 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
-using TMPro; // If using TextMeshPro
+using System.Linq;
+using TMPro;
 
 namespace UltimateClean
 {
     public class Popup : MonoBehaviour
     {
-        public Color backgroundColor = new Color(10.0f / 255.0f, 10.0f / 255.0f, 10.0f / 255.0f, 0.6f);
+        public TextMeshProUGUI healthBar;
+        public TextMeshProUGUI pointsBar;
+        public TextMeshProUGUI levelText;
+        public TextMeshProUGUI AttackBonus;
+        public TextMeshProUGUI DefenseBonus;
+        public TextMeshProUGUI DodgeBonus;
+        public GameObject doublePointsBuff;
+        public GameObject triplePointsBuff;
+        public GameObject ExtraDiceBuff;
+
+
+        public Color backgroundColor = new Color(10.0f / 255.0f, 10.0f / 255.0f, 0.6f);
         public float destroyTime = 0.5f;
 
         private GameObject m_background;
         private int playerID;
+        private Player player;
 
-        // Reference to text field inside popup UI (assign in Inspector)
         public TextMeshProUGUI playerInfoText; 
 
         public void Open()
         {
             Debug.Log($"Player ID on infoPage: {playerID}");
+
+            if (PlayerManager.Instance != null)
+            {
+                player = PlayerManager.Instance.GetPlayerList()[playerID];
+
+                if (player != null)
+                {
+                    Debug.Log($"Player Points: {player.Points}");
+                    DisplayPlayerInfo();
+                }
+                else
+                {
+                    Debug.LogError($"Player with ID {playerID} not found!");
+                }
+            }
+            else
+            {
+                Debug.LogError("PlayerManager is not initialized or playerID is invalid!");
+            }
+
             AddBackground();
         }
 
@@ -35,21 +66,76 @@ namespace UltimateClean
             StartCoroutine(RunPopupDestroy());
         }
 
-        // New Method: Set Player Info
         public void SetPlayerInfo(int playerID)
         {
-            this.playerID = playerID; // Assign the player ID here
+            this.playerID = playerID;
 
-            // Update the text field in the popup
-            if (playerInfoText != null)
+            if (PlayerManager.Instance != null)
             {
-                playerInfoText.text = $"Player ID: {playerID}";
+                player = PlayerManager.Instance.GetPlayerList()[playerID];
+                DisplayPlayerInfo();
             }
             else
             {
-                Debug.LogWarning("Player Info Text is not assigned!");
+                Debug.LogError("PlayerManager instance not found or invalid playerID!");
             }
         }
+
+        private void DisplayPlayerInfo()
+        {
+            if (healthBar != null && pointsBar != null && levelText != null && player != null)
+            {
+
+                var activeBuffs = player.PlayerBuffs.GetActiveBuffs(); // Get active buffs list from the player
+
+                // Check and display DoublePoints and TriplePoints buffs
+                if (activeBuffs.Any(b => b.Type == BuffType.DoublePoints))
+                {
+                    doublePointsBuff.SetActive(true);  // Show the DoublePoints buff
+                }
+                else
+                {
+                    doublePointsBuff.SetActive(false);  // Hide the DoublePoints buff
+                }
+
+                if (activeBuffs.Any(b => b.Type == BuffType.TriplePoints))
+                {
+                    triplePointsBuff.SetActive(true);  // Show the TriplePoints buff
+                }
+                else
+                {
+                    triplePointsBuff.SetActive(false);  // Hide the TriplePoints buff
+                }
+
+                // Display health, points, and level
+                healthBar.text = $"{player.Health}/10";
+                pointsBar.text = $"{player.Points}";
+                levelText.text = $"Level: {player.Level}";
+
+                // Display attack, defense, and evade bonuses
+                int attackBonus = activeBuffs.Where(b => b.Type == BuffType.AttackUp).Sum(b => b.Value);
+                int defenseBonus = activeBuffs.Where(b => b.Type == BuffType.DefenseUp).Sum(b => b.Value);
+                int evadeBonus = activeBuffs.Where(b => b.Type == BuffType.EvadeUp).Sum(b => b.Value);
+                int ExtraDice = activeBuffs.Where(b => b.Type == BuffType.ExtraDice).Sum(b => b.Value);
+
+                if(ExtraDice > 0){
+                    ExtraDiceBuff.SetActive(true);
+                }
+                else{
+                    ExtraDiceBuff.SetActive(false);
+                }
+                AttackBonus.text = $"{attackBonus}";
+                DefenseBonus.text = $"{defenseBonus}";
+                DodgeBonus.text = $"{evadeBonus}";
+
+            }
+            else
+            {
+                Debug.LogWarning("One or more UI elements are not assigned or player is null!");
+            }
+        }
+
+
 
         private IEnumerator RunPopupDestroy()
         {
