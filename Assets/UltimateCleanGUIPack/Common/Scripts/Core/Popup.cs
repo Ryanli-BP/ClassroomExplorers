@@ -8,6 +8,7 @@ namespace UltimateClean
 {
     public class Popup : MonoBehaviour
     {
+        public RawImage avatarDisplay;
         public TextMeshProUGUI healthBar;
         public TextMeshProUGUI pointsBar;
         public TextMeshProUGUI levelText;
@@ -78,6 +79,15 @@ namespace UltimateClean
             else
             {
                 Debug.LogError("PlayerManager instance not found or invalid playerID!");
+            }
+        }
+
+        public void SetAvatarImage(Texture texture){
+            if(avatarDisplay != null){
+                avatarDisplay.texture = texture;
+            }
+            else{
+                Debug.Log("Avatar display RawImage not assigned in the pop up prefab.");
             }
         }
 

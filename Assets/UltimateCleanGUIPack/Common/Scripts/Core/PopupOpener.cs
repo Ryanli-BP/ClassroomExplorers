@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UltimateClean
 {
@@ -22,12 +23,29 @@ namespace UltimateClean
             m_popup.SetActive(true);
             m_popup.transform.localScale = Vector3.zero;
 
-            // Pass player ID to the popup
+            // Find the RawImage in Mask -> Avatar
+            RawImage avatarImage = transform.Find("Mask/Avatar")?.GetComponent<RawImage>();
+
+            // Pass player ID and avatar texture to the popup
             Popup popupScript = m_popup.GetComponent<Popup>();
             if (popupScript != null)
             {
                 popupScript.SetPlayerInfo(playerID);
+
+                if (avatarImage != null)
+                {
+                    popupScript.SetAvatarImage(avatarImage.texture);
+                }
+                else
+                {
+                    Debug.LogError("Avatar RawImage not found in hierarchy.");
+                }
             }
+            else
+            {
+                Debug.LogError("Popup script not found on instantiated popup prefab.");
+            }
+
             m_popup.GetComponent<Popup>().Open();
         }
 
@@ -37,7 +55,7 @@ namespace UltimateClean
             string[] nameParts = objectName.Split(' '); 
             if (nameParts.Length > 1 && int.TryParse(nameParts[1], out int id))
             {
-                return id-1; // Extracted Player ID
+                return id - 1; // Extracted Player ID
             }
             return -1; // Invalid ID if parsing fails
         }
