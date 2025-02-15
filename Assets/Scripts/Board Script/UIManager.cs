@@ -44,6 +44,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentTurnText; 
     [SerializeField] private GameObject NotificationBar;
     [SerializeField] private TextMeshProUGUI NotificationText;
+    [SerializeField] private TextMeshProUGUI NotificationTitle;
+    
 
     [SerializeField] private TextMeshProUGUI reviveCounterText;
     private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
@@ -376,13 +378,36 @@ public class UIManager : MonoBehaviour
         Destroy(damageText.gameObject);
     }
 
-    public IEnumerator DisplayRewardNotification(string message)
+    public IEnumerator DisplayRewardNotification(string message, BuffType buffType)
     {
         NotificationBar.SetActive(true);
         NotificationText.text = message;
+        NotificationTitle.text = GetBuffTitle(buffType);
         yield return new WaitForSeconds(2f);
         NotificationBar.SetActive(false);
     }
+
+    public string GetBuffTitle(BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case BuffType.AttackUp:
+                return "Attack Bonus";
+            case BuffType.DefenseUp:
+                return "Defense Bonus";
+            case BuffType.EvadeUp:
+                return "Evade Bonus";
+            case BuffType.DoublePoints:
+                return "Double Points Buff";
+            case BuffType.TriplePoints:
+                return "Triple Points Buff";
+            case BuffType.ExtraDice:
+                return "Extra Dice Buff";
+            default:
+                return "Unknown Buff";
+        }
+    }
+
 
     public void UpdateRound(int roundNumber)
     {

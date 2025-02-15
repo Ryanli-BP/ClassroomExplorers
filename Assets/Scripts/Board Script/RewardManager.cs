@@ -74,7 +74,7 @@ public class RewardManager : MonoBehaviour
 
         var selectedReward = SelectRandomReward(rewardTier);
         player.PlayerBuffs.AddBuff(selectedReward.BuffType, selectedReward.Value, selectedReward.Duration);
-        StartCoroutine(UIManager.Instance.DisplayRewardNotification(selectedReward.Description));
+        StartCoroutine(UIManager.Instance.DisplayRewardNotification(selectedReward.Description, selectedReward.BuffType));
         Debug.Log($"{rewardTier}: {selectedReward.Description}");
     }
 
