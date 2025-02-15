@@ -3073,6 +3073,14 @@ MonoBehaviour:
   NotificationBar: {fileID: 1385985817}
   NotificationText: {fileID: 1047001188}
   NotificationTitle: {fileID: 1161894727}
+  BuffIcons:
+  - {fileID: 21300000, guid: dc060d9e7dd6d464e831b2d3dd4df95f, type: 3}
+  - {fileID: 21300000, guid: a02ef9f3a87e7418ca0ad09c2d0bfb50, type: 3}
+  - {fileID: 21300000, guid: 6c820e580c31846e1989471209632c06, type: 3}
+  - {fileID: 21300000, guid: 3f7ccf0bd84d449a4910b15898a15f90, type: 3}
+  - {fileID: 21300000, guid: c086349e3f151499fa3d649cab241805, type: 3}
+  - {fileID: 21300000, guid: 9fd49aa85d07649bcab94a67fff61847, type: 3}
+  notificationIconDisplay: {fileID: 1988390881}
   reviveCounterText: {fileID: 286134046}
   rollDiceButtonPanel: {fileID: 493656809}
   evadeButtonPanel: {fileID: 999839361}
@@ -13835,7 +13843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35d3f9bae4da8f4695386cd83b75591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMode: 0
+  currentMode: 2
   _numOfPlayers: 2
 --- !u!4 &1482619883
 Transform:
@@ -16325,6 +16333,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -95.825
       objectReference: {fileID: 0}
+    - target: {fileID: 501273284196393320, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273284196393320, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273284196393323, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 501273284260851874, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_Name
       value: Notificaton
@@ -16416,6 +16436,14 @@ PrefabInstance:
     - target: {fileID: 1618999688108619070, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_SizeDelta.y
       value: 151.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 6754428087691093853, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6754428087691093853, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17187,6 +17215,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 0.5
   text: {fileID: 1479479902}
+--- !u!114 &1988390881 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2822050977190391454, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+  m_PrefabInstance: {fileID: 1872859644}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1999475348 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 142067106561908870, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
