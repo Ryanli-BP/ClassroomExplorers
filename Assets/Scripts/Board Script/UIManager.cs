@@ -377,6 +377,7 @@ public class UIManager : MonoBehaviour
         }
 
         Destroy(damageText.gameObject);
+        yield return new WaitForSeconds(1f);
     }
 
     public IEnumerator DisplayRewardNotification(string message, BuffType buffType)

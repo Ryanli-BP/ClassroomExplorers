@@ -145,6 +145,13 @@ public class TileManager : MonoBehaviour
                 GameManager.Instance.HandleReroll();
                 //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
                 break;
+            
+            case TileType.Trap:
+                Debug.Log("Trap tile");
+                int damage = UnityEngine.Random.Range(1, 5);
+                currentPlayer.LoseHealth(damage);
+                yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(currentPlayer.transform.position, damage));
+                break;
         }
 
             OnTileActionComplete = true;

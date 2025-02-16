@@ -273,16 +273,14 @@ public class CombatManager : MonoBehaviour
             target.LoseHealth(damage);
             if (damage > 0)
             {
-                UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
-                yield return new WaitForSeconds(1f);
+                yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(target.transform.position, damage));
             }
         }
         else //Defend Calculation
         {
             damage = Math.Max(1, atkValue - dfdValue);
             target.LoseHealth(damage);
-            UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
-            yield return new WaitForSeconds(1f);
+            yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(target.transform.position, damage));
         }
     }
 
