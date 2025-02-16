@@ -27,6 +27,7 @@ public class NetworkStrap : MonoBehaviourPunCallbacks
         if (!PhotonNetwork.IsConnected)
         {
             ConnectToPhoton();
+            
         }
     }
 
@@ -34,6 +35,7 @@ public class NetworkStrap : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connecting to Photon...");
         PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public override void OnConnectedToMaster()

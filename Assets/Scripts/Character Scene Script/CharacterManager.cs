@@ -16,7 +16,7 @@ public class CharacterManager : MonoBehaviour
 
     private GameObject[] hats;
     private int selectedHatIndex = 0;
-
+    
     private void Start()
     {
         InitializeBodyColors();

@@ -17,7 +17,15 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-            JoinRoom();
+            // If already in a room, update UI; otherwise, join a room.
+            if (PhotonNetwork.InRoom)
+            {
+                UpdateUI();
+            }
+            else
+            {
+                JoinRoom();
+            }
         }
     }
 
@@ -33,23 +41,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinOrCreateRoom("GameRoom", options, TypedLobby.Default);
     }
 
-
     public override void OnJoinedRoom()
     {
-        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Joined"))
-        {
-            Debug.LogWarning("Player already registered in the room!");
-            return;
-        }
+        int playerNumber = PhotonNetwork.CurrentRoom.PlayerCount; 
 
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
         {
-            { "Joined", true }
+            { "PlayerNumber", playerNumber } 
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-        Debug.Log($"Joined Room with {PhotonNetwork.CurrentRoom.PlayerCount} players");
+        PhotonNetwork.NickName = $"Player {playerNumber}"; 
 
+        Debug.Log($"Joined Room as {PhotonNetwork.NickName} with Player Number: {playerNumber}");
         UpdateUI();
 
         if (PhotonNetwork.IsMasterClient)
@@ -71,7 +75,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         UpdateUI();
     }
 
-
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         UpdateUI();
@@ -79,8 +82,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void UpdateUI()
     {
+    
         if (PhotonNetwork.InRoom)
         {
+            Debug.Log("Update Ui called");
             StringBuilder playerList = new StringBuilder();
             foreach (var player in PhotonNetwork.PlayerList)
             {
