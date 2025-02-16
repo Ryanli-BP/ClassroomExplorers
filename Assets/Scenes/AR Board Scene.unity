@@ -14089,6 +14089,7 @@ MonoBehaviour:
   quizTileMaterial: {fileID: 2100000, guid: 396afb3b11b4240499787db34d90845a, type: 2}
   portalTileMaterial: {fileID: 2100000, guid: 5d5d2e516258d29429bc67eb43c13a8d, type: 2}
   rerollTileMaterial: {fileID: 2100000, guid: b86f88e96d38d7a419087aa02d29dd4c, type: 2}
+  trapTileMaterial: {fileID: 2100000, guid: 139fdd3aa2b26fa4e865ccb98f4916b9, type: 2}
   arrowPrefab: {fileID: 7834789406746053056, guid: 1d8c0d560492d3144a1af957f617d886, type: 3}
 --- !u!1 &1538874187
 GameObject:
@@ -19554,6 +19555,7 @@ MonoBehaviour:
   darkOverlayPrefab: {fileID: 2419270645141792063, guid: bd05ffa916cc08d44a6c15e83582014d, type: 3}
   highlightOverlayPrefab: {fileID: 5145767643627895912, guid: c9b17140ff9fc2f429502e6d8581491c, type: 3}
   allTiles: []
+  anvilPrefab: {fileID: 7751153238990014187, guid: d6c890471f557904d8b05a5799eee65c, type: 3}
 --- !u!114 &4100547037576337156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20158,6 +20160,7 @@ MonoBehaviour:
   DiceToThrow: {fileID: 2841680434444505954, guid: 7349b706ad5a069488b23f52a43ab841, type: 3}
   throwForce: 4
   rollForce: 4
+  testDiceResult: 0
 --- !u!23 &6485230119713915693
 MeshRenderer:
   m_ObjectHideFlags: 0

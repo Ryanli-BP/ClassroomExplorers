@@ -40,7 +40,7 @@
         {"x": 5, "z": 2, "type": 2, "connections": ["north"], "homePlayerID": 0},
 
         {"x": -6, "z": 1, "type": 7, "connections": ["south"], "homePlayerID": 0},
-        {"x": -3, "z": 1, "type": 8, "connections": ["west", "east"], "homePlayerID": 0},
+        {"x": -3, "z": 1, "type": 8, "connections": ["south"], "homePlayerID": 0},
         {"x": 2, "z": 1, "type": 2, "connections": ["east"], "homePlayerID": 0},
         {"x": 5, "z": 1, "type": 4, "connections": ["north", "west"], "homePlayerID": 3},
         {"x": 4, "z": 1, "type": 1, "connections": ["west"], "homePlayerID": 0},
@@ -50,7 +50,7 @@
         {"x": -5, "z": 0, "type": 1, "connections": ["west"], "homePlayerID": 0},
         {"x": -4, "z": 0, "type": 1, "connections": ["west"], "homePlayerID": 0},
         {"x": -3, "z": 0, "type": 2, "connections": ["west", "east"], "homePlayerID": 0},
-        {"x": 2, "z": 0, "type": 8, "connections": ["east"], "homePlayerID": 0},
+        {"x": 2, "z": 0, "type": 8, "connections": ["north"], "homePlayerID": 0},
         {"x": 5, "z": 0, "type": 7, "connections": ["north"], "homePlayerID": 0},
 
         {"x": -6, "z": -1, "type": 2, "connections": ["south"], "homePlayerID": 0},
