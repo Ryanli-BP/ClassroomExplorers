@@ -43,6 +43,7 @@ public class QuizManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(PreloadQuestions());
+        GameInitializer.Instance.ConfirmManagerReady("QuizManager");
     }
 
     private void Update()
@@ -82,7 +83,6 @@ public class QuizManager : MonoBehaviour
             Debug.LogWarning("Questions not loaded yet, waiting...");
             yield return new WaitUntil(() => questionsLoaded);
         }
-        //yield return StartCoroutine(DownloadQuestionCSV());
 
         if (questions == null || questions.Count == 0)
         {
@@ -214,15 +214,41 @@ public class QuizManager : MonoBehaviour
         if (!string.IsNullOrEmpty(errorMessage))
         {
             Debug.LogWarning($"Failed to download questions: {errorMessage}. Falling back to local CSV file.");
-            LoadQuestionsFromCSV(fallbackPath);
+            OLDLoadQuestionsFromCSV();
+            //LoadQuestionsFromCSV(fallbackPath);
             yield break;
         }
-
-        LoadQuestionsFromCSV(savePath);
     }
+
+        private void OLDLoadQuestionsFromCSV() //used for testing on phone for now
+    {
+        if (csvFile == null)
+        {
+            Debug.LogError("CSV file not assigned in the inspector!");
+            return;
+        }
+
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HeaderValidated = null,
+            MissingFieldFound = null
+        };
+
+        using (var reader = new StringReader(csvFile.text))
+        using (var csv = new CsvReader(reader, config))
+        {
+            csv.Context.RegisterClassMap<QuestionMap>();
+            questions = new List<Question>(csv.GetRecords<Question>());
+        }
+
+        Debug.Log($"Loaded {questions.Count} questions from the CSV.");
+    }
+
 
     private void LoadQuestionsFromCSV(string filePath)
     {
+        Debug.Log($"Attempting to load CSV from: {filePath}");
+        Debug.Log($"File exists check: {File.Exists(filePath)}");
         if (!File.Exists(filePath))
         {
             Debug.LogError("CSV file not found!");

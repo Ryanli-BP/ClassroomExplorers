@@ -47,12 +47,15 @@ public class BoardGenerator : MonoBehaviour
     public GameObject arrowPrefab;
 
     private const string BOARD_LAYOUT_PATH = "boardLayout";
-    private const float TILE_SPACING = 1f;
-    private const float Y_POSITION = -0.5f;  // Default Y position for all tiles
+    private const float BASE_TILE_SPACING = 1f;
+    private const float BASE_Y_POSITION = -0.5f;  // Default Y position for all tiles
     private const float ARROW_Y_POSITION = 0f;  // Default Y position for all arrows
     private const float ARROW_DEFAULT_X_ROTATION = 90f;
     private const float ARROW_DEFAULT_Z_ROTATION = 0f;
     private const float ARROW_DEFAULT_SCALE = 15f;
+
+    private float scaledTileSpacing;
+    private float scaledYPosition;
 
     public const float BoardScale = 1.8f;
 
@@ -76,12 +79,15 @@ public class BoardGenerator : MonoBehaviour
 
     void Start()
     {
+        scaledTileSpacing = BASE_TILE_SPACING * ARBoardPlacement.worldScale;
+        scaledYPosition = BASE_Y_POSITION * ARBoardPlacement.worldScale;
+
         GenerateBoardFromJSON();
     }
 
     void GenerateBoardFromJSON()
     {
-         TextAsset jsonFile = Resources.Load<TextAsset>(BOARD_LAYOUT_PATH);
+        TextAsset jsonFile = Resources.Load<TextAsset>(BOARD_LAYOUT_PATH);
         if (jsonFile == null)
         {
             Debug.LogError("Failed to load board layout JSON file!");
@@ -92,16 +98,21 @@ public class BoardGenerator : MonoBehaviour
         Dictionary<Vector2Int, Tile> tileMap = new Dictionary<Vector2Int, Tile>();
         Dictionary<Vector2Int, TileData> tileDataMap = new Dictionary<Vector2Int, TileData>();
 
+        // Get the boardRoot position
+        Vector3 boardRootPosition = tileContainer.transform.parent.position;
+
         // First pass: Create all tiles
         foreach (TileData tileData in boardData.tiles)
         {
-            Vector3 position = new Vector3(
-                tileData.x * TILE_SPACING, 
-                Y_POSITION, 
-                tileData.z * TILE_SPACING
+            // Calculate position relative to boardRoot
+            Vector3 localPosition = new Vector3(
+                tileData.x * scaledTileSpacing, 
+                scaledYPosition, 
+                tileData.z * scaledTileSpacing
             );
-            
-            GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, tileContainer.transform);
+
+            // Create tile at local position
+            GameObject tileObj = Instantiate(tilePrefab, boardRootPosition + localPosition, Quaternion.identity, tileContainer.transform);
             tileObj.transform.localScale = Vector3.one * 1;
             Tile tile = tileObj.GetComponent<Tile>();
             
@@ -122,28 +133,27 @@ public class BoardGenerator : MonoBehaviour
         {
             foreach (ArrowData arrowData in boardData.arrows)
             {
-                Vector3 position = new Vector3(
-                    arrowData.x * TILE_SPACING,
+                // Calculate position relative to boardRoot
+                Vector3 localPosition = new Vector3(
+                    arrowData.x * scaledTileSpacing,
                     ARROW_Y_POSITION,
-                    arrowData.z * TILE_SPACING
+                    arrowData.z * scaledTileSpacing
                 );
 
-                // Get rotation angle from direction string
                 float yRotation = directionToAngle[arrowData.rotation.ToLower()];
-                
                 Quaternion rotation = Quaternion.Euler(
                     ARROW_DEFAULT_X_ROTATION,
                     yRotation,
                     ARROW_DEFAULT_Z_ROTATION
                 );
 
+                // Create arrow at local position
                 GameObject arrowObj = Instantiate(arrowPrefab, 
-                    position, 
+                    boardRootPosition + localPosition, 
                     rotation, 
                     tileContainer.transform);
 
-                // Apply both the default scale and the AR world scale
-                arrowObj.transform.localScale = Vector3.one * ARROW_DEFAULT_SCALE * 1; //put ARBoardPlacement.worldScale back after testing
+                arrowObj.transform.localScale = Vector3.one * ARROW_DEFAULT_SCALE * 1;
             }
         }
 
@@ -180,7 +190,8 @@ public class BoardGenerator : MonoBehaviour
             }
         }
 
-        tileContainer.transform.localScale = Vector3.one * BoardScale * ARBoardPlacement.worldScale;
+        tileContainer.transform.localScale = Vector3.one * BoardScale;
+        tileContainer.transform.rotation = ARBoardPlacement.boardRotation * tileContainer.transform.rotation;
         BoardGenFinished = true;
     }
 
