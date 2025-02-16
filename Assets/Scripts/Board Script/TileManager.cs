@@ -312,6 +312,7 @@ public class TileManager : MonoBehaviour
         // Spawn anvil 3 units above the player
         Vector3 spawnPosition = playerPosition + Vector3.up * 4f * ARBoardPlacement.worldScale;
         GameObject anvil = Instantiate(anvilPrefab, spawnPosition, ARBoardPlacement.boardRotation * Quaternion.identity );
+        anvil.transform.localScale = anvil.transform.localScale * ARBoardPlacement.worldScale;
         
         // Animation parameters
         float dropDuration = 0.5f;
