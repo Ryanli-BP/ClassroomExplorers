@@ -44,6 +44,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentTurnText; 
     [SerializeField] private GameObject NotificationBar;
     [SerializeField] private TextMeshProUGUI NotificationText;
+    [SerializeField] private TextMeshProUGUI NotificationTitle;
+    [SerializeField] private List<Sprite> BuffIcons = new List<Sprite>();
+    [SerializeField] private Image notificationIconDisplay;
 
     [SerializeField] private TextMeshProUGUI reviveCounterText;
     private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
@@ -376,13 +379,42 @@ public class UIManager : MonoBehaviour
         Destroy(damageText.gameObject);
     }
 
-    public IEnumerator DisplayRewardNotification(string message)
+    public IEnumerator DisplayRewardNotification(string message, BuffType buffType)
     {
         NotificationBar.SetActive(true);
         NotificationText.text = message;
+        NotificationTitle.text = GetBuffTitle(buffType);
         yield return new WaitForSeconds(2f);
         NotificationBar.SetActive(false);
     }
+
+    public string GetBuffTitle(BuffType buffType)
+    {
+        switch (buffType)
+        {
+            case BuffType.AttackUp:
+                notificationIconDisplay.sprite = BuffIcons[0];
+                return "Attack Bonus";
+            case BuffType.DefenseUp:
+                notificationIconDisplay.sprite = BuffIcons[1];
+                return "Defense Bonus";
+            case BuffType.EvadeUp:
+                notificationIconDisplay.sprite = BuffIcons[2];
+                return "Evade Bonus";
+            case BuffType.DoublePoints:
+                notificationIconDisplay.sprite = BuffIcons[3];
+                return "Double Points Buff";
+            case BuffType.TriplePoints:
+                notificationIconDisplay.sprite = BuffIcons[4];
+                return "Triple Points Buff";
+            case BuffType.ExtraDice:
+                notificationIconDisplay.sprite = BuffIcons[5];
+                return "Extra Dice Buff";
+            default:
+                return "Unknown Buff";
+        }
+    }
+
 
     public void UpdateRound(int roundNumber)
     {
