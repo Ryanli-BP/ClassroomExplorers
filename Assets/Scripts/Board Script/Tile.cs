@@ -10,17 +10,17 @@ public enum TileType { Normal, GainPoint, DropPoint, Home , Quiz, Portal, Reroll
 public class Tile : MonoBehaviour
 {
     // Boolean flags to indicate available directions
-    [SerializeField] private Tile northTile;
-    [SerializeField] private Tile eastTile;
-    [SerializeField] private Tile southTile;
-    [SerializeField] private Tile westTile;
+    [SerializeField] public Tile northTile;
+    [SerializeField] public Tile eastTile;
+    [SerializeField] public Tile southTile;
+    [SerializeField] public Tile westTile;
 
 
     // Boolean flag for tile propertiers
-    [SerializeField] private int HomeplayerID; //for home
+    [SerializeField] public int HomeplayerID; //for home
 
     // special tile attributes, normal by default
-    [SerializeField] private TileType tileType = TileType.Normal;
+    [SerializeField] public TileType tileType = TileType.Normal;
 
     // Player ID of the players currently on the tile
     [SerializeField] private List<int> _TilePlayerIDs = new List<int>();
