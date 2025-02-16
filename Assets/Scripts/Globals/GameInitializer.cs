@@ -13,6 +13,7 @@ public class GameInitializer : MonoBehaviour
     private bool isPlayerManagerReady;
     private bool isTileManagerReady;
     private bool isRoundManagerReady;
+    private bool isQuizManagerReady; // Add this line
 
     private void Awake()
     {
@@ -32,12 +33,13 @@ public class GameInitializer : MonoBehaviour
         }
     }
 
-        private void CheckAllComponents()
+    private void CheckAllComponents()
     {
         AllComponentsReady = isUIManagerReady && 
                            isPlayerManagerReady && 
                            isTileManagerReady && 
-                           isRoundManagerReady;
+                           isRoundManagerReady &&
+                           isQuizManagerReady; // Add this
                            
         if (AllComponentsReady)
             Debug.Log("All components initialized!");
@@ -58,6 +60,9 @@ public class GameInitializer : MonoBehaviour
                 break;
             case "RoundManager":
                 isRoundManagerReady = true;
+                break;
+            case "QuizManager": // Add this case
+                isQuizManagerReady = true;
                 break;
         }
         CheckAllComponents();
@@ -81,6 +86,8 @@ public class GameInitializer : MonoBehaviour
                 return isTileManagerReady;
             case "RoundManager":
                 return isRoundManagerReady;
+            case "QuizManager": // Add this case
+                return isQuizManagerReady;
             default:
                 return false;
         }

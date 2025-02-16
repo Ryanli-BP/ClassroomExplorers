@@ -8501,7 +8501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1001776129
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8522,9 +8522,9 @@ RectTransform:
   - {fileID: 553564489}
   m_Father: {fileID: 2087208018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 250, y: -350}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1005056032
@@ -10654,7 +10654,7 @@ GameObject:
   - component: {fileID: 1159168369}
   - component: {fileID: 1159168368}
   m_Layer: 0
-  m_Name: MasterControl
+  m_Name: QuizManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13812,7 +13812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 2
-  _numOfPlayers: 2
+  _numOfPlayers: 4
 --- !u!4 &1482619883
 Transform:
   m_ObjectHideFlags: 0
@@ -14914,7 +14914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 142067106561908870, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 142067106561908871, guid: f48a6866ef1a2444d8c6797556483a60, type: 3}
       propertyPath: m_Pivot.x
@@ -20083,7 +20083,6 @@ MonoBehaviour:
   DiceToThrow: {fileID: 2841680434444505954, guid: 7349b706ad5a069488b23f52a43ab841, type: 3}
   throwForce: 4
   rollForce: 4
-  testDiceResult: 0
 --- !u!23 &6485230119713915693
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -21056,10 +21055,10 @@ SceneRoots:
   - {fileID: 351127736}
   - {fileID: 1273530504}
   - {fileID: 1482619883}
+  - {fileID: 1159168371}
   - {fileID: 13076168}
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 989211283}
-  - {fileID: 1159168371}
   - {fileID: 1030566502}
   - {fileID: 3266162705118629452}
