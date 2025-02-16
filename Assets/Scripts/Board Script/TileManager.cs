@@ -88,7 +88,7 @@ public class TileManager : MonoBehaviour
 
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                int basePoints = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+                int basePoints = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentMilestone;
 
                 int multiplier = getBonus(currentPlayer);
                 int pointsGained = basePoints * multiplier;
@@ -106,7 +106,7 @@ public class TileManager : MonoBehaviour
 
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
-                int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
+                int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentMilestone);
                 
                 StartCoroutine(UIManager.Instance.DisplayPointChange(pointsLost));
                 UIManager.Instance.DisplayLoseStarAnimation();
@@ -122,11 +122,10 @@ public class TileManager : MonoBehaviour
 
             case TileType.Home:
                 Debug.Log("Home tile");
-                PlayerManager.Instance.LevelUpPlayer();
-                if(currentPlayerID == tile.GetHomePlayerID())
-                {
-                    currentPlayer.Heal(1);
-                }
+                PlayerManager.Instance.HomeTileAction();
+
+                currentPlayer.Heal(2);
+
                 break;
 
             case TileType.Portal:
