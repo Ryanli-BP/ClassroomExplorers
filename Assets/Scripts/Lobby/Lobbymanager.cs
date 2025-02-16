@@ -4,9 +4,11 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Text;
+using System.Collections.Generic;
 
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
+    private HashSet<int> assignedPlayerNumbers = new HashSet<int>();
     [SerializeField] private TMP_Text playersText;
     [SerializeField] private TMP_Text playersListText; 
     [SerializeField] private Button startButton;
@@ -17,7 +19,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-            // If already in a room, update UI; otherwise, join a room.
             if (PhotonNetwork.InRoom)
             {
                 UpdateUI();
@@ -43,49 +44,120 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        int playerNumber = PhotonNetwork.CurrentRoom.PlayerCount; 
+        if (PhotonNetwork.LocalPlayer.CustomProperties == null)
+        {
+            PhotonNetwork.LocalPlayer.CustomProperties = new ExitGames.Client.Photon.Hashtable();
+        }
+
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("PlayerNumber"))
+        {
+            Debug.LogWarning($"Player {PhotonNetwork.LocalPlayer.NickName} is already registered in the room! Skipping duplicate assignment.");
+            return;
+        }
+
+        int playerNumber = AssignPlayerNumber();
 
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
         {
-            { "PlayerNumber", playerNumber } 
+            { "PlayerNumber", playerNumber }
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-        PhotonNetwork.NickName = $"Player {playerNumber}"; 
-
-        Debug.Log($"Joined Room as {PhotonNetwork.NickName} with Player Number: {playerNumber}");
-        UpdateUI();
-
-        if (PhotonNetwork.IsMasterClient)
+        if (string.IsNullOrEmpty(PhotonNetwork.NickName))
         {
-            startButton.gameObject.SetActive(true);
+            PhotonNetwork.NickName = $"Player {playerNumber}";
+        }
+
+        Debug.Log($"Assigned {PhotonNetwork.NickName} as Player {playerNumber}");
+
+        if (photonView != null)
+        {
+            photonView.RPC("SyncPlayerList", RpcTarget.All);
+        }
+        else
+        {
+            Debug.LogError("PhotonView is NULL in OnJoinedRoom!");
         }
     }
 
+    private int AssignPlayerNumber()
+    {
+        HashSet<int> usedNumbers = new HashSet<int>();
+
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            if (player.CustomProperties.ContainsKey("PlayerNumber"))
+            {
+                int num = (int)player.CustomProperties["PlayerNumber"];
+                usedNumbers.Add(num);
+            }
+        }
+
+        for (int i = 1; i <= 6; i++) 
+        {
+            if (!usedNumbers.Contains(i))
+            {
+                return i;
+            }
+        }
+
+        return 6; 
+    }
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         Debug.Log($"Player {newPlayer.NickName} entered. Current total: {PhotonNetwork.CurrentRoom.PlayerCount}");
+        photonView.RPC("SyncPlayerList", RpcTarget.All);
+    }
 
-        if (PhotonNetwork.CurrentRoom.Players.ContainsKey(newPlayer.ActorNumber))
-        {
-            Debug.LogError($"Duplicate player detected: {newPlayer.ActorNumber}");
-        }
-
+    [PunRPC]
+    void SyncPlayerList()
+    {
+        Debug.Log("Syncing player list across all clients...");
         UpdateUI();
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
-        UpdateUI();
+        Debug.Log($"Player {otherPlayer.NickName} (ID: {otherPlayer.ActorNumber}) left the room.");
+
+        // No need to manually clear properties - Photon handles it
+        RenumberPlayers();
+        photonView.RPC("SyncPlayerList", RpcTarget.All);
+    }
+
+    private void RenumberPlayers()
+    {
+        HashSet<int> newAssignedNumbers = new HashSet<int>();
+        int newNumber = 1;
+
+        foreach (var player in PhotonNetwork.PlayerList)
+        {
+            // Only allow the local player to change its own properties
+            if (player.IsLocal)
+            {
+                PhotonNetwork.NickName = $"Player {newNumber}";
+            }
+
+            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
+            {
+                { "PlayerNumber", newNumber }
+            };
+            player.SetCustomProperties(props);
+
+            Debug.Log($"Reassigned {player.NickName} to Player {newNumber}");
+            newAssignedNumbers.Add(newNumber);
+            newNumber++;
+        }
+
+        assignedPlayerNumbers = newAssignedNumbers;
     }
 
     private void UpdateUI()
     {
-    
         if (PhotonNetwork.InRoom)
         {
-            Debug.Log("Update Ui called");
+            Debug.Log("Update UI called");
             StringBuilder playerList = new StringBuilder();
             foreach (var player in PhotonNetwork.PlayerList)
             {
