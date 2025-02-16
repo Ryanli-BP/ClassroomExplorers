@@ -13843,7 +13843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35d3f9bae4da8f4695386cd83b75591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMode: 2
+  currentMode: 1
   _numOfPlayers: 2
 --- !u!4 &1482619883
 Transform:
@@ -16431,6 +16431,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 501273284260851885, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273284260851886, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4f7aa3cf36ab14569b9449cc289f90aa, type: 2}
+    - target: {fileID: 501273284260851886, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273284260851886, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_AnimatePhysics
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1618999688108619070, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
