@@ -23,12 +23,33 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     private void JoinRoom()
     {
+        if (PhotonNetwork.InRoom)
+        {
+            Debug.LogWarning("Already in a room! Skipping JoinRoom.");
+            return;
+        }
+
         RoomOptions options = new RoomOptions { MaxPlayers = 6, IsVisible = true, IsOpen = true };
         PhotonNetwork.JoinOrCreateRoom("GameRoom", options, TypedLobby.Default);
     }
 
+
     public override void OnJoinedRoom()
     {
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Joined"))
+        {
+            Debug.LogWarning("Player already registered in the room!");
+            return;
+        }
+
+        ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable
+        {
+            { "Joined", true }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        Debug.Log($"Joined Room with {PhotonNetwork.CurrentRoom.PlayerCount} players");
+
         UpdateUI();
 
         if (PhotonNetwork.IsMasterClient)
@@ -37,10 +58,19 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
+        Debug.Log($"Player {newPlayer.NickName} entered. Current total: {PhotonNetwork.CurrentRoom.PlayerCount}");
+
+        if (PhotonNetwork.CurrentRoom.Players.ContainsKey(newPlayer.ActorNumber))
+        {
+            Debug.LogError($"Duplicate player detected: {newPlayer.ActorNumber}");
+        }
+
         UpdateUI();
     }
+
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
@@ -67,7 +97,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel("GameScene");
+            PhotonNetwork.LoadLevel("AR Board Scene");
         }
     }
 }

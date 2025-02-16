@@ -17,6 +17,7 @@ public class NetworkStrap : MonoBehaviourPunCallbacks
         }
         else
         {
+            Debug.LogWarning("Duplicate NetworkStrapper detected. Destroying this instance.");
             Destroy(gameObject);
         }
     }

@@ -1,11 +1,15 @@
 using Photon.Pun;
-using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
 
 public class CharacterManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private Button startButton;
+    [SerializeField] private TMP_Text statusText; // Display Photon connection status
 
     private GameObject[] bodyColors;
     private int selectedBodyColorIndex = 0;
@@ -18,7 +22,6 @@ public class CharacterManager : MonoBehaviour
         InitializeBodyColors();
         InitializeHats();
 
-        // Show the first body color and hat by default
         if (bodyColors.Length > 0)
         {
             bodyColors[selectedBodyColorIndex].SetActive(true);
@@ -27,6 +30,22 @@ public class CharacterManager : MonoBehaviour
         {
             hats[selectedHatIndex].SetActive(true);
         }
+
+        startButton.interactable = false; // Disable Start button until connected
+        StartCoroutine(WaitForPhotonConnection());
+    }
+
+    private IEnumerator WaitForPhotonConnection()
+    {
+        statusText.text = "Connecting to Photon...";
+        
+        while (!PhotonNetwork.IsConnected || PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.JoinedLobby)
+        {
+            yield return null; // Wait until connected
+        }
+
+        startButton.interactable = true;
+        statusText.text = "Connected! Ready to Start";
     }
 
     private void InitializeBodyColors()
@@ -40,7 +59,7 @@ public class CharacterManager : MonoBehaviour
             for (int i = 0; i < colorCount; i++)
             {
                 bodyColors[i] = bodyParent.GetChild(i).gameObject;
-                bodyColors[i].SetActive(false); // Deactivate all body colors initially
+                bodyColors[i].SetActive(false);
             }
         }
         else
@@ -60,7 +79,7 @@ public class CharacterManager : MonoBehaviour
             for (int i = 0; i < hatCount; i++)
             {
                 hats[i] = hatsParent.GetChild(i).gameObject;
-                hats[i].SetActive(false); // Deactivate all hats initially
+                hats[i].SetActive(false);
             }
         }
         else
@@ -110,14 +129,14 @@ public class CharacterManager : MonoBehaviour
         PlayerPrefs.SetInt("SelectedBodyColorIndex", selectedBodyColorIndex);
         PlayerPrefs.SetInt("SelectedHatIndex", selectedHatIndex);
         PlayerPrefs.Save();
-        
+
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.LoadLevel("Lobby");
         }
         else
-        { 
-            SceneManager.LoadScene("Lobby");
+        {
+            Debug.Log("Wait for Photon Connection");
         }
     }
 }
