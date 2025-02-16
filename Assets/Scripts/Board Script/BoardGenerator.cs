@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using UnityEditor;
-
 
 [Serializable]
 public class ArrowData
@@ -83,7 +81,7 @@ public class BoardGenerator : MonoBehaviour
 
     void GenerateBoardFromJSON()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>(BOARD_LAYOUT_PATH);
+         TextAsset jsonFile = Resources.Load<TextAsset>(BOARD_LAYOUT_PATH);
         if (jsonFile == null)
         {
             Debug.LogError("Failed to load board layout JSON file!");
@@ -97,7 +95,6 @@ public class BoardGenerator : MonoBehaviour
         // First pass: Create all tiles
         foreach (TileData tileData in boardData.tiles)
         {
-            // Use X and Z for horizontal positioning, fixed Y for height
             Vector3 position = new Vector3(
                 tileData.x * TILE_SPACING, 
                 Y_POSITION, 
@@ -105,10 +102,9 @@ public class BoardGenerator : MonoBehaviour
             );
             
             GameObject tileObj = Instantiate(tilePrefab, position, Quaternion.identity, tileContainer.transform);
-            tileObj.transform.localScale = Vector3.one * 1; //put ARBoardPlacement.worldScale back after testing
+            tileObj.transform.localScale = Vector3.one * 1;
             Tile tile = tileObj.GetComponent<Tile>();
             
-            // Store tile reference using X and Z coordinates
             Vector2Int coord = new Vector2Int(tileData.x, tileData.z);
             tileMap[coord] = tile;
             tileDataMap[coord] = tileData;
@@ -117,10 +113,7 @@ public class BoardGenerator : MonoBehaviour
 
             if (tileData.homePlayerID > 0)
             {
-                SerializedObject serializedTile = new SerializedObject(tile);
-                SerializedProperty homePlayerIDProperty = serializedTile.FindProperty("HomeplayerID");
-                homePlayerIDProperty.intValue = tileData.homePlayerID;
-                serializedTile.ApplyModifiedProperties();
+                tile.HomeplayerID = tileData.homePlayerID;
             }
         }
 
@@ -161,8 +154,6 @@ public class BoardGenerator : MonoBehaviour
             TileData tileData = kvp.Value;
             Tile currentTile = tileMap[currentPos];
 
-            SerializedObject serializedTile = new SerializedObject(currentTile);
-
             foreach (string connection in tileData.connections)
             {
                 Direction dir = directionMap[connection.ToLower()];
@@ -170,17 +161,26 @@ public class BoardGenerator : MonoBehaviour
 
                 if (tileMap.TryGetValue(targetPos, out Tile targetTile))
                 {
-                    string propertyName = $"{connection.ToLower()}Tile";
-                    SerializedProperty connectionProperty = serializedTile.FindProperty(propertyName);
-                    connectionProperty.objectReferenceValue = targetTile;
+                    switch (connection.ToLower())
+                    {
+                        case "north":
+                            currentTile.northTile = targetTile;
+                            break;
+                        case "south":
+                            currentTile.southTile = targetTile;
+                            break;
+                        case "east":
+                            currentTile.eastTile = targetTile;
+                            break;
+                        case "west":
+                            currentTile.westTile = targetTile;
+                            break;
+                    }
                 }
             }
-
-            serializedTile.ApplyModifiedProperties();
         }
 
         tileContainer.transform.localScale = Vector3.one * BoardScale * ARBoardPlacement.worldScale;
-
         BoardGenFinished = true;
     }
 
@@ -213,12 +213,8 @@ public class BoardGenerator : MonoBehaviour
 
     private void SetTileType(Tile tile, TileType type)
     {
-        SerializedObject serializedTile = new SerializedObject(tile);
-        SerializedProperty tileTypeProperty = serializedTile.FindProperty("tileType");
-        tileTypeProperty.enumValueIndex = (int)type;
-        serializedTile.ApplyModifiedProperties();
+        tile.tileType = type;
 
-        // Apply material based on tile type
         MeshRenderer meshRenderer = tile.GetComponent<MeshRenderer>();
         if (meshRenderer != null)
         {
