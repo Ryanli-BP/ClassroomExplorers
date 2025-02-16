@@ -42,6 +42,7 @@ public class BoardGenerator : MonoBehaviour
     public Material quizTileMaterial;
     public Material portalTileMaterial;
     public Material rerollTileMaterial;
+    public Material trapTileMaterial;
 
     [Header("Arrow Prefab")]
     public GameObject arrowPrefab;
@@ -218,6 +219,7 @@ public class BoardGenerator : MonoBehaviour
             TileType.Quiz => quizTileMaterial,
             TileType.Portal => portalTileMaterial,
             TileType.Reroll => rerollTileMaterial,
+            TileType.Trap => trapTileMaterial,
             _ => normalTileMaterial
         };
     }
