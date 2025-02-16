@@ -20,6 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AR Board Scene.unity
     guid: d646b84b25a9db842b7b8d8dee1d9416
+  - enabled: 1
+    path: Assets/Scenes/Select character.unity
+    guid: 5abfceefc01324729a04c898bc93aa2b
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 7c31875562f46c74ebb2920a2655383b
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: c85ac66da12d10147a3230b4e64ea87b, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 7c1c5e6b210b7a14ba85ddd75f85ceef, type: 2}

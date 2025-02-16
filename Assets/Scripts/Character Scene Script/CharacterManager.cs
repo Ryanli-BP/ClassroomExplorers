@@ -1,3 +1,5 @@
+using Photon.Pun;
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -108,7 +110,14 @@ public class CharacterManager : MonoBehaviour
         PlayerPrefs.SetInt("SelectedBodyColorIndex", selectedBodyColorIndex);
         PlayerPrefs.SetInt("SelectedHatIndex", selectedHatIndex);
         PlayerPrefs.Save();
-
-        SceneManager.LoadScene("AR Board Scene");
+        
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.LoadLevel("Lobby");
+        }
+        else
+        { 
+            SceneManager.LoadScene("Lobby");
+        }
     }
 }
