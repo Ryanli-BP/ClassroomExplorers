@@ -69,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
                 if (playerChoice == true)
                 {
+                    UIManager.Instance.OffDiceDisplay(); // off remaining step display when get into combat
                     Debug.Log("Player chose to fight.");
                     GameManager.Instance.OnCombatTriggered();
                     yield return StartCoroutine(CombatManager.Instance.HandleFight(PlayerManager.Instance.GetCurrentPlayer(), PlayerManager.Instance.GetPlayerByID(tilePlayerID)));
@@ -108,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (playerChoice == true)
             {
+                UIManager.Instance.OffDiceDisplay(); // off remaining step display when get into combat
                 Debug.Log("Player chose to fight boss.");
                 GameManager.Instance.OnCombatTriggered();
                 yield return StartCoroutine(CombatManager.Instance.HandleFight(PlayerManager.Instance.GetCurrentPlayer(), BossManager.Instance.activeBoss));
@@ -179,6 +181,7 @@ public class PlayerMovement : MonoBehaviour
             yield return StartCoroutine(PromptManager.Instance.HandleHomeTile((choice) => {
                 if (choice)
                 {
+                    UIManager.Instance.OffDiceDisplay(); // off remaining step display when get into combat
                     Debug.Log("Player chose to stay on the home tile.");
                     isMoving = false;
                 }
@@ -256,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
-                UIManager.Instance.OffDiceDisplay();
+                UIManager.Instance.OffDiceDisplay(); // off remaining step display when stop moving
                 isMoving = false;
             }
 

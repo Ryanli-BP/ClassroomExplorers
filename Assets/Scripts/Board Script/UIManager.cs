@@ -230,7 +230,6 @@ public class UIManager : MonoBehaviour
         }
 
         GameManager.Instance.HandleDiceResultDisplayFinished();
-        centreDisplayPanel.SetActive(false);
     }
     public IEnumerator DisplayRemainingDiceSteps(int diceResult)
     {
