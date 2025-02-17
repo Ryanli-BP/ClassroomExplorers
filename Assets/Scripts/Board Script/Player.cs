@@ -4,10 +4,10 @@
     using System.Linq;
     using Unity.VisualScripting;
     using System.Collections;
-
+    using Photon.Pun;
     public enum Status { Alive, Dead }
 
-    public class Player : Entity
+    public class Player : Entity,  IPunInstantiateMagicCallback
     {
         [SerializeField] private int playerID;
 
@@ -41,6 +41,21 @@
                 Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
                 Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
                 Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
+            }
+        }
+        public void OnPhotonInstantiate(PhotonMessageInfo info)
+        {
+            object[] data = info.photonView.InstantiationData;
+            if (data != null && data.Length >= 2)
+            {
+                int bodyColorIndex = (int)data[0];
+                int hatIndex       = (int)data[1];
+
+                SetPlayerID(info.Sender.ActorNumber);
+                PlayerManager.Instance.SetPlayerAppearance(this, bodyColorIndex, hatIndex);
+
+                
+                PlayerManager.Instance.SpawnPlayerAtHome(this);
             }
         }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-
+using Photon.Pun;
 [DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
 {
@@ -53,37 +53,47 @@ public class PlayerManager : MonoBehaviour
 
     private void InitialisePlayers()
     {
-        players.Clear();
+        // If we're not connected, or not in a room, do nothing
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+        {
+            Debug.LogWarning("Photon not connected or not in room; skipping spawn.");
+            return;
+        }
 
-        // Retrieve selected player information from the previous scene
-        int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
+        // If we already spawned our local player, skip
+        // (You could track a bool, or see if PhotonNetwork.LocalPlayer.TagObject is set, etc.)
+        if (PhotonNetwork.LocalPlayer.TagObject != null)
+        {
+            Debug.Log("Local player already spawned, skipping...");
+            return;
+        }
+
+        // Retrieve selected player info (body/hat) from PlayerPrefs
+        int selectedBodyColorIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0);
         int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
 
-        for (int i = 0; i < GameConfigManager.Instance.numOfPlayers; i++)
+        // Pack the customization data in instantiationData
+        object[] instantiationData = new object[]
         {
-            // Instantiate the player prefab
-            Player playerObject = Instantiate(playerPrefab, 
-                                transform.position, 
-                                ARBoardPlacement.boardRotation * transform.rotation);
-            playerObject.transform.localScale = playerObject.transform.localScale * ARBoardPlacement.worldScale;
+            selectedBodyColorIndex,
+            selectedHatIndex
+        };
 
-            playerObject.SetPlayerID(i + 1);
-            // Set the player appearance before adding to the list
-            int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
-            int hatIndex = i == 0 ? selectedHatIndex : i; // Use selected hat for Player 1, default for others
+        // Actually spawn the local player's prefab
+        GameObject playerGO = PhotonNetwork.Instantiate(
+            "main player v2",   // Must match the prefab name in Resources
+            transform.position, // or wherever you want initial spawn
+            ARBoardPlacement.boardRotation * transform.rotation,
+            0,
+            instantiationData
+        );
 
-            playerObject.gameObject.SetActive(true);
-            
-            SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
-            
-            // Add the instantiated GameObject (with Player script) to the players list
-            players.Add(playerObject);
-
-            // Assuming playerPrefab already contains a Player component that will be automatically added
-            Debug.Log($"Player {i + 1} instantiated and appearance set.");
-        }
-        playerPrefab.SetPlayerID(-1);
+        // Optionally store a reference so we don’t spawn again
+        PhotonNetwork.LocalPlayer.TagObject = playerGO;
+        
+        Debug.Log($"Spawned local player for ActorNumber={PhotonNetwork.LocalPlayer.ActorNumber} with body={selectedBodyColorIndex} hat={selectedHatIndex}.");
     }
+
     
     public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
     {
