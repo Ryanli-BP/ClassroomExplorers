@@ -230,6 +230,7 @@ public class PlayerMovement : MonoBehaviour
 
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
             Debug.Log($"remaining steps:{remainingSteps}");
+            // display every step remain on player
             yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             
             if (availableDirections.Count == 0)
