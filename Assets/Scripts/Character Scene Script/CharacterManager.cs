@@ -9,7 +9,7 @@ public class CharacterManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private Button startButton;
-    [SerializeField] private TMP_Text statusText; // Display Photon connection status
+    [SerializeField] private TMP_Text statusText; 
 
     private GameObject[] bodyColors;
     private int selectedBodyColorIndex = 0;
@@ -31,7 +31,7 @@ public class CharacterManager : MonoBehaviour
             hats[selectedHatIndex].SetActive(true);
         }
 
-        startButton.interactable = false; // Disable Start button until connected
+        startButton.interactable = false; 
         StartCoroutine(WaitForPhotonConnection());
     }
 
@@ -41,7 +41,7 @@ public class CharacterManager : MonoBehaviour
         
         while (!PhotonNetwork.IsConnected || PhotonNetwork.NetworkClientState != Photon.Realtime.ClientState.JoinedLobby)
         {
-            yield return null; // Wait until connected
+            yield return null; 
         }
 
         startButton.interactable = true;
@@ -126,9 +126,18 @@ public class CharacterManager : MonoBehaviour
 
     public void StartGame()
     {
+        // Store selected customization options in PlayerPrefs (local storage)
         PlayerPrefs.SetInt("SelectedBodyColorIndex", selectedBodyColorIndex);
         PlayerPrefs.SetInt("SelectedHatIndex", selectedHatIndex);
         PlayerPrefs.Save();
+
+        // Store customization data in Photon Custom Properties (networked storage)
+        ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
+        {
+            { "BodyColor", selectedBodyColorIndex },
+            { "Hat", selectedHatIndex }
+        };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
 
         if (PhotonNetwork.IsConnected)
         {

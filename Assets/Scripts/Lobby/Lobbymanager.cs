@@ -16,6 +16,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         startButton.gameObject.SetActive(false);
+        startButton.onClick.AddListener(StartGame);
 
         if (PhotonNetwork.IsConnected)
         {
