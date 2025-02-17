@@ -62,9 +62,10 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < GameConfigManager.Instance.numOfPlayers; i++)
         {
             // Instantiate the player prefab
+            Quaternion playerRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
             Player playerObject = Instantiate(playerPrefab, 
                                 transform.position, 
-                                ARBoardPlacement.boardRotation * transform.rotation);
+                                playerRotation);
             playerObject.transform.localScale = playerObject.transform.localScale * ARBoardPlacement.worldScale;
 
             playerObject.SetPlayerID(i + 1);
@@ -233,9 +234,9 @@ public class PlayerManager : MonoBehaviour
         int currentPoints = currentPlayer.Points;
         int currentTrophy = currentPlayer.TrophyCount;
 
-        if (currentTrophy < Player.MAX_TROPHY && currentPoints >= PointsMilestone[currentTrophy - 1])
+        if (currentTrophy < Player.MAX_TROPHY && currentPoints >= PointsMilestone[currentTrophy])
         {
-            Debug.Log($"points {currentPoints} Trophy {currentTrophy} getting trophy as above {PointsMilestone[currentTrophy - 1]}");
+            Debug.Log($"points {currentPoints} Trophy {currentTrophy} getting trophy as above {PointsMilestone[currentTrophy]}");
             currentPlayer.EarnTrophy();
 
             if (currentPlayer.TrophyCount > CurrentMilestone)
@@ -268,9 +269,9 @@ public class PlayerManager : MonoBehaviour
             return;
         }
 
-        if (currentLevel < Player.MAX_LEVEL && currentPoints >= PointsMilestone[currentLevel - 1])
+        if (currentLevel < Player.MAX_LEVEL && currentPoints >= PointsMilestone[currentLevel])
         {
-            Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {PointsMilestone[currentLevel - 1]}");
+            Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {PointsMilestone[currentLevel]}");
             currentPlayer.LevelUp();
 
             if (currentPlayer.Level > CurrentMilestone)
