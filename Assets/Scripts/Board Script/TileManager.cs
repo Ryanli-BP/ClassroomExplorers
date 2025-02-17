@@ -88,7 +88,9 @@ public class TileManager : MonoBehaviour
 
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                int basePoints = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentMilestone;
+                float milestoneMultiplier = 1f + (0.5f * (PlayerManager.Instance.CurrentMilestone - 1));
+                int basePoints = UnityEngine.Random.Range(1, 6);
+                int finalPoints = Mathf.RoundToInt(basePoints * milestoneMultiplier);
 
                 int multiplier = getBonus(currentPlayer);
                 int pointsGained = basePoints * multiplier;
@@ -106,12 +108,14 @@ public class TileManager : MonoBehaviour
 
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
-                int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentMilestone);
+                    float dropMilestoneMultiplier = 1f + (0.5f * (PlayerManager.Instance.CurrentMilestone - 1));
+                    int basePointsLost = UnityEngine.Random.Range(1, 6);
+                    int finalPointsLost = -Mathf.RoundToInt(basePointsLost * dropMilestoneMultiplier);
                 
-                StartCoroutine(UIManager.Instance.DisplayPointChange(pointsLost));
+                StartCoroutine(UIManager.Instance.DisplayPointChange(finalPointsLost));
                 UIManager.Instance.DisplayLoseStarAnimation();
 
-                StartCoroutine(currentPlayer.AddPoints(pointsLost));
+                StartCoroutine(currentPlayer.AddPoints(finalPointsLost));
                 break;
             
             case TileType.Quiz:
