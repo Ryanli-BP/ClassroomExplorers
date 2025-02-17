@@ -230,7 +230,6 @@ public class UIManager : MonoBehaviour
         }
 
         GameManager.Instance.HandleDiceResultDisplayFinished();
-        centreDisplayPanel.SetActive(false);
     }
     public IEnumerator DisplayRemainingDiceSteps(int diceResult)
     {
@@ -423,6 +422,8 @@ public class UIManager : MonoBehaviour
         NotificationBar.SetActive(true);
         NotificationText.text = message;
         NotificationTitle.text = GetBuffTitle(buffType);
+
+        ChangeNotificationColor(buffType);
         yield return new WaitForSeconds(2f);
         NotificationBar.SetActive(false);
     }
@@ -451,6 +452,52 @@ public class UIManager : MonoBehaviour
                 return "Extra Dice Buff";
             default:
                 return "Unknown Buff";
+        }
+    }
+
+    // Method to change the color of the notification bar
+    private void ChangeNotificationColor(BuffType buffType)
+    {
+        Color newColor = Color.white; // Default color
+        switch (buffType)
+        {
+            case BuffType.AttackUp:
+                newColor = new Color(1.0f, 0.6f, 0.6f); // Soft Red (#FF9999)
+                break;
+            case BuffType.DefenseUp:
+                newColor = new Color(0.6f, 0.8f, 1.0f); // Soft Blue (#99CCFF)
+                break;
+            case BuffType.EvadeUp:
+                newColor = new Color(1.0f, 0.6f, 0.6f); // Soft Red (#FF9999)
+                break;
+            case BuffType.DoublePoints:
+                newColor = new Color(1.0f, 0.95f, 0.7f); // Soft Yellow (#FFF2B2)
+                break;
+            case BuffType.TriplePoints:
+                newColor = new Color(1.0f, 0.84f, 0.5f); // Soft Gold (#FFD700, slightly muted)
+                break;
+            case BuffType.ExtraDice:
+                newColor = new Color(0.6f, 0.8f, 1.0f); // Soft Blue (#99CCFF)
+                break;
+        }
+
+        // Assuming "Content" is a child of NotificationBar and has an Image component
+        Transform contentTransform = NotificationBar.transform.Find("Content");
+        if (contentTransform != null)
+        {
+            Image contentImage = contentTransform.GetComponent<Image>();
+            if (contentImage != null)
+            {
+                contentImage.color = newColor;
+            }
+            else
+            {
+                Debug.LogError("Content GameObject is missing an Image component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Content GameObject not found in NotificationBar!");
         }
     }
 
