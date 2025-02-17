@@ -237,6 +237,8 @@ public class UIManager : MonoBehaviour
         centreDisplayPanel.SetActive(true);
         centreDisplayText.text = $"{diceResult}";
         yield return new WaitForSeconds(0.5f);
+    }
+    public void OffDiceDisplay(){
         centreDisplayPanel.SetActive(false);
     }
 
