@@ -107,31 +107,9 @@ namespace UltimateClean
                     triplePointsBuff.SetActive(false);  // Hide the TriplePoints buff
                 }
 
-                //health bar display
-                var healthAnimation = healthBar.GetComponent<HealthAnimation>();
-                if (healthAnimation != null)
-                {
-                    healthAnimation.AnimateHealth(player.Health, Player.MAX_HEALTH);
-                }
-                else
-                {
-                    Debug.LogError("HealthAnimation component missing on healthBar GameObject.");
-                }
-
-                // Animate Points Bar
-                var pointsAnimation = pointsBar.GetComponent<PointsAnimation>();
-                if (pointsAnimation != null)
-                {
-                    // Ensure AnimatePoints is a coroutine and start it
-                    int playerMilestone = GameConfigManager.Instance.CurrentMode == GameMode.COOP ? player.Level : player.TrophyCount;
-                    StartCoroutine(pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetMilestonePoints(playerMilestone)));
-                }
-                else
-                {
-                    Debug.LogError("PointsAnimation component missing on pointsBar GameObject.");
-                }
-
-
+                // Display health, points, and level
+                healthBar.text = $"{player.Health}/10";
+                pointsBar.text = $"{player.Points}";
                 levelText.text = $"Level: {player.Level}";
 
                 // Display attack, defense, and evade bonuses

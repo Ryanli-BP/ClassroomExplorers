@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum Direction { North, East, South, West, None }
 
-public enum TileType { Normal, GainPoint, DropPoint, Home , Quiz, Portal, Reroll, Trap}
+public enum TileType { Normal, GainPoint, DropPoint, Home , Quiz, Portal, Reroll}
 
 [DefaultExecutionOrder(-30)]
 public class Tile : MonoBehaviour

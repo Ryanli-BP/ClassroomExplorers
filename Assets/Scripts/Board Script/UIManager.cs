@@ -13,8 +13,6 @@ public class PlayerStatsUI
     public GameObject pointsBar; //points text is included in bar
     public TextMeshProUGUI levelText;
     public GameObject healthBar;
-    public GameObject TrophyPanel;
-    public TextMeshProUGUI TrophyText;
 }
 
 [DefaultExecutionOrder(0)]
@@ -276,19 +274,11 @@ public class UIManager : MonoBehaviour
         centreDisplayText.color = originalColor;
     }
 
-    public IEnumerator DisplayEarnTrophy()
-    {
-        centreDisplayPanel.SetActive(true);
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Trophy +1";
-        yield return new WaitForSeconds(1f);
-        centreDisplayPanel.SetActive(false);
-    }
-
     public IEnumerator DisplayLevelUp()
     {
         centreDisplayPanel.SetActive(true);
         centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Level Up!";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         centreDisplayPanel.SetActive(false);
     }
 
@@ -308,25 +298,6 @@ public class UIManager : MonoBehaviour
     public void UpdatePlayerLevel(int playerIndex, int level)
     {
         playerStatsUIList[playerIndex - 1].levelText.text = $"LV <#FF6573>{level}</color>";
-    }
-
-    public void UpdatePlayerTrophy(int playerIndex, int trophyCount)
-    {
-        playerStatsUIList[playerIndex - 1].TrophyText.text = trophyCount.ToString();
-    }
-
-    public void ChangePlayerUIforMode(int playerIndex, GameMode gamemode)
-    {
-        if (gamemode == GameMode.COOP)
-        {
-            playerStatsUIList[playerIndex - 1].levelText.gameObject.SetActive(true);
-            playerStatsUIList[playerIndex - 1].TrophyPanel.SetActive(false);
-        }
-        else
-        {
-            playerStatsUIList[playerIndex - 1].levelText.gameObject.SetActive(false);
-            playerStatsUIList[playerIndex - 1].TrophyPanel.SetActive(true);
-        }
     }
 
     public void UpdatePlayerHealth(int playerIndex, int health)
@@ -403,7 +374,6 @@ public class UIManager : MonoBehaviour
         }
 
         Destroy(damageText.gameObject);
-        yield return new WaitForSeconds(1f);
     }
 
     public IEnumerator DisplayRewardNotification(string message)

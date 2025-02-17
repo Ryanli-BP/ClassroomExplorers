@@ -124,12 +124,12 @@ public class CombatManager : MonoBehaviour
 
                 if (isEvade == true)
                 {
-                    int bonus = GetBonus(turn == 0 ? SecondTA : FirstTA, false, true);
+                    int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, true);
                     yield return StartCoroutine(RollForCombatValue(result => evdValue = result, bonus));
                 }
                 else
                 {
-                    int bonus = GetBonus(turn == 0 ? SecondTA : FirstTA, false, false);
+                    int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, false);
                     yield return StartCoroutine(RollForCombatValue(result => dfdValue = result, bonus));
                 }
             }
@@ -273,14 +273,16 @@ public class CombatManager : MonoBehaviour
             target.LoseHealth(damage);
             if (damage > 0)
             {
-                yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(target.transform.position, damage));
+                UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
+                yield return new WaitForSeconds(1f);
             }
         }
         else //Defend Calculation
         {
             damage = Math.Max(1, atkValue - dfdValue);
             target.LoseHealth(damage);
-            yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(target.transform.position, damage));
+            UIManager.Instance.DisplayDamageNumber(target.transform.position, damage);
+            yield return new WaitForSeconds(1f);
         }
     }
 
