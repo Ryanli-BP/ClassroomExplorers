@@ -14892,7 +14892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
-  _numOfPlayers: 4
+  _numOfPlayers: 2
 --- !u!4 &1482619883
 Transform:
   m_ObjectHideFlags: 0
@@ -17820,6 +17820,38 @@ PrefabInstance:
     - target: {fileID: 501273283140271880, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -95.825
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283140271883, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283140271883, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283140271883, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283140271883, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283872500816, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283872500816, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283872500816, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 501273283872500816, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 501273284196393320, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_SizeDelta.x
