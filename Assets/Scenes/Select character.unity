@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
-  _numOfPlayers: 2
+  _numOfPlayers: 3
 --- !u!4 &258619405
 Transform:
   m_ObjectHideFlags: 0

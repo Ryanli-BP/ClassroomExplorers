@@ -33,6 +33,7 @@ public class CharacterManager : MonoBehaviour
 
         startButton.interactable = false; 
         StartCoroutine(WaitForPhotonConnection());
+        startButton.onClick.AddListener(StartGame);
     }
 
     private IEnumerator WaitForPhotonConnection()
@@ -139,13 +140,17 @@ public class CharacterManager : MonoBehaviour
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
 
+        Debug.Log($"[CharacterManager] Player selected BodyColor {selectedBodyColorIndex}, Hat {selectedHatIndex}");
+
         if (PhotonNetwork.IsConnected)
         {
+            Debug.Log("[CharacterManager] Loading into lobby...");
             PhotonNetwork.LoadLevel("Lobby");
         }
         else
         {
-            Debug.Log("Wait for Photon Connection");
+            Debug.LogError("[CharacterManager] Photon is not connected. Cannot start game.");
         }
     }
+
 }
