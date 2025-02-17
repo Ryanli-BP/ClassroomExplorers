@@ -18,11 +18,11 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> homeObjects;
 
-    [SerializeField] private List<int> levelUpPoints = new List<int> { 10, 25, 50 };
+    [SerializeField] private List<int> PointsMilestone = new List<int> { 10, 25, 50, 100, 200 };
 
     public int CurrentPlayerID { get; set; } = 1;
 
-    public int CurrentHighLevel { get; set; } = 1; //needed to determine RoundPoints
+    public int CurrentMilestone { get; set; } = 1; //needed to determine RoundPoints
 
     public List<Player> DeadPlayers { get; set; } = new List<Player>();
 
@@ -62,9 +62,10 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < GameConfigManager.Instance.numOfPlayers; i++)
         {
             // Instantiate the player prefab
+            Quaternion playerRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
             Player playerObject = Instantiate(playerPrefab, 
                                 transform.position, 
-                                ARBoardPlacement.boardRotation * transform.rotation);
+                                playerRotation);
             playerObject.transform.localScale = playerObject.transform.localScale * ARBoardPlacement.worldScale;
 
             playerObject.SetPlayerID(i + 1);
@@ -178,9 +179,9 @@ public class PlayerManager : MonoBehaviour
         return players.Count;
     }
 
-    public int GetLevelUpPoints(int level)
+    public int GetMilestonePoints(int level)
     {
-        return levelUpPoints[level - 1];
+        return PointsMilestone[level];
     }
 
     public void SpawnAllPlayersAtHome()
@@ -215,38 +216,73 @@ public class PlayerManager : MonoBehaviour
         currentPlayer.GetComponent<PlayerMovement>().MovePlayer(diceTotal);
     }
 
-    public void LevelUpPlayer()
+    public void HomeTileAction()
+    {
+        if (GameConfigManager.Instance.CurrentMode == GameMode.COOP)
         {
-            Player currentPlayer = GetCurrentPlayer();
-            int currentPoints = currentPlayer.Points;
-            int currentLevel = currentPlayer.Level;
+            LevelUpPlayer();
+        }
+        else
+        {
+            PlayerEarnTrophy();
+        }
+    }
 
-            if (currentLevel >= Player.MAX_LEVEL)
+    public void PlayerEarnTrophy()
+    {
+        Player currentPlayer = GetCurrentPlayer();
+        int currentPoints = currentPlayer.Points;
+        int currentTrophy = currentPlayer.TrophyCount;
+
+        if (currentTrophy < Player.MAX_TROPHY && currentPoints >= PointsMilestone[currentTrophy])
+        {
+            Debug.Log($"points {currentPoints} Trophy {currentTrophy} getting trophy as above {PointsMilestone[currentTrophy]}");
+            currentPlayer.EarnTrophy();
+
+            if (currentPlayer.TrophyCount > CurrentMilestone)
             {
-                Debug.Log($"Player {currentPlayer.getPlayerID()} is already at the maximum level.");
-                return;
-            }
-
-            if (currentLevel < Player.MAX_LEVEL && currentPoints >= levelUpPoints[currentLevel - 1])
-            {
-                Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {levelUpPoints[currentLevel - 1]}");
-                currentPlayer.LevelUp();
-
-                if (currentPlayer.Level > CurrentHighLevel)
-                {
-                    CurrentHighLevel = currentPlayer.Level;
-                }
-
-                // Check if the player has reached the last level
-                if (currentPlayer.Level == Player.MAX_LEVEL && GameConfigManager.Instance.CurrentMode == GameMode.FFA)
-                {
-                    GameManager.Instance.WinGameConditionAchieved();
-                    Debug.Log("Game End: Player has reached the maximum level.");
-                }
-            }
-            else
-            {
-                Debug.Log($"Player {currentPlayer.getPlayerID()} does not have enough points to level up.");
+                CurrentMilestone = currentPlayer.TrophyCount;
             }
         }
+        else
+        {
+            Debug.Log($"Player {currentPlayer.getPlayerID()} does not have enough points to earn trophy.");
+        }
+
+        // Check if the player has already earned max trophies
+        if (currentPlayer.TrophyCount == Player.MAX_TROPHY && GameConfigManager.Instance.CurrentMode != GameMode.COOP)
+        {
+            GameManager.Instance.WinGameConditionAchieved();
+            Debug.Log("Game End: Player has collected all trophies.");
+        }
+    }
+
+    public void LevelUpPlayer()
+    {
+        Player currentPlayer = GetCurrentPlayer();
+        int currentPoints = currentPlayer.Points;
+        int currentLevel = currentPlayer.Level;
+
+        if (currentLevel >= Player.MAX_LEVEL)
+        {
+            Debug.Log($"Player {currentPlayer.getPlayerID()} is already at the maximum level.");
+            return;
+        }
+
+        if (currentLevel < Player.MAX_LEVEL && currentPoints >= PointsMilestone[currentLevel])
+        {
+            Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {PointsMilestone[currentLevel]}");
+            currentPlayer.LevelUp();
+
+            if (currentPlayer.Level > CurrentMilestone)
+            {
+                CurrentMilestone = currentPlayer.Level;
+            }
+        }
+        else
+        {
+            Debug.Log($"Player {currentPlayer.getPlayerID()} does not have enough points to level up.");
+        }
+
+    }
 }

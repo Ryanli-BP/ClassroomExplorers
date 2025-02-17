@@ -14,6 +14,7 @@ public class TileManager : MonoBehaviour
     public List<Tile> allTiles = new List<Tile>();
     private List<GameObject> activeHighlights = new List<GameObject>(); // Store active highlight overlays
     public bool OnTileActionComplete { get; set; }
+    public GameObject anvilPrefab;
 
     private List<Tile> portalTiles = new List<Tile>(); // Add this field
 
@@ -87,7 +88,9 @@ public class TileManager : MonoBehaviour
 
             case TileType.GainPoint:
                 Debug.Log("Gain point tile");
-                int basePoints = UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel;
+                float milestoneMultiplier = 1f + (0.5f * (PlayerManager.Instance.CurrentMilestone - 1));
+                int basePoints = UnityEngine.Random.Range(1, 6);
+                int finalPoints = Mathf.RoundToInt(basePoints * milestoneMultiplier);
 
                 int multiplier = getBonus(currentPlayer);
                 int pointsGained = basePoints * multiplier;
@@ -105,12 +108,14 @@ public class TileManager : MonoBehaviour
 
             case TileType.DropPoint:
                 Debug.Log("Drop point tile");
-                int pointsLost = -(UnityEngine.Random.Range(1, 6) * PlayerManager.Instance.CurrentHighLevel);
+                    float dropMilestoneMultiplier = 1f + (0.5f * (PlayerManager.Instance.CurrentMilestone - 1));
+                    int basePointsLost = UnityEngine.Random.Range(1, 6);
+                    int finalPointsLost = -Mathf.RoundToInt(basePointsLost * dropMilestoneMultiplier);
                 
-                StartCoroutine(UIManager.Instance.DisplayPointChange(pointsLost));
+                StartCoroutine(UIManager.Instance.DisplayPointChange(finalPointsLost));
                 UIManager.Instance.DisplayLoseStarAnimation();
 
-                StartCoroutine(currentPlayer.AddPoints(pointsLost));
+                StartCoroutine(currentPlayer.AddPoints(finalPointsLost));
                 break;
             
             case TileType.Quiz:
@@ -121,11 +126,10 @@ public class TileManager : MonoBehaviour
 
             case TileType.Home:
                 Debug.Log("Home tile");
-                PlayerManager.Instance.LevelUpPlayer();
-                if(currentPlayerID == tile.GetHomePlayerID())
-                {
-                    currentPlayer.Heal(1);
-                }
+                PlayerManager.Instance.HomeTileAction();
+
+                currentPlayer.Heal(2);
+
                 break;
 
             case TileType.Portal:
@@ -144,6 +148,14 @@ public class TileManager : MonoBehaviour
                 Debug.Log("Reroll tile - Player gets another turn");
                 GameManager.Instance.HandleReroll();
                 //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
+                break;
+            
+            case TileType.Trap:
+                Debug.Log("Trap tile");
+                yield return StartCoroutine(PlayAnvilAnimation(currentPlayer.transform.position));
+                int damage = UnityEngine.Random.Range(1, 5);
+                currentPlayer.LoseHealth(damage);
+                yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(currentPlayer.transform.position, damage));
                 break;
         }
 
@@ -296,5 +308,40 @@ public class TileManager : MonoBehaviour
             Destroy(darkOverlay);
         }
         activeDarkOverlays.Clear();
+    }
+
+    private IEnumerator PlayAnvilAnimation(Vector3 playerPosition)
+    {
+        // Spawn anvil 3 units above the player
+        Vector3 spawnPosition = playerPosition + Vector3.up * 4f * ARBoardPlacement.worldScale;
+        GameObject anvil = Instantiate(anvilPrefab, spawnPosition, ARBoardPlacement.boardRotation * Quaternion.identity );
+        anvil.transform.localScale = anvil.transform.localScale * ARBoardPlacement.worldScale;
+        
+        // Animation parameters
+        float dropDuration = 0.5f;
+        float elapsedTime = 0f;
+        Vector3 targetPosition = playerPosition + Vector3.up * ARBoardPlacement.worldScale; // Slightly above player
+        
+        // Drop animation
+        while (elapsedTime < dropDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / dropDuration;
+            
+            // Add acceleration using square function
+            float verticalPosition = Mathf.Lerp(spawnPosition.y, targetPosition.y, progress * progress);
+            anvil.transform.position = new Vector3(spawnPosition.x, verticalPosition, spawnPosition.z);
+            
+            yield return null;
+        }
+        
+        // Impact effect
+        anvil.transform.position = targetPosition;
+        
+        // Optional: Add camera shake or impact effect here
+        
+        // Wait briefly before destroying
+        yield return new WaitForSeconds(0.5f);
+        Destroy(anvil);
     }
 }
