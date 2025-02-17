@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Collections;
 using Photon.Pun;
 [DefaultExecutionOrder(-30)]
-public class PlayerManager : MonoBehaviourPunCallbacks
+public class PlayerManager : MonoBehaviour
 {
-
     public static PlayerManager Instance;
     public AvatarGenerator avatarGenerator;
 
@@ -15,7 +14,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
     public GameObject[] hats; // No need to serialize if not exposed to the Inspector
 
-    private Dictionary<int, Player> players = new Dictionary<int, Player>();
+    private List<Player> players = new List<Player>();
 
     [SerializeField] private List<GameObject> homeObjects;
 
@@ -26,13 +25,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public int CurrentHighLevel { get; set; } = 1; //needed to determine RoundPoints
 
     public List<Player> DeadPlayers { get; set; } = new List<Player>();
-    
+
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
             Destroy(gameObject);
 
@@ -47,64 +44,55 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         //AssignPlayersToHomes();
         SpawnAllPlayersAtHome();
         // Generate avatars after players list is fully populated
-        int index = 0;
-        foreach (var player in players.Values)
+        for (int i = 0; i < players.Count; i++)
         {
-            avatarGenerator.GenerateAvatar(player.gameObject, index);
-            index++;
+            avatarGenerator.GenerateAvatar(players[i].gameObject, i);
         }
-
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
     private void InitialisePlayers()
     {
+        // If we're not connected, or not in a room, do nothing
         if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
         {
             Debug.LogWarning("Photon not connected or not in room; skipping spawn.");
             return;
         }
 
+        // If we already spawned our local player, skip
+        // (You could track a bool, or see if PhotonNetwork.LocalPlayer.TagObject is set, etc.)
         if (PhotonNetwork.LocalPlayer.TagObject != null)
         {
             Debug.Log("Local player already spawned, skipping...");
             return;
         }
 
+        // Retrieve selected player info (body/hat) from PlayerPrefs
         int selectedBodyColorIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0);
         int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
 
+        // Pack the customization data in instantiationData
         object[] instantiationData = new object[]
         {
             selectedBodyColorIndex,
             selectedHatIndex
         };
 
+        // Actually spawn the local player's prefab
         GameObject playerGO = PhotonNetwork.Instantiate(
-            "main player v2",
-            transform.position,
+            "main player v2",   // Must match the prefab name in Resources
+            transform.position, // or wherever you want initial spawn
             ARBoardPlacement.boardRotation * transform.rotation,
             0,
             instantiationData
         );
 
-        Player playerScript = playerGO.GetComponent<Player>();
-        if (playerScript != null)
-        {
-            int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
-            playerScript.SetPlayerID(actorNumber);  
-            players[actorNumber] = playerScript;
-
-            Debug.Log($"Added player {playerScript.getPlayerID()} to players list. Total players: {players.Count}");
-        }
-        else
-        {
-            Debug.LogError("Player component not found on instantiated object!");
-        }
-
+        // Optionally store a reference so we don’t spawn again
         PhotonNetwork.LocalPlayer.TagObject = playerGO;
-}
-
+        
+        Debug.Log($"Spawned local player for ActorNumber={PhotonNetwork.LocalPlayer.ActorNumber} with body={selectedBodyColorIndex} hat={selectedHatIndex}.");
+    }
 
     
     public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
@@ -166,58 +154,34 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public List<Player> GetPlayerList()
     {
-        return new List<Player>(players.Values);
+        return players;
     }
 
     public Player GetPlayerByID(int playerID)
     {
-        if (players.TryGetValue(playerID, out Player player))
+        if (playerID > 0 && playerID <= players.Count)
         {
-            return player;
+            Debug.Log($"CurrentID: {players[playerID-1]}");
+            return players[playerID - 1];
         }
         else
         {
-            Debug.LogError($"Invalid player ID: {playerID}. Total players: {players.Count}");
-            return null;
+            Debug.LogError($"Invalid player ID: {playerID}. There are only {players.Count} players.");
+            return null; // Or handle the invalid ID case as needed.
         }
     }
+
     public Player GetCurrentPlayer()
     {
-        if (players.Count == 0)
-        {
-            Debug.LogError("ERROR: Players list is empty!");
-            return null;
-        }
-
-        int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
-
-        if (!players.ContainsKey(actorNumber))
-        {
-            Debug.LogError($"ERROR: Invalid player index {actorNumber}, players count = {players.Count}");
-            return null;
-        }
-
-        return players[actorNumber];
+        return players[CurrentPlayerID - 1];
     }
-
-
 
     public void GoNextPlayer()
     {
-        List<int> playerIDs = new List<int>(players.Keys);
-        if (playerIDs.Count == 0)
-        {
-            Debug.LogError("No players in the game!");
-            return;
-        }
-
-        int currentIndex = playerIDs.IndexOf(PhotonNetwork.LocalPlayer.ActorNumber);
-        int nextIndex = (currentIndex + 1) % playerIDs.Count;
-        CurrentPlayerID = playerIDs[nextIndex];
-
-        Debug.Log($" Next turn: Player {CurrentPlayerID}.");
+        // Use 0-based index for players, then adjust the player ID if needed.
+        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1;  // Wrap around 0-based index
+        Debug.Log($"Current player ID is now {CurrentPlayerID}.");
     }
-
 
     public int GetNumOfPlayers()
     {
@@ -231,7 +195,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public void SpawnAllPlayersAtHome()
     {
-        foreach (var player in players.Values)
+        foreach (var player in players)
         {
             SpawnPlayerAtHome(player);
         }
@@ -247,34 +211,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             homePosition.y += AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale; // Adjust Y offset
             player.transform.position = homePosition;
             player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
-            photonView.RPC("SyncPlayersList", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.ActorNumber);
             Debug.Log($"Player {player.getPlayerID()} spawned at their home.");
-
         }
         else
         {
             Debug.LogError($"No home tile found for player {player.getPlayerID()}!");
         }
     }
-    [PunRPC]
-    void SyncPlayersList(int actorNumber)
-    {
-        if (!players.ContainsKey(actorNumber))
-        {
-            Player player = FindPlayerByActorNumber(actorNumber);
-            if (player != null)
-            {
-                players[actorNumber] = player;
-                Debug.Log($"[SYNC] Added player {player.getPlayerID()} to the dictionary. Total players: {players.Count}");
-            }
-        }
-    }
-    private Player FindPlayerByActorNumber(int actorNumber)
-    {
-        players.TryGetValue(actorNumber, out Player player);
-        return player;
-    }
-
 
     public void StartPlayerMovement(int diceTotal)
     {

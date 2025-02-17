@@ -18549,10 +18549,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8052266919338997055}
     m_Modifications:
-    - target: {fileID: -8217468245308693367, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
-      propertyPath: sceneViewId
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2662838448224718620, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8
@@ -19113,7 +19109,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7591727066315564467}
   - component: {fileID: 8965464250875008200}
-  - component: {fileID: 8965464250875008201}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -21041,28 +21036,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   levelUpPoints: 050000000f00000014000000
---- !u!114 &8965464250875008201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2405231075109390482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 2
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!4 &8999388479113056177
 Transform:
   m_ObjectHideFlags: 0

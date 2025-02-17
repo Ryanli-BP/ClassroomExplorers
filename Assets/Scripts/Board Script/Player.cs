@@ -10,7 +10,7 @@
     public class Player : Entity,  IPunInstantiateMagicCallback
     {
         [SerializeField] private int playerID;
-        [HideInInspector] public PhotonView photonView;
+
         public const int REVIVAL_COUNT = 3;
         public const int MAX_HEALTH = 10;
         public const int MAX_LEVEL = 10;

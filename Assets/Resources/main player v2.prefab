@@ -1972,7 +1972,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 1
-  photonView: {fileID: 0}
 --- !u!114 &8052282319079620484
 MonoBehaviour:
   m_ObjectHideFlags: 0

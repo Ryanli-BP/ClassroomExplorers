@@ -29,7 +29,7 @@ MonoBehaviour:
     EnableLobbyStatistics: 0
     NetworkLogging: 5
   DevRegion: eu
-  PunLogging: 1
+  PunLogging: 2
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
@@ -40,7 +40,6 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - SyncPlayerList
-  - SyncPlayersList
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
