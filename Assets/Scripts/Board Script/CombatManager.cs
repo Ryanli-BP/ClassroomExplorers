@@ -124,12 +124,12 @@ public class CombatManager : MonoBehaviour
 
                 if (isEvade == true)
                 {
-                    int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, true);
+                    int bonus = GetBonus(turn == 0 ? SecondTA : FirstTA, false, true);
                     yield return StartCoroutine(RollForCombatValue(result => evdValue = result, bonus));
                 }
                 else
                 {
-                    int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, false);
+                    int bonus = GetBonus(turn == 0 ? SecondTA : FirstTA, false, false);
                     yield return StartCoroutine(RollForCombatValue(result => dfdValue = result, bonus));
                 }
             }

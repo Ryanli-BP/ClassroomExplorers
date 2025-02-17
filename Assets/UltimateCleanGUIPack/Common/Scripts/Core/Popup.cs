@@ -133,7 +133,8 @@ namespace UltimateClean
                 if (pointsAnimation != null)
                 {
                     // Ensure AnimatePoints is a coroutine and start it
-                    StartCoroutine(pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetLevelUpPoints(player.Level)));
+                    int playerMilestone = GameConfigManager.Instance.CurrentMode == GameMode.COOP ? player.Level : player.TrophyCount;
+                    StartCoroutine(pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetMilestonePoints(playerMilestone)));
                 }
                 else
                 {

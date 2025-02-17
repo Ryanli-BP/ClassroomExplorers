@@ -11,12 +11,14 @@ public class Player : Entity
 {
     [SerializeField] private int playerID;
 
-    public const int REVIVAL_COUNT = 3;
+    public const int REVIVAL_COUNT = 5;
     public const int MAX_HEALTH = 10;
-    public const int MAX_LEVEL = 10;
+    public const int MAX_LEVEL = 5;
+    public const int MAX_TROPHY = 5;
 
     public int Points { get; set; }
     public int Level { get; set; } = 1;
+    public int TrophyCount { get; set; } = 0;
     [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
     public PlayerBuffs PlayerBuffs => playerBuffs;
 
@@ -26,7 +28,8 @@ public class Player : Entity
         if (playerID <= GameConfigManager.Instance.numOfPlayers)
         {
             Points = 0;
-            Level = 1;
+            Level = 0;
+            TrophyCount = 0;
             Health = MAX_HEALTH;
             Status = Status.Alive;
 
@@ -44,8 +47,19 @@ public class Player : Entity
 
         // Update UI once UIManager is ready
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-        UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+
+        if(GameConfigManager.Instance.CurrentMode == GameMode.COOP)
+        {
+            UIManager.Instance.ChangePlayerUIforMode(playerID, GameMode.COOP); //hides trophy and show level
+            UIManager.Instance.UpdatePlayerLevel(playerID, Level);
+            yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(Level)));
+        }
+        else
+        {
+            UIManager.Instance.ChangePlayerUIforMode(playerID, GameMode.FFA);//hides level and show trophy
+            UIManager.Instance.UpdatePlayerTrophy(playerID, TrophyCount);
+            yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(TrophyCount)));
+        }
     }
 
     public int getPlayerID()
@@ -63,7 +77,8 @@ public class Player : Entity
     {
         Points = Math.Max(0, Points + amount);
         Debug.Log($"Player {playerID} now has {Points} points.");
-        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+        int playerMilestone = GameConfigManager.Instance.CurrentMode == GameMode.COOP ? Level : TrophyCount;
+        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(playerMilestone)));
     }
 
     public override void AddBuff(BuffType type, int value, int duration)
@@ -76,6 +91,20 @@ public class Player : Entity
         playerBuffs.UpdateBuffDurations();
     }
 
+    public void EarnTrophy()
+    {
+        if (TrophyCount >= MAX_TROPHY)
+        {
+            return;
+        }
+        
+        TrophyCount += 1;
+        Debug.Log($"Player {playerID} earned a trophy.");
+        UIManager.Instance.UpdatePlayerTrophy(playerID, TrophyCount);
+        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(TrophyCount)));
+        StartCoroutine(UIManager.Instance.DisplayEarnTrophy());
+    }
+
     public void LevelUp()
     {
         if (Level >= MAX_LEVEL)
@@ -86,8 +115,14 @@ public class Player : Entity
         Level += 1;
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(Level)));
         StartCoroutine(UIManager.Instance.DisplayLevelUp());
+
+        // Add random permanent buff
+        BuffType[] possibleBuffs = { BuffType.AttackUp, BuffType.DefenseUp, BuffType.EvadeUp };
+        BuffType randomBuff = possibleBuffs[UnityEngine.Random.Range(0, possibleBuffs.Length)];
+        AddBuff(randomBuff, 2, 100); // Value of 2, duration of 100 for "permanent" effect
+        Debug.Log($"Player {playerID} gained permanent {randomBuff} buff");
     }
 
     public override void LoseHealth(int amount)
@@ -95,6 +130,11 @@ public class Player : Entity
         Health = Mathf.Max(0, Health - amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+
+        if (Health == 0)
+        {
+            Dies();
+        }
     }
 
     public override void Dies()
@@ -102,6 +142,10 @@ public class Player : Entity
         Status = Status.Dead;
         PlayerManager.Instance.DeadPlayers.Add(this);
         UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
+
+        Points /= 2;
+        int playerMilestone = GameConfigManager.Instance.CurrentMode == GameMode.COOP ? Level : TrophyCount;
+        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(playerMilestone)));
         Debug.Log($"Player {playerID} has died.");
     }
 
