@@ -226,6 +226,8 @@ public class PlayerMovement : MonoBehaviour
         {
 
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
+            Debug.Log($"remaining steps:{remainingSteps}");
+            yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             
             if (availableDirections.Count == 0)
             {

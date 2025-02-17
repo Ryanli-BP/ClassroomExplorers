@@ -229,8 +229,15 @@ public class UIManager : MonoBehaviour
             yield return StartCoroutine(DisplayBonusValue(diceResult, "+"));
         }
 
-        centreDisplayPanel.SetActive(false);
         GameManager.Instance.HandleDiceResultDisplayFinished();
+        centreDisplayPanel.SetActive(false);
+    }
+    public IEnumerator DisplayRemainingDiceSteps(int diceResult)
+    {
+        centreDisplayPanel.SetActive(true);
+        centreDisplayText.text = $"{diceResult}";
+        yield return new WaitForSeconds(0.5f);
+        centreDisplayPanel.SetActive(false);
     }
 
     public IEnumerator DisplayBonusValue(int baseResult, string operation)
