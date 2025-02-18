@@ -8,8 +8,9 @@ namespace UltimateClean
 {
     public class Popup : MonoBehaviour
     {
-        public TextMeshProUGUI healthBar;
-        public TextMeshProUGUI pointsBar;
+        public RawImage avatarDisplay;
+        public GameObject healthBar;
+        public GameObject pointsBar;
         public TextMeshProUGUI levelText;
         public TextMeshProUGUI AttackBonus;
         public TextMeshProUGUI DefenseBonus;
@@ -81,6 +82,15 @@ namespace UltimateClean
             }
         }
 
+        public void SetAvatarImage(Texture texture){
+            if(avatarDisplay != null){
+                avatarDisplay.texture = texture;
+            }
+            else{
+                Debug.Log("Avatar display RawImage not assigned in the pop up prefab.");
+            }
+        }
+
         private void DisplayPlayerInfo()
         {
             if (healthBar != null && pointsBar != null && levelText != null && player != null)
@@ -91,15 +101,30 @@ namespace UltimateClean
                 // Check and display DoublePoints and TriplePoints buffs
                 if (activeBuffs.Any(b => b.Type == BuffType.DoublePoints))
                 {
-                    doublePointsBuff.SetActive(true);  // Show the DoublePoints buff
+                    doublePointsBuff.SetActive(true);
+
+                    // Get the duration of the DoublePoints buff
+                    var doublePointsDuration = activeBuffs.First(b => b.Type == BuffType.DoublePoints).RoundsRemaining;
+                    var durationText = doublePointsBuff.transform.Find("duration")?.GetComponent<TextMeshProUGUI>();
+                    if (durationText != null)
+                    {
+                        durationText.text = $"{doublePointsDuration} round";
+                    }
                 }
                 else
                 {
                     doublePointsBuff.SetActive(false);  // Hide the DoublePoints buff
                 }
 
+                //Triple points buff
                 if (activeBuffs.Any(b => b.Type == BuffType.TriplePoints))
                 {
+                    var triplePointsDuration = activeBuffs.First(b => b.Type == BuffType.TriplePoints).RoundsRemaining;
+                    var durationText = triplePointsBuff.transform.Find("duration")?.GetComponent<TextMeshProUGUI>();
+                    if (durationText != null)
+                    {
+                        durationText.text = $"{triplePointsDuration} round";
+                    }
                     triplePointsBuff.SetActive(true);  // Show the TriplePoints buff
                 }
                 else
@@ -107,23 +132,55 @@ namespace UltimateClean
                     triplePointsBuff.SetActive(false);  // Hide the TriplePoints buff
                 }
 
-                // Display health, points, and level
-                healthBar.text = $"{player.Health}/10";
-                pointsBar.text = $"{player.Points}";
+                //Extra dice buff
+                if (activeBuffs.Any(b => b.Type == BuffType.ExtraDice))
+                {
+                    var extraDiceDuration = activeBuffs.First(b => b.Type == BuffType.ExtraDice).RoundsRemaining;
+                    var durationText = ExtraDiceBuff.transform.Find("duration")?.GetComponent<TextMeshProUGUI>();
+                    if (durationText != null)
+                    {
+                        durationText.text = $"{extraDiceDuration} round";
+                    }
+                    ExtraDiceBuff.SetActive(true);
+                }
+                else
+                {
+                    ExtraDiceBuff.SetActive(false);
+                }
+
+
+                //health bar display
+                var healthAnimation = healthBar.GetComponent<HealthAnimation>();
+                if (healthAnimation != null)
+                {
+                    healthAnimation.AnimateHealth(player.Health, Player.MAX_HEALTH);
+                }
+                else
+                {
+                    Debug.LogError("HealthAnimation component missing on healthBar GameObject.");
+                }
+
+                // Animate Points Bar
+                var pointsAnimation = pointsBar.GetComponent<PointsAnimation>();
+                if (pointsAnimation != null)
+                {
+                    // Ensure AnimatePoints is a coroutine and start it
+                    int playerMilestone = GameConfigManager.Instance.CurrentMode == GameMode.COOP ? player.Level : player.TrophyCount;
+                    StartCoroutine(pointsAnimation.AnimatePoints(player.Points, PlayerManager.Instance.GetMilestonePoints(playerMilestone)));
+                }
+                else
+                {
+                    Debug.LogError("PointsAnimation component missing on pointsBar GameObject.");
+                }
+
+
                 levelText.text = $"Level: {player.Level}";
 
                 // Display attack, defense, and evade bonuses
                 int attackBonus = activeBuffs.Where(b => b.Type == BuffType.AttackUp).Sum(b => b.Value);
                 int defenseBonus = activeBuffs.Where(b => b.Type == BuffType.DefenseUp).Sum(b => b.Value);
                 int evadeBonus = activeBuffs.Where(b => b.Type == BuffType.EvadeUp).Sum(b => b.Value);
-                int ExtraDice = activeBuffs.Where(b => b.Type == BuffType.ExtraDice).Sum(b => b.Value);
 
-                if(ExtraDice > 0){
-                    ExtraDiceBuff.SetActive(true);
-                }
-                else{
-                    ExtraDiceBuff.SetActive(false);
-                }
                 AttackBonus.text = $"{attackBonus}";
                 DefenseBonus.text = $"{defenseBonus}";
                 DodgeBonus.text = $"{evadeBonus}";
