@@ -1,201 +1,178 @@
-using System;
-using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using System.Collections;
+    using System;
+    using UnityEngine;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Unity.VisualScripting;
+    using System.Collections;
+    using Photon.Pun;
+    public enum Status { Alive, Dead }
 
-public enum Status { Alive, Dead }
-
-public class Player : Entity
-{
-    [SerializeField] private int playerID;
-
-    public const int REVIVAL_COUNT = 5;
-    public const int MAX_HEALTH = 10;
-    public const int MAX_LEVEL = 5;
-    public const int MAX_TROPHY = 5;
-
-    public int Points { get; set; }
-    public int Level { get; set; } = 1;
-    public int TrophyCount { get; set; } = 0;
-    [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
-    public PlayerBuffs PlayerBuffs => playerBuffs;
-
-    public int ReviveCounter { get; set; } = 0;
-    void Awake()
+    public class Player : Entity,  IPunInstantiateMagicCallback
     {
-        if (playerID <= GameConfigManager.Instance.numOfPlayers)
-        {
-            Points = 0;
-            Level = 0;
-            TrophyCount = 0;
-            Health = MAX_HEALTH;
-            Status = Status.Alive;
+        [SerializeField] private int playerID;
 
-            /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
-            Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
-            Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
-            Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
-            Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
+        public const int REVIVAL_COUNT = 3;
+        public const int MAX_HEALTH = 10;
+        public const int MAX_LEVEL = 10;
+
+        public int Points { get; set; }
+        public int Level { get; set; } = 1;
+        [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
+        public PlayerBuffs PlayerBuffs => playerBuffs;
+
+        public int ReviveCounter { get; set; } = 0;
+        void Awake()
+        {
+
+            if (GameConfigManager.Instance == null)
+            {
+                Debug.LogError("GameConfigManager is NULL! Ensure it's in the scene.");
+                return;
+            }
+            if (playerID <= GameConfigManager.Instance.numOfPlayers)
+            {
+                Points = 0;
+                Level = 1;
+                Health = MAX_HEALTH;
+                Status = Status.Alive;
+
+                /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
+                Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
+                Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
+                Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
+                Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
+            }
         }
-    }
-
-    public IEnumerator InitializePlayerUI()
-    {
-        Debug.Log($"Initialize playerUI {playerID}");
-
-        // Update UI once UIManager is ready
-        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-
-        if(GameConfigManager.Instance.CurrentMode == GameMode.COOP)
+        public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
-            UIManager.Instance.ChangePlayerUIforMode(playerID, GameMode.COOP); //hides trophy and show level
+            object[] data = info.photonView.InstantiationData;
+            if (data != null && data.Length >= 2)
+            {
+                int bodyColorIndex = (int)data[0];
+                int hatIndex       = (int)data[1];
+
+                SetPlayerID(info.Sender.ActorNumber);
+                PlayerManager.Instance.SetPlayerAppearance(this, bodyColorIndex, hatIndex);
+
+                
+                PlayerManager.Instance.SpawnPlayerAtHome(this);
+            }
+        }
+
+        public IEnumerator InitializePlayerUI()
+        {
+            Debug.Log($"Initialize playerUI {playerID}");
+
+            // Update UI once UIManager is ready
+            UIManager.Instance.UpdatePlayerHealth(playerID, Health);
             UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-            yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(Level)));
+            yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
         }
-        else
+
+        public int getPlayerID()
         {
-            UIManager.Instance.ChangePlayerUIforMode(playerID, GameMode.FFA);//hides level and show trophy
-            UIManager.Instance.UpdatePlayerTrophy(playerID, TrophyCount);
-            yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(TrophyCount)));
+            return playerID;
         }
-    }
 
-    public int getPlayerID()
-    {
-        return playerID;
-    }
-
-    public void SetPlayerID(int id)
-    {
-        Debug.Log($"Player {playerID} has been assigned ID {id}");
-        playerID = id;
-    }
-
-    public IEnumerator AddPoints(int amount)
-    {
-        Points = Math.Max(0, Points + amount);
-        Debug.Log($"Player {playerID} now has {Points} points.");
-        int playerMilestone = GameConfigManager.Instance.CurrentMode == GameMode.COOP ? Level : TrophyCount;
-        yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(playerMilestone)));
-    }
-
-    public override void AddBuff(BuffType type, int value, int duration)
-    {
-        playerBuffs.AddBuff(type, value, duration);
-    }
-
-    public override void UpdateBuffDurations()
-    {
-        playerBuffs.UpdateBuffDurations();
-    }
-
-    public void EarnTrophy()
-    {
-        if (TrophyCount >= MAX_TROPHY)
+        public void SetPlayerID(int id)
         {
-            return;
+            Debug.Log($"Player {playerID} has been assigned ID {id}");
+            playerID = id;
         }
-        
-        TrophyCount += 1;
-        Debug.Log($"Player {playerID} earned a trophy.");
-        UIManager.Instance.UpdatePlayerTrophy(playerID, TrophyCount);
-        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(TrophyCount)));
-        StartCoroutine(UIManager.Instance.DisplayEarnTrophy());
-    }
 
-    public void LevelUp()
-    {
-        if (Level >= MAX_LEVEL)
+        public IEnumerator AddPoints(int amount)
         {
-            return;
+            Points = Math.Max(0, Points + amount);
+            Debug.Log($"Player {playerID} now has {Points} points.");
+            yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
         }
-        
-        Level += 1;
-        Debug.Log($"Player {playerID} leveled up to level {Level}.");
-        UIManager.Instance.UpdatePlayerLevel(playerID, Level);
-        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(Level)));
-        StartCoroutine(UIManager.Instance.DisplayLevelUp());
 
-        // Add random permanent buff
-        BuffType[] possibleBuffs = { BuffType.AttackUp, BuffType.DefenseUp, BuffType.EvadeUp };
-        BuffType randomBuff = possibleBuffs[UnityEngine.Random.Range(0, possibleBuffs.Length)];
-        AddBuff(randomBuff, 2, 100); // Value of 2, duration of 100 for "permanent" effect
-        Debug.Log($"Player {playerID} gained permanent {randomBuff} buff");
-    }
-
-    public override void LoseHealth(int amount)
-    {
-        Health = Mathf.Max(0, Health - amount);
-        Debug.Log($"Player {playerID} now has {Health} health.");
-        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-
-        if (Health == 0)
+        public override void AddBuff(BuffType type, int value, int duration)
         {
-            Dies();
+            playerBuffs.AddBuff(type, value, duration);
         }
-    }
 
-    public override void Dies()
-    {
-        Status = Status.Dead;
-        PlayerManager.Instance.DeadPlayers.Add(this);
-        UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
-
-        Points /= 2;
-        int playerMilestone = GameConfigManager.Instance.CurrentMode == GameMode.COOP ? Level : TrophyCount;
-        StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(playerMilestone)));
-        Debug.Log($"Player {playerID} has died.");
-    }
-
-    public void IncrementReviveCounter()
-    {
-        ReviveCounter++;
-        UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
-    }
-
-    public void Revives()
-    {
-        ReviveCounter = 0;
-        Status = Status.Alive;
-        Health = MAX_HEALTH;
-        PlayerManager.Instance.DeadPlayers.Remove(this);
-        UIManager.Instance.ClearReviveCounter(playerID);
-        Debug.Log($"Player {playerID} has revived.");
-        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-    }
-
-    public override void TeleportTo(Vector3 position, Tile destinationTile)
-    {
-        // Adjust Y position for proper height above tile
-        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.7f * ARBoardPlacement.worldScale, position.z);
-        
-        // Update player position
-        transform.position = teleportPosition;
-        
-        // Update current tile reference
-        GetComponent<PlayerMovement>().CurrentTile = destinationTile;
-    
-        
-        Debug.Log($"Player {playerID} teleported to position {position}");
-    }
-
-    public void Heal(int amount)
-    {
-        if (Status == Status.Dead) //cannot heal a dead player
+        public override void UpdateBuffDurations()
         {
-            return;
+            playerBuffs.UpdateBuffDurations();
         }
-        Health = Math.Min(MAX_HEALTH, Health + amount);
-        Debug.Log($"Player {playerID} now has {Health} health.");
-        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-    }
-}
 
-[System.Serializable]
-public class PlayerBuffs : EntityBuffs
-{
-    public bool TriplePoints => activeBuffs.Any(b => b.Type == BuffType.TriplePoints);
-    public bool DoublePoints => activeBuffs.Any(b => b.Type == BuffType.DoublePoints) && !TriplePoints;
-}
+        public void LevelUp()
+        {
+            if (Level >= MAX_LEVEL)
+            {
+                return;
+            }
+            
+            Level += 1;
+            Debug.Log($"Player {playerID} leveled up to level {Level}.");
+            UIManager.Instance.UpdatePlayerLevel(playerID, Level);
+            StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetLevelUpPoints(Level)));
+            StartCoroutine(UIManager.Instance.DisplayLevelUp());
+        }
+
+        public override void LoseHealth(int amount)
+        {
+            Health = Mathf.Max(0, Health - amount);
+            Debug.Log($"Player {playerID} now has {Health} health.");
+            UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+        }
+
+        public override void Dies()
+        {
+            Status = Status.Dead;
+            PlayerManager.Instance.DeadPlayers.Add(this);
+            UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
+            Debug.Log($"Player {playerID} has died.");
+        }
+
+        public void IncrementReviveCounter()
+        {
+            ReviveCounter++;
+            UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
+        }
+
+        public void Revives()
+        {
+            ReviveCounter = 0;
+            Status = Status.Alive;
+            Health = MAX_HEALTH;
+            PlayerManager.Instance.DeadPlayers.Remove(this);
+            UIManager.Instance.ClearReviveCounter(playerID);
+            Debug.Log($"Player {playerID} has revived.");
+            UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+        }
+
+        public override void TeleportTo(Vector3 position, Tile destinationTile)
+        {
+            // Adjust Y position for proper height above tile
+            Vector3 teleportPosition = new Vector3(position.x, position.y + 0.7f * ARBoardPlacement.worldScale, position.z);
+            
+            // Update player position
+            transform.position = teleportPosition;
+            
+            // Update current tile reference
+            GetComponent<PlayerMovement>().CurrentTile = destinationTile;
+        
+            
+            Debug.Log($"Player {playerID} teleported to position {position}");
+        }
+
+        public void Heal(int amount)
+        {
+            if (Status == Status.Dead) //cannot heal a dead player
+            {
+                return;
+            }
+            Health = Math.Min(MAX_HEALTH, Health + amount);
+            Debug.Log($"Player {playerID} now has {Health} health.");
+            UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+        }
+    }
+
+    [System.Serializable]
+    public class PlayerBuffs : EntityBuffs
+    {
+        public bool TriplePoints => activeBuffs.Any(b => b.Type == BuffType.TriplePoints);
+        public bool DoublePoints => activeBuffs.Any(b => b.Type == BuffType.DoublePoints) && !TriplePoints;
+    }
