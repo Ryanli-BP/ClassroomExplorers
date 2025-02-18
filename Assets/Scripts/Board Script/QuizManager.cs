@@ -10,7 +10,6 @@ public class QuizManager : MonoBehaviour
 {
     [SerializeField] private GameObject QuizUI;
     [SerializeField] private float slideSpeed = 1f;
-    private RectTransform quizRect;
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
@@ -18,11 +17,13 @@ public class QuizManager : MonoBehaviour
     private int answeredQuestionsCount = 0;  
     private float timeRemaining;
     private bool isQuizActive = false;
-    private int correctAnswerCount = 0;
-    private bool isTransitioning = false;
-    public bool OnQuizComplete { get; private set; }
-    private Player quizPlayer;
     private bool questionsLoaded = false;
+    private bool isTransitioning = false;
+    private int correctAnswerCount = 0;
+
+    public bool OnQuizComplete { get; private set; }
+
+
 
     public static QuizManager Instance { get; private set; }
 
@@ -32,7 +33,6 @@ public class QuizManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            quizRect = QuizUI.GetComponent<RectTransform>();
         }
         else
         {
@@ -51,14 +51,10 @@ public class QuizManager : MonoBehaviour
         if (isQuizActive)
         {
             timeRemaining -= Time.deltaTime;
-            QuizDisplay.Instance.UpdateTimer(timeRemaining); // Update the timer display
-
-            if (timeRemaining <= 0 || answeredQuestionsCount >= questions.Count)
-            {
-                EndQuiz();
-            }
+            QuizDisplay.Instance.UpdateTimer(timeRemaining);
         }
     }
+
     private IEnumerator PreloadQuestions()
     {
         yield return StartCoroutine(DownloadQuestionCSV());
@@ -72,7 +68,28 @@ public class QuizManager : MonoBehaviour
         
         OnQuizComplete = false;
         UIManager.Instance.SetBoardUIActive(false);
-        StartCoroutine(StartQuizSequence());
+        StartCoroutine(QuizSequence());
+    }
+
+    private IEnumerator QuizSequence()
+    {
+        yield return StartQuizSequence();
+        StartQuizLogic();
+        
+        // Monitor quiz conditions
+        while (isQuizActive)
+        {
+            if (timeRemaining <= 0 || answeredQuestionsCount >= questions.Count)
+            {
+                isQuizActive = false;
+                Debug.Log("Quiz ended.");
+                break;
+            }
+            yield return null;
+        }
+        
+        yield return EndQuizSequence();
+        HandleQuizComplete();
     }
 
     private IEnumerator StartQuizSequence()
@@ -90,7 +107,6 @@ public class QuizManager : MonoBehaviour
             yield break;
         }
 
-        quizPlayer = PlayerManager.Instance.GetCurrentPlayer();
         answeredQuestionsCount = 0;
         currentQuestionIndex = -1;
         correctAnswerCount = 0;
@@ -108,7 +124,6 @@ public class QuizManager : MonoBehaviour
         yield return new WaitForSeconds(slideSpeed);
         isQuizActive = true;
         isTransitioning = false;
-        StartQuizLogic();
     }
 
 	private void StartQuizLogic()
@@ -136,19 +151,10 @@ public class QuizManager : MonoBehaviour
         
         yield return new WaitForSeconds(0.1f);
         isTransitioning = false;
-        HandleQuizComplete();
-    }
-
-    private void EndQuiz()
-    {
-        if (isTransitioning) return;
-        Debug.Log("Quiz ended.");
-        StartCoroutine(EndQuizSequence());
     }
 
     private void HandleQuizComplete()
     {
-        int pointsToAward = correctAnswerCount * 10;
         Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
 
         QuizReward rewardTier = EvaluateQuizPerformance();

@@ -345,7 +345,7 @@ public class UIManager : MonoBehaviour
         var healthAnimation = playerStatsUIList[playerIndex - 1].healthBar.GetComponent<HealthAnimation>();
         if (healthAnimation != null)
         {
-            healthAnimation.AnimateHealth(health, Player.MAX_HEALTH);
+            healthAnimation.AnimateHealth(health, PlayerManager.Instance.GetPlayerByID(playerIndex).MAX_HEALTH);
         }
         else
         {

@@ -153,7 +153,7 @@ public class TileManager : MonoBehaviour
             case TileType.Trap:
                 Debug.Log("Trap tile");
                 yield return StartCoroutine(PlayAnvilAnimation(currentPlayer.transform.position));
-                int damage = UnityEngine.Random.Range(1, 5);
+                int damage = UnityEngine.Random.Range(1, 3);
                 currentPlayer.LoseHealth(damage);
                 yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(currentPlayer.transform.position, damage));
                 break;

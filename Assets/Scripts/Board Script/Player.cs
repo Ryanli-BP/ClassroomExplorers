@@ -12,12 +12,12 @@ public class Player : Entity
     [SerializeField] private int playerID;
 
     public const int REVIVAL_COUNT = 5;
-    public const int MAX_HEALTH = 10;
+    public int MAX_HEALTH = 6;
     public const int MAX_LEVEL = 5;
     public const int MAX_TROPHY = 5;
 
     public int Points { get; set; }
-    public int Level { get; set; } = 1;
+    public int Level { get; set; } = 0;
     public int TrophyCount { get; set; } = 0;
     [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
     public PlayerBuffs PlayerBuffs => playerBuffs;
@@ -123,6 +123,10 @@ public class Player : Entity
         BuffType randomBuff = possibleBuffs[UnityEngine.Random.Range(0, possibleBuffs.Length)];
         AddBuff(randomBuff, 2, 100); // Value of 2, duration of 100 for "permanent" effect
         Debug.Log($"Player {playerID} gained permanent {randomBuff} buff");
+
+        //Gain 1 HP
+        MAX_HEALTH++;
+        UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
     public override void LoseHealth(int amount)
