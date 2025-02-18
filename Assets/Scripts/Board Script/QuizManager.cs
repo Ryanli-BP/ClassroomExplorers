@@ -1,17 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using CsvHelper;
-using CsvHelper.Configuration;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class QuizManager : MonoBehaviour
 {
     [SerializeField] private GameObject QuizUI;
     [SerializeField] private float slideSpeed = 1f;
     private RectTransform quizRect;
-    public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
     private int currentQuestionIndex = -1;
     private float quizDuration = 5f; // Duration of the quiz in seconds
@@ -59,9 +56,11 @@ public class QuizManager : MonoBehaviour
             }
         }
     }
+
+	// Preloads the quiz questions from the API
     private IEnumerator PreloadQuestions()
     {
-        yield return StartCoroutine(DownloadQuestionCSV());
+        yield return StartCoroutine(DownloadQuestionsJSON());
         questionsLoaded = true;
         Debug.Log("Quiz questions preloaded successfully");
     }
@@ -193,83 +192,52 @@ public class QuizManager : MonoBehaviour
         return isQuizActive;
     }
 
-    private IEnumerator DownloadQuestionCSV()
-    {
-        string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
-        string savePath = Path.Combine(Application.persistentDataPath, "QuestionCSV.csv");
-        string fallbackPath = Path.Combine(Application.dataPath, "Questions CSV", "questionsTest.csv");
 
-        bool downloadCompleted = false;
-        string errorMessage = null;
+	/*
+	Handles the get of the quiz questions from the API.
+	*/
+	
+	// Coroutine to download quiz questions in JSON format from the specified URL
+	private IEnumerator DownloadQuestionsJSON() {
+    	string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
+    	string jsonResponse = null;
+    	bool downloadCompleted = false;
+	
+    	// Use NetworkManager to download the text from the URL
+    	NetworkManager.Instance.DownloadText(url,
+        	(response) => { jsonResponse = response; downloadCompleted = true; },
+        	(error) => { 
+            	Debug.LogError($"Failed to download questions: {error}");
+            	downloadCompleted = true;
+        	});
 
-        NetworkManager.Instance.DownloadFile(url, savePath, 
-            () => { downloadCompleted = true; }, 
-            (error) => { errorMessage = error; downloadCompleted = true; });
+    	// Wait until the download is completed
+    	while (!downloadCompleted){
+        	yield return null;
+    	}
 
-        while (!downloadCompleted)
-        {
-            yield return null;
-        }
+    	// If the response is not empty, parse the JSON
+    	if (!string.IsNullOrEmpty(jsonResponse)) {
+        	ParseQuestionsFromJSON(jsonResponse);
+    	} else {
+        	Debug.LogError("Failed to retrieve quiz questions from the API.");
+    	}
+	}
 
-        if (!string.IsNullOrEmpty(errorMessage))
-        {
-            Debug.LogWarning($"Failed to download questions: {errorMessage}. Falling back to local CSV file.");
-            OLDLoadQuestionsFromCSV();
-            //LoadQuestionsFromCSV(fallbackPath);
-            yield break;
-        }
-    }
-
-        private void OLDLoadQuestionsFromCSV() //used for testing on phone for now
-    {
-        if (csvFile == null)
-        {
-            Debug.LogError("CSV file not assigned in the inspector!");
-            return;
-        }
-
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HeaderValidated = null,
-            MissingFieldFound = null
-        };
-
-        using (var reader = new StringReader(csvFile.text))
-        using (var csv = new CsvReader(reader, config))
-        {
-            csv.Context.RegisterClassMap<QuestionMap>();
-            questions = new List<Question>(csv.GetRecords<Question>());
-        }
-
-        Debug.Log($"Loaded {questions.Count} questions from the CSV.");
-    }
-
-
-    private void LoadQuestionsFromCSV(string filePath)
-    {
-        Debug.Log($"Attempting to load CSV from: {filePath}");
-        Debug.Log($"File exists check: {File.Exists(filePath)}");
-        if (!File.Exists(filePath))
-        {
-            Debug.LogError("CSV file not found!");
-            return;
-        }
-
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            HeaderValidated = null,
-            MissingFieldFound = null
-        };
-
-        using (var reader = new StreamReader(filePath))
-        using (var csv = new CsvReader(reader, config))
-        {
-            csv.Context.RegisterClassMap<QuestionMap>();
-            questions = new List<Question>(csv.GetRecords<Question>());
-        }
-
-        Debug.Log($"Loaded {questions.Count} questions from the CSV.");
-    }
+	// Method to parse the JSON response and load the questions
+	private void ParseQuestionsFromJSON(string json) {
+    	try {
+        	var jsonObject = JsonConvert.DeserializeObject<Dictionary<string, List<Question>>>(json);
+        	if (jsonObject != null && jsonObject.ContainsKey("questions")) {
+            	questions = jsonObject["questions"];
+            	Debug.Log($"Loaded {questions.Count} questions from JSON response.");
+        	} else {
+            	Debug.LogError("JSON response does not contain 'questions' key.");
+        	}
+    	} catch (System.Exception e) {
+        	Debug.LogError($"Error parsing JSON: {e.Message}");
+    	}
+	}
 }
 
 public class Question
@@ -280,17 +248,4 @@ public class Question
     public string choiceC { get; set; }
     public string choiceD { get; set; }
     public string answer { get; set; }
-}
-
-public sealed class QuestionMap : ClassMap<Question>
-{
-    public QuestionMap()
-    {
-        Map(m => m.question);
-        Map(m => m.choiceA);
-        Map(m => m.choiceB);
-        Map(m => m.choiceC);
-        Map(m => m.choiceD);
-        Map(m => m.answer);
-    }
 }
