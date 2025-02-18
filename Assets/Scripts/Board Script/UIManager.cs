@@ -13,8 +13,6 @@ public class PlayerStatsUI
     public GameObject pointsBar; //points text is included in bar
     public TextMeshProUGUI levelText;
     public GameObject healthBar;
-    public GameObject TrophyPanel;
-    public TextMeshProUGUI TrophyText;
 }
 
 [DefaultExecutionOrder(0)]
@@ -46,9 +44,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI currentTurnText; 
     [SerializeField] private GameObject NotificationBar;
     [SerializeField] private TextMeshProUGUI NotificationText;
-    [SerializeField] private TextMeshProUGUI NotificationTitle;
-    [SerializeField] private List<Sprite> BuffIcons = new List<Sprite>();
-    [SerializeField] private Image notificationIconDisplay;
 
     [SerializeField] private TextMeshProUGUI reviveCounterText;
     private Dictionary<int, string> playerReviveMessages = new Dictionary<int, string>();
@@ -230,6 +225,7 @@ public class UIManager : MonoBehaviour
         }
 
         GameManager.Instance.HandleDiceResultDisplayFinished();
+        centreDisplayPanel.SetActive(false);
     }
     public IEnumerator DisplayRemainingDiceSteps(int diceResult)
     {
@@ -287,19 +283,11 @@ public class UIManager : MonoBehaviour
         centreDisplayText.color = originalColor;
     }
 
-    public IEnumerator DisplayEarnTrophy()
-    {
-        centreDisplayPanel.SetActive(true);
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Trophy +1";
-        yield return new WaitForSeconds(1f);
-        centreDisplayPanel.SetActive(false);
-    }
-
     public IEnumerator DisplayLevelUp()
     {
         centreDisplayPanel.SetActive(true);
         centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Level Up!";
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         centreDisplayPanel.SetActive(false);
     }
 
@@ -319,25 +307,6 @@ public class UIManager : MonoBehaviour
     public void UpdatePlayerLevel(int playerIndex, int level)
     {
         playerStatsUIList[playerIndex - 1].levelText.text = $"LV <#FF6573>{level}</color>";
-    }
-
-    public void UpdatePlayerTrophy(int playerIndex, int trophyCount)
-    {
-        playerStatsUIList[playerIndex - 1].TrophyText.text = trophyCount.ToString();
-    }
-
-    public void ChangePlayerUIforMode(int playerIndex, GameMode gamemode)
-    {
-        if (gamemode == GameMode.COOP)
-        {
-            playerStatsUIList[playerIndex - 1].levelText.gameObject.SetActive(true);
-            playerStatsUIList[playerIndex - 1].TrophyPanel.SetActive(false);
-        }
-        else
-        {
-            playerStatsUIList[playerIndex - 1].levelText.gameObject.SetActive(false);
-            playerStatsUIList[playerIndex - 1].TrophyPanel.SetActive(true);
-        }
     }
 
     public void UpdatePlayerHealth(int playerIndex, int health)
@@ -414,93 +383,15 @@ public class UIManager : MonoBehaviour
         }
 
         Destroy(damageText.gameObject);
-        yield return new WaitForSeconds(1f);
     }
 
-    public IEnumerator DisplayRewardNotification(string message, BuffType buffType)
+    public IEnumerator DisplayRewardNotification(string message)
     {
         NotificationBar.SetActive(true);
         NotificationText.text = message;
-        NotificationTitle.text = GetBuffTitle(buffType);
-
-        ChangeNotificationColor(buffType);
         yield return new WaitForSeconds(2f);
         NotificationBar.SetActive(false);
     }
-
-    public string GetBuffTitle(BuffType buffType)
-    {
-        switch (buffType)
-        {
-            case BuffType.AttackUp:
-                notificationIconDisplay.sprite = BuffIcons[0];
-                return "Attack Bonus";
-            case BuffType.DefenseUp:
-                notificationIconDisplay.sprite = BuffIcons[1];
-                return "Defense Bonus";
-            case BuffType.EvadeUp:
-                notificationIconDisplay.sprite = BuffIcons[2];
-                return "Evade Bonus";
-            case BuffType.DoublePoints:
-                notificationIconDisplay.sprite = BuffIcons[3];
-                return "Double Points Buff";
-            case BuffType.TriplePoints:
-                notificationIconDisplay.sprite = BuffIcons[4];
-                return "Triple Points Buff";
-            case BuffType.ExtraDice:
-                notificationIconDisplay.sprite = BuffIcons[5];
-                return "Extra Dice Buff";
-            default:
-                return "Unknown Buff";
-        }
-    }
-
-    // Method to change the color of the notification bar
-    private void ChangeNotificationColor(BuffType buffType)
-    {
-        Color newColor = Color.white; // Default color
-        switch (buffType)
-        {
-            case BuffType.AttackUp:
-                newColor = new Color(1.0f, 0.6f, 0.6f); // Soft Red (#FF9999)
-                break;
-            case BuffType.DefenseUp:
-                newColor = new Color(0.6f, 0.8f, 1.0f); // Soft Blue (#99CCFF)
-                break;
-            case BuffType.EvadeUp:
-                newColor = new Color(1.0f, 0.6f, 0.6f); // Soft Red (#FF9999)
-                break;
-            case BuffType.DoublePoints:
-                newColor = new Color(1.0f, 0.95f, 0.7f); // Soft Yellow (#FFF2B2)
-                break;
-            case BuffType.TriplePoints:
-                newColor = new Color(1.0f, 0.84f, 0.5f); // Soft Gold (#FFD700, slightly muted)
-                break;
-            case BuffType.ExtraDice:
-                newColor = new Color(0.6f, 0.8f, 1.0f); // Soft Blue (#99CCFF)
-                break;
-        }
-
-        // Assuming "Content" is a child of NotificationBar and has an Image component
-        Transform contentTransform = NotificationBar.transform.Find("Content");
-        if (contentTransform != null)
-        {
-            Image contentImage = contentTransform.GetComponent<Image>();
-            if (contentImage != null)
-            {
-                contentImage.color = newColor;
-            }
-            else
-            {
-                Debug.LogError("Content GameObject is missing an Image component!");
-            }
-        }
-        else
-        {
-            Debug.LogError("Content GameObject not found in NotificationBar!");
-        }
-    }
-
 
     public void UpdateRound(int roundNumber)
     {

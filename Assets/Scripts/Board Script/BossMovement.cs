@@ -41,7 +41,6 @@ public class BossMovement : MonoBehaviour
                 
                 GameManager.Instance.IsResumingMovement = false;
                 remainingSteps = 0; // Stop movement after combat
-                UIManager.Instance.OffDiceDisplay(); //stop UI dice display
                 
                 if (BossManager.Instance.activeBoss.Status == Status.Dead)
                 {
@@ -70,9 +69,6 @@ public class BossMovement : MonoBehaviour
         while (remainingSteps >= 0)
         {
             Debug.Log($"Remaining steps: {remainingSteps}");
-            // display every step remain on boss
-            yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
-            
             
             // Handle combat before movement
             if (!initialMove)
@@ -83,7 +79,6 @@ public class BossMovement : MonoBehaviour
             //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
-                UIManager.Instance.OffDiceDisplay();//stop display dice number
                 isMoving = false;
             }
 
