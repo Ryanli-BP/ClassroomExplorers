@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 using System.IO;
+using Newtonsoft.Json;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -43,12 +44,12 @@ public class NetworkManager : MonoBehaviour
         }
     }
 
-    public void DownloadFile(string url, string savePath, System.Action onSuccess, System.Action<string> onError)
+    public void DownloadText(string url, System.Action<string> onSuccess, System.Action<string> onError)
     {
-        StartCoroutine(IDownloadFile(url, savePath, onSuccess, onError));
+        StartCoroutine(IDownloadText(url, onSuccess, onError));
     }
 
-    private IEnumerator IDownloadFile(string url, string savePath, System.Action onSuccess, System.Action<string> onError)
+    private IEnumerator IDownloadText(string url, System.Action<string> onSuccess, System.Action<string> onError)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
@@ -57,19 +58,11 @@ public class NetworkManager : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
                 webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                onError?.Invoke($"Error: {webRequest.error}");
+                onError?.Invoke($"Error: {webRequest.error} | Response: {webRequest.downloadHandler.text}");
             }
             else
             {
-                try
-                {
-                    File.WriteAllBytes(savePath, webRequest.downloadHandler.data);
-                    onSuccess?.Invoke();
-                }
-                catch (System.Exception e)
-                {
-                    onError?.Invoke($"Error saving file: {e.Message}");
-                }
+                onSuccess?.Invoke(webRequest.downloadHandler.text);
             }
         }
     }

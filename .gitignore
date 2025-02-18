@@ -76,31 +76,10 @@ Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials/Roboto-Bold SD
 [Bb]uilds/
 [Mm]emoryCaptures/
 
-# Visual Studio / MonoDevelop generated files
-*.csproj
-*.unityproj
-*.sln
-*.suo
-*.tmp
-*.user
-*.userprefs
-*.pidb
-*.booproj
-*.svd
-
-# Unity auto-generated files
-*.pidb.meta
-*.pdb
-*.mdb
-*.opendb
-*.VC.db
-
 # Exclude crash reports and other large files
-sysinfo.txt
 *.stacktrace
 
 # Exclude files created by Unity Editor
-*.unitypackage
 *.assetstoretools*
 
 # OS-specific files
@@ -118,6 +97,5 @@ board_BurstDebugInformation_DoNotShip/
 *.iml
 Assets/XR/Settings/OpenXR Package Settings.asset
 /Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials
-Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials/Bangers SDF.asset
 Assets/TextMesh Pro/Examples & Extras/Resources/Fonts & Materials/Bangers SDF.asset
 Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
