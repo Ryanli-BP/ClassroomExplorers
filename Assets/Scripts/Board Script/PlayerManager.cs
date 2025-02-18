@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using Photon.Pun;
+
 [DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
 {
@@ -18,11 +18,11 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> homeObjects;
 
-    [SerializeField] private List<int> levelUpPoints = new List<int> { 10, 25, 50 };
+    [SerializeField] private List<int> PointsMilestone = new List<int> { 10, 25, 50, 100, 200 };
 
     public int CurrentPlayerID { get; set; } = 1;
 
-    public int CurrentHighLevel { get; set; } = 1; //needed to determine RoundPoints
+    public int CurrentMilestone { get; set; } = 1; //needed to determine RoundPoints
 
     public List<Player> DeadPlayers { get; set; } = new List<Player>();
 
@@ -53,47 +53,38 @@ public class PlayerManager : MonoBehaviour
 
     private void InitialisePlayers()
     {
-        // If we're not connected, or not in a room, do nothing
-        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
-        {
-            Debug.LogWarning("Photon not connected or not in room; skipping spawn.");
-            return;
-        }
+        players.Clear();
 
-        // If we already spawned our local player, skip
-        // (You could track a bool, or see if PhotonNetwork.LocalPlayer.TagObject is set, etc.)
-        if (PhotonNetwork.LocalPlayer.TagObject != null)
-        {
-            Debug.Log("Local player already spawned, skipping...");
-            return;
-        }
-
-        // Retrieve selected player info (body/hat) from PlayerPrefs
-        int selectedBodyColorIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0);
+        // Retrieve selected player information from the previous scene
+        int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
         int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
 
-        // Pack the customization data in instantiationData
-        object[] instantiationData = new object[]
+        for (int i = 0; i < GameConfigManager.Instance.numOfPlayers; i++)
         {
-            selectedBodyColorIndex,
-            selectedHatIndex
-        };
+            // Instantiate the player prefab
+            Quaternion playerRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
+            Player playerObject = Instantiate(playerPrefab, 
+                                transform.position, 
+                                playerRotation);
+            playerObject.transform.localScale = playerObject.transform.localScale * ARBoardPlacement.worldScale;
 
-        // Actually spawn the local player's prefab
-        GameObject playerGO = PhotonNetwork.Instantiate(
-            "main player v2",   // Must match the prefab name in Resources
-            transform.position, // or wherever you want initial spawn
-            ARBoardPlacement.boardRotation * transform.rotation,
-            0,
-            instantiationData
-        );
+            playerObject.SetPlayerID(i + 1);
+            // Set the player appearance before adding to the list
+            int bodyColorIndex = i == 0 ? selectedPlayerIndex : i; // Use selected color for Player 1, default for others
+            int hatIndex = i == 0 ? selectedHatIndex : i; // Use selected hat for Player 1, default for others
 
-        // Optionally store a reference so we don’t spawn again
-        PhotonNetwork.LocalPlayer.TagObject = playerGO;
-        
-        Debug.Log($"Spawned local player for ActorNumber={PhotonNetwork.LocalPlayer.ActorNumber} with body={selectedBodyColorIndex} hat={selectedHatIndex}.");
+            playerObject.gameObject.SetActive(true);
+            
+            SetPlayerAppearance(playerObject, bodyColorIndex, hatIndex);
+            
+            // Add the instantiated GameObject (with Player script) to the players list
+            players.Add(playerObject);
+
+            // Assuming playerPrefab already contains a Player component that will be automatically added
+            Debug.Log($"Player {i + 1} instantiated and appearance set.");
+        }
+        playerPrefab.SetPlayerID(-1);
     }
-
     
     public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
     {
@@ -188,9 +179,9 @@ public class PlayerManager : MonoBehaviour
         return players.Count;
     }
 
-    public int GetLevelUpPoints(int level)
+    public int GetMilestonePoints(int level)
     {
-        return levelUpPoints[level - 1];
+        return PointsMilestone[level];
     }
 
     public void SpawnAllPlayersAtHome()
@@ -225,38 +216,73 @@ public class PlayerManager : MonoBehaviour
         currentPlayer.GetComponent<PlayerMovement>().MovePlayer(diceTotal);
     }
 
-    public void LevelUpPlayer()
+    public void HomeTileAction()
+    {
+        if (GameConfigManager.Instance.CurrentMode == GameMode.COOP)
         {
-            Player currentPlayer = GetCurrentPlayer();
-            int currentPoints = currentPlayer.Points;
-            int currentLevel = currentPlayer.Level;
+            LevelUpPlayer();
+        }
+        else
+        {
+            PlayerEarnTrophy();
+        }
+    }
 
-            if (currentLevel >= Player.MAX_LEVEL)
+    public void PlayerEarnTrophy()
+    {
+        Player currentPlayer = GetCurrentPlayer();
+        int currentPoints = currentPlayer.Points;
+        int currentTrophy = currentPlayer.TrophyCount;
+
+        if (currentTrophy < Player.MAX_TROPHY && currentPoints >= PointsMilestone[currentTrophy])
+        {
+            Debug.Log($"points {currentPoints} Trophy {currentTrophy} getting trophy as above {PointsMilestone[currentTrophy]}");
+            currentPlayer.EarnTrophy();
+
+            if (currentPlayer.TrophyCount > CurrentMilestone)
             {
-                Debug.Log($"Player {currentPlayer.getPlayerID()} is already at the maximum level.");
-                return;
-            }
-
-            if (currentLevel < Player.MAX_LEVEL && currentPoints >= levelUpPoints[currentLevel - 1])
-            {
-                Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {levelUpPoints[currentLevel - 1]}");
-                currentPlayer.LevelUp();
-
-                if (currentPlayer.Level > CurrentHighLevel)
-                {
-                    CurrentHighLevel = currentPlayer.Level;
-                }
-
-                // Check if the player has reached the last level
-                if (currentPlayer.Level == Player.MAX_LEVEL && GameConfigManager.Instance.CurrentMode == GameMode.FFA)
-                {
-                    GameManager.Instance.WinGameConditionAchieved();
-                    Debug.Log("Game End: Player has reached the maximum level.");
-                }
-            }
-            else
-            {
-                Debug.Log($"Player {currentPlayer.getPlayerID()} does not have enough points to level up.");
+                CurrentMilestone = currentPlayer.TrophyCount;
             }
         }
+        else
+        {
+            Debug.Log($"Player {currentPlayer.getPlayerID()} does not have enough points to earn trophy.");
+        }
+
+        // Check if the player has already earned max trophies
+        if (currentPlayer.TrophyCount == Player.MAX_TROPHY && GameConfigManager.Instance.CurrentMode != GameMode.COOP)
+        {
+            GameManager.Instance.WinGameConditionAchieved();
+            Debug.Log("Game End: Player has collected all trophies.");
+        }
+    }
+
+    public void LevelUpPlayer()
+    {
+        Player currentPlayer = GetCurrentPlayer();
+        int currentPoints = currentPlayer.Points;
+        int currentLevel = currentPlayer.Level;
+
+        if (currentLevel >= Player.MAX_LEVEL)
+        {
+            Debug.Log($"Player {currentPlayer.getPlayerID()} is already at the maximum level.");
+            return;
+        }
+
+        if (currentLevel < Player.MAX_LEVEL && currentPoints >= PointsMilestone[currentLevel])
+        {
+            Debug.Log($"points {currentPoints} level {currentLevel} leveling up as above {PointsMilestone[currentLevel]}");
+            currentPlayer.LevelUp();
+
+            if (currentPlayer.Level > CurrentMilestone)
+            {
+                CurrentMilestone = currentPlayer.Level;
+            }
+        }
+        else
+        {
+            Debug.Log($"Player {currentPlayer.getPlayerID()} does not have enough points to level up.");
+        }
+
+    }
 }
