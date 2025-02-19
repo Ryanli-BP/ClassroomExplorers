@@ -19,6 +19,7 @@ public class Player : Entity
     public int Points { get; set; }
     public int Level { get; set; } = 0;
     public int TrophyCount { get; set; } = 0;
+    public int QuizStreak { get; set; } = 0;
     [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
     public PlayerBuffs PlayerBuffs => playerBuffs;
 

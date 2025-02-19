@@ -5,6 +5,7 @@ using System.IO;
 using CsvHelper;
 using CsvHelper.Configuration;
 using UnityEngine;
+using System.Linq;
 
 public class QuizManager : MonoBehaviour
 {
@@ -12,13 +13,25 @@ public class QuizManager : MonoBehaviour
     [SerializeField] private float slideSpeed = 1f;
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
+    private List<Question> availableQuestions = new List<Question>();
+    private List<Question> usedQuestions = new List<Question>();
+    private List<Question> currentQuizQuestions = new List<Question>();
+
+    //Used for Buzz mode
+    private float questionStartTime;
+    private float lastAnswerTime;
+    public float LastAnswerTime => lastAnswerTime;
+
     private int currentQuestionIndex = -1;
-    private float quizDuration = 5f; // Duration of the quiz in seconds
+    private float quizDuration; // Duration of the quiz in seconds
     private int answeredQuestionsCount = 0;  
     private float timeRemaining;
+    [SerializeField] private int timeRushQuestionCount = 5; // Number of questions to show per quiz
+
     private bool isQuizActive = false;
     private bool questionsLoaded = false;
     private bool isTransitioning = false;
+
     private int correctAnswerCount = 0;
 
     public bool OnQuizComplete { get; private set; }
@@ -42,6 +55,7 @@ public class QuizManager : MonoBehaviour
 
     private void Start()
     {
+        quizDuration = GameConfigManager.Instance.quizTimeLimit;
         StartCoroutine(PreloadQuestions());
         GameInitializer.Instance.ConfirmManagerReady("QuizManager");
     }
@@ -58,6 +72,8 @@ public class QuizManager : MonoBehaviour
     private IEnumerator PreloadQuestions()
     {
         yield return StartCoroutine(DownloadQuestionCSV());
+        availableQuestions = new List<Question>(questions);
+        usedQuestions = new List<Question>();
         questionsLoaded = true;
         Debug.Log("Quiz questions preloaded successfully");
     }
@@ -126,15 +142,75 @@ public class QuizManager : MonoBehaviour
         isTransitioning = false;
     }
 
-	private void StartQuizLogic()
+    private void StartQuizLogic()
     {
-    	timeRemaining = quizDuration;
-    	currentQuestionIndex = -1;
-    	isQuizActive = true;
-    	AnswerButtons.Instance.EnableButtons();
-    	DisplayNextQuestion();
+        timeRemaining = quizDuration;
+        currentQuestionIndex = -1;
+        isQuizActive = true;
+        AnswerButtons.Instance.EnableButtons();
+        
+        // Get current quiz mode from GameConfigManager
+        QuizMode currentQuizMode = GameConfigManager.Instance.CurrentQuizMode;
+        
+        // Determine number of questions based on quiz mode
+        int questionCount = (currentQuizMode == QuizMode.TIME_RUSH) ? timeRushQuestionCount : 1;
+        
+        // Reset if we don't have enough available questions
+        if (availableQuestions.Count < questionCount)
+        {
+            ResetQuestionPool();
+        }
+        
+        // Create a separate list for this quiz session
+        List<Question> selectedQuestions = availableQuestions
+            .OrderBy(x => Random.value)
+            .Take(questionCount)
+            .ToList();
+        
+        // Remove selected questions from available pool
+        foreach (var question in selectedQuestions)
+        {
+            availableQuestions.Remove(question);
+            usedQuestions.Add(question);
+        }
+        
+        // Store the quiz questions separately
+        currentQuizQuestions = new List<Question>(selectedQuestions);
+        DisplayNextQuestion();
+    }
+
+
+    private void ResetQuestionPool()
+    {
+        availableQuestions = new List<Question>(questions);
+        usedQuestions.Clear();
+        Debug.Log("Question pool has been reset");
     }
 	
+    public void DisplayNextQuestion()
+    {
+        if (!isQuizActive) return;
+
+        // Check if we've shown all questions for this quiz session
+        if (currentQuestionIndex + 1 >= currentQuizQuestions.Count)
+        {
+            isQuizActive = false;
+            return;
+        }
+
+        currentQuestionIndex++;
+        Question q = currentQuizQuestions[currentQuestionIndex];
+        
+        // Get current quiz mode from GameConfigManager
+        QuizMode currentQuizMode = GameConfigManager.Instance.CurrentQuizMode;
+        int totalQuestions = (currentQuizMode == QuizMode.TIME_RUSH) ? timeRushQuestionCount : 1;
+        
+        // Start timing when question is displayed
+        questionStartTime = Time.time;
+        
+        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex + 1, totalQuestions);
+    }
+
 	private IEnumerator EndQuizSequence()
     {
         isTransitioning = true;
@@ -171,27 +247,32 @@ public class QuizManager : MonoBehaviour
         return (QuizReward)Random.Range(0, 4);
     }
 
-    public void DisplayNextQuestion()
-    {
-        if (!isQuizActive) return;
-
-        currentQuestionIndex = (currentQuestionIndex + 1) % questions.Count;
-        Question q = questions[currentQuestionIndex];
-
-        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex, questions.Count);
-    }
 
     public bool CheckAnswer(int answerIndex)
     {
         if (!isQuizActive) return false;
-        answeredQuestionsCount++;
+        
+        Question currentQuestion = currentQuizQuestions[currentQuestionIndex];
         string selectedAnswer = ((char)('A' + answerIndex)).ToString();
+        answeredQuestionsCount++;
 
-        if (selectedAnswer == questions[currentQuestionIndex].answer)
+        // Calculate time taken to answer
+        lastAnswerTime = Time.time - questionStartTime;
+
+        bool isCorrect = selectedAnswer == currentQuestion.answer;
+        if (isCorrect)
         {
             correctAnswerCount++;
+            
+            // Special handling for Buzz mode
+            if (GameConfigManager.Instance.CurrentQuizMode == QuizMode.BUZZ)
+            {
+                // You can use lastAnswerTime here for Buzz mode scoring
+                Debug.Log($"Question answered in {lastAnswerTime:F2} seconds");
+            }
         }
-        return questions[currentQuestionIndex].answer == selectedAnswer;
+        
+        return isCorrect;
     }
 
     public bool IsQuizActive()
