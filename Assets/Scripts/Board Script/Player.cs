@@ -96,6 +96,7 @@ public class Player : Entity
     {
         if (TrophyCount >= MAX_TROPHY)
         {
+            Debug.Log("Player reach MAX_TROPHY");
             return;
         }
         
@@ -103,13 +104,14 @@ public class Player : Entity
         Debug.Log($"Player {playerID} earned a trophy.");
         UIManager.Instance.UpdatePlayerTrophy(playerID, TrophyCount);
         StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(TrophyCount)));
-        StartCoroutine(UIManager.Instance.DisplayEarnTrophy());
+        StartCoroutine(UIManager.Instance.DisplayEarnTrophy(playerID, TrophyCount));
     }
 
     public void LevelUp()
     {
         if (Level >= MAX_LEVEL)
         {
+            Debug.Log("Player reach MAX_LEVEL");
             return;
         }
         
@@ -117,7 +119,7 @@ public class Player : Entity
         Debug.Log($"Player {playerID} leveled up to level {Level}.");
         UIManager.Instance.UpdatePlayerLevel(playerID, Level);
         StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(Level)));
-        StartCoroutine(UIManager.Instance.DisplayLevelUp());
+        StartCoroutine(UIManager.Instance.DisplayLevelUp(playerID, Level));
 
         // Add random permanent buff
         BuffType[] possibleBuffs = { BuffType.AttackUp, BuffType.DefenseUp, BuffType.EvadeUp };

@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI NotificationText;
     [SerializeField] private TextMeshProUGUI NotificationTitle;
     [SerializeField] private List<Sprite> BuffIcons = new List<Sprite>();
+    [SerializeField] private List<Sprite> NotificationIcons = new List<Sprite>();
     [SerializeField] private Image notificationIconDisplay;
 
     [SerializeField] private TextMeshProUGUI reviveCounterText;
@@ -288,20 +289,77 @@ public class UIManager : MonoBehaviour
         centreDisplayText.color = originalColor;
     }
 
-    public IEnumerator DisplayEarnTrophy()
+    public IEnumerator DisplayEarnTrophy(int playerID, int trophy)
     {
-        centreDisplayPanel.SetActive(true);
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Trophy +1";
-        yield return new WaitForSeconds(1f);
-        centreDisplayPanel.SetActive(false);
+        NotificationBar.SetActive(true);
+        ChangeNotificationIcon("trophyUp");
+        NotificationText.text = $"Player {playerID} has extra trophy!";
+        NotificationTitle.text = $"From {trophy - 1} trophies to {trophy} trophies";
+
+        yield return new WaitForSeconds(2f);
+        NotificationBar.SetActive(false);
     }
 
-    public IEnumerator DisplayLevelUp()
+    public IEnumerator DisplayLevelUp(int playerID, int level)
     {
-        centreDisplayPanel.SetActive(true);
-        centreDisplayPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Level Up!";
-        yield return new WaitForSeconds(1f);
-        centreDisplayPanel.SetActive(false);
+        NotificationBar.SetActive(true);
+        ChangeNotificationIcon("levelUp");
+        NotificationText.text = $"Player {playerID} leveled up!";
+        NotificationTitle.text = $"From level {level - 1} to level {level}";
+
+        yield return new WaitForSeconds(2f);
+        NotificationBar.SetActive(false);
+    }
+
+    public IEnumerator DisplayHealing(int healerID, int receiverID, int amount)
+    {
+        NotificationBar.SetActive(true);
+        ChangeNotificationIcon("heal");
+        NotificationTitle.text = $"Player {receiverID} being healed!";
+        NotificationText.text = $"healed by Player {receiverID} by {amount}";
+
+        yield return new WaitForSeconds(2f);
+        NotificationBar.SetActive(false);
+    }
+
+    private void ChangeNotificationIcon(string category)
+    {
+        Color newColor = Color.white; // Default color
+        switch (category)
+        {
+            case "levelUp":
+                notificationIconDisplay.sprite = NotificationIcons[0];
+                newColor = new Color(1.0f, 0.84f, 0.5f);
+                break;
+            case "trophyUp":
+                notificationIconDisplay.sprite = NotificationIcons[1];
+                newColor = new Color(1.0f, 0.84f, 0.5f); 
+                break;
+            case "heal":
+                notificationIconDisplay.sprite = NotificationIcons[2];
+                newColor = new Color(0.94f, 0.5f, 0.5f);
+                break;
+            
+        }
+
+        // Assuming "Content" is a child of NotificationBar and has an Image component
+        Transform contentTransform = NotificationBar.transform.Find("Content");
+        if (contentTransform != null)
+        {
+            Image contentImage = contentTransform.GetComponent<Image>();
+            if (contentImage != null)
+            {
+                contentImage.color = newColor;
+            }
+            else
+            {
+                Debug.LogError("Content GameObject is missing an Image component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Content GameObject not found in NotificationBar!");
+        }
     }
 
     public IEnumerator UpdatePlayerPoints(int playerIndex, int points, int levelUpPoints)
