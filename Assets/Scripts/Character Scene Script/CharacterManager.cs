@@ -21,6 +21,11 @@ public class CharacterManager : MonoBehaviour
     
     private void Start()
     {
+        if (player == null)
+        { 
+            Debug.Log("Null Player Ref");
+            return;
+        }
         InitializeBodyColors();
         InitializeHats();
 
@@ -53,6 +58,11 @@ public class CharacterManager : MonoBehaviour
 
     private void InitializeBodyColors()
     {
+        if (player == null)
+        { 
+            Debug.Log("Null Player Ref");
+            return;
+        }
         Transform bodyParent = player.transform.Find("Mesh Object/Bone_Body");
         if (bodyParent != null)
         {
@@ -73,6 +83,11 @@ public class CharacterManager : MonoBehaviour
 
     private void InitializeHats()
     {
+        if (player == null)
+        { 
+            Debug.Log("Null Player Ref");
+            return;
+        }
         Transform hatsParent = player.transform.Find("hats");
         if (hatsParent != null)
         {
@@ -141,7 +156,7 @@ public class CharacterManager : MonoBehaviour
             {"PlayerID", playerID},
             { "BodyColor", selectedBodyColorIndex },
             {"Hat", selectedHatIndex },
-            {"NickName", nickname}
+            {"Nickname", nickname}
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
 
