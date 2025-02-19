@@ -81,7 +81,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void SyncPlayerList()
     {
         Debug.Log($"[SyncPlayerList] Running. Total Players: {PhotonNetwork.PlayerList.Length}");
-        Debug.Log("")
+        
         foreach (var player in PhotonNetwork.PlayerList)
         {
         string nickname = player.CustomProperties.ContainsKey("Nickname") 
@@ -91,8 +91,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             Debug.Log($"[SyncPlayerList] Player: {nickname}, Actor Number: {player.ActorNumber}");
 
         }
-
+        
         UpdateUI();
+        Debug.Log($"[SyncPlayerList] Player List : {PhotonNetwork.PlayerList}");
     }
 
     private void UpdateUI()
