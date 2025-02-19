@@ -242,9 +242,75 @@ public class QuizManager : MonoBehaviour
         UIManager.Instance.SetBoardUIActive(true);
     }
 
-    public QuizReward EvaluateQuizPerformance()
+public QuizReward EvaluateQuizPerformance()
+{
+    QuizMode currentMode = GameConfigManager.Instance.CurrentQuizMode;
+    
+    switch (currentMode)
     {
-        return (QuizReward)Random.Range(0, 4);
+        case QuizMode.NORMAL:
+            return EvaluateDefaultMode();
+        case QuizMode.BUZZ:
+            return EvaluateBuzzMode();
+        case QuizMode.TIME_RUSH:
+            return EvaluateTimeRushMode();
+        default:
+            return QuizReward.NoReward;
+    }
+}
+
+    private QuizReward EvaluateDefaultMode()
+    {
+        // For single question, check if it's correct
+        if (correctAnswerCount == 0)
+        {
+            // 50/50 chance for small reward on incorrect answer
+            return Random.value < 0.5f ? QuizReward.SmallReward : QuizReward.NoReward;
+        }
+
+        // Check player's quiz streak for bigger rewards
+        int streak = PlayerManager.Instance.GetCurrentPlayer().QuizStreak;
+        
+        if (streak >= 5) return QuizReward.BigReward;
+        if (streak >= 3) return QuizReward.MediumReward;
+        return QuizReward.SmallReward;
+    }
+
+    private QuizReward EvaluateBuzzMode()
+    {
+        if (correctAnswerCount == 0)
+        {
+            // 50/50 chance for small reward on incorrect answer
+            return Random.value < 0.5f ? QuizReward.SmallReward : QuizReward.NoReward;
+        }
+
+        // Calculate thresholds based on quiz duration
+        float speedThresholdBig = quizDuration * 0.15f;    // 15% of time limit for big reward
+        float speedThresholdMedium = quizDuration * 0.30f; // 30% of time limit for medium reward
+        
+        if (lastAnswerTime <= speedThresholdBig) return QuizReward.BigReward;
+        if (lastAnswerTime <= speedThresholdMedium) return QuizReward.MediumReward;
+        return QuizReward.SmallReward;
+    }
+
+    private QuizReward EvaluateTimeRushMode()
+    {
+        // Calculate net correct answers (correct - incorrect)
+        int incorrectAnswers = answeredQuestionsCount - correctAnswerCount;
+        int netScore = correctAnswerCount - incorrectAnswers;
+
+        // No reward for zero or negative score
+        if (netScore <= 0) return QuizReward.NoReward;
+
+        // Big reward: net score of timeRushQuestionCount - 1 or better
+        if (netScore >= timeRushQuestionCount - 1) return QuizReward.BigReward;
+
+        // Medium reward: net score of 60% of timeRushQuestionCount or better
+        float mediumThreshold = timeRushQuestionCount * 0.6f;
+        if (netScore >= mediumThreshold) return QuizReward.MediumReward;
+
+        // Small reward for any positive net score below medium threshold
+        return QuizReward.SmallReward;
     }
 
 
@@ -260,16 +326,22 @@ public class QuizManager : MonoBehaviour
         lastAnswerTime = Time.time - questionStartTime;
 
         bool isCorrect = selectedAnswer == currentQuestion.answer;
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+        
         if (isCorrect)
         {
             correctAnswerCount++;
+            currentPlayer.QuizStreak++;
             
             // Special handling for Buzz mode
             if (GameConfigManager.Instance.CurrentQuizMode == QuizMode.BUZZ)
             {
-                // You can use lastAnswerTime here for Buzz mode scoring
                 Debug.Log($"Question answered in {lastAnswerTime:F2} seconds");
             }
+        }
+        else
+        {
+            currentPlayer.QuizStreak = 0; // Reset streak on wrong answer
         }
         
         return isCorrect;
