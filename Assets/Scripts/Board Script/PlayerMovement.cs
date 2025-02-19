@@ -159,7 +159,11 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Debug.Log($"Player chose to heal Player {tilePlayerID}.");
                     Player otherPlayer = PlayerManager.Instance.GetPlayerByID(tilePlayerID);
-                    otherPlayer.Heal(2);
+                    int amount = 2;
+                    otherPlayer.Heal(amount);
+                    int receiverID = tilePlayerID;
+                    int healerID = PlayerManager.Instance.CurrentPlayerID;
+                    StartCoroutine(UIManager.Instance.DisplayHealing(healerID, receiverID, amount));
                     remainingSteps = 0; // Stop movement after healing
                     break; // Exit after healing one player
                 }
