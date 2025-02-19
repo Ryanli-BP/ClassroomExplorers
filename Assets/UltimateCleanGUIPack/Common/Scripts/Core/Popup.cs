@@ -153,7 +153,7 @@ namespace UltimateClean
                 var healthAnimation = healthBar.GetComponent<HealthAnimation>();
                 if (healthAnimation != null)
                 {
-                    healthAnimation.AnimateHealth(player.Health, Player.MAX_HEALTH);
+                    healthAnimation.AnimateHealth(player.Health, player.MAX_HEALTH);
                 }
                 else
                 {

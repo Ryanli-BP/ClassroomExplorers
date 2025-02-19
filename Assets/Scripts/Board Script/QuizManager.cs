@@ -2,24 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using System.Linq;
 using Newtonsoft.Json;
 
 public class QuizManager : MonoBehaviour
 {
     [SerializeField] private GameObject QuizUI;
     [SerializeField] private float slideSpeed = 1f;
-    private RectTransform quizRect;
+    public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
+    private List<Question> availableQuestions = new List<Question>();
+    private List<Question> usedQuestions = new List<Question>();
+    private List<Question> currentQuizQuestions = new List<Question>();
+
+    //Used for Buzz mode
+    private float questionStartTime;
+    private float lastAnswerTime;
+    public float LastAnswerTime => lastAnswerTime;
+
     private int currentQuestionIndex = -1;
-    private float quizDuration = 5f; // Duration of the quiz in seconds
+    private float quizDuration; // Duration of the quiz in seconds
     private int answeredQuestionsCount = 0;  
     private float timeRemaining;
+    [SerializeField] private int timeRushQuestionCount = 5; // Number of questions to show per quiz
+
     private bool isQuizActive = false;
-    private int correctAnswerCount = 0;
-    private bool isTransitioning = false;
-    public bool OnQuizComplete { get; private set; }
-    private Player quizPlayer;
     private bool questionsLoaded = false;
+    private bool isTransitioning = false;
+
+    private int correctAnswerCount = 0;
+
+    public bool OnQuizComplete { get; private set; }
+
+
 
     public static QuizManager Instance { get; private set; }
 
@@ -29,7 +44,6 @@ public class QuizManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            quizRect = QuizUI.GetComponent<RectTransform>();
         }
         else
         {
@@ -39,6 +53,7 @@ public class QuizManager : MonoBehaviour
 
     private void Start()
     {
+        quizDuration = GameConfigManager.Instance.quizTimeLimit;
         StartCoroutine(PreloadQuestions());
         GameInitializer.Instance.ConfirmManagerReady("QuizManager");
     }
@@ -48,19 +63,17 @@ public class QuizManager : MonoBehaviour
         if (isQuizActive)
         {
             timeRemaining -= Time.deltaTime;
-            QuizDisplay.Instance.UpdateTimer(timeRemaining); // Update the timer display
-
-            if (timeRemaining <= 0 || answeredQuestionsCount >= questions.Count)
-            {
-                EndQuiz();
-            }
+            QuizDisplay.Instance.UpdateTimer(timeRemaining);
         }
     }
 
 	// Preloads the quiz questions from the API
+
     private IEnumerator PreloadQuestions()
     {
         yield return StartCoroutine(DownloadQuestionsJSON());
+        availableQuestions = new List<Question>(questions);
+        usedQuestions = new List<Question>();
         questionsLoaded = true;
         Debug.Log("Quiz questions preloaded successfully");
     }
@@ -71,7 +84,28 @@ public class QuizManager : MonoBehaviour
         
         OnQuizComplete = false;
         UIManager.Instance.SetBoardUIActive(false);
-        StartCoroutine(StartQuizSequence());
+        StartCoroutine(QuizSequence());
+    }
+
+    private IEnumerator QuizSequence()
+    {
+        yield return StartQuizSequence();
+        StartQuizLogic();
+        
+        // Monitor quiz conditions
+        while (isQuizActive)
+        {
+            if (timeRemaining <= 0 || answeredQuestionsCount >= questions.Count)
+            {
+                isQuizActive = false;
+                Debug.Log("Quiz ended.");
+                break;
+            }
+            yield return null;
+        }
+        
+        yield return EndQuizSequence();
+        HandleQuizComplete();
     }
 
     private IEnumerator StartQuizSequence()
@@ -89,7 +123,6 @@ public class QuizManager : MonoBehaviour
             yield break;
         }
 
-        quizPlayer = PlayerManager.Instance.GetCurrentPlayer();
         answeredQuestionsCount = 0;
         currentQuestionIndex = -1;
         correctAnswerCount = 0;
@@ -107,18 +140,77 @@ public class QuizManager : MonoBehaviour
         yield return new WaitForSeconds(slideSpeed);
         isQuizActive = true;
         isTransitioning = false;
-        StartQuizLogic();
     }
 
-	private void StartQuizLogic()
+    private void StartQuizLogic()
     {
-    	timeRemaining = quizDuration;
-    	currentQuestionIndex = -1;
-    	isQuizActive = true;
-    	AnswerButtons.Instance.EnableButtons();
-    	DisplayNextQuestion();
+        timeRemaining = quizDuration;
+        currentQuestionIndex = -1;
+        isQuizActive = true;
+        AnswerButtons.Instance.EnableButtons();
+        
+        // Get current quiz mode from GameConfigManager
+        QuizMode currentQuizMode = GameConfigManager.Instance.CurrentQuizMode;
+        
+        // Determine number of questions based on quiz mode
+        int questionCount = (currentQuizMode == QuizMode.TIME_RUSH) ? timeRushQuestionCount : 1;
+        
+        // Reset if we don't have enough available questions
+        if (availableQuestions.Count < questionCount)
+        {
+            ResetQuestionPool();
+        }
+        
+        // Create a separate list for this quiz session
+        List<Question> selectedQuestions = availableQuestions
+            .OrderBy(x => Random.value)
+            .Take(questionCount)
+            .ToList();
+        
+        // Remove selected questions from available pool
+        foreach (var question in selectedQuestions)
+        {
+            availableQuestions.Remove(question);
+            usedQuestions.Add(question);
+        }
+        
+        // Store the quiz questions separately
+        currentQuizQuestions = new List<Question>(selectedQuestions);
+        DisplayNextQuestion();
+    }
+
+
+    private void ResetQuestionPool()
+    {
+        availableQuestions = new List<Question>(questions);
+        usedQuestions.Clear();
+        Debug.Log("Question pool has been reset");
     }
 	
+    public void DisplayNextQuestion()
+    {
+        if (!isQuizActive) return;
+
+        // Check if we've shown all questions for this quiz session
+        if (currentQuestionIndex + 1 >= currentQuizQuestions.Count)
+        {
+            isQuizActive = false;
+            return;
+        }
+
+        currentQuestionIndex++;
+        Question q = currentQuizQuestions[currentQuestionIndex];
+        
+        // Get current quiz mode from GameConfigManager
+        QuizMode currentQuizMode = GameConfigManager.Instance.CurrentQuizMode;
+        int totalQuestions = (currentQuizMode == QuizMode.TIME_RUSH) ? timeRushQuestionCount : 1;
+        
+        // Start timing when question is displayed
+        questionStartTime = Time.time;
+        
+        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex + 1, totalQuestions);
+    }
+
 	private IEnumerator EndQuizSequence()
     {
         isTransitioning = true;
@@ -135,19 +227,10 @@ public class QuizManager : MonoBehaviour
         
         yield return new WaitForSeconds(0.1f);
         isTransitioning = false;
-        HandleQuizComplete();
-    }
-
-    private void EndQuiz()
-    {
-        if (isTransitioning) return;
-        Debug.Log("Quiz ended.");
-        StartCoroutine(EndQuizSequence());
     }
 
     private void HandleQuizComplete()
     {
-        int pointsToAward = correctAnswerCount * 10;
         Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
 
         QuizReward rewardTier = EvaluateQuizPerformance();
@@ -159,70 +242,155 @@ public class QuizManager : MonoBehaviour
         UIManager.Instance.SetBoardUIActive(true);
     }
 
-    public QuizReward EvaluateQuizPerformance()
+public QuizReward EvaluateQuizPerformance()
+{
+    QuizMode currentMode = GameConfigManager.Instance.CurrentQuizMode;
+    
+    switch (currentMode)
     {
-        return (QuizReward)Random.Range(0, 4);
+        case QuizMode.NORMAL:
+            return EvaluateDefaultMode();
+        case QuizMode.BUZZ:
+            return EvaluateBuzzMode();
+        case QuizMode.TIME_RUSH:
+            return EvaluateTimeRushMode();
+        default:
+            return QuizReward.NoReward;
+    }
+}
+
+    private QuizReward EvaluateDefaultMode()
+    {
+        // For single question, check if it's correct
+        if (correctAnswerCount == 0)
+        {
+            // 50/50 chance for small reward on incorrect answer
+            return Random.value < 0.5f ? QuizReward.SmallReward : QuizReward.NoReward;
+        }
+
+        // Check player's quiz streak for bigger rewards
+        int streak = PlayerManager.Instance.GetCurrentPlayer().QuizStreak;
+        
+        if (streak >= 5) return QuizReward.BigReward;
+        if (streak >= 3) return QuizReward.MediumReward;
+        return QuizReward.SmallReward;
     }
 
-    public void DisplayNextQuestion()
+    private QuizReward EvaluateBuzzMode()
     {
-        if (!isQuizActive) return;
+        if (correctAnswerCount == 0)
+        {
+            // 50/50 chance for small reward on incorrect answer
+            return Random.value < 0.5f ? QuizReward.SmallReward : QuizReward.NoReward;
+        }
 
-        currentQuestionIndex = (currentQuestionIndex + 1) % questions.Count;
-        Question q = questions[currentQuestionIndex];
-
-        QuizDisplay.Instance.DisplayQuestion(q, currentQuestionIndex, questions.Count);
+        // Calculate thresholds based on quiz duration
+        float speedThresholdBig = quizDuration * 0.15f;    // 15% of time limit for big reward
+        float speedThresholdMedium = quizDuration * 0.30f; // 30% of time limit for medium reward
+        
+        if (lastAnswerTime <= speedThresholdBig) return QuizReward.BigReward;
+        if (lastAnswerTime <= speedThresholdMedium) return QuizReward.MediumReward;
+        return QuizReward.SmallReward;
     }
+
+    private QuizReward EvaluateTimeRushMode()
+    {
+        // Calculate net correct answers (correct - incorrect)
+        int incorrectAnswers = answeredQuestionsCount - correctAnswerCount;
+        int netScore = correctAnswerCount - incorrectAnswers;
+
+        // No reward for zero or negative score
+        if (netScore <= 0) return QuizReward.NoReward;
+
+        // Big reward: net score of timeRushQuestionCount - 1 or better
+        if (netScore >= timeRushQuestionCount - 1) return QuizReward.BigReward;
+
+        // Medium reward: net score of 60% of timeRushQuestionCount or better
+        float mediumThreshold = timeRushQuestionCount * 0.6f;
+        if (netScore >= mediumThreshold) return QuizReward.MediumReward;
+
+        // Small reward for any positive net score below medium threshold
+        return QuizReward.SmallReward;
+    }
+
 
     public bool CheckAnswer(int answerIndex)
     {
         if (!isQuizActive) return false;
-        answeredQuestionsCount++;
+        
+        Question currentQuestion = currentQuizQuestions[currentQuestionIndex];
         string selectedAnswer = ((char)('A' + answerIndex)).ToString();
+        answeredQuestionsCount++;
 
-        if (selectedAnswer == questions[currentQuestionIndex].answer)
+        // Calculate time taken to answer
+        lastAnswerTime = Time.time - questionStartTime;
+
+        bool isCorrect = selectedAnswer == currentQuestion.answer;
+        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+        
+        if (isCorrect)
         {
             correctAnswerCount++;
+            currentPlayer.QuizStreak++;
+            
+            // Special handling for Buzz mode
+            if (GameConfigManager.Instance.CurrentQuizMode == QuizMode.BUZZ)
+            {
+                Debug.Log($"Question answered in {lastAnswerTime:F2} seconds");
+            }
         }
-        return questions[currentQuestionIndex].answer == selectedAnswer;
+        else
+        {
+            currentPlayer.QuizStreak = 0; // Reset streak on wrong answer
+        }
+        
+        return isCorrect;
     }
 
     public bool IsQuizActive()
     {
         return isQuizActive;
     }
-
-
-	/*
-	Handles the get of the quiz questions from the API.
-	*/
 	
 	// Coroutine to download quiz questions in JSON format from the specified URL
-	private IEnumerator DownloadQuestionsJSON() {
-    	string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
-    	string jsonResponse = null;
-    	bool downloadCompleted = false;
-	
-    	// Use NetworkManager to download the text from the URL
-    	NetworkManager.Instance.DownloadText(url,
-        	(response) => { jsonResponse = response; downloadCompleted = true; },
-        	(error) => { 
-            	Debug.LogError($"Failed to download questions: {error}");
-            	downloadCompleted = true;
-        	});
+    private IEnumerator DownloadQuestionsJSON()
+    {
+        string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
+        string jsonResponse = null;
+        bool downloadCompleted = false;
 
-    	// Wait until the download is completed
-    	while (!downloadCompleted){
-        	yield return null;
-    	}
+        // Use NetworkManager to download the text from the URL
+        NetworkManager.Instance.DownloadText(url,
+            (response) => { jsonResponse = response; downloadCompleted = true; },
+            (error) => {
+                Debug.LogWarning($"Failed to download questions: {error}");
+                downloadCompleted = true;
+            });
 
-    	// If the response is not empty, parse the JSON
-    	if (!string.IsNullOrEmpty(jsonResponse)) {
-        	ParseQuestionsFromJSON(jsonResponse);
-    	} else {
-        	Debug.LogError("Failed to retrieve quiz questions from the API.");
-    	}
-	}
+        // Wait until the download is completed
+        while (!downloadCompleted){
+            yield return null;
+        }
+
+        // If the response is valid, parse it; otherwise load fallback
+        if (!string.IsNullOrEmpty(jsonResponse))
+        {
+            ParseQuestionsFromJSON(jsonResponse);
+        }
+        else
+        {
+            Debug.LogWarning("Failed to retrieve quiz questions from the API. Attempting local fallback...");
+            TextAsset fallbackJSON = Resources.Load<TextAsset>("questionSample");
+            if (fallbackJSON != null)
+            {
+                ParseQuestionsFromJSON(fallbackJSON.text);
+            }
+            else
+            {
+                Debug.LogWarning("Fallback JSON file 'questionSample' not found in Resources folder.");
+            }
+        }
+    }
 
 	// Method to parse the JSON response and load the questions
 	private void ParseQuestionsFromJSON(string json) {

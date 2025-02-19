@@ -108,6 +108,7 @@ public class CombatManager : MonoBehaviour
                 DiceManager.Instance.RollDice();
                 int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, false);
                 yield return StartCoroutine(RollForCombatValue(result => dfdValue = result, bonus));
+                UIManager.Instance.OffDiceDisplay();
             }
             else
             {
@@ -126,11 +127,13 @@ public class CombatManager : MonoBehaviour
                 {
                     int bonus = GetBonus(turn == 0 ? SecondTA : FirstTA, false, true);
                     yield return StartCoroutine(RollForCombatValue(result => evdValue = result, bonus));
+                    UIManager.Instance.OffDiceDisplay();
                 }
                 else
                 {
                     int bonus = GetBonus(turn == 0 ? SecondTA : FirstTA, false, false);
                     yield return StartCoroutine(RollForCombatValue(result => dfdValue = result, bonus));
+                    UIManager.Instance.OffDiceDisplay();
                 }
             }
 

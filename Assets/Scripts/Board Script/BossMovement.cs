@@ -33,6 +33,7 @@ public class BossMovement : MonoBehaviour
 
                 Debug.Log($"Boss encountered Player {tilePlayerID}. Initiating combat.");
                 GameManager.Instance.OnCombatTriggered();
+                UIManager.Instance.OffDiceDisplay(); //stop UI dice display
                 
                 // Pass boss ID as the opponent (assuming it's stored in BossManager)
                 yield return StartCoroutine(CombatManager.Instance.HandleFight(
@@ -41,7 +42,6 @@ public class BossMovement : MonoBehaviour
                 
                 GameManager.Instance.IsResumingMovement = false;
                 remainingSteps = 0; // Stop movement after combat
-                UIManager.Instance.OffDiceDisplay(); //stop UI dice display
                 
                 if (BossManager.Instance.activeBoss.Status == Status.Dead)
                 {
@@ -70,41 +70,36 @@ public class BossMovement : MonoBehaviour
         while (remainingSteps >= 0)
         {
             Debug.Log($"Remaining steps: {remainingSteps}");
-            // display every step remain on boss
-            yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             
             
-            // Handle combat before movement
             if (!initialMove)
             {
                 yield return StartCoroutine(HandleBossCombat());
             }
 
-            //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
-                UIManager.Instance.OffDiceDisplay();//stop display dice number
+                UIManager.Instance.OffDiceDisplay();
                 isMoving = false;
             }
 
             if (!isMoving) break;
 
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
-            
             if (availableDirections.Count == 0)
             {
                 Debug.LogError("No valid directions found! Boss cannot move.");
                 break;
             }
 
-            // Randomly select from available directions
             Direction nextDirection = availableDirections[UnityEngine.Random.Range(0, availableDirections.Count)];
             yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
 
             remainingSteps--;
+            yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             yield return new WaitForSeconds(0.5f);
 
-            if (initialMove) //currently, initialMove is a condition for pvpencounter
+            if (initialMove)
             {
                 initialMove = false;
             }

@@ -231,7 +231,6 @@ public class PlayerMovement : MonoBehaviour
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
             Debug.Log($"remaining steps:{remainingSteps}");
             // display every step remain on player
-            yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             
             if (availableDirections.Count == 0)
             {
@@ -273,6 +272,7 @@ public class PlayerMovement : MonoBehaviour
             yield return StartCoroutine(HandlePaths(availableDirections));
 
             remainingSteps--;
+            yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             yield return new WaitForSeconds(0.05f);
 
             if (initialMove) //currently, initialMove is a condition for pvpencounter

@@ -8,6 +8,13 @@ public enum GameMode
     COOP
 }
 
+public enum QuizMode
+{
+    NORMAL,
+    BUZZ,
+    TIME_RUSH
+}
+
 [System.Serializable]
 public class ModeRules
 {
@@ -20,11 +27,18 @@ public class ModeRules
 public class GameConfigManager : MonoBehaviour
 {
     [SerializeField] private GameMode currentMode = GameMode.FFA;
+    [SerializeField] private QuizMode currentQuizMode = QuizMode.NORMAL;
     [SerializeField] private int _numOfPlayers = 2; // Backing field
+    [SerializeField] private int _quizTimeLimit = 30; // Backing field
     public int numOfPlayers
     {
         get => _numOfPlayers;
         private set => _numOfPlayers = value;
+    }
+    public int quizTimeLimit
+    {
+        get => _quizTimeLimit;
+        private set => _quizTimeLimit = value;
     }
     
     private Dictionary<GameMode, ModeRules> modeRules;
@@ -49,6 +63,12 @@ public class GameConfigManager : MonoBehaviour
     {
         get => currentMode;
         set => currentMode = value;
+    }
+
+    public QuizMode CurrentQuizMode
+    {
+        get => currentQuizMode;
+        set => currentQuizMode = value;
     }
 
     private void InitializeModeRules()

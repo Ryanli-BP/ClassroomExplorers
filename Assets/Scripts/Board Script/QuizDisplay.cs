@@ -33,7 +33,15 @@ public class QuizDisplay : MonoBehaviour
         AnswerB.GetComponent<TextMeshProUGUI>().text = $"B. {question.choiceB}";
         AnswerC.GetComponent<TextMeshProUGUI>().text = $"C. {question.choiceC}";
         AnswerD.GetComponent<TextMeshProUGUI>().text = $"D. {question.choiceD}";
-        QuestionIndexText.GetComponent<TextMeshProUGUI>().text = $"{currentIndex + 1}/{totalQuestions}"; // Display the index
+
+        // Only show question index for Time Rush mode
+        QuizMode currentQuizMode = GameConfigManager.Instance.CurrentQuizMode;
+        QuestionIndexText.SetActive(currentQuizMode == QuizMode.TIME_RUSH);
+        
+        if (currentQuizMode == QuizMode.TIME_RUSH)
+        {
+            QuestionIndexText.GetComponent<TextMeshProUGUI>().text = $"{currentIndex}/{totalQuestions}";
+        }
     }
 
     public void UpdateTimer(float timeRemaining)

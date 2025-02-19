@@ -233,9 +233,10 @@ public class UIManager : MonoBehaviour
     }
     public IEnumerator DisplayRemainingDiceSteps(int diceResult)
     {
+        Debug.Log($"NUMBER IS {diceResult}");
         centreDisplayPanel.SetActive(true);
         centreDisplayText.text = $"{diceResult}";
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.05f);
     }
     public void OffDiceDisplay(){
         centreDisplayPanel.SetActive(false);
@@ -345,7 +346,7 @@ public class UIManager : MonoBehaviour
         var healthAnimation = playerStatsUIList[playerIndex - 1].healthBar.GetComponent<HealthAnimation>();
         if (healthAnimation != null)
         {
-            healthAnimation.AnimateHealth(health, Player.MAX_HEALTH);
+            healthAnimation.AnimateHealth(health, PlayerManager.Instance.GetPlayerByID(playerIndex).MAX_HEALTH);
         }
         else
         {
@@ -426,6 +427,12 @@ public class UIManager : MonoBehaviour
         ChangeNotificationColor(buffType);
         yield return new WaitForSeconds(2f);
         NotificationBar.SetActive(false);
+    }
+
+    public void DisplayGameEnd()
+    {
+        centreDisplayPanel.SetActive(true);
+        centreDisplayText.text = "Game Over!";
     }
 
     public string GetBuffTitle(BuffType buffType)
