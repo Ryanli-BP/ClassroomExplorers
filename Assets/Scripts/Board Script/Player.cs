@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using System.Collections;
-
+using Photon.Pun;
 public enum Status { Alive, Dead }
 
 public class Player : Entity
 {
-    [SerializeField] private int playerID;
-
+    public int playerID { get; private set; } 
     public const int REVIVAL_COUNT = 5;
     public int MAX_HEALTH = 6;
     public const int MAX_LEVEL = 5;
@@ -26,6 +25,16 @@ public class Player : Entity
     public int ReviveCounter { get; set; } = 0;
     void Awake()
     {
+        if (PhotonNetwork.InRoom)
+        {
+            playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+
+        }
+        if(!PhotonNetwork.InRoom)
+        {
+            Debug.Log("Photon Server Not Connected");
+            return; 
+        }
         if (playerID <= GameConfigManager.Instance.numOfPlayers)
         {
             Points = 0;

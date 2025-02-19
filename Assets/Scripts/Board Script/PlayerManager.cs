@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Photon.Pun;
 
 [DefaultExecutionOrder(-30)]
 public class PlayerManager : MonoBehaviour
@@ -54,7 +55,11 @@ public class PlayerManager : MonoBehaviour
     private void InitialisePlayers()
     {
         players.Clear();
-
+        if (!PhotonNetwork.InRoom)
+        {
+            Debug.LogError("Not in a Photon Room! Cannot instantiate players.");
+            return;
+        }
         // Retrieve selected player information from the previous scene
         int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
         int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
