@@ -351,38 +351,46 @@ public QuizReward EvaluateQuizPerformance()
     {
         return isQuizActive;
     }
-
-
-	/*
-	Handles the get of the quiz questions from the API.
-	*/
 	
 	// Coroutine to download quiz questions in JSON format from the specified URL
-	private IEnumerator DownloadQuestionsJSON() {
-    	string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
-    	string jsonResponse = null;
-    	bool downloadCompleted = false;
-	
-    	// Use NetworkManager to download the text from the URL
-    	NetworkManager.Instance.DownloadText(url,
-        	(response) => { jsonResponse = response; downloadCompleted = true; },
-        	(error) => { 
-            	Debug.LogError($"Failed to download questions: {error}");
-            	downloadCompleted = true;
-        	});
+    private IEnumerator DownloadQuestionsJSON()
+    {
+        string url = "http://127.0.0.1:8000/api/v1.0.0/config/get-questions/";
+        string jsonResponse = null;
+        bool downloadCompleted = false;
 
-    	// Wait until the download is completed
-    	while (!downloadCompleted){
-        	yield return null;
-    	}
+        // Use NetworkManager to download the text from the URL
+        NetworkManager.Instance.DownloadText(url,
+            (response) => { jsonResponse = response; downloadCompleted = true; },
+            (error) => {
+                Debug.LogWarning($"Failed to download questions: {error}");
+                downloadCompleted = true;
+            });
 
-    	// If the response is not empty, parse the JSON
-    	if (!string.IsNullOrEmpty(jsonResponse)) {
-        	ParseQuestionsFromJSON(jsonResponse);
-    	} else {
-        	Debug.LogError("Failed to retrieve quiz questions from the API.");
-    	}
-	}
+        // Wait until the download is completed
+        while (!downloadCompleted){
+            yield return null;
+        }
+
+        // If the response is valid, parse it; otherwise load fallback
+        if (!string.IsNullOrEmpty(jsonResponse))
+        {
+            ParseQuestionsFromJSON(jsonResponse);
+        }
+        else
+        {
+            Debug.LogWarning("Failed to retrieve quiz questions from the API. Attempting local fallback...");
+            TextAsset fallbackJSON = Resources.Load<TextAsset>("questionSample");
+            if (fallbackJSON != null)
+            {
+                ParseQuestionsFromJSON(fallbackJSON.text);
+            }
+            else
+            {
+                Debug.LogWarning("Fallback JSON file 'questionSample' not found in Resources folder.");
+            }
+        }
+    }
 
 	// Method to parse the JSON response and load the questions
 	private void ParseQuestionsFromJSON(string json) {

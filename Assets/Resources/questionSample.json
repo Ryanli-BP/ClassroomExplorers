@@ -1,0 +1,148 @@
+{
+    "questions": [
+        {
+            "question": "What is the only planet that hosts life that we know of?",
+            "choiceA": "Earth",
+            "choiceB": "Mars",
+            "choiceC": "Jupiter",
+            "choiceD": "Venus",
+            "answer": "A"
+        },
+        {
+            "question": "What is the closest planet to our Sun?",
+            "choiceA": "Mercury",
+            "choiceB": "Earth",
+            "choiceC": "Mars",
+            "choiceD": "Neptune",
+            "answer": "A"
+        },
+        {
+            "question": "How long does It take for the earth to orbit the sun?",
+            "choiceA": "200 days",
+            "choiceB": "365 days",
+            "choiceC": "10 days",
+            "choiceD": "500 days",
+            "answer": "B"
+        },
+        {
+            "question": "How many moons does Earth Have?",
+            "choiceA": "1",
+            "choiceB": "5",
+            "choiceC": "123",
+            "choiceD": "2",
+            "answer": "A"
+        },
+        {
+            "question": "Which planet is known as the Red Planet?",
+            "choiceA": "Venus",
+            "choiceB": "Saturn",
+            "choiceC": "Mars",
+            "choiceD": "Jupiter",
+            "answer": "C"
+        },
+        {
+            "question": "What is the largest planet in our Solar System?",
+            "choiceA": "Earth",
+            "choiceB": "Mars",
+            "choiceC": "Jupiter",
+            "choiceD": "Saturn",
+            "answer": "C"
+        },
+        {
+            "question": "Which planet has the most extensive ring system?",
+            "choiceA": "Earth",
+            "choiceB": "Saturn",
+            "choiceC": "Mars",
+            "choiceD": "Neptune",
+            "answer": "B"
+        },
+        {
+            "question": "What is the name of our galaxy?",
+            "choiceA": "Andromeda",
+            "choiceB": "Milky Way",
+            "choiceC": "Whirlpool",
+            "choiceD": "Sombrero",
+            "answer": "B"
+        },
+        {
+            "question": "Which planet is known for its extreme greenhouse effect?",
+            "choiceA": "Mars",
+            "choiceB": "Venus",
+            "choiceC": "Neptune",
+            "choiceD": "Mercury",
+            "answer": "B"
+        },
+        {
+            "question": "What is the smallest planet in our Solar System?",
+            "choiceA": "Earth",
+            "choiceB": "Mars",
+            "choiceC": "Mercury",
+            "choiceD": "Pluto",
+            "answer": "C"
+        },
+        {
+            "question": "Which planet has the fastest orbit around the Sun?",
+            "choiceA": "Venus",
+            "choiceB": "Earth",
+            "choiceC": "Mars",
+            "choiceD": "Mercury",
+            "answer": "D"
+        },
+        {
+            "question": "What is the second largest planet in our Solar System?",
+            "choiceA": "Neptune",
+            "choiceB": "Saturn",
+            "choiceC": "Uranus",
+            "choiceD": "Mars",
+            "answer": "B"
+        },
+        {
+            "question": "Which planet is tipped over on its side rotating almost horizontally?",
+            "choiceA": "Uranus",
+            "choiceB": "Neptune",
+            "choiceC": "Saturn",
+            "choiceD": "Jupiter",
+            "answer": "A"
+        },
+        {
+            "question": "What is the hottest planet in our Solar System?",
+            "choiceA": "Mercury",
+            "choiceB": "Venus",
+            "choiceC": "Mars",
+            "choiceD": "Earth",
+            "answer": "B"
+        },
+        {
+            "question": "What is the largest moon in the Solar System?",
+            "choiceA": "Titan",
+            "choiceB": "Europa",
+            "choiceC": "Ganymede",
+            "choiceD": "Phobos",
+            "answer": "C"
+        },
+        {
+            "question": "Which planet has the strongest winds?",
+            "choiceA": "Mars",
+            "choiceB": "Neptune",
+            "choiceC": "Saturn",
+            "choiceD": "Jupiter",
+            "answer": "B"
+        },
+        {
+            "question": "Which dwarf planet was once classified as the ninth planet?",
+            "choiceA": "Eris",
+            "choiceB": "Ceres",
+            "choiceC": "Pluto",
+            "choiceD": "Haumea",
+            "answer": "C"
+        },
+        {
+            "question": "Which planet is farthest from the Sun?",
+            "choiceA": "Neptune",
+            "choiceB": "Saturn",
+            "choiceC": "Jupiter",
+            "choiceD": "Uranus",
+            "answer": "A"
+        }
+    ]
+}
