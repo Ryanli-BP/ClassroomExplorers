@@ -7,7 +7,7 @@ using System.Collections;
 using Photon.Pun;
 public enum Status { Alive, Dead }
 
-public class Player : Entity
+public class Player : Entity, IPunObservable
 {
     public int playerID { get; private set; } 
     public const int REVIVAL_COUNT = 5;
@@ -21,10 +21,11 @@ public class Player : Entity
     public int QuizStreak { get; set; } = 0;
     [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
     public PlayerBuffs PlayerBuffs => playerBuffs;
-
+    
     public int ReviveCounter { get; set; } = 0;
     void Awake()
     {
+
         if (PhotonNetwork.InRoom)
         {
             playerID = PhotonNetwork.LocalPlayer.ActorNumber;
@@ -204,6 +205,23 @@ public class Player : Entity
         Health = Math.Min(MAX_HEALTH, Health + amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting) // The local player is sending data to others
+        {
+            stream.SendNext(playerID);
+            stream.SendNext(Health);
+            stream.SendNext(Level);
+            stream.SendNext(TrophyCount);
+        }
+        else // The remote player is receiving data
+        {
+            playerID = (int)stream.ReceiveNext();
+            Health = (int)stream.ReceiveNext();
+            Level = (int)stream.ReceiveNext();
+            TrophyCount = (int)stream.ReceiveNext();
+        }
     }
 }
 

@@ -555,6 +555,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2662838448224718620, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
   m_PrefabInstance: {fileID: 1855168614}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &419814669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419814661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &547082842
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,7 +1330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
+  currentQuizMode: 0
   _numOfPlayers: 2
+  _quizTimeLimit: 30
 --- !u!4 &920382386
 Transform:
   m_ObjectHideFlags: 0
@@ -2598,6 +2622,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7550787122153504081, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8052282319079620484, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2614,7 +2642,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 4808654510116300079, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7969531133458972122, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 419814669}
   m_SourcePrefab: {fileID: 100100000, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
 --- !u!1 &1985469079
 GameObject:

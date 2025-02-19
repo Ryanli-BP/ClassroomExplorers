@@ -1,8 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Photon.Pun;
 
-public abstract class Entity : MonoBehaviour
+public abstract class Entity : MonoBehaviourPun
 {
     public int Health { get; protected set; }
     public Status Status { get; protected set; }

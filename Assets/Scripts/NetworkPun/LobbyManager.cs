@@ -59,8 +59,32 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             photonView.RPC("SyncPlayerList", RpcTarget.All);
         }
+        MarkPlayerReady();
+    }   
+
+    private void MarkPlayerReady()
+    {
+        ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+        properties["IsReady"] = true;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+        photonView.RPC("CheckAllPlayersReady", RpcTarget.MasterClient);
     }
 
+    [PunRPC]
+    private void CheckAllPlayersReady()
+    {
+        if(!PhotonNetwork.IsMasterClient) return; 
+        bool allReady = true; 
+        foreach (Photon.Realtime.Player player in PhotonNetwork.PlayerList)
+        {
+            if(!player.CustomProperties.ContainsKey("IsReady")|| !(bool)player.CustomProperties["IsReady"])
+            {
+                allReady = false;
+                break; 
+            }
+        }
+        startButton.gameObject.SetActive(allReady && PhotonNetwork.CurrentRoom.PlayerCount >= 2  && PhotonNetwork.CurrentRoom.PlayerCount <= 6);
+    }
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         Debug.Log($"Player {newPlayer.NickName} entered. Current total: {PhotonNetwork.CurrentRoom.PlayerCount}");
@@ -114,7 +138,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
             playersText.text = $"Players: {PhotonNetwork.CurrentRoom.PlayerCount}/6";
             playersListText.text = playerList.ToString();
-            startButton.gameObject.SetActive(PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2);
         }
     }
 
