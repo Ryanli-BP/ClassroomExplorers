@@ -87,7 +87,7 @@
         {"x": -2, "z": -5, "type": 1, "connections": ["east"], "homePlayerID": 0},
         {"x": -1, "z": -5, "type": 7, "connections": ["east"], "homePlayerID": 0},
         {"x": 0, "z": -5, "type": 5, "connections": ["east"], "homePlayerID": 0},
-        {"x": 1, "z": -5, "type": 2, "connections": ["south", "north"], "homePlayerID": 0},
+        {"x": 1, "z": -5, "type": 2, "connections": ["east"], "homePlayerID": 0},
         {"x": 2, "z": -5, "type": 6, "connections": ["east"], "homePlayerID": 0}
 
     ],
