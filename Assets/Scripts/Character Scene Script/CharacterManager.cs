@@ -4,9 +4,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using CsvHelper.Configuration.Attributes;
 
 public class CharacterManager : MonoBehaviour
 {
+    [SerializeField] private TMP_InputField nameInputField;
     [SerializeField] private GameObject player;
     [SerializeField] private Button startButton;
     [SerializeField] private TMP_Text statusText; 
@@ -32,6 +34,7 @@ public class CharacterManager : MonoBehaviour
         }
 
         startButton.interactable = false; 
+
         StartCoroutine(WaitForPhotonConnection());
     }
 
@@ -130,12 +133,15 @@ public class CharacterManager : MonoBehaviour
         PlayerPrefs.SetInt("SelectedBodyColorIndex", selectedBodyColorIndex);
         PlayerPrefs.SetInt("SelectedHatIndex", selectedHatIndex);
         PlayerPrefs.Save();
-
+        int playerID = PhotonNetwork.LocalPlayer.ActorNumber;
+        string nickname = string.IsNullOrWhiteSpace(nameInputField.text)? $"Player{playerID}" : nameInputField.text;
         // Store customization data in Photon Custom Properties (networked storage)
         ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
         {
+            {"PlayerID", playerID},
             { "BodyColor", selectedBodyColorIndex },
-            { "Hat", selectedHatIndex }
+            {"Hat", selectedHatIndex },
+            {"NickName", nickname}
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
 

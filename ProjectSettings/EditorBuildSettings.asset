@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Select character.unity
     guid: 5abfceefc01324729a04c898bc93aa2b
   - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 4c581da0d0bfa0c40972792053a632ed
+  - enabled: 1
     path: Assets/Scenes/AR Board Scene.unity
     guid: d646b84b25a9db842b7b8d8dee1d9416
   m_configObjects:
