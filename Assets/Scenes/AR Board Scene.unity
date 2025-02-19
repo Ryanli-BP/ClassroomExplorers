@@ -3306,6 +3306,7 @@ MonoBehaviour:
   NotificationIcons:
   - {fileID: 21300000, guid: aa3d5195105bf4330925515305f5bc5f, type: 3}
   - {fileID: 21300000, guid: c2ffb52e5a8c842dbb94f01968009660, type: 3}
+  - {fileID: 21300000, guid: fb8e29f22efa241758233877558543c1, type: 3}
   notificationIconDisplay: {fileID: 1988390881}
   reviveCounterText: {fileID: 286134046}
   rollDiceButtonPanel: {fileID: 493656809}
@@ -14910,7 +14911,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMode: 2
   currentQuizMode: 1
-  _numOfPlayers: 2
+  _numOfPlayers: 6
   _quizTimeLimit: 30
 --- !u!4 &1482619883
 Transform:

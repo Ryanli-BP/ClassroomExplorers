@@ -311,6 +311,17 @@ public class UIManager : MonoBehaviour
         NotificationBar.SetActive(false);
     }
 
+    public IEnumerator DisplayHealing(int healerID, int receiverID, int amount)
+    {
+        NotificationBar.SetActive(true);
+        ChangeNotificationIcon("heal");
+        NotificationTitle.text = $"Player {receiverID} being healed!";
+        NotificationText.text = $"healed by Player {receiverID} by {amount}";
+
+        yield return new WaitForSeconds(2f);
+        NotificationBar.SetActive(false);
+    }
+
     private void ChangeNotificationIcon(string category)
     {
         Color newColor = Color.white; // Default color
@@ -323,6 +334,10 @@ public class UIManager : MonoBehaviour
             case "trophyUp":
                 notificationIconDisplay.sprite = NotificationIcons[1];
                 newColor = new Color(1.0f, 0.84f, 0.5f); 
+                break;
+            case "heal":
+                notificationIconDisplay.sprite = NotificationIcons[2];
+                newColor = new Color(0.94f, 0.5f, 0.5f);
                 break;
             
         }
