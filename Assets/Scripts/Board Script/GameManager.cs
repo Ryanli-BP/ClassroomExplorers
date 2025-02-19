@@ -308,6 +308,7 @@ public class GameManager : MonoBehaviour
     }
     private void EndGame()
     {
+        UIManager.Instance.DisplayGameEnd();
         Debug.Log("Game Over! Implement end-game logic here.");
     }
 }

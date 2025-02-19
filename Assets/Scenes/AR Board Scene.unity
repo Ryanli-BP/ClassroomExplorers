@@ -6997,7 +6997,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1873486643}
-  - {fileID: 1034160847}
   - {fileID: 493656810}
   - {fileID: 999839362}
   - {fileID: 553760743}
@@ -7008,6 +7007,7 @@ RectTransform:
   - {fileID: 497152665}
   - {fileID: 854521054}
   - {fileID: 1576700477}
+  - {fileID: 1034160847}
   - {fileID: 2087208018}
   m_Father: {fileID: 989211283}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9554,7 +9554,8 @@ GameObject:
   - component: {fileID: 1034160847}
   - component: {fileID: 1034160848}
   - component: {fileID: 1034160849}
-  m_Layer: 5
+  - component: {fileID: 1034160850}
+  m_Layer: 6
   m_Name: CentreDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9580,7 +9581,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 50, y: -100}
-  m_SizeDelta: {x: 700, y: 300}
+  m_SizeDelta: {x: 800, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1034160848
 CanvasRenderer:
@@ -9616,6 +9617,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!225 &1034160850
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034160846}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1034325349
 GameObject:
   m_ObjectHideFlags: 0
@@ -11525,6 +11538,7 @@ MonoBehaviour:
   QuizUI: {fileID: 1906703913}
   slideSpeed: 1
   csvFile: {fileID: 4900000, guid: 0c015fce2000088458193c18efcc972d, type: 3}
+  timeRushQuestionCount: 5
 --- !u!114 &1159168369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14387,7 +14401,7 @@ GameObject:
   - component: {fileID: 1470068375}
   - component: {fileID: 1470068377}
   - component: {fileID: 1470068376}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: BonusDisplayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14892,7 +14906,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 2
+  currentQuizMode: 0
   _numOfPlayers: 2
+  _quizTimeLimit: 30
 --- !u!4 &1482619883
 Transform:
   m_ObjectHideFlags: 0
@@ -15480,7 +15496,7 @@ GameObject:
   - component: {fileID: 1604395189}
   - component: {fileID: 1604395192}
   - component: {fileID: 1604395191}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: CentreDisplayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15504,7 +15520,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 225, y: -150}
-  m_SizeDelta: {x: 400, y: 200}
+  m_SizeDelta: {x: 800, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1604395191
 MonoBehaviour:
