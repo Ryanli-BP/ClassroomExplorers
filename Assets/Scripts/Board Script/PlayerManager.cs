@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     private List<Player> players = new List<Player>();
 
     [SerializeField] private GameObject homeObject;
+    public List<Texture2D> flagTextures; // color same order as body color
 
     [SerializeField] private List<int> PointsMilestone = new List<int> { 10, 25, 50, 100, 200 };
 
@@ -43,13 +44,15 @@ public class PlayerManager : MonoBehaviour
         InitialisePlayers();
         //AssignPlayersToHomes();
         SpawnAllPlayersAtHome();
-        //Assign home object to home tile
-        SpawnAllHomesAtHome();
         // Generate avatars after players list is fully populated
         for (int i = 0; i < players.Count; i++)
         {
             avatarGenerator.GenerateAvatar(players[i].gameObject, i);
         }
+
+        //Assign home object to home tile
+        SpawnAllHomesAtHome();
+        
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
@@ -186,6 +189,33 @@ public class PlayerManager : MonoBehaviour
 
         if (homeTile != null)
         {
+            Vector3 homePosition = homeTile.transform.position;
+            homePosition.y += AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale; // Adjust Y offset
+            player.transform.position = homePosition;
+            player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
+            Debug.Log($"Player {player.getPlayerID()} spawned at their home.");
+        }
+        else
+        {
+            Debug.LogError($"No home tile found for player {player.getPlayerID()}!");
+        }
+    }
+
+     // spawn player's home object one by one
+    public void SpawnAllHomesAtHome()
+    {
+        foreach (var player in players)
+        {
+            SpawnHomeObjectAtHome(player);
+        }
+    }
+
+    public void SpawnHomeObjectAtHome(Player player)
+    {
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetHomePlayerID() == player.getPlayerID());
+
+        if (homeTile != null)
+        {
             // Instantiate the home object prefab
             Quaternion homeRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
             GameObject home = Instantiate(homeObject, 
@@ -205,31 +235,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-     // spawn player's home object one by one
-    public void SpawnAllHomesAtHome()
-    {
-        foreach (var player in players)
-        {
-            SpawnHomeObjectAtHome(player);
-        }
-    }
-    public void SpawnHomeObjectAtHome(Player player)
-    {
-        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetHomePlayerID() == player.getPlayerID());
-
-        if (homeTile != null)
-        {
-            Vector3 homePosition = homeTile.transform.position;
-            homePosition.y += AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale; // Adjust Y offset
-            player.transform.position = homePosition;
-            player.GetComponent<PlayerMovement>().CurrentTile = homeTile;
-            Debug.Log($"Player {player.getPlayerID()} spawned at their home.");
-        }
-        else
-        {
-            Debug.LogError($"No home tile found for player {player.getPlayerID()}!");
-        }
-    }
 
     public void StartPlayerMovement(int diceTotal)
     {
