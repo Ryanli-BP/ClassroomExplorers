@@ -2,14 +2,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using Photon.Pun;
-using Photon.Realtime;
 [DefaultExecutionOrder(-30)]
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviourPunCallbacks
 {
     public static PlayerManager Instance;
     public AvatarGenerator avatarGenerator;
 
     public const float AboveTileOffset = 0.5f; // Offset to place player above the tile
+    [SerializeField] private PhotonView photonView;
 
     [SerializeField] private Player playerPrefab;  // Main player prefab
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
@@ -239,7 +239,17 @@ public class PlayerManager : MonoBehaviour
     public void StartPlayerMovement(int diceTotal)
     {
         Player currentPlayer = GetCurrentPlayer();
-        currentPlayer.GetComponent<PlayerMovement>().MovePlayer(diceTotal);
+        photonView.RPC("RPCStartPlayerMovement", RpcTarget.All, CurrentPlayerID, diceTotal);
+
+    }
+    [PunRPC]
+    private void RPCStartPlayerMovement(int playerID, int diceTotal)
+    {
+        Player player = GetPlayerByID(playerID);
+        if (player != null)
+        {
+            player.GetComponent<PlayerMovement>().MovePlayer(diceTotal);
+        }
     }
 
     public void HomeTileAction()
