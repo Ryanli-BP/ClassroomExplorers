@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
 
     private List<Player> players = new List<Player>();
 
-    [SerializeField] private List<GameObject> homeObjects;
+    [SerializeField] private GameObject homeObject;
 
     [SerializeField] private List<int> PointsMilestone = new List<int> { 10, 25, 50, 100, 200 };
 
@@ -43,6 +43,8 @@ public class PlayerManager : MonoBehaviour
         InitialisePlayers();
         //AssignPlayersToHomes();
         SpawnAllPlayersAtHome();
+        //Assign home object to home tile
+        SpawnAllHomesAtHome();
         // Generate avatars after players list is fully populated
         for (int i = 0; i < players.Count; i++)
         {
@@ -129,20 +131,6 @@ public class PlayerManager : MonoBehaviour
         Debug.Log($"Player appearance set for {playerObject.name}: Body Index {selectedBodyIndex}, Hat Index {selectedHatIndex}");
     }
 
-
-
-    /*public void AssignPlayersToHomes()
-    {
-        // Ensure we don't try to access more homes than exist
-        int maxHomes = Mathf.Min(players.Count, homeObjects.Count);
-        
-        // Activate/deactivate all homes in one pass
-        for (int i = 0; i < homeObjects.Count; i++)
-        {
-            homeObjects[i].SetActive(i < maxHomes);
-        }
-    }*/
-
     public List<Player> GetPlayerList()
     {
         return players;
@@ -193,6 +181,39 @@ public class PlayerManager : MonoBehaviour
     }
 
     public void SpawnPlayerAtHome(Player player)
+    {
+        Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetHomePlayerID() == player.getPlayerID());
+
+        if (homeTile != null)
+        {
+            // Instantiate the home object prefab
+            Quaternion homeRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
+            GameObject home = Instantiate(homeObject, 
+                                transform.position, 
+                                homeRotation);
+            home.transform.localScale = home.transform.localScale * ARBoardPlacement.worldScale;
+
+            //assign the home object to home tile
+            Vector3 homePosition = homeTile.transform.position;
+            homePosition.y += AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale; // Adjust Y offset
+            home.transform.position = homePosition;
+            Debug.Log($"Player {player.getPlayerID()} home spawned at their home.");
+        }
+        else
+        {
+            Debug.LogError($"No home cannot spawn for player {player.getPlayerID()}!");
+        }
+    }
+
+     // spawn player's home object one by one
+    public void SpawnAllHomesAtHome()
+    {
+        foreach (var player in players)
+        {
+            SpawnHomeObjectAtHome(player);
+        }
+    }
+    public void SpawnHomeObjectAtHome(Player player)
     {
         Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetHomePlayerID() == player.getPlayerID());
 

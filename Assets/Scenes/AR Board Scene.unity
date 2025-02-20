@@ -14909,9 +14909,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35d3f9bae4da8f4695386cd83b75591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMode: 2
+  currentMode: 0
   currentQuizMode: 1
-  _numOfPlayers: 6
+  _numOfPlayers: 2
   _quizTimeLimit: 30
 --- !u!4 &1482619883
 Transform:
@@ -22850,13 +22850,7 @@ MonoBehaviour:
   - {fileID: 2458094769942229771}
   - {fileID: 4577520758707001968}
   - {fileID: 1490284415679532867}
-  homeObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  homeObject: {fileID: 6757313786627309563, guid: 559f96a0bd0de754dabce8b5eaa29139, type: 3}
   PointsMilestone: 0a000000190000003200000064000000c8000000
 --- !u!4 &8999388479113056177
 Transform:
