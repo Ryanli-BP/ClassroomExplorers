@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour
 
         //Assign home object to home tile
         SpawnAllHomesAtHome();
-        
+
         GameInitializer.Instance.ConfirmManagerReady("PlayerManager");
     }
 
@@ -204,13 +204,15 @@ public class PlayerManager : MonoBehaviour
      // spawn player's home object one by one
     public void SpawnAllHomesAtHome()
     {
+        int index = 0;
         foreach (var player in players)
         {
-            SpawnHomeObjectAtHome(player);
+            SpawnHomeObjectAtHome(player, index);
+            index += 1;
         }
     }
 
-    public void SpawnHomeObjectAtHome(Player player)
+    public void SpawnHomeObjectAtHome(Player player, int index)
     {
         Tile homeTile = TileManager.Instance.allTiles.Find(tile => tile.GetTileType() == TileType.Home && tile.GetHomePlayerID() == player.getPlayerID());
 
@@ -222,6 +224,30 @@ public class PlayerManager : MonoBehaviour
                                 transform.position, 
                                 homeRotation);
             home.transform.localScale = home.transform.localScale * ARBoardPlacement.worldScale;
+
+            //change color of flag according to body color
+            Transform flagChild = home.transform.Find("flag2_low");
+            if (flagChild == null)
+            {
+                Debug.LogError("Child object 'flag2_low' not found in instantiated flag!");
+                return;
+            }
+            Renderer flagRenderer = flagChild.GetComponent<Renderer>();
+            //set the texture using the index and the list of textures
+            //for now using playerID, as multiplayer is not done yet
+            if (flagRenderer != null && index >= 0 && index < flagTextures.Count)
+            {
+                // Apply the selected texture
+                flagRenderer.material.SetTexture("_BaseMap", flagTextures[index]); // URP Shader
+                // OR for Standard Shader
+                // flagRenderer.material.mainTexture = flagTextures[textureIndex];
+
+                Debug.Log($"Flag spawned with texture index {index}");
+            }
+            else
+            {
+                Debug.LogError("Renderer not found on 'flag2_low' or invalid texture index!");
+            }
 
             //assign the home object to home tile
             Vector3 homePosition = homeTile.transform.position;
