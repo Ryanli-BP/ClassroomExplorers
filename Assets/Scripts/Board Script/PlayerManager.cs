@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using Photon.Pun;
-
+using Photon.Realtime;
 [DefaultExecutionOrder(-30)]
-public class PlayerManager : MonoBehaviourPunCallbacks
+public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
     public AvatarGenerator avatarGenerator;
-    private PhotonView photonView;
+
     public const float AboveTileOffset = 0.5f; // Offset to place player above the tile
 
     [SerializeField] private Player playerPrefab;  // Main player prefab
@@ -30,10 +30,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        if (Instance == null){
+        if (Instance == null)
             Instance = this;
-            photonView = GetComponent<PhotonView>();
-        }
         else
             Destroy(gameObject);
 
@@ -61,102 +59,53 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     private void InitialisePlayers()
     {
-    players.Clear();
-    if (!PhotonNetwork.InRoom)
-    {
-        Debug.LogError("Not in a Photon Room! Cannot init players.");
-        return;
-    }
+        players.Clear();
 
-    // Ensure the client has the required properties before spawning
-    if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("BodyColor") ||
-        !PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Hat"))
-    {
-        Debug.LogError("Missing player customization properties!");
-        return;
-    }
+        // Retrieve selected player information from the previous scene
+        int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
+        int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
 
-    //  Get customization settings from Photon
-    int bodyColorIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["BodyColor"];
-    int hatIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["Hat"];
-    string nickname = PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Nickname") 
-                        ? (string)PhotonNetwork.LocalPlayer.CustomProperties["Nickname"] 
-                        : "Player" + PhotonNetwork.LocalPlayer.ActorNumber;
-
-    Quaternion playerRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
-
-    //  Only instantiate the local player
-    GameObject playerObject = PhotonNetwork.Instantiate(playerPrefab.name, transform.position, playerRotation);
-    Player playerScript = playerObject.GetComponent<Player>();
-
-    playerScript.transform.localScale = playerScript.transform.localScale * ARBoardPlacement.worldScale;
-    playerScript.SetPlayerID(PhotonNetwork.LocalPlayer.ActorNumber);
-
-    //  Sync appearance across all clients using RPC
-    playerScript.photonView.RPC("SetPlayerAppearance", RpcTarget.AllBuffered, bodyColorIndex, hatIndex);
-
-    players.Add(playerScript);
-
-    Debug.Log($"✅ Player {nickname} instantiated with BodyColor {bodyColorIndex}, Hat {hatIndex}.");
-
-    // Adjust all players’ scale after everyone has spawned
-    StartCoroutine(WaitForAllPlayersAndAdjustScale());
-    }
-
-    IEnumerator WaitForAllPlayersAndAdjustScale()
-    {
-        // Wait for all players to be in the game
-        yield return new WaitUntil(() => PhotonNetwork.CurrentRoom.PlayerCount == players.Count);
-
-        foreach (var player in players)
+        foreach (var netPlayer in PhotonNetwork.PlayerList)
         {
-            player.transform.localScale = player.transform.localScale * ARBoardPlacement.worldScale;
-            Debug.Log($"🔄 Adjusted scale for {player.name}");
-        }
-    }
-
-    [PunRPC]
-    public void SetPlayerAppearance(Player playerObject, int selectedBodyIndex, int selectedHatIndex)
-    {
-        // Find the body parent object (e.g., "Mesh Object/Bone_Body") for this specific player
-        Transform bodyParent = playerObject.transform.Find("Mesh Object/Bone_Body");
-        Transform hatParent = playerObject.transform.Find("hats");
-
-        if (bodyParent != null && bodyColors.Length > 0)
-        {
-            // Assuming bodyColors are child objects under "Bone_Body"
-            for (int i = 0; i < bodyColors.Length; i++)
+            if (!netPlayer.CustomProperties.ContainsKey("BodyColor") ||
+                !netPlayer.CustomProperties.ContainsKey("Hat"))
             {
-                Transform bodyColorTransform = bodyParent.GetChild(i); // Get the child transform for each body color
-                if (i == selectedBodyIndex)
-                {
-                    bodyColorTransform.gameObject.SetActive(true); // Activate the selected body color
-                }
-                else
-                {
-                    bodyColorTransform.gameObject.SetActive(false); // Deactivate the other body colors
-                }
+                Debug.LogError($"Player {netPlayer.NickName} is missing customization properties!");
+                continue;
             }
-        }
+            int bodyColorIndex = (int)netPlayer.CustomProperties["BodyColor"];
+            int hatIndex = (int)netPlayer.CustomProperties["Hat"];
+            string nickname = netPlayer.CustomProperties.ContainsKey("Nickname")
+                                ? (string)netPlayer.CustomProperties["Nickname"]
+                                : "Player" + netPlayer.ActorNumber;
+            // Instantiate the player prefab
+            Quaternion playerRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
+            // Player playerObject = Instantiate(playerPrefab, 
+            //                     transform.position, 
+            //                     playerRotation);
+            GameObject playerObject = PhotonNetwork.Instantiate(playerPrefab.name, transform.position, playerRotation);
+            Player playerScript = playerObject.GetComponent<Player>();
+            playerScript.transform.localScale *= ARBoardPlacement.worldScale;
+            
 
-        if (hatParent != null && hats.Length > 0)
-        {
-            // Assuming hats are child objects under "hats"
-            for (int i = 0; i < hats.Length; i++)
+            playerScript.SetPlayerID(netPlayer.ActorNumber);
+            // Set the player appearance before adding to the list
+            playerScript.gameObject.SetActive(true);
+            PhotonView pv = playerObject.GetComponent<PhotonView>();
+            if(pv != null)
             {
-                Transform hatTransform = hatParent.GetChild(i); // Get the child transform for each hat
-                if (i == selectedHatIndex)
-                {
-                    hatTransform.gameObject.SetActive(true); // Activate the selected hat
-                }
-                else
-                {
-                    hatTransform.gameObject.SetActive(false); // Deactivate the other hats
-                }
+                pv.RPC("SetPlayerAppearance", RpcTarget.AllBuffered, bodyColorIndex, hatIndex);
             }
+            else
+            {
+                Debug.LogError("PhotonView missing on instantiated player!");
+            }
+            
+            // Add the instantiated GameObject (with Player script) to the players list
+            players.Add(playerScript);
+            // Assuming playerPrefab already contains a Player component that will be automatically added
         }
-
-        Debug.Log($"Player appearance set for {playerObject.name}: Body Index {selectedBodyIndex}, Hat Index {selectedHatIndex}");
+        playerPrefab.SetPlayerID(-1);
     }
 
     public List<Player> GetPlayerList()

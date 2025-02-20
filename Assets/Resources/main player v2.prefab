@@ -1971,7 +1971,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832ad51f7a307314aa9d9a9847a45227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerID: 0
   MAX_HEALTH: 6
+  bodyColors: []
+  hats: []
 --- !u!114 &8052282319079620484
 MonoBehaviour:
   m_ObjectHideFlags: 0

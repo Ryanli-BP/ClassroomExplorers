@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Photon.Pun;
 
 public enum GameMode
 {
@@ -24,7 +25,7 @@ public class ModeRules
     public bool friendlyFire;
 }
 
-public class GameConfigManager : MonoBehaviour
+public class GameConfigManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private GameMode currentMode = GameMode.FFA;
     [SerializeField] private QuizMode currentQuizMode = QuizMode.NORMAL;

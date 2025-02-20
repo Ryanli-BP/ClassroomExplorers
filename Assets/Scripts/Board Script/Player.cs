@@ -5,37 +5,29 @@ using System.Linq;
 using Unity.VisualScripting;
 using System.Collections;
 using Photon.Pun;
+
 public enum Status { Alive, Dead }
 
 public class Player : Entity, IPunObservable
 {
-    public int playerID { get; private set; } 
+    [SerializeField] private int playerID;
+
     public const int REVIVAL_COUNT = 5;
     public int MAX_HEALTH = 6;
     public const int MAX_LEVEL = 5;
     public const int MAX_TROPHY = 5;
-
+    public GameObject[] bodyColors; 
+    public GameObject[] hats;
     public int Points { get; set; }
     public int Level { get; set; } = 0;
     public int TrophyCount { get; set; } = 0;
     public int QuizStreak { get; set; } = 0;
     [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
     public PlayerBuffs PlayerBuffs => playerBuffs;
-    
+
     public int ReviveCounter { get; set; } = 0;
     void Awake()
     {
-
-        if (PhotonNetwork.InRoom)
-        {
-            playerID = PhotonNetwork.LocalPlayer.ActorNumber;
-
-        }
-        if(!PhotonNetwork.InRoom)
-        {
-            Debug.Log("Photon Server Not Connected");
-            return; 
-        }
         if (playerID <= GameConfigManager.Instance.numOfPlayers)
         {
             Points = 0;
@@ -49,6 +41,36 @@ public class Player : Entity, IPunObservable
             Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
             Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
             Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // This is executed on the local player.
+            // Send the data you want to synchronize over the network.
+            stream.SendNext(playerID);
+            stream.SendNext(Level);
+            stream.SendNext(TrophyCount);
+            stream.SendNext(Health);
+            stream.SendNext(Status);
+
+            
+            // Add any other variables that need to be synchronized.
+        }
+        else
+        {
+            // This is executed on remote clients.
+            // Receive the data and update the local state accordingly.
+            playerID = (int)stream.ReceiveNext();
+            Level = (int)stream.ReceiveNext();
+            TrophyCount = (int)stream.ReceiveNext();
+            Health = (int)stream.ReceiveNext();
+            Status= (Status)stream.ReceiveNext();
+            
+            
+            // Update any other variables as needed.
         }
     }
 
@@ -72,7 +94,76 @@ public class Player : Entity, IPunObservable
             yield return StartCoroutine(UIManager.Instance.UpdatePlayerPoints(playerID, Points, PlayerManager.Instance.GetMilestonePoints(TrophyCount)));
         }
     }
+    
+ [PunRPC]
+public void SetPlayerAppearance(int selectedBodyIndex, int selectedHatIndex)
+{
+    Debug.Log($"SetPlayerAppearance called for player {playerID} with body:{selectedBodyIndex}, hat:{selectedHatIndex}");
+    
+    // Initialize arrays if needed
+    InitializeCustomizationArrays();
+    
+    // Set body color
+    if (bodyColors != null && bodyColors.Length > selectedBodyIndex)
+    {
+        for (int i = 0; i < bodyColors.Length; i++)
+        {
+            if (bodyColors[i] != null)
+            {
+                bodyColors[i].SetActive(i == selectedBodyIndex);
+            }
+        }
+    }
+    else
+    {
+        Debug.LogError($"Invalid body color index {selectedBodyIndex} or bodyColors not initialized");
+    }
 
+    // Set hat
+    if (hats != null && hats.Length > selectedHatIndex)
+    {
+        for (int i = 0; i < hats.Length; i++)
+        {
+            if (hats[i] != null)
+            {
+                hats[i].SetActive(i == selectedHatIndex);
+            }
+        }
+    }
+    else
+    {
+        Debug.LogError($"Invalid hat index {selectedHatIndex} or hats not initialized");
+    }
+}
+
+private void InitializeCustomizationArrays()
+{
+    if (bodyColors == null || bodyColors.Length == 0)
+    {
+        Transform bodyParent = transform.Find("Mesh Object/Bone_Body");
+        if (bodyParent != null)
+        {
+            bodyColors = new GameObject[bodyParent.childCount];
+            for (int i = 0; i < bodyParent.childCount; i++)
+            {
+                bodyColors[i] = bodyParent.GetChild(i).gameObject;
+            }
+        }
+    }
+
+    if (hats == null || hats.Length == 0)
+    {
+        Transform hatParent = transform.Find("hats");
+        if (hatParent != null)
+        {
+            hats = new GameObject[hatParent.childCount];
+            for (int i = 0; i < hatParent.childCount; i++)
+            {
+                hats[i] = hatParent.GetChild(i).gameObject;
+            }
+        }
+    }
+}
     public int getPlayerID()
     {
         return playerID;
@@ -207,23 +298,6 @@ public class Player : Entity, IPunObservable
         Health = Math.Min(MAX_HEALTH, Health + amount);
         Debug.Log($"Player {playerID} now has {Health} health.");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
-    }
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting) // The local player is sending data to others
-        {
-            stream.SendNext(playerID);
-            stream.SendNext(Health);
-            stream.SendNext(Level);
-            stream.SendNext(TrophyCount);
-        }
-        else // The remote player is receiving data
-        {
-            playerID = (int)stream.ReceiveNext();
-            Health = (int)stream.ReceiveNext();
-            Level = (int)stream.ReceiveNext();
-            TrophyCount = (int)stream.ReceiveNext();
-        }
     }
 }
 
