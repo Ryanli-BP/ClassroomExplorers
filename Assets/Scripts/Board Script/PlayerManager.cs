@@ -134,8 +134,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public void GoNextPlayer()
     {
-        // Use 0-based index for players, then adjust the player ID if needed.
-        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1;  // Wrap around 0-based index
+        CurrentPlayerID = (CurrentPlayerID % players.Count) + 1;  
         Debug.Log($"Current player ID is now {CurrentPlayerID}.");
     }
 

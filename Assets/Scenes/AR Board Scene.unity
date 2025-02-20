@@ -20450,11 +20450,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8133964492893602739, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
+      propertyPath: photonView
+      value: 
+      objectReference: {fileID: 876114047905927639}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
+--- !u!114 &876114047905927639 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7550787122153504081, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
+  m_PrefabInstance: {fileID: 876114047905927638}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &883724509447106882
 Transform:
   m_ObjectHideFlags: 0
@@ -20977,6 +20992,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8615960407400873012}
   - component: {fileID: 7535015540863432112}
+  - component: {fileID: 8615960407400873013}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -22138,6 +22154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a10bd0cdfc37f4f81e961a682352a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  photonView: {fileID: 0}
 --- !u!4 &7065049121058179339
 Transform:
   m_ObjectHideFlags: 0
@@ -22712,6 +22729,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3266162705118629452}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8615960407400873013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409924342613606989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 6
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &8635268519597790185
 MonoBehaviour:
   m_ObjectHideFlags: 0

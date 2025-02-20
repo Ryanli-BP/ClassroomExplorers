@@ -44,33 +44,30 @@ public class Player : Entity, IPunObservable
         }
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // This is executed on the local player.
-            // Send the data you want to synchronize over the network.
             stream.SendNext(playerID);
+            stream.SendNext(Points);
             stream.SendNext(Level);
             stream.SendNext(TrophyCount);
             stream.SendNext(Health);
-            stream.SendNext(Status);
-
-            
-            // Add any other variables that need to be synchronized.
+            stream.SendNext((int)Status);
+            stream.SendNext(transform.position);
         }
         else
         {
-            // This is executed on remote clients.
-            // Receive the data and update the local state accordingly.
             playerID = (int)stream.ReceiveNext();
+            Points = (int)stream.ReceiveNext();
             Level = (int)stream.ReceiveNext();
             TrophyCount = (int)stream.ReceiveNext();
             Health = (int)stream.ReceiveNext();
-            Status= (Status)stream.ReceiveNext();
+            Status = (Status)stream.ReceiveNext();
+            transform.position = (Vector3)stream.ReceiveNext();
             
-            
-            // Update any other variables as needed.
+            // Update UI after receiving new values
+            StartCoroutine(InitializePlayerUI());
         }
     }
 

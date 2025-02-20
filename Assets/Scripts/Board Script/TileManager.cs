@@ -53,6 +53,24 @@ public class TileManager : MonoBehaviour
 
         GameInitializer.Instance.ConfirmManagerReady("TileManager");
     }
+    public Tile GetTileAtPosition(Vector3 position)
+    {
+        float closestDistance = float.MaxValue;
+        Tile closestTile = null;
+
+        foreach (Tile tile in allTiles)
+        {
+            float distance = Vector3.Distance(tile.transform.position, position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestTile = tile;
+            }
+        }
+
+        // Only return tile if within reasonable distance
+        return closestDistance < BoardGenerator.BoardScale ? closestTile : null;
+    }
 
     private Tile GetRandomPortalTile(Tile currentTile)
     {
