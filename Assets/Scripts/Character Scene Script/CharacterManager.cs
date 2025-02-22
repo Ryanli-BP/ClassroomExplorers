@@ -144,15 +144,11 @@ public class CharacterManager : MonoBehaviour
 
     public void StartGame()
     {
-        // Store selected customization options in PlayerPrefs (local storage)
-        PlayerPrefs.SetInt("SelectedBodyColorIndex", selectedBodyColorIndex);
-        PlayerPrefs.SetInt("SelectedHatIndex", selectedHatIndex);
-        PlayerPrefs.Save();
         int playerID = PhotonNetwork.LocalPlayer.ActorNumber;
         string nickname = string.IsNullOrWhiteSpace(nameInputField.text)? $"Player{playerID}" : nameInputField.text;
-        // Store customization data in Photon Custom Properties (networked storage)
+        // Store customization data i
         ExitGames.Client.Photon.Hashtable playerProperties = new ExitGames.Client.Photon.Hashtable
-        {
+        {   
             {"PlayerID", playerID},
             { "BodyColor", selectedBodyColorIndex },
             {"Hat", selectedHatIndex },

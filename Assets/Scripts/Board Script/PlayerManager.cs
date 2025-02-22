@@ -61,10 +61,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     {
         players.Clear();
 
-        // Retrieve selected player information from the previous scene
-        int selectedPlayerIndex = PlayerPrefs.GetInt("SelectedBodyColorIndex", 0); // Default to 0 if not set
-        int selectedHatIndex = PlayerPrefs.GetInt("SelectedHatIndex", 0);
-
         foreach (var netPlayer in PhotonNetwork.PlayerList)
         {
             if (!netPlayer.CustomProperties.ContainsKey("BodyColor") ||
@@ -80,9 +76,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
                                 : "Player" + netPlayer.ActorNumber;
             // Instantiate the player prefab
             Quaternion playerRotation = ARBoardPlacement.boardRotation * Quaternion.Euler(0, 0, 0);
-            // Player playerObject = Instantiate(playerPrefab, 
-            //                     transform.position, 
-            //                     playerRotation);
             GameObject playerObject = PhotonNetwork.Instantiate(playerPrefab.name, transform.position, playerRotation);
             Player playerScript = playerObject.GetComponent<Player>();
             playerScript.transform.localScale *= ARBoardPlacement.worldScale;
@@ -100,12 +93,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             {
                 Debug.LogError("PhotonView missing on instantiated player!");
             }
-            
-            // Add the instantiated GameObject (with Player script) to the players list
             players.Add(playerScript);
-            // Assuming playerPrefab already contains a Player component that will be automatically added
+
         }
-        playerPrefab.SetPlayerID(-1);
+        
     }
 
     public List<Player> GetPlayerList()
