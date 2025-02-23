@@ -13318,6 +13318,54 @@ RectTransform:
   m_AnchoredPosition: {x: 180, y: 45}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1373181089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1373181090}
+  - component: {fileID: 1373181091}
+  m_Layer: 0
+  m_Name: EnvironmentManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1373181090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373181089}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3266162705118629452}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1373181091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373181089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c7378007d18ad43a42823b1f551690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardPlaneMaterial: {fileID: 2100000, guid: c7e4c3e66142e474282114ebdd453eba, type: 2}
+  quizUIObject: {fileID: 1906703913}
+  boardPlaneMaterialUrl: http://127.0.0.1:8000/api/v1.0.0/assets/material-texture/
+  QuizUIImageUrl: http://127.0.0.1:8000/api/v1.0.0/assets/ui-image/
 --- !u!1 &1384491684
 GameObject:
   m_ObjectHideFlags: 0
@@ -14909,9 +14957,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35d3f9bae4da8f4695386cd83b75591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMode: 0
-  currentQuizMode: 1
-  _numOfPlayers: 2
+  currentMode: 2
+  currentQuizMode: 0
+  _numOfPlayers: 3
   _quizTimeLimit: 30
 --- !u!4 &1482619883
 Transform:
@@ -18551,8 +18599,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1906703914}
   - component: {fileID: 1906703917}
-  - component: {fileID: 1906703916}
-  - component: {fileID: 1906703915}
+  - component: {fileID: 1906703918}
   m_Layer: 5
   m_Name: QuizUI
   m_TagString: Untagged
@@ -18586,19 +18633,15 @@ RectTransform:
   m_AnchoredPosition: {x: -960, y: -1706}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1906703915
-MonoBehaviour:
+--- !u!222 &1906703917
+CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906703913}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c90cc2ed8171830408fdfb27dd1a7260, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1906703916
+  m_CullTransparentMesh: 1
+--- !u!114 &1906703918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18611,14 +18654,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.99229556, g: 1, b: 0.81446534, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cd6b6585db069d3408d4e5857348d5e2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9985849c5bc3c574e86ffab04b4805f2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -18628,14 +18671,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &1906703917
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906703913}
-  m_CullTransparentMesh: 1
 --- !u!1 &1948305616
 GameObject:
   m_ObjectHideFlags: 0
@@ -20764,7 +20799,7 @@ Transform:
   m_GameObject: {fileID: 8398868867661137796}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: -10}
+  m_LocalPosition: {x: 0, y: 15, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21167,6 +21202,7 @@ Transform:
   - {fileID: 1514981342}
   - {fileID: 1601831983}
   - {fileID: 1845738224}
+  - {fileID: 1373181090}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3403024554346785447
