@@ -10,6 +10,7 @@ public class EnvironmentManager : MonoBehaviour
     [SerializeField] private Material boardPlaneMaterial;
     [SerializeField] private GameObject quizUIObject;
     
+	// The both URLs will directly return the image file
     [SerializeField] private string boardPlaneMaterialUrl = "http://127.0.0.1:8000/api/v1.0.0/config/get-background-image/";
     [SerializeField] private string QuizUIImageUrl = "http://127.0.0.1:8000/api/v1.0.0/config/get-quiz-background-image/";
     private Image quizUIImage;
