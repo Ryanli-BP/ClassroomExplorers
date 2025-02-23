@@ -42,6 +42,10 @@ public class Player : Entity, IPunObservable
             Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
             Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
         }
+        if (GameConfigManager.Instance == null)
+        {
+            Debug.Log("GameConfigManager is null");
+        }
     }
 
      public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

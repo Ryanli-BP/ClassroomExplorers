@@ -76,14 +76,15 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
 
         if (currentTile == null)
         {
-            // Try to recover current tile from TileManager
+            // Recover tile if it's null
             currentTile = TileManager.Instance.GetTileAtPosition(transform.position);
+            
             if (currentTile == null)
             {
-                Debug.LogError($"Current tile is null for player {PlayerManager.Instance.CurrentPlayerID}");
+                Debug.LogError($"Failed to recover current tile for player {PlayerManager.Instance.CurrentPlayerID}");
                 return;
             }
-            Debug.Log($"Recovered current tile for player {PlayerManager.Instance.CurrentPlayerID}");
+            Debug.Log($"Successfully recovered tile for player {PlayerManager.Instance.CurrentPlayerID}");
         }
 
         StartCoroutine(MoveToNextTileCoroutine(direction));
