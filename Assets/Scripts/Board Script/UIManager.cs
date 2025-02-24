@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UltimateClean;
 using System.Collections;
+using Photon.Pun;
 
 [System.Serializable]
 public class PlayerStatsUI
@@ -21,6 +22,7 @@ public class PlayerStatsUI
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
 
     [SerializeField] private GameObject directionPanel; // Panel that contains direction buttons
     [SerializeField] private Button northButton;
@@ -198,7 +200,10 @@ public class UIManager : MonoBehaviour
 
     public void SetRollDiceButtonVisibility(bool isVisible)
     {
-        rollDiceButtonPanel.gameObject.SetActive(isVisible);
+        if (PhotonNetwork.LocalPlayer.ActorNumber == PlayerManager.Instance.GetCurrentPlayer().getPlayerID()){
+            rollDiceButtonPanel.gameObject.SetActive(isVisible);
+        }
+        else return;
     }
 
     public void SetEvadeButtonVisibility(bool isVisible)
@@ -610,44 +615,52 @@ public class UIManager : MonoBehaviour
     // Show direction choices at a crossroad
     public void ShowDirectionChoices(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
         {
-            directionPanel.SetActive(true);
-
-            // Hide all direction buttons initially
-            northButton.gameObject.SetActive(false);
-            eastButton.gameObject.SetActive(false);
-            southButton.gameObject.SetActive(false);
-            westButton.gameObject.SetActive(false);
-
-            // Show only the necessary buttons
-            foreach (Direction direction in availableDirections)
+            if (PhotonNetwork.LocalPlayer.ActorNumber != PlayerManager.Instance.GetCurrentPlayer().getPlayerID())
             {
-                Button button = null;
-                switch (direction)
-                {
-                    case Direction.North:
-                        button = northButton;
-                        break;
-                    case Direction.East:
-                        button = eastButton;
-                        break;
-                    case Direction.South:
-                        button = southButton;
-                        break;
-                    case Direction.West:
-                        button = westButton;
-                        break;
-                }
+                directionPanel.SetActive(false);
+                return;
+            }
+            else {
+                directionPanel.SetActive(true);
 
-                if (button != null)
+                // Hide all direction buttons initially
+                northButton.gameObject.SetActive(false);
+                eastButton.gameObject.SetActive(false);
+                southButton.gameObject.SetActive(false);
+                westButton.gameObject.SetActive(false);
+
+                // Show only the necessary buttons
+                foreach (Direction direction in availableDirections)
                 {
-                    button.gameObject.SetActive(true);
-                    button.onClick.RemoveAllListeners();
-                    button.onClick.AddListener(() => {
-                        directionPanel.SetActive(false);
-                        onDirectionChosen(direction);
-                    });
+                    Button button = null;
+                    switch (direction)
+                    {
+                        case Direction.North:
+                            button = northButton;
+                            break;
+                        case Direction.East:
+                            button = eastButton;
+                            break;
+                        case Direction.South:
+                            button = southButton;
+                            break;
+                        case Direction.West:
+                            button = westButton;
+                            break;
+                    }
+
+                    if (button != null)
+                    {
+                        button.gameObject.SetActive(true);
+                        button.onClick.RemoveAllListeners();
+                        button.onClick.AddListener(() => {
+                            directionPanel.SetActive(false);
+                            onDirectionChosen(direction);
+                        });
+                    }
                 }
             }
+        
         }
 
     // Show prompt when player reaches a home tile
