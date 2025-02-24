@@ -1,13 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviourPunCallbacks
+public class PlayerMovement : MonoBehaviour
 {
-     [SerializeField] private PhotonView photonView;
     private Tile currentTile; 
     private Direction _lastDirection; // To track the direction the player came from
     private bool isMoving = false;
@@ -18,14 +16,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private bool canHealPlayers;
     private bool haveBoss;
 
-    private void Awake()
-    {
-        // Get PhotonView if not assigned in inspector
-        if (photonView == null)
-        {
-            photonView = GetComponent<PhotonView>();
-        }
-    }
     void Start()
     {
         ModeRules currentRules = GameConfigManager.Instance.GetCurrentRules();
@@ -48,46 +38,6 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         Debug.Log($"Rolled: {diceroll} steps");
         remainingSteps = diceroll;
         StartCoroutine(MoveStepByStep());
-    }    
-    private bool IsMyTurn()
-    {
-        if (photonView == null)
-        {
-            photonView = GetComponent<PhotonView>();
-            if (photonView == null)
-            {
-                Debug.LogError("PhotonView is null and couldn't be found!");
-                return false;
-            }
-        }
-
-        Player player = GetComponent<Player>();
-        if (player == null) return false;
-
-        return photonView.IsMine && 
-               PlayerManager.Instance.CurrentPlayerID == player.getPlayerID();
-    }
-
-    [PunRPC]
-    private void RPCSetDirection(int directionInt)
-    {
-        Direction direction = (Direction)directionInt;
-        _lastDirection = direction;
-
-        if (currentTile == null)
-        {
-            // Recover tile if it's null
-            currentTile = TileManager.Instance.GetTileAtPosition(transform.position);
-            
-            if (currentTile == null)
-            {
-                Debug.LogError($"Failed to recover current tile for player {PlayerManager.Instance.CurrentPlayerID}");
-                return;
-            }
-            Debug.Log($"Successfully recovered tile for player {PlayerManager.Instance.CurrentPlayerID}");
-        }
-
-        StartCoroutine(MoveToNextTileCoroutine(direction));
     }
 
     private IEnumerator HandlePvPEncounter()
@@ -225,41 +175,26 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         }
     }
 
-   private IEnumerator HandleHomeTile(bool initialOnHome)
+    private IEnumerator HandleHomeTile(bool initialOnHome)
     {
         if (currentTile.GetTileType() == TileType.Home && 
             currentTile.GetHomePlayerID() == PlayerManager.Instance.CurrentPlayerID && 
             !initialOnHome)
         {
             Debug.Log("Reached home tile. Prompting player to choose.");
-            
-            // Only show stop option to active player
-            if (IsMyTurn())
-            {
-                yield return StartCoroutine(PromptManager.Instance.HandleHomeTile((choice) => {
-                    if (choice)
-                    {
-                        photonView.RPC("RPCStopMovement", RpcTarget.All);
-                    }
-                }));
-            }
-            else
-            {
-                // Wait for active player's choice
-                while (isMoving)
+            yield return StartCoroutine(PromptManager.Instance.HandleHomeTile((choice) => {
+                if (choice)
                 {
-                    yield return null;
+                    UIManager.Instance.OffDiceDisplay(); // off remaining step display when get into combat
+                    Debug.Log("Player chose to stay on the home tile.");
+                    isMoving = false;
                 }
-            }
+                else
+                {
+                    Debug.Log("Player chose to continue moving.");
+                }
+            }));
         }
-    }
-
-    [PunRPC]
-    private void RPCStopMovement()
-    {
-        UIManager.Instance.OffDiceDisplay();
-        Debug.Log("Player chose to stay on the home tile.");
-        isMoving = false;
     }
 
     private IEnumerator HandlePaths(List<Direction> availableDirections)
@@ -270,23 +205,13 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
             Direction? selectedDirection = null;
             
-            // Only show direction UI to the active player
-            if (IsMyTurn())
+            yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
+                selectedDirection = direction;
+            }));
+
+            if (selectedDirection.HasValue)
             {
-                yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
-                    if (photonView.IsMine)
-                    {
-                        photonView.RPC("RPCSetDirection", RpcTarget.All, (int)direction);
-                    }
-                }));
-            }
-            else
-            {
-                // Wait for the active player's choice
-                while (_lastDirection == Direction.None)
-                {
-                    yield return null;
-                }
+                yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
             }
 
             TileManager.Instance.ClearHighlightedTiles();
@@ -294,10 +219,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
         else
         {
             Direction nextDirection = availableDirections[0];
-            if (IsMyTurn())
-            {
-                photonView.RPC("RPCSetDirection", RpcTarget.All, (int)nextDirection);
-            }
+            yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
         }
     }
 
