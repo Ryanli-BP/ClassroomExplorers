@@ -64,7 +64,7 @@ public class Tile : MonoBehaviour
 
     public Tile GetConnectedTile(Direction direction)
     {
-        return direction switch
+        Tile connectedTiles =  direction switch
         {
             Direction.North => northTile,
             Direction.East => eastTile,
@@ -72,6 +72,11 @@ public class Tile : MonoBehaviour
             Direction.West => westTile,
             _ => null
         };
+
+        Debug.Log($"[{gameObject.name}] Getting connected tile in direction {direction}. " +
+                $"N:{northTile != null}, E:{eastTile != null}, S:{southTile != null}, W:{westTile != null}. " +
+                $"Result: {(connectedTiles != null ? connectedTiles.name : "null")}");
+        return connectedTiles;
     }
 
     public TileType GetTileType()

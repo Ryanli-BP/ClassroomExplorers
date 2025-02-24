@@ -21101,6 +21101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8746712896957456738}
   - component: {fileID: 7006338204906671127}
+  - component: {fileID: 8746712896957456739}
   m_Layer: 0
   m_Name: PromptManager
   m_TagString: Untagged
@@ -22213,7 +22214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a10bd0cdfc37f4f81e961a682352a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonView: {fileID: 0}
 --- !u!4 &7065049121058179339
 Transform:
   m_ObjectHideFlags: 0
@@ -22872,6 +22872,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3266162705118629452}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8746712896957456739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2810192223799997566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 12
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &8771387739110001208
 Transform:
   m_ObjectHideFlags: 0

@@ -50,6 +50,14 @@ MonoBehaviour:
   - HandleDiceResult
   - RPC_OnDiceRollComplete
   - RPC_HandleDiceResult
+  - RPCSetChosenDirection
+  - RPCDirectionChosen
+  - RPC_MoveToDirection
+  - RPC_SyncRemainingSteps
+  - RPC_UpdatePlayerPosition
+  - RPCSyncDirectionChoice
+  - RPCSyncCurrentTile
+  - RPCSyncRemainingSteps
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

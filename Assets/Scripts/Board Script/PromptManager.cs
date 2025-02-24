@@ -7,7 +7,9 @@ using Photon.Realtime;
 
 public class PromptManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private PhotonView photonView;
+
+    public Direction? ChosenDirection { get; private set; }
+
 
     public static PromptManager Instance;
 
@@ -44,6 +46,7 @@ public class PromptManager : MonoBehaviourPunCallbacks
 
         onPlayerChoice(playerChoice == true);
     }
+ 
 
     public IEnumerator HandleHealing(Action<bool> onPlayerChoice)
     {
@@ -57,24 +60,31 @@ public class PromptManager : MonoBehaviourPunCallbacks
 
         onPlayerChoice(playerChoice == true);
     }
-
     public IEnumerator HandleDirections(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
     {
-        // Only show UI to active player
-        if (!PlayerManager.Instance.GetCurrentPlayer().photonView.IsMine)
-        {
-            yield return new WaitUntil(() => GameManager.Instance.GetCurrentState() != GameState.BoardMovement);
-            yield break;
-        }
-
         Direction? chosenDirection = null;
         UIManager.Instance.ShowDirectionChoices(availableDirections, (direction) => {
             chosenDirection = direction;
-            // Sync choice across network
-            photonView.RPC("RPCDirectionChosen", RpcTarget.All, (int)direction);
+            // Broadcast the choice to all clients so everyone updates
+            Debug.Log(PlayerManager.Instance.GetCurrentPlayer().getPlayerID());
+            Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
+            PromptManager.Instance.photonView.RPC("RPCDirectionChosen", RpcTarget.All, (int)direction);
+
         });
 
+
         yield return new WaitUntil(() => chosenDirection != null);
+        
         onDirectionChosen(chosenDirection.Value);
     }
+
+
+    [PunRPC]
+    public void RPCDirectionChosen(int directionValue)
+    {
+        Direction direction = (Direction)directionValue;
+
+        Debug.Log($"Direction chosen: {direction}");
+    }
+
 }
