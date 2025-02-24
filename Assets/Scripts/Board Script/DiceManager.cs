@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation.VisualScripting;
-
-public class DiceManager : MonoBehaviour
+using Photon.Pun;
+using ExitGames.Client.Photon.StructWrapping;
+public class DiceManager : MonoBehaviourPun
 {
     public static DiceManager Instance;
     [SerializeField] private Dice DiceToThrow;
@@ -23,7 +24,7 @@ public class DiceManager : MonoBehaviour
         if (Instance == null)
             Instance = this;
         else
-            Destroy(gameObject);
+            PhotonNetwork.Destroy(gameObject);
     }
 
     private void OnEnable()
@@ -91,16 +92,14 @@ public class DiceManager : MonoBehaviour
             foreach (var die in liveDice)
             {
                 die.OnDiceFinishedRolling -= HandleDiceFinishedRolling;
-                Destroy(die.gameObject);
+                PhotonNetwork.Destroy(die.gameObject);
             }
             liveDice.Clear();
 
             // Instantiate and roll new dice
             for (int i = 0; i < numDice; i++)
             {
-                Dice diceLive = Instantiate(DiceToThrow, 
-                transform.position, 
-                ARBoardPlacement.boardRotation * transform.rotation);
+                Dice diceLive = PhotonNetwork.Instantiate(DiceToThrow.name, transform.position, ARBoardPlacement.boardRotation * transform.rotation).GetComponent<Dice>();
                 diceLive.transform.localScale = diceLive.transform.localScale * ARBoardPlacement.worldScale;
                 liveDice.Add(diceLive);
                 diceLive.RollDice(throwForce, rollForce, i);
@@ -118,18 +117,24 @@ public class DiceManager : MonoBehaviour
         {
             // Reset the gravity to its original value
             Physics.gravity = originalGravity;
-            StartCoroutine(GameManager.Instance.OnDiceRollComplete()); // Directly call the GameManager method
+            photonView.RPC("RPC_OnDiceRollComplete", RpcTarget.All); // Directly call the GameManager method
         }
     }
-
-    public void HandleDiceResult(int diceResult)
+    [PunRPC]
+    public void RPC_HandleDiceResult(int diceResult)
     {
         totalDiceResult += diceResult;
-        //totalDiceResult = testDiceResult; // For testing purposes
+        Debug.Log($"[RPC] Dice result received: {diceResult} (Total: {totalDiceResult})");
+
     }
 
     public int GetTotalDiceResult()
     {
         return totalDiceResult;
+    }
+    [PunRPC]
+    public void RPC_OnDiceRollComplete()
+    {
+        StartCoroutine(GameManager.Instance.OnDiceRollComplete());
     }
 }

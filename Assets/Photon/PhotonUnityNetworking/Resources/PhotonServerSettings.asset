@@ -47,6 +47,9 @@ MonoBehaviour:
   - RPCSetDirection
   - RPCStopMovement
   - RPCSyncFullState
+  - HandleDiceResult
+  - RPC_OnDiceRollComplete
+  - RPC_HandleDiceResult
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Threading.Tasks;
-
+using Photon.Pun;
 public class Dice : MonoBehaviour
 {
     public Transform[] dicefaces;
@@ -36,7 +36,10 @@ public class Dice : MonoBehaviour
         {
             rollfin = true;
             int randomResult = Random.Range(1, 7);
-            DiceManager.Instance.HandleDiceResult(randomResult);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                DiceManager.Instance.photonView.RPC("RPC_HandleDiceResult", RpcTarget.All, randomResult);
+            }
             OnDiceFinishedRolling?.Invoke();
             return;
         }
@@ -46,7 +49,11 @@ public class Dice : MonoBehaviour
             rb.angularVelocity.magnitude < ANGULAR_VELOCITY_THRESHOLD)
         {
             rollfin = true;
-            DiceManager.Instance.HandleDiceResult(currentTopFace + 1);
+            if (PhotonNetwork.IsMasterClient)
+                {
+                    DiceManager.Instance.photonView.RPC("RPC_HandleDiceResult", RpcTarget.All, currentTopFace + 1);
+                }
+            else Debug.Log("Photon Disconnect");
             OnDiceFinishedRolling?.Invoke();
             return;
         }
@@ -65,7 +72,11 @@ public class Dice : MonoBehaviour
             if (stableTime >= STABILITY_THRESHOLD)
             {
                 rollfin = true;
-                DiceManager.Instance.HandleDiceResult(currentTopFace + 1);
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    DiceManager.Instance.photonView.RPC("RPC_HandleDiceResult", RpcTarget.All, currentTopFace + 1);
+                }
+                else Debug.Log("Photon Disconnect");
                 OnDiceFinishedRolling?.Invoke();
                 isTrackingStability = false;
             }
