@@ -68,14 +68,12 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.BoardMovement:
-                if (isBossTurn)
-                {
-                    StartBossMovement();
-                }
-                else
                 if (!IsResumingMovement)
                 {
-                    StartPlayerMovement();
+                    if (isBossTurn)
+                        StartBossMovement();
+                    else
+                        StartPlayerMovement();
                 }
                 else
                 {

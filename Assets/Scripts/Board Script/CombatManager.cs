@@ -106,7 +106,7 @@ public class CombatManager : MonoBehaviour
                 isEvade = false;
                 DiceManager.Instance.EnableDiceRoll(true);
                 DiceManager.Instance.RollDice();
-                int bonus = GetBonus(turn == 0 ? FirstTA : SecondTA, false, false);
+                int bonus = GetBonus(turn == 0 ? SecondTA : FirstTA, false, false);
                 yield return StartCoroutine(RollForCombatValue(result => dfdValue = result, bonus));
                 UIManager.Instance.OffDiceDisplay();
             }
