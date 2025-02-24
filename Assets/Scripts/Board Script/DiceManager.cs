@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation.VisualScripting;
-using Photon.Pun;
 
 public class DiceManager : MonoBehaviour
 {
@@ -18,7 +17,6 @@ public class DiceManager : MonoBehaviour
     private int remainingDice;  // Tracks remaining dice to finish rolling
     private int totalDiceResult; // Tracks the total sum of dice rolls
     private bool canRollDice = false; // Flag to control dice rollin
-
 
     private void Awake()
     {
@@ -57,37 +55,24 @@ public class DiceManager : MonoBehaviour
         set { numDice = value; }
     }
 
-public void EnableDiceRoll(bool isBossRollingDice)
-{
-    if (isBossRollingDice)
+    public void EnableDiceRoll(bool isBossRollingDice)
     {
-        // Boss always rolls (we assume only one client is responsible for boss actions)
-        numDice = 1 + BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus;
-        Debug.Log($"Boss dice count: {numDice} FROM BONUS {BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus}");
-        UIManager.Instance.SetRollDiceButtonVisibility(true);
-    }
-    else
-    {
-        // For players, check if the local player is the active one
-        int activePlayerID = PlayerManager.Instance.GetCurrentPlayer().getPlayerID();
-        if (PhotonNetwork.LocalPlayer.ActorNumber == activePlayerID)
+        // Set number of dice based on current turn
+        if (isBossRollingDice)
         {
-            // This client is allowed to roll dice.
-            // (Assuming that the dice bonus is taken from the active player based on the turn index.)
-            numDice = 1 + PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus;
-            Debug.Log($"Player dice count: {numDice} FROM BONUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus}");
-            UIManager.Instance.SetRollDiceButtonVisibility(true);
+            numDice = 1 + BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus;
+            Debug.Log($"Boss dice count: {numDice} FROM BONUS {BossManager.Instance.activeBoss.BossBuffs.ExtraDiceBonus}");
         }
         else
         {
-            // Disable dice rolling for clients that are not active.
-            UIManager.Instance.SetRollDiceButtonVisibility(false);
+            numDice = 1 + PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus;
+            Debug.Log($"Player dice count: {numDice} FROM BONUS {PlayerManager.Instance.GetPlayerList()[RoundManager.Instance.Turn - 1].PlayerBuffs.ExtraDiceBonus}");
         }
-    }
-    totalDiceResult = 0;
-    canRollDice = true;
-}
 
+        totalDiceResult = 0;
+        canRollDice = true;
+        UIManager.Instance.SetRollDiceButtonVisibility(true);
+    }
 
     private Vector3 originalGravity;
 
