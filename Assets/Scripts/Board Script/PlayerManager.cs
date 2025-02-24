@@ -9,7 +9,6 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public AvatarGenerator avatarGenerator;
 
     public const float AboveTileOffset = 0.5f; // Offset to place player above the tile
-    [SerializeField] private PhotonView photonView;
 
     [SerializeField] private Player playerPrefab;  // Main player prefab
     public GameObject[] bodyColors; // No need to serialize if not exposed to the Inspector
