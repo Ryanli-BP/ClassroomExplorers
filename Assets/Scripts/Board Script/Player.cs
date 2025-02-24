@@ -22,6 +22,7 @@ public class Player : Entity
     public int QuizStreak { get; set; } = 0;
     [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
     public PlayerBuffs PlayerBuffs => playerBuffs;
+    public const float AboveTileOffset = 0.5f; // Offset to place player above the tile
 
     public int ReviveCounter { get; set; } = 0;
     void Awake()
@@ -176,7 +177,7 @@ public class Player : Entity
     public override void TeleportTo(Vector3 position, Tile destinationTile)
     {
         // Adjust Y position for proper height above tile
-        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.7f * ARBoardPlacement.worldScale, position.z);
+        Vector3 teleportPosition = new Vector3(position.x, position.y + (AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale), position.z);
         
         // Update player position
         transform.position = teleportPosition;
