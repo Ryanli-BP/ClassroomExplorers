@@ -610,10 +610,6 @@ public class UIManager : MonoBehaviour
     // Show direction choices at a crossroad
     public void ShowDirectionChoices(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
         {
-            if(!GameManager.Instance.IsLocalPlayerTurn())
-            {
-                return;
-            }
             directionPanel.SetActive(true);
 
             // Hide all direction buttons initially
