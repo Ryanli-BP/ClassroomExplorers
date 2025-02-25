@@ -16,10 +16,11 @@ public class PlayerStatsUI
     public GameObject healthBar;
     public GameObject TrophyPanel;
     public TextMeshProUGUI TrophyText;
+    public TextMeshProUGUI PlayerName;
 }
 
 [DefaultExecutionOrder(0)]
-public class UIManager : MonoBehaviour
+public class UIManager : MonoBehaviourPun
 {
     public static UIManager Instance;
 
@@ -100,16 +101,27 @@ public class UIManager : MonoBehaviour
     {
         StartCoroutine(WaitForManagersToInitialize());
     }
-
+    
+    public void UpdatePlayerName(int playerIndex, string playerName)
+    {
+        if (playerIndex > 0 && playerIndex <= playerStatsUIList.Count)
+        {
+            playerStatsUIList[playerIndex - 1].PlayerName.text = playerName;
+        }
+        else
+        {
+            Debug.LogError($"Invalid player index: {playerIndex}");
+        }
+    }
     private void OnGameInitialized()
     {
         GameInitializer.Instance.OnGameInitialized -= OnGameInitialized;
         InitializeUI();
     }
-
+    
     private IEnumerator WaitForManagersToInitialize() //This is not strictly needed but it's safer this way
     {
-        // Wait for all required managers
+        // Wait for all required manager
         yield return new WaitUntil(() => GameInitializer.Instance.IsManagerReady("PlayerManager"));
 
         // Initialize UI elements
@@ -120,7 +132,11 @@ public class UIManager : MonoBehaviour
         foreach(Player player in PlayerManager.Instance.GetPlayerList())
         {
             StartCoroutine(player.InitializePlayerUI());
+            
+            UpdatePlayerName(player.getPlayerID(), player.GetPlayerNickName());
+
         }
+
 
         UpdateBossHealth(Boss.MAX_HEALTH);
     }

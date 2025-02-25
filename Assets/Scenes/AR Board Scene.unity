@@ -3265,31 +3265,37 @@ MonoBehaviour:
     healthBar: {fileID: 1786743345}
     TrophyPanel: {fileID: 1768627553}
     TrophyText: {fileID: 2118592201}
+    PlayerName: {fileID: 1948305618}
   - pointsBar: {fileID: 1141740980}
     levelText: {fileID: 1116043228}
     healthBar: {fileID: 1772054920}
     TrophyPanel: {fileID: 1472700740}
     TrophyText: {fileID: 1660963155}
+    PlayerName: {fileID: 1447097279}
   - pointsBar: {fileID: 1475199626}
     levelText: {fileID: 1835239918}
     healthBar: {fileID: 833338958}
     TrophyPanel: {fileID: 1384491684}
     TrophyText: {fileID: 1763337248}
+    PlayerName: {fileID: 677347532}
   - pointsBar: {fileID: 1155455095}
     levelText: {fileID: 1878088532}
     healthBar: {fileID: 467978191}
     TrophyPanel: {fileID: 1777074088}
     TrophyText: {fileID: 1036289759}
+    PlayerName: {fileID: 536910184}
   - pointsBar: {fileID: 1234963527}
     levelText: {fileID: 802998492}
     healthBar: {fileID: 1085532868}
     TrophyPanel: {fileID: 1327886186}
     TrophyText: {fileID: 602714691}
+    PlayerName: {fileID: 1444422750}
   - pointsBar: {fileID: 1044660577}
     levelText: {fileID: 713890680}
     healthBar: {fileID: 1084826098}
     TrophyPanel: {fileID: 807739719}
     TrophyText: {fileID: 132644831}
+    PlayerName: {fileID: 987893780}
   BossHealthBarPanel: {fileID: 1999475348}
   roundDisplayText: {fileID: 158698565}
   currentTurnText: {fileID: 1538874189}
@@ -18728,7 +18734,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player 1
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 341c3d6be97fe4db3b76d80d312a1437, type: 2}
   m_sharedMaterial: {fileID: -3283567986878961836, guid: 341c3d6be97fe4db3b76d80d312a1437, type: 2}

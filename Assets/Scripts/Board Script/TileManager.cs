@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Photon.Pun;
 
 [DefaultExecutionOrder(-20)]
-public class TileManager : MonoBehaviour
+public class TileManager : MonoBehaviourPun 
 {
     public static TileManager Instance { get; private set; }
     public GameObject tileContainer;
@@ -54,6 +55,8 @@ public class TileManager : MonoBehaviour
 
         GameInitializer.Instance.ConfirmManagerReady("TileManager");
     }
+    
+ 
     public Tile GetTileAtPosition(Vector3 position)
     {
         float closestDistance = float.MaxValue;
@@ -94,11 +97,12 @@ public class TileManager : MonoBehaviour
         return 1;
     }
 
+    
     public IEnumerator getPlayerTileAction(Tile tile)
     {
         var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
         Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
-        
+ 
         switch (tile.GetTileType())
         {
             case TileType.Normal:

@@ -74,7 +74,23 @@ public class Player : Entity, IPunObservable
             StartCoroutine(InitializePlayerUI());
         }
     }
-
+    public string GetPlayerNickName()
+    {
+        // Find the Photon player that matches this player's ID
+        foreach (var p in PhotonNetwork.PlayerList)
+        {
+            if (p.ActorNumber == playerID)
+            {
+                // Return the nickname from custom properties if it exists, otherwise use the default nickname
+                return p.CustomProperties.ContainsKey("Nickname") 
+                    ? (string)p.CustomProperties["Nickname"] 
+                    : p.NickName;
+            }
+        }
+        
+        // Fallback in case no matching player is found
+        return $"Player {playerID}";
+    }
     public IEnumerator InitializePlayerUI()
     {
         Debug.Log($"Initialize playerUI {playerID}");

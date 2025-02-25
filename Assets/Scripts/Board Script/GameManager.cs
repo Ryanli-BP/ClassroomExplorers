@@ -1,9 +1,10 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using Photon.Pun;
 
 [DefaultExecutionOrder(20)]
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPun
 {
     public static GameManager Instance;
     private GameState currentState;
@@ -251,7 +252,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile));
+            TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
         }
 
         // Wait until the action completes

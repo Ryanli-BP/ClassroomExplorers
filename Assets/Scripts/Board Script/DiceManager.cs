@@ -12,7 +12,7 @@ public class DiceManager : MonoBehaviourPun
     private int numDice;
     [SerializeField] private float throwForce = 5f;
     [SerializeField] private float rollForce = 10f;
-    [SerializeField] private int testDiceResult = 0;
+    [SerializeField] private int testDiceResult = 5;
 
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
