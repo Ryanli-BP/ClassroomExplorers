@@ -477,11 +477,11 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
     }
 
-    public IEnumerator DisplayRewardNotification(string message, BuffType buffType)
+    public IEnumerator DisplayRewardNotification(string message, BuffType buffType, QuizReward rewardTier)
     {
         NotificationBar.SetActive(true);
         NotificationText.text = message;
-        NotificationTitle.text = GetBuffTitle(buffType);
+        NotificationTitle.text = $"{rewardTier} - {GetBuffTitle(buffType)}";
 
         ChangeNotificationColor(buffType);
         yield return new WaitForSeconds(2f);

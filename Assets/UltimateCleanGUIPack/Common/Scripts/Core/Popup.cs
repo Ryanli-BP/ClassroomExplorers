@@ -12,6 +12,7 @@ namespace UltimateClean
         public GameObject healthBar;
         public GameObject pointsBar;
         public TextMeshProUGUI levelText;
+        public TextMeshProUGUI quizStreakText;
         public TextMeshProUGUI AttackBonus;
         public TextMeshProUGUI DefenseBonus;
         public TextMeshProUGUI DodgeBonus;
@@ -175,6 +176,7 @@ namespace UltimateClean
 
 
                 levelText.text = $"Level: {player.Level}";
+                quizStreakText.text = $"Quiz Streak: {player.QuizStreak}";
 
                 // Display attack, defense, and evade bonuses
                 int attackBonus = activeBuffs.Where(b => b.Type == BuffType.AttackUp).Sum(b => b.Value);
