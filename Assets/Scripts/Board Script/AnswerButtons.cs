@@ -5,15 +5,33 @@ using UnityEngine.UI;
 public class AnswerButtons : MonoBehaviour
 {
     public static AnswerButtons Instance { get; private set; }
-    [SerializeField] private GameObject[] answerBackBlue;
-    [SerializeField] private GameObject[] answerBackGreen;
-    [SerializeField] private GameObject[] answerBackRed;
     [SerializeField] private GameObject[] answerButtons;
     [SerializeField] private AudioSource CorrectFX, WrongFX;
 
+    private Color[] defaultColors = new Color[4]; // Store unique default colors
+    private Color correctColor = Color.green;  // Color for correct answer
+    private Color wrongColor = Color.red; 
+
     private void Start()
     {
+        AssignDefaultColors();
         SetupButtonListeners();
+    }
+
+    private void AssignDefaultColors()
+    {
+        // Define unique colors that are different from green and red
+        defaultColors[0] = new Color(0.6f, 0.8f, 1f); // Light Blue
+        defaultColors[1] = new Color(1f, 0.8f, 0.2f); // Yellow-Orange
+        defaultColors[2] = new Color(1f, 0.6f, 0.8f); // Pink
+        defaultColors[3] = new Color(0.8f, 0.8f, 0.8f); // Light Gray
+
+        // Apply colors to buttons
+        for (int i = 0; i < answerButtons.Length; i++)
+        {
+            Image buttonImage = answerButtons[i].GetComponent<Image>();
+            buttonImage.color = defaultColors[i];
+        }
     }
 
     private void SetupButtonListeners()
@@ -32,10 +50,11 @@ public class AnswerButtons : MonoBehaviour
         DisableAllButtons();
         bool isCorrect = QuizManager.Instance.CheckAnswer(answerIndex);
 
+        Image buttonImage = answerButtons[answerIndex].GetComponent<Image>(); // Get the button image
+
         if (isCorrect)
         {
-            answerBackGreen[answerIndex].SetActive(true);
-            answerBackBlue[answerIndex].SetActive(false);
+            buttonImage.color = correctColor;
             if (CorrectFX != null)
             {
                 CorrectFX.Play();
@@ -43,8 +62,7 @@ public class AnswerButtons : MonoBehaviour
         }
         else
         {
-            answerBackRed[answerIndex].SetActive(true);
-            answerBackBlue[answerIndex].SetActive(false);
+            buttonImage.color = wrongColor;
             if (WrongFX != null)
             {
                 WrongFX.Play();
@@ -70,42 +88,29 @@ public class AnswerButtons : MonoBehaviour
 
     public void EnableButtons()
     {
-        foreach (GameObject button in answerButtons)
+        for (int i = 0; i < answerButtons.Length; i++)
         {
-            button.GetComponent<Button>().enabled = true;
-        }
-
-        foreach (GameObject button in answerBackBlue)
-        {
-            button.SetActive(true);
-        }
-
-        foreach (GameObject button in answerBackGreen)
-        {
-            button.SetActive(false);
-        }
-
-        foreach (GameObject button in answerBackRed)
-        {
-            button.SetActive(false);
+            answerButtons[i].GetComponent<Button>().enabled = true;
+            answerButtons[i].GetComponent<Image>().color = defaultColors[i]; // Reset button color
         }
     }
+
     public void SelectAnswer(int answerIndex)
     {
         if (!QuizManager.Instance.IsQuizActive()) return;
 
         bool isCorrect = QuizManager.Instance.CheckAnswer(answerIndex);
+        Image buttonImage = answerButtons[answerIndex].GetComponent<Image>(); // Get the button image
+
 
         if (isCorrect)
         {
-            answerBackGreen[answerIndex].SetActive(true);
-            answerBackBlue[answerIndex].SetActive(false);
+            buttonImage.color = correctColor;
             CorrectFX.Play();
         }
         else
         {
-            answerBackRed[answerIndex].SetActive(true);
-            answerBackBlue[answerIndex].SetActive(false);
+            buttonImage.color = wrongColor;
             WrongFX.Play();
         }
 
@@ -125,24 +130,10 @@ public class AnswerButtons : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
 
-        foreach (GameObject button in answerBackBlue)
+        for (int i = 0; i < answerButtons.Length; i++)
         {
-            button.SetActive(true);
-        }
-
-        foreach (GameObject button in answerBackGreen)
-        {
-            button.SetActive(false);
-        }
-
-        foreach (GameObject button in answerBackRed)
-        {
-            button.SetActive(false);
-        }
-
-        foreach (GameObject button in answerButtons)
-        {
-            button.GetComponent<Button>().enabled = true;
+            answerButtons[i].GetComponent<Image>().color = defaultColors[i]; // Reset to default color
+            answerButtons[i].GetComponent<Button>().enabled = true;
         }
 
         QuizManager.Instance.DisplayNextQuestion();
