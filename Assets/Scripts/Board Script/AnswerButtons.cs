@@ -8,29 +8,26 @@ public class AnswerButtons : MonoBehaviour
     [SerializeField] private GameObject[] answerButtons;
     [SerializeField] private AudioSource CorrectFX, WrongFX;
 
-    private Color[] defaultColors = new Color[4]; // Store unique default colors
-    private Color correctColor = Color.green;  // Color for correct answer
-    private Color wrongColor = Color.red; 
+    private GameObject[] correctIndicators = new GameObject[4];  // Store "tick" objects
+    private GameObject[] wrongIndicators = new GameObject[4];    // Store "wrong" objects
 
     private void Start()
     {
-        AssignDefaultColors();
+        AssignIndicators();
         SetupButtonListeners();
     }
 
-    private void AssignDefaultColors()
+    private void AssignIndicators()
     {
-        // Define unique colors that are different from green and red
-        defaultColors[0] = new Color(0.6f, 0.8f, 1f); // Light Blue
-        defaultColors[1] = new Color(1f, 0.8f, 0.2f); // Yellow-Orange
-        defaultColors[2] = new Color(1f, 0.6f, 0.8f); // Pink
-        defaultColors[3] = new Color(0.8f, 0.8f, 0.8f); // Light Gray
-
-        // Apply colors to buttons
+        // Assign the "tick" and "wrong" indicators within each button
         for (int i = 0; i < answerButtons.Length; i++)
         {
-            Image buttonImage = answerButtons[i].GetComponent<Image>();
-            buttonImage.color = defaultColors[i];
+            correctIndicators[i] = answerButtons[i].transform.Find("tick").gameObject;   // Assuming "Tick" is the name of the GameObject
+            wrongIndicators[i] = answerButtons[i].transform.Find("wrong").gameObject;   // Assuming "Wrong" is the name of the GameObject
+
+            // Initially deactivate both indicators
+            correctIndicators[i].SetActive(false);
+            wrongIndicators[i].SetActive(false);
         }
     }
 
@@ -50,11 +47,10 @@ public class AnswerButtons : MonoBehaviour
         DisableAllButtons();
         bool isCorrect = QuizManager.Instance.CheckAnswer(answerIndex);
 
-        Image buttonImage = answerButtons[answerIndex].GetComponent<Image>(); // Get the button image
-
+        // Activate the appropriate indicator (Tick or Wrong)
         if (isCorrect)
         {
-            buttonImage.color = correctColor;
+            correctIndicators[answerIndex].SetActive(true);  // Activate tick
             if (CorrectFX != null)
             {
                 CorrectFX.Play();
@@ -62,7 +58,7 @@ public class AnswerButtons : MonoBehaviour
         }
         else
         {
-            buttonImage.color = wrongColor;
+            wrongIndicators[answerIndex].SetActive(true);    // Activate wrong
             if (WrongFX != null)
             {
                 WrongFX.Play();
@@ -71,7 +67,6 @@ public class AnswerButtons : MonoBehaviour
 
         StartCoroutine(NextQuestion());
     }
-    
 
     private void Awake()
     {
@@ -91,7 +86,8 @@ public class AnswerButtons : MonoBehaviour
         for (int i = 0; i < answerButtons.Length; i++)
         {
             answerButtons[i].GetComponent<Button>().enabled = true;
-            answerButtons[i].GetComponent<Image>().color = defaultColors[i]; // Reset button color
+            correctIndicators[i].SetActive(false); // Reset tick indicator
+            wrongIndicators[i].SetActive(false);   // Reset wrong indicator
         }
     }
 
@@ -100,17 +96,16 @@ public class AnswerButtons : MonoBehaviour
         if (!QuizManager.Instance.IsQuizActive()) return;
 
         bool isCorrect = QuizManager.Instance.CheckAnswer(answerIndex);
-        Image buttonImage = answerButtons[answerIndex].GetComponent<Image>(); // Get the button image
 
-
+        // Activate the appropriate indicator (Tick or Wrong)
         if (isCorrect)
         {
-            buttonImage.color = correctColor;
+            correctIndicators[answerIndex].SetActive(true);  // Activate tick
             CorrectFX.Play();
         }
         else
         {
-            buttonImage.color = wrongColor;
+            wrongIndicators[answerIndex].SetActive(true);    // Activate wrong
             WrongFX.Play();
         }
 
@@ -130,9 +125,11 @@ public class AnswerButtons : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
 
+        // Reset all indicators before the next question
         for (int i = 0; i < answerButtons.Length; i++)
         {
-            answerButtons[i].GetComponent<Image>().color = defaultColors[i]; // Reset to default color
+            correctIndicators[i].SetActive(false); // Deactivate tick
+            wrongIndicators[i].SetActive(false);   // Deactivate wrong
             answerButtons[i].GetComponent<Button>().enabled = true;
         }
 
