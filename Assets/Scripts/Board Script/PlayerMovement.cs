@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviourPun
     private bool canFightPlayers;
     private bool canHealPlayers;
     private bool haveBoss;
-    private Direction? networkSelectedDirection = null;
 
     void Start()
     {
@@ -31,14 +30,12 @@ public class PlayerMovement : MonoBehaviourPun
         get { return currentTile; }
         set { currentTile = value; }
     }
-    
     [PunRPC]
     public void RPCSyncRemainingSteps(int steps)
     {
         remainingSteps = steps;
         Debug.Log($"[RPC] Updated remainingSteps to: {remainingSteps}");
     }
-    
     public void MovePlayer(int diceroll)
     {
         if (isMoving || currentTile == null)
@@ -213,52 +210,39 @@ public class PlayerMovement : MonoBehaviourPun
         {
             Debug.Log("At a crossroad! Waiting for player to choose a direction...");
             List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
+            Direction? selectedDirection = null;
             
-            // Only the local player makes a choice
+            yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
+                selectedDirection = direction;
+            }));
+
+            while (!selectedDirection.HasValue)
+            {
+                yield return null;
+            }
+
+            // Sync the direction choice with all players using Photon RPC
             if (photonView.IsMine)
             {
-                Direction? selectedDirection = null;
-                
-                yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
-                    selectedDirection = direction;
-                }));
-
-                while (!selectedDirection.HasValue)
-                {
-                    yield return null;
-                }
-
-                // Sync the direction choice with all players using Photon RPC
                 photonView.RPC("RPCSyncDirectionChoice", RpcTarget.AllBuffered, (int)selectedDirection.Value);
-                networkSelectedDirection = selectedDirection.Value;
-            }
-            else
-            {
-                // Non-local players wait for the direction to be set by RPC
-                while (networkSelectedDirection == null)
-                {
-                    yield return null;
-                }
+                
             }
 
-            // All clients move based on the selected direction
-            Direction directionToUse = networkSelectedDirection.Value;
-            networkSelectedDirection = null; // Reset for next time
-            
-            yield return StartCoroutine(MoveToNextTileCoroutine(directionToUse));
+            // Wait a frame to ensure RPC is sent
+            yield return null;
+
+            // Move after the RPC has been processed
+            yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
+
             TileManager.Instance.ClearHighlightedTiles();
         }
         else
         {
             Direction nextDirection = availableDirections[0];
-            // For single direction paths, still sync the choice
-            if (photonView.IsMine)
-            {
-                photonView.RPC("RPCSyncDirectionChoice", RpcTarget.AllBuffered, (int)nextDirection);
-            }
             yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
         }
     }
+
 
     private IEnumerator MoveStepByStep()
     {
@@ -268,6 +252,7 @@ public class PlayerMovement : MonoBehaviourPun
 
         while (remainingSteps >= 0)
         {
+
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
             Debug.Log($"remaining steps:{remainingSteps}");
             // display every step remain on player
@@ -293,6 +278,7 @@ public class PlayerMovement : MonoBehaviourPun
                 {
                     yield return StartCoroutine(HandleBossEncounter());
                 }
+
             }
             
             //Finishes handling all movement actions on final tile
@@ -311,10 +297,7 @@ public class PlayerMovement : MonoBehaviourPun
             yield return StartCoroutine(HandlePaths(availableDirections));
 
             remainingSteps--;
-            if (photonView.IsMine)
-            {
-                photonView.RPC("RPCSyncRemainingSteps", RpcTarget.OthersBuffered, remainingSteps);
-            }
+            photonView.RPC("RPCSyncRemainingSteps", RpcTarget.OthersBuffered, remainingSteps);
             yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             yield return new WaitForSeconds(0.05f);
 
@@ -326,8 +309,8 @@ public class PlayerMovement : MonoBehaviourPun
 
         isMoving = false;
         initialMove = true;
-        
-        OnMovementComplete?.Invoke();      
+
+            OnMovementComplete?.Invoke();      
     }
 
     [PunRPC]
@@ -335,52 +318,25 @@ public class PlayerMovement : MonoBehaviourPun
     {
         Direction selectedDirection = (Direction)directionIndex;
         Debug.Log($"[RPC] Direction chosen via RPC: {selectedDirection}");
-        
-        // Set the network direction variable
-        networkSelectedDirection = selectedDirection;
-        
-        // We don't call MoveToNextTileCoroutine directly here anymore
-        // Movement happens in the HandlePaths coroutine based on this value
+        Debug.Log($"remainingSteps: {remainingSteps}");
+        if( remainingSteps > 0)
+        {
+            StartCoroutine(MoveToNextTileCoroutine(selectedDirection));
+        }
     }
-    
     [PunRPC]
     private void RPCSyncCurrentTile(int tileIndex)
     {
         if (tileIndex >= 0 && tileIndex < TileManager.Instance.allTiles.Count)
         {
-            Tile newTile = TileManager.Instance.allTiles[tileIndex];
-            
-            // Add the current player to the new tile and remove from old tile
-            if (currentTile != null)
-            {
-                currentTile.RemovePlayer(photonView.Owner.ActorNumber);
-            }
-            
-            newTile.AddPlayer(photonView.Owner.ActorNumber);
-            currentTile = newTile;
-            
+            currentTile = TileManager.Instance.allTiles[tileIndex];
             Debug.Log($"[RPC] Synchronized currentTile for player {photonView.Owner.NickName}: {currentTile.name}");
-            
-            // If this is a remote player, animate the movement directly
-            if (!photonView.IsMine)
-            {
-                MovementAnimation movementAnimation = GetComponent<MovementAnimation>();
-                if (movementAnimation != null)
-                {
-                    StartCoroutine(movementAnimation.HopTo(newTile.transform.position));
-                }
-                else
-                {
-                    Debug.LogError("MovementAnimation component missing on remote player!");
-                }
-            }
         }
         else
         {
             Debug.LogError("[RPC] Invalid tile index received!");
         }
     }
-    
     private IEnumerator MoveToNextTileCoroutine(Direction direction)
     {
         if (currentTile == null)
@@ -406,16 +362,16 @@ public class PlayerMovement : MonoBehaviourPun
         nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
         currentTile = nextTile;
 
-        // Only the local player sends the tile sync RPC
+        
         if (photonView.IsMine)
         {
-            // Use owner.ActorNumber to ensure we're syncing with the correct player ID in Photon
             int tileIndex = TileManager.Instance.allTiles.IndexOf(currentTile);
-            photonView.RPC("RPCSyncCurrentTile", RpcTarget.OthersBuffered, tileIndex);
+            photonView.RPC("RPCSyncCurrentTile", RpcTarget.AllBuffered, tileIndex);
         }
 
-        // Local movement animation
-        MovementAnimation movementAnimation = GetComponent<MovementAnimation>();
+        // Ensure movement is animated
+        MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
+
         if (movementAnimation == null)
         {
             Debug.LogError("MoveToNextTileCoroutine: MovementAnimation component is missing!");
@@ -424,14 +380,5 @@ public class PlayerMovement : MonoBehaviourPun
 
         yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
     }
-    
-    // This method should be called at the start of the game to initialize player positions
-    public void SyncInitialPosition()
-    {
-        if (photonView.IsMine && currentTile != null)
-        {
-            int tileIndex = TileManager.Instance.allTiles.IndexOf(currentTile);
-            photonView.RPC("RPCSyncCurrentTile", RpcTarget.OthersBuffered, tileIndex);
-        }
-    }
+
 }
