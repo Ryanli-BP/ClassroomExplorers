@@ -92,8 +92,17 @@ public class BossMovement : MonoBehaviour
                 break;
             }
 
-            Direction nextDirection = availableDirections[UnityEngine.Random.Range(0, availableDirections.Count)];
-            yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
+            // New path handling logic
+            if (availableDirections.Count > 1)
+            {
+                Direction nextDirection = TileManager.Instance.GetDirectionTowardsPlayers(currentTile, availableDirections);
+                yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
+            }
+            else
+            {
+                Direction nextDirection = availableDirections[0];
+                yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
+            }
 
             remainingSteps--;
             yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));

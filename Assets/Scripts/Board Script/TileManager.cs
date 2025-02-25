@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [DefaultExecutionOrder(-20)]
 public class TileManager : MonoBehaviour
@@ -192,6 +193,60 @@ public class TileManager : MonoBehaviour
         }
 
         OnTileActionComplete = true;
+    }
+
+    public Direction GetDirectionTowardsPlayers(Tile startTile, List<Direction> availableDirections)
+    {
+        Dictionary<Tile, Direction> initialDirections = new Dictionary<Tile, Direction>();
+        Queue<Tile> queue = new Queue<Tile>();
+        HashSet<Tile> visited = new HashSet<Tile>();
+        
+        // Initialize with all available first moves
+        foreach (Direction dir in availableDirections)
+        {
+            Tile nextTile = startTile.GetConnectedTile(dir);
+            if (nextTile != null)
+            {
+                queue.Enqueue(nextTile);
+                initialDirections[nextTile] = dir;
+            }
+        }
+
+        while (queue.Count > 0)
+        {
+            Tile currentTile = queue.Dequeue();
+            
+            if (visited.Contains(currentTile))
+                continue;
+
+            visited.Add(currentTile);
+
+            // Found players on this tile - since this is BFS, this is guaranteed to be shortest path
+            if (currentTile.TilePlayerIDs.Count > 0)
+            {
+                Direction foundDirection = initialDirections[currentTile];
+                return foundDirection;
+            }
+
+            // Explore neighbors
+            foreach (Direction dir in currentTile.GetAllAvailableDirections())
+            {
+                Tile nextTile = currentTile.GetConnectedTile(dir);
+                if (nextTile != null && !visited.Contains(nextTile))
+                {
+                    queue.Enqueue(nextTile);
+                    if (!initialDirections.ContainsKey(nextTile))
+                    {
+                        initialDirections[nextTile] = initialDirections[currentTile];
+                    }
+                }
+            }
+        }
+
+        // If no path to players found, return random direction
+        Direction random = availableDirections[UnityEngine.Random.Range(0, availableDirections.Count)];
+        Debug.Log($"No path to players found. Choosing random direction: {random}");
+        return random;
     }
 
     public List<Tile> HighlightPossibleTiles(Tile startTile, int steps)
