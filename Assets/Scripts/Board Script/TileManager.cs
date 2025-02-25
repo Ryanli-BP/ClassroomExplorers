@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [DefaultExecutionOrder(-20)]
 public class TileManager : MonoBehaviour
@@ -210,6 +211,59 @@ public class TileManager : MonoBehaviour
         }
 
         OnTileActionComplete = true;
+    }
+
+    public Direction GetDirectionTowardsPlayers(Tile startTile, List<Direction> availableDirections)
+    {
+        Dictionary<Direction, int> pathLengths = new Dictionary<Direction, int>();
+        HashSet<Tile> visited = new HashSet<Tile>();
+
+        // Check each initial direction
+        foreach (Direction dir in availableDirections)
+        {
+            Tile nextTile = startTile.GetConnectedTile(dir);
+            if (nextTile != null)
+            {
+                int shortestPath = FindShortestPathToPlayer(nextTile, visited);
+                if (shortestPath != int.MaxValue)
+                {
+                    pathLengths[dir] = shortestPath;
+                }
+            }
+        }
+
+        if (pathLengths.Count > 0)
+        {
+            var playerDirections = pathLengths.Select(x => x.Key).ToList();
+
+            return playerDirections[UnityEngine.Random.Range(0, playerDirections.Count)];
+        }
+
+        // If no path to players found, move randomly
+        return availableDirections[UnityEngine.Random.Range(0, availableDirections.Count)];
+    }
+
+    private int FindShortestPathToPlayer(Tile startTile, HashSet<Tile> visited, int depth = 0)
+    {
+        if (startTile == null || visited.Contains(startTile))
+            return int.MaxValue;
+
+        // Found a player
+        if (startTile.TilePlayerIDs.Count > 0)
+            return depth;
+
+        visited.Add(startTile);
+        int shortestPath = int.MaxValue;
+
+        foreach (Direction dir in startTile.GetAllAvailableDirections())
+        {
+            Tile nextTile = startTile.GetConnectedTile(dir);
+            int pathLength = FindShortestPathToPlayer(nextTile, visited, depth + 1);
+            shortestPath = Math.Min(shortestPath, pathLength);
+        }
+
+        visited.Remove(startTile);
+        return shortestPath;
     }
 
     public List<Tile> HighlightPossibleTiles(Tile startTile, int steps)

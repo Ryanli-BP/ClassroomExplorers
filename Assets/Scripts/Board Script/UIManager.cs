@@ -121,6 +121,8 @@ public class UIManager : MonoBehaviour
         {
             StartCoroutine(player.InitializePlayerUI());
         }
+
+        UpdateBossHealth(Boss.MAX_HEALTH);
     }
 
     private void SetupButtonListeners()
@@ -239,7 +241,6 @@ public class UIManager : MonoBehaviour
     }
     public IEnumerator DisplayRemainingDiceSteps(int diceResult)
     {
-        Debug.Log($"NUMBER IS {diceResult}");
         centreDisplayPanel.SetActive(true);
         centreDisplayText.text = $"{diceResult}";
         yield return new WaitForSeconds(0.05f);
@@ -417,7 +418,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateBossHealth( int health)
+    public void UpdateBossHealth(int health)
     {
         var healthAnimation = BossHealthBarPanel.transform.Find("healthBar").GetComponent<HealthAnimation>();
         if (healthAnimation != null)

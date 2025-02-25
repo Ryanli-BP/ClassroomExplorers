@@ -17,7 +17,6 @@ public class Boss : Entity
     {
         Health = MAX_HEALTH;
         Status = Status.Alive;
-        UIManager.Instance.UpdateBossHealth(Health);
 
         /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
         Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test*/
