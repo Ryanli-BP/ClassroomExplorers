@@ -125,7 +125,7 @@ public class DiceManager : MonoBehaviour
     public void HandleDiceResult(int diceResult)
     {
         totalDiceResult += diceResult;
-        totalDiceResult = testDiceResult; // For testing purposes
+        //totalDiceResult = testDiceResult; // For testing purposes
     }
 
     public int GetTotalDiceResult()
