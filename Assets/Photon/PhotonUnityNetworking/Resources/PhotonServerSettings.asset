@@ -58,6 +58,7 @@ MonoBehaviour:
   - RPCSyncDirectionChoice
   - RPCSyncCurrentTile
   - RPCSyncRemainingSteps
+  - RPC_SyncMove
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
