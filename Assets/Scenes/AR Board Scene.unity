@@ -3134,6 +3134,48 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &437408985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 437408986}
+  m_Layer: 5
+  m_Name: content
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &437408986
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437408985}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1292628551}
+  - {fileID: 854297273}
+  - {fileID: 1175609811}
+  - {fileID: 2085643507}
+  - {fileID: 1676838067}
+  - {fileID: 613862389}
+  - {fileID: 1225347694}
+  m_Father: {fileID: 1906703914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &444432714
 GameObject:
   m_ObjectHideFlags: 0
@@ -5687,7 +5729,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1906703914}
+  m_Father: {fileID: 437408986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8109,7 +8151,7 @@ RectTransform:
   - {fileID: 790703416}
   - {fileID: 444432715}
   - {fileID: 1926505253}
-  m_Father: {fileID: 1906703914}
+  m_Father: {fileID: 437408986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11464,6 +11506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QuizUI: {fileID: 1906703913}
+  quizContent: {fileID: 437408985}
   slideSpeed: 1
   csvFile: {fileID: 4900000, guid: 0c015fce2000088458193c18efcc972d, type: 3}
   timeRushQuestionCount: 5
@@ -11615,7 +11658,7 @@ RectTransform:
   - {fileID: 1204369375}
   - {fileID: 965546118}
   - {fileID: 820784368}
-  m_Father: {fileID: 1906703914}
+  m_Father: {fileID: 437408986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12341,7 +12384,7 @@ RectTransform:
   m_Children:
   - {fileID: 1138194872}
   - {fileID: 1839881013}
-  m_Father: {fileID: 1906703914}
+  m_Father: {fileID: 437408986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12705,7 +12748,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1906703914}
+  m_Father: {fileID: 437408986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -15812,7 +15855,7 @@ RectTransform:
   - {fileID: 259024149}
   - {fileID: 1119451686}
   - {fileID: 1894694279}
-  m_Father: {fileID: 1906703914}
+  m_Father: {fileID: 437408986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -18497,13 +18540,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1292628551}
-  - {fileID: 854297273}
-  - {fileID: 1175609811}
-  - {fileID: 2085643507}
-  - {fileID: 1676838067}
-  - {fileID: 613862389}
-  - {fileID: 1225347694}
+  - {fileID: 437408986}
   m_Father: {fileID: 989211283}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -19277,7 +19314,7 @@ RectTransform:
   - {fileID: 1140192336}
   - {fileID: 904635738}
   - {fileID: 2007471799}
-  m_Father: {fileID: 1906703914}
+  m_Father: {fileID: 437408986}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
