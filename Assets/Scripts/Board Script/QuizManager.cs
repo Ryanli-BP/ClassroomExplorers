@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 public class QuizManager : MonoBehaviour
 {
     [SerializeField] private GameObject QuizUI;
+    [SerializeField] private GameObject quizContent;
     [SerializeField] private float slideSpeed = 1f;
     public TextAsset csvFile;
     private List<Question> questions = new List<Question>();
@@ -132,6 +133,7 @@ public class QuizManager : MonoBehaviour
         UIManager.Instance.SetBoardUIActive(false);
 
         yield return new WaitForSeconds(0.2f);
+        quizContent.SetActive(false);
         QuizUI.SetActive(true);
 
         LeanTween.moveLocalY(QuizUI, -540f, slideSpeed)
@@ -140,6 +142,7 @@ public class QuizManager : MonoBehaviour
         yield return new WaitForSeconds(slideSpeed);
         isQuizActive = true;
         isTransitioning = false;
+        quizContent.SetActive(true);
     }
 
     private void StartQuizLogic()
@@ -218,6 +221,8 @@ public class QuizManager : MonoBehaviour
         
         LeanTween.moveLocalY(QuizUI, -1080f, slideSpeed)
             .setEase(LeanTweenType.easeInBack);
+        
+        quizContent.SetActive(false);
             
         yield return new WaitForSeconds(slideSpeed);
         QuizUI.SetActive(false);
