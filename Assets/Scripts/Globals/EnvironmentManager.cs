@@ -10,8 +10,9 @@ public class EnvironmentManager : MonoBehaviour
     [SerializeField] private Material boardPlaneMaterial;
     [SerializeField] private GameObject quizUIObject;
     
-    [SerializeField] private string boardPlaneMaterialUrl = "http://127.0.0.1:8000/api/v1.0.0/assets/material-texture/";
-    [SerializeField] private string QuizUIImageUrl = "http://127.0.0.1:8000/api/v1.0.0/assets/ui-image/";
+	// The both URLs will directly return the image file
+    [SerializeField] private string boardPlaneMaterialUrl = "http://127.0.0.1:8000/api/v1.0.0/config/get-background-image/";
+    [SerializeField] private string QuizUIImageUrl = "http://127.0.0.1:8000/api/v1.0.0/config/get-quiz-background-image/";
     private Image quizUIImage;
     private bool textureDownloadComplete = false;
     private Sprite downloadedSprite;
@@ -61,27 +62,13 @@ public class EnvironmentManager : MonoBehaviour
         bool materialDownloadComplete = false;
         bool uiImageDownloadComplete = false;
 
-        // Download material texture URL
-        NetworkManager.Instance.GetRequest(boardPlaneMaterialUrl,
-            (textureUrl) => {
-                StartCoroutine(ProcessTextureResponse(textureUrl, true));
-                materialDownloadComplete = true;
-            },
-            (error) => {
-                Debug.LogWarning($"Failed to get material texture URL: {error}");
-                materialDownloadComplete = true;
-            });
+        // Download material texture
+        StartCoroutine(ProcessTextureResponse(boardPlaneMaterialUrl, true));
+        materialDownloadComplete = true;
 
-        // Download UI image URL
-        NetworkManager.Instance.GetRequest(QuizUIImageUrl,
-            (imageUrl) => {
-                StartCoroutine(ProcessTextureResponse(imageUrl, false));
-                uiImageDownloadComplete = true;
-            },
-            (error) => {
-                Debug.LogWarning($"Failed to get UI image URL: {error}");
-                uiImageDownloadComplete = true;
-            });
+        // Download UI image
+        StartCoroutine(ProcessTextureResponse(QuizUIImageUrl, false));
+        uiImageDownloadComplete = true;
 
         // Wait for both downloads to complete
         while (!materialDownloadComplete || !uiImageDownloadComplete)

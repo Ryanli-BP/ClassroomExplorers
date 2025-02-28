@@ -13286,8 +13286,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardPlaneMaterial: {fileID: 2100000, guid: c7e4c3e66142e474282114ebdd453eba, type: 2}
   quizUIObject: {fileID: 1906703913}
-  boardPlaneMaterialUrl: http://127.0.0.1:8000/api/v1.0.0/assets/material-texture/
-  QuizUIImageUrl: http://127.0.0.1:8000/api/v1.0.0/assets/ui-image/
+  boardPlaneMaterialUrl: http://127.0.0.1:8000/api/v1.0.0/config/get-background-image/
+  QuizUIImageUrl: http://127.0.0.1:8000/api/v1.0.0/config/get-quiz-background-image/
 --- !u!1 &1384491684
 GameObject:
   m_ObjectHideFlags: 0
