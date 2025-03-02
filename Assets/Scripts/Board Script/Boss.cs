@@ -3,19 +3,26 @@ using UnityEngine;
 public class Boss : Entity
 {
     public BossMovement Movement { get; private set; }
-    public const int MAX_HEALTH = 100;
+    public int MAX_HEALTH { get; private set; } = 100;
     [SerializeField] private BossBuffs bossBuffs = new BossBuffs();
     public BossBuffs BossBuffs => bossBuffs;
     public const float AboveTileOffset = 0.5f; // Offset to place boss above the tile
 
+    public static Boss Instance;
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         Movement = GetComponent<BossMovement>();        
     }
 
     private void Start()
     {
+        MAX_HEALTH = 20 * GameConfigManager.Instance.numOfPlayers - 20;
         Health = MAX_HEALTH;
         Status = Status.Alive;
 

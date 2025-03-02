@@ -34,12 +34,25 @@ public class Player : Entity
             TrophyCount = 0;
             Health = MAX_HEALTH;
             Status = Status.Alive;
+            transform.Find("Cone").gameObject.SetActive(false);
 
             /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
             Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
             Buffs.AddBuff(BuffType.EvadeUp, 3, 2); //for test
             Buffs.AddBuff(BuffType.DoublePoints, 2, 2); //for test
             Buffs.AddBuff(BuffType.ExtraDice, 1, 2); //for test*/
+        }
+    }
+
+    void Update()
+    {
+        if(RoundManager.Instance.Turn == playerID && Status == Status.Alive)
+        {
+            transform.Find("Cone").gameObject.SetActive(true);
+        }
+        else
+        {
+            transform.Find("Cone").gameObject.SetActive(false);
         }
     }
 
@@ -126,10 +139,11 @@ public class Player : Entity
         BuffType[] possibleBuffs = { BuffType.AttackUp, BuffType.DefenseUp, BuffType.EvadeUp };
         BuffType randomBuff = possibleBuffs[UnityEngine.Random.Range(0, possibleBuffs.Length)];
         AddBuff(randomBuff, 2, 100); // Value of 2, duration of 100 for "permanent" effect
+        AddBuff(randomBuff, 2, 100);
         Debug.Log($"Player {playerID} gained permanent {randomBuff} buff");
 
         //Gain 1 HP
-        MAX_HEALTH++;
+        MAX_HEALTH+= 2;
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 

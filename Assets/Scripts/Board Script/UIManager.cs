@@ -120,7 +120,7 @@ public class UIManager : MonoBehaviour
             StartCoroutine(player.InitializePlayerUI());
         }
 
-        UpdateBossHealth(Boss.MAX_HEALTH);
+        UpdateBossHealth(Boss.Instance.MAX_HEALTH);
     }
 
     private void SetupButtonListeners()
@@ -418,7 +418,7 @@ public class UIManager : MonoBehaviour
         var healthAnimation = BossHealthBarPanel.transform.Find("healthBar").GetComponent<HealthAnimation>();
         if (healthAnimation != null)
         {
-            healthAnimation.AnimateHealth(health, Boss.MAX_HEALTH);
+            healthAnimation.AnimateHealth(health, Boss.Instance.MAX_HEALTH);
         }
         else
         {
