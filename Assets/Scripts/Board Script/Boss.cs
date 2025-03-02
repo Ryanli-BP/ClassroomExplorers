@@ -6,6 +6,7 @@ public class Boss : Entity
     public const int MAX_HEALTH = 100;
     [SerializeField] private BossBuffs bossBuffs = new BossBuffs();
     public BossBuffs BossBuffs => bossBuffs;
+    public const float AboveTileOffset = 0.5f; // Offset to place boss above the tile
 
 
     private void Awake()
@@ -50,7 +51,7 @@ public class Boss : Entity
     public override void TeleportTo(Vector3 position, Tile destinationTile)
     {
         // Adjust Y position for proper height above tile
-        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.7f * ARBoardPlacement.worldScale, position.z);
+        Vector3 teleportPosition = new Vector3(position.x, position.y + (AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale), position.z);
         
         // Update player position
         transform.position = teleportPosition;
