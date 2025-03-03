@@ -141,6 +141,7 @@ public class TileManager : MonoBehaviour
                     currentPlayer.TeleportTo(destinationTile.transform.position, destinationTile);
                     tile.TilePlayerIDs.Remove(currentPlayerID);
                     destinationTile.TilePlayerIDs.Add(currentPlayerID);
+                    yield return new WaitForSeconds(0.5f);
                     //UIManager.Instance.DisplayTeleportEffect();
                 }
                 break;

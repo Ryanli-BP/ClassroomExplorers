@@ -158,7 +158,7 @@ public class GameConfigManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.LogError($"Error fetching config data: {request.error}");
+            Debug.LogWarning($"Error fetching config data: {request.error}");
         }
         else
         {
