@@ -41,11 +41,11 @@ public class DiceManager : MonoBehaviour
     {
         if (newState == GameState.PlayerCombat)
         {
-            transform.position = ArenaManager.Instance.GetCombatDicePosition();
+            transform.position = CameraManager.Instance.GetCombatDicePosition();
         }
         else
         {
-            transform.position = ArenaManager.Instance.GetboardDicePosition();
+            transform.position = CameraManager.Instance.GetboardDicePosition();
         }
     }
 

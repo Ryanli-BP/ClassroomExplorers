@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
 
             case GameState.PlayerTurnStart:
                 StartPlayerTurn();
+                if (PlatformUtils.IsRunningOnPC())
+                {
+                    CameraManager.Instance.SetFollowTarget(PlayerManager.Instance.GetCurrentPlayer().transform);
+                }
                 break;
 
             case GameState.RollingMovementDice:
@@ -95,6 +99,10 @@ public class GameManager : MonoBehaviour
 
             case GameState.BossTurn:
                 StartBossTurn();
+                if (PlatformUtils.IsRunningOnPC() && BossManager.Instance.activeBoss != null)
+                {
+                    CameraManager.Instance.SetFollowTarget(BossManager.Instance.activeBoss.transform);
+                }
                 break;
             
             case GameState.BossTurnEnd:

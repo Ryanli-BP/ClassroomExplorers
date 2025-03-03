@@ -1919,11 +1919,11 @@ Transform:
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 506708482817539061}
   - {fileID: 8251884304394579048}
   - {fileID: 4599532758277273373}
   - {fileID: 4748448259130448834}
   - {fileID: 5646948031097711208}
+  - {fileID: 506708482817539061}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &9052571222532477395
@@ -1973,7 +1973,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 1
   MAX_HEALTH: 6
-  conePrefab: {fileID: 2632000952223470373, guid: 63377b9b34c61294b8d528781437e1d3, type: 3}
 --- !u!114 &8052282319079620484
 MonoBehaviour:
   m_ObjectHideFlags: 0

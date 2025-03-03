@@ -39,9 +39,9 @@ public class CombatManager : MonoBehaviour
 
     private void TeleportToFightingArea(Entity FirstTA, Entity SecondTA)
     {
-        arCamera.transform.position = ArenaManager.Instance.GetCombatCameraPosition();
-        FirstTA.transform.position = ArenaManager.Instance.GetCombatPlayerPosition();
-        SecondTA.transform.position = ArenaManager.Instance.GetCombatOpponentPosition();
+        arCamera.transform.position = CameraManager.Instance.GetCombatCameraPosition();
+        FirstTA.transform.position = CameraManager.Instance.GetCombatPlayerPosition();
+        SecondTA.transform.position = CameraManager.Instance.GetCombatOpponentPosition();
         
         FirstTA.transform.LookAt(SecondTA.transform);
         FirstTA.transform.Rotate(0, 180, 0);
@@ -55,7 +55,7 @@ public class CombatManager : MonoBehaviour
     {
         if (PlatformUtils.IsRunningOnPC())
         {
-            arCamera.transform.position = ArenaManager.Instance.GetBoardCameraPosition();
+            arCamera.transform.position = CameraManager.Instance.GetBoardCameraPosition();
         }
         else
         {
