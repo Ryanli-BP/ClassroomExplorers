@@ -20,6 +20,9 @@ public class CameraManager : MonoBehaviour
     private bool shouldFollowTarget = false;
     private float cameraHeight = 2.5f; // Height offset from target
     
+    // Dice positioning parameters
+    private float diceHeightMultiplier = 3f; // Height multiplier for dice above entity
+    
     // Zoom parameters
     private float minZoomDistance = 4.0f;
     private float maxZoomDistance = 20.0f;
@@ -74,11 +77,12 @@ public class CameraManager : MonoBehaviour
     {
         if (PlatformUtils.IsRunningOnPC() && !isInCombat)
         {
-            // Handle zoom with mouse wheel
+            // Handle zoom with mouse wheel and entity following
             if (shouldFollowTarget && currentFollowTarget != null)
             {
                 HandleZoom();
                 FollowCurrentEntity();
+                PositionDiceAboveEntity();
             }
         }
     }
@@ -126,9 +130,52 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    private void PositionDiceAboveEntity()
+    {
+        if (currentFollowTarget == null || isInCombat) return;
+        
+        // Calculate entity height based on its collider or renderer
+        float entityHeight = CalculateEntityHeight(currentFollowTarget.gameObject);
+        
+        // Position dice above the entity's head
+        Vector3 dicePosition = currentFollowTarget.position;
+        dicePosition.y += entityHeight * diceHeightMultiplier;
+        
+        // Update the board dice spot position
+        boardDiceSpot.position = dicePosition;
+    }
+    
+    private float CalculateEntityHeight(GameObject entity)
+    {
+        // Try to get height from collider
+        Collider collider = entity.GetComponent<Collider>();
+        if (collider != null)
+        {
+            return collider.bounds.size.y;
+        }
+        
+        // Try to get height from renderer
+        Renderer renderer = entity.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            return renderer.bounds.size.y;
+        }
+        
+        // If no collider or renderer found, use a default value
+        return 1.0f;
+    }
+
     public void SetFollowTarget(Transform target)
     {
         currentFollowTarget = target;
+    }
+
+    public void ForceUpdateDicePosition()
+    {
+        if (PlatformUtils.IsRunningOnPC() && !isInCombat && currentFollowTarget != null)
+        {
+            PositionDiceAboveEntity();
+        }
     }
 
     public Vector3 GetCombatPlayerPosition() => combatPlayerSpot.position;
