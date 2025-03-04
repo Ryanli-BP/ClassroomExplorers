@@ -30,6 +30,7 @@ public class QuizManager : MonoBehaviour
     private bool isQuizActive = false;
     private bool questionsLoaded = false;
     private bool isTransitioning = false;
+    private bool isRoundQuiz = false;
 
     private int correctAnswerCount = 0;
 
@@ -79,10 +80,10 @@ public class QuizManager : MonoBehaviour
         Debug.Log("Quiz questions preloaded successfully");
     }
 
-    public void StartNewQuiz()
+    public void StartNewQuiz(bool RoundQuiz)
     {
         if (isTransitioning || isQuizActive) return;
-        
+        isRoundQuiz = RoundQuiz;
         OnQuizComplete = false;
         UIManager.Instance.SetBoardUIActive(false);
         StartCoroutine(QuizSequence());
@@ -236,11 +237,25 @@ public class QuizManager : MonoBehaviour
 
     private void HandleQuizComplete()
     {
-        Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
-
         QuizReward rewardTier = EvaluateQuizPerformance();
         Debug.Log($"{rewardTier}");
-        RewardManager.Instance.GiveReward(rewardTier, currentPlayer);
+        
+        if (isRoundQuiz)
+        {
+            // Give rewards to all players
+            List<Player> allPlayers = PlayerManager.Instance.GetPlayerList();
+            foreach (Player player in allPlayers)
+            {
+                RewardManager.Instance.GiveReward(rewardTier, player);
+            }
+            Debug.Log($"Round Quiz: {rewardTier} given to all players");
+        }
+        else
+        {
+            // Give reward only to current player
+            Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
+            RewardManager.Instance.GiveReward(rewardTier, currentPlayer);
+        }
 
         correctAnswerCount = 0;
         OnQuizComplete = true;

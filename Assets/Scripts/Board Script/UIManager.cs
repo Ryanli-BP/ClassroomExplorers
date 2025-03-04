@@ -484,7 +484,7 @@ public class UIManager : MonoBehaviour
         NotificationTitle.text = $"{rewardTier} - {GetBuffTitle(buffType)}";
 
         ChangeNotificationColor(buffType);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         NotificationBar.SetActive(false);
     }
 

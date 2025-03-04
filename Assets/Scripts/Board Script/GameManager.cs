@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(RoundManager.Instance.GiveRoundPoints());
         RoundManager.Instance.ApplyRoundBuff();
 
-        QuizManager.Instance.StartNewQuiz();
+        QuizManager.Instance.StartNewQuiz(true);
 
         yield return new WaitUntil(() => QuizManager.Instance.OnQuizComplete);
 

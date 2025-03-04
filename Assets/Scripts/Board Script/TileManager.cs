@@ -121,7 +121,7 @@ public class TileManager : MonoBehaviour
             
             case TileType.Quiz:
                 Debug.Log("Quiz tile");
-                QuizManager.Instance.StartNewQuiz();
+                QuizManager.Instance.StartNewQuiz(false);
                 yield return new WaitUntil(() => QuizManager.Instance.OnQuizComplete);
                 break;
 

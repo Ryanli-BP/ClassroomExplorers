@@ -35,30 +35,30 @@ public class RewardManager : MonoBehaviour
         {
             [QuizReward.SmallReward] = new List<RewardOption>
             {
-                new RewardOption { BuffType = BuffType.AttackUp, Value = 1, Duration = 2, ChancePercent = 30, Description = "+1 Attack for 2 rounds" },
-                new RewardOption { BuffType = BuffType.DefenseUp, Value = 1, Duration = 2, ChancePercent = 30, Description = "+1 Defense for 2 rounds" },
-                new RewardOption { BuffType = BuffType.EvadeUp, Value = 1, Duration = 2, ChancePercent = 30, Description = "+1 Evade for 2 rounds" },
-                new RewardOption { BuffType = BuffType.DoublePoints, Value = 1, Duration = 2, ChancePercent = 10, Description = "Double Points for 3 rounds" }
+                new RewardOption { BuffType = BuffType.AttackUp, Value = 1, Duration = 3, ChancePercent = 30, Description = "+1 Attack for 3 rounds" },
+                new RewardOption { BuffType = BuffType.DefenseUp, Value = 1, Duration = 3, ChancePercent = 30, Description = "+1 Defense for 3 rounds" },
+                new RewardOption { BuffType = BuffType.EvadeUp, Value = 1, Duration = 3, ChancePercent = 30, Description = "+1 Evade for 3 rounds" },
+                new RewardOption { BuffType = BuffType.DoublePoints, Value = 1, Duration = 3, ChancePercent = 10, Description = "Double Points for 3 rounds" }
             },
             
             [QuizReward.MediumReward] = new List<RewardOption>
             {
-                new RewardOption { BuffType = BuffType.AttackUp, Value = 2, Duration = 2, ChancePercent = 25, Description = "+2 Attack for 2 rounds" },
-                new RewardOption { BuffType = BuffType.DefenseUp, Value = 2, Duration = 2, ChancePercent = 25, Description = "+2 Defense for 2 rounds" },
-                new RewardOption { BuffType = BuffType.EvadeUp, Value = 2, Duration = 2, ChancePercent = 25, Description = "+2 Evade for 2 rounds" },
-                new RewardOption { BuffType = BuffType.DoublePoints, Value = 1, Duration = 3, ChancePercent = 20, Description = "Double Points for 4 rounds" },
-                new RewardOption { BuffType = BuffType.ExtraDice, Value = 1, Duration = 2, ChancePercent = 5, Description = "+1 Extra Dice for 2 rounds" },
+                new RewardOption { BuffType = BuffType.AttackUp, Value = 2, Duration = 3, ChancePercent = 25, Description = "+2 Attack for 3 rounds" },
+                new RewardOption { BuffType = BuffType.DefenseUp, Value = 2, Duration = 3, ChancePercent = 25, Description = "+2 Defense for 3 rounds" },
+                new RewardOption { BuffType = BuffType.EvadeUp, Value = 2, Duration = 3, ChancePercent = 25, Description = "+2 Evade for 3 rounds" },
+                new RewardOption { BuffType = BuffType.DoublePoints, Value = 1, Duration = 4, ChancePercent = 20, Description = "Double Points for 4 rounds" },
+                new RewardOption { BuffType = BuffType.ExtraDice, Value = 1, Duration = 3, ChancePercent = 5, Description = "+1 Extra Dice for 3 rounds" },
             },
             
             [QuizReward.BigReward] = new List<RewardOption>
             {
-                new RewardOption { BuffType = BuffType.AttackUp, Value = 3, Duration = 3, ChancePercent = 19, Description = "+3 Attack for 3 rounds" },
-                new RewardOption { BuffType = BuffType.DefenseUp, Value = 3, Duration = 3, ChancePercent = 19, Description = "+3 Defense for 3 rounds" },
-                new RewardOption { BuffType = BuffType.EvadeUp, Value = 3, Duration = 3, ChancePercent = 19, Description = "+3 Evade for 3 rounds" },
-                new RewardOption { BuffType = BuffType.DoublePoints, Value = 1, Duration = 4, ChancePercent = 19, Description = "Double Points for 3 rounds" },
-                new RewardOption { BuffType = BuffType.TriplePoints, Value = 1, Duration = 4, ChancePercent = 13, Description = "Triple Points for 2 rounds" },
-                new RewardOption { BuffType = BuffType.ExtraDice, Value = 1, Duration = 2, ChancePercent = 10, Description = "+1 Extra Dice for 2 rounds" },
-                new RewardOption { BuffType = BuffType.ExtraDice, Value = 2, Duration = 2, ChancePercent = 1, Description = "+2 Extra Dice for 2 rounds" },
+                new RewardOption { BuffType = BuffType.AttackUp, Value = 3, Duration = 4, ChancePercent = 19, Description = "+3 Attack for 4 rounds" },
+                new RewardOption { BuffType = BuffType.DefenseUp, Value = 3, Duration = 4, ChancePercent = 19, Description = "+3 Defense for 4 rounds" },
+                new RewardOption { BuffType = BuffType.EvadeUp, Value = 3, Duration = 4, ChancePercent = 19, Description = "+3 Evade for 4 rounds" },
+                new RewardOption { BuffType = BuffType.DoublePoints, Value = 1, Duration = 5, ChancePercent = 19, Description = "Double Points for 5 rounds" },
+                new RewardOption { BuffType = BuffType.TriplePoints, Value = 1, Duration = 5, ChancePercent = 13, Description = "Triple Points for 5 rounds" },
+                new RewardOption { BuffType = BuffType.ExtraDice, Value = 1, Duration = 3, ChancePercent = 10, Description = "+1 Extra Dice for 3 rounds" },
+                new RewardOption { BuffType = BuffType.ExtraDice, Value = 2, Duration = 3, ChancePercent = 1, Description = "+2 Extra Dice for 3 rounds" },
 
             }
         };
