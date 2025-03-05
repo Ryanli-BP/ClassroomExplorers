@@ -533,20 +533,32 @@ public class UIManager : MonoBehaviour
         if (winnerTextTransform != null)
         {
             TextMeshProUGUI winnerText = winnerTextTransform.GetComponent<TextMeshProUGUI>();
-            if (winnerText != null)
-            {
-                if (winner != null)
+            //coop mode, no winner, display defeated boss or not
+            if (GameConfigManager.Instance.CurrentMode == GameMode.COOP){
+                if (BossManager.Instance.activeBoss.Status == Status.Dead){
+                    winnerText.text = "Boss is defeated! WELL DONE";
+                }
+                else{
+                    winnerText.text = "try again next time, great work!";
+                }
+            }
+            //ffa and team mode display
+            else{
+                if (winnerText != null)
                 {
-                    winnerText.text = "Winner: Player " + winner.getPlayerID();
+                    if (winner != null)
+                    {
+                        winnerText.text = "Winner: Player " + winner.getPlayerID();
+                    }
+                    else
+                    {
+                        winnerText.text = "No winner found";
+                    }
                 }
                 else
                 {
-                    winnerText.text = "No winner found";
+                    Debug.LogError("Winner GameObject is missing a TextMeshProUGUI component!");
                 }
-            }
-            else
-            {
-                Debug.LogError("Winner GameObject is missing a TextMeshProUGUI component!");
             }
         }
         else
