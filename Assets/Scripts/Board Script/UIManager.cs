@@ -68,6 +68,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button skipHealButton;
 
     [SerializeField] private GameObject boardUI;
+    [SerializeField] private GameObject GameEndUI;
 
     private Vector3 lastPos;
 
@@ -490,8 +491,43 @@ public class UIManager : MonoBehaviour
 
     public void DisplayGameEnd()
     {
-        centreDisplayPanel.SetActive(true);
-        centreDisplayText.text = "Game Over!";
+        GameEndUI.SetActive(true);
+        Transform container = GameEndUI.transform.Find("Leader board/content");
+        if (container != null)
+        {
+            TextMeshProUGUI contentText = container.GetComponent<TextMeshProUGUI>();
+            if (contentText != null)
+            {
+                contentText.text = "Your new text here"; // Update this line with the desired text
+            }
+            else
+            {
+                Debug.LogError("Content GameObject is missing a TextMeshProUGUI component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Leader board/Content GameObject not found in GameEndUI!");
+        }
+
+            // Update the winner text field directly within GameEndUI
+        Transform winnerTextTransform = GameEndUI.transform.Find("winner");
+        if (winnerTextTransform != null)
+        {
+            TextMeshProUGUI winnerText = winnerTextTransform.GetComponent<TextMeshProUGUI>();
+            if (winnerText != null)
+            {
+                winnerText.text = "Winner: Player 1"; // Update this line with the desired text
+            }
+            else
+            {
+                Debug.LogError("Winner GameObject is missing a TextMeshProUGUI component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Winner GameObject not found in GameEndUI!");
+        }
     }
 
     public string GetBuffTitle(BuffType buffType)
