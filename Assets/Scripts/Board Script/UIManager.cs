@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject NotificationBar;
     [SerializeField] private TextMeshProUGUI NotificationText;
     [SerializeField] private TextMeshProUGUI NotificationTitle;
+    [SerializeField] private TextMeshProUGUI NotificationReward;
     [SerializeField] private List<Sprite> BuffIcons = new List<Sprite>();
     [SerializeField] private List<Sprite> NotificationIcons = new List<Sprite>();
     [SerializeField] private Image notificationIconDisplay;
@@ -483,11 +484,13 @@ public class UIManager : MonoBehaviour
     {
         NotificationBar.SetActive(true);
         NotificationText.text = message;
-        NotificationTitle.text = $"{rewardTier} - {GetBuffTitle(buffType)}";
+        NotificationTitle.text = $"{GetBuffTitle(buffType)}";
+        NotificationReward.text = $"{rewardTier}";
 
         ChangeNotificationColor(buffType);
         yield return new WaitForSeconds(2f);
         NotificationBar.SetActive(false);
+        NotificationReward.text = "";
     }
 
     public void DisplayGameEnd()
