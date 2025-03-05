@@ -503,7 +503,7 @@ public class UIManager : MonoBehaviour
         playerList.Sort((p1, p2) => p2.TrophyCount.CompareTo(p1.TrophyCount));
 
         // Update the leaderboard UI text.
-        Transform container = GameEndUI.transform.Find("Leader board/Content");
+        Transform container = GameEndUI.transform.Find("Leader board/content");
         if (container != null)
         {
             TextMeshProUGUI contentText = container.GetComponent<TextMeshProUGUI>();
