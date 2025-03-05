@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UltimateClean;
 using System.Collections;
+using System.Text;  // Needed for StringBuilder
 
 [System.Serializable]
 public class PlayerStatsUI
@@ -491,14 +492,30 @@ public class UIManager : MonoBehaviour
 
     public void DisplayGameEnd()
     {
+        // Retrieve the list of players.
+        List<Player> playerList = PlayerManager.Instance.GetPlayerList();
+
+        // Activate the game end UI.
         GameEndUI.SetActive(true);
-        Transform container = GameEndUI.transform.Find("Leader board/content");
+
+        // Sort players in descending order by TrophyCount.
+        // This will place the player with the highest trophy count at the top.
+        playerList.Sort((p1, p2) => p2.TrophyCount.CompareTo(p1.TrophyCount));
+
+        // Update the leaderboard UI text.
+        Transform container = GameEndUI.transform.Find("Leader board/Content");
         if (container != null)
         {
             TextMeshProUGUI contentText = container.GetComponent<TextMeshProUGUI>();
             if (contentText != null)
             {
-                contentText.text = "Your new text here"; // Update this line with the desired text
+                // Build a string to display each player's name and trophy count.
+                StringBuilder sb = new StringBuilder();
+                foreach (Player player in playerList)
+                {
+                    sb.AppendLine($"Player {player.getPlayerID()} - {player.TrophyCount}");
+                }
+                contentText.text = sb.ToString();
             }
             else
             {
@@ -510,14 +527,22 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Leader board/Content GameObject not found in GameEndUI!");
         }
 
-            // Update the winner text field directly within GameEndUI
+        // Find the winner (first player with trophy count equal to max trophy).
+        Player winner = playerList.Find(p => p.TrophyCount == Player.MAX_TROPHY);
         Transform winnerTextTransform = GameEndUI.transform.Find("winner");
         if (winnerTextTransform != null)
         {
             TextMeshProUGUI winnerText = winnerTextTransform.GetComponent<TextMeshProUGUI>();
             if (winnerText != null)
             {
-                winnerText.text = "Winner: Player 1"; // Update this line with the desired text
+                if (winner != null)
+                {
+                    winnerText.text = "Winner: Player " + winner.getPlayerID();
+                }
+                else
+                {
+                    winnerText.text = "No winner found";
+                }
             }
             else
             {
