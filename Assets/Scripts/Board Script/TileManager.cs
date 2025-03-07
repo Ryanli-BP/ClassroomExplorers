@@ -163,6 +163,7 @@ public class TileManager : MonoBehaviourPun
                     currentPlayer.TeleportTo(destinationTile.transform.position, destinationTile);
                     tile.TilePlayerIDs.Remove(currentPlayerID);
                     destinationTile.TilePlayerIDs.Add(currentPlayerID);
+                    yield return new WaitForSeconds(0.5f);
                     //UIManager.Instance.DisplayTeleportEffect();
                 }
                 break;
@@ -219,55 +220,56 @@ public class TileManager : MonoBehaviourPun
 
     public Direction GetDirectionTowardsPlayers(Tile startTile, List<Direction> availableDirections)
     {
-        Dictionary<Direction, int> pathLengths = new Dictionary<Direction, int>();
+        Dictionary<Tile, Direction> initialDirections = new Dictionary<Tile, Direction>();
+        Queue<Tile> queue = new Queue<Tile>();
         HashSet<Tile> visited = new HashSet<Tile>();
-
-        // Check each initial direction
+        
+        // Initialize with all available first moves
         foreach (Direction dir in availableDirections)
         {
             Tile nextTile = startTile.GetConnectedTile(dir);
             if (nextTile != null)
             {
-                int shortestPath = FindShortestPathToPlayer(nextTile, visited);
-                if (shortestPath != int.MaxValue)
+                queue.Enqueue(nextTile);
+                initialDirections[nextTile] = dir;
+            }
+        }
+
+        while (queue.Count > 0)
+        {
+            Tile currentTile = queue.Dequeue();
+            
+            if (visited.Contains(currentTile))
+                continue;
+
+            visited.Add(currentTile);
+
+            // Found players on this tile - since this is BFS, this is guaranteed to be shortest path
+            if (currentTile.TilePlayerIDs.Count > 0)
+            {
+                Direction foundDirection = initialDirections[currentTile];
+                return foundDirection;
+            }
+
+            // Explore neighbors
+            foreach (Direction dir in currentTile.GetAllAvailableDirections())
+            {
+                Tile nextTile = currentTile.GetConnectedTile(dir);
+                if (nextTile != null && !visited.Contains(nextTile))
                 {
-                    pathLengths[dir] = shortestPath;
+                    queue.Enqueue(nextTile);
+                    if (!initialDirections.ContainsKey(nextTile))
+                    {
+                        initialDirections[nextTile] = initialDirections[currentTile];
+                    }
                 }
             }
         }
 
-        if (pathLengths.Count > 0)
-        {
-            var playerDirections = pathLengths.Select(x => x.Key).ToList();
-
-            return playerDirections[UnityEngine.Random.Range(0, playerDirections.Count)];
-        }
-
-        // If no path to players found, move randomly
-        return availableDirections[UnityEngine.Random.Range(0, availableDirections.Count)];
-    }
-
-    private int FindShortestPathToPlayer(Tile startTile, HashSet<Tile> visited, int depth = 0)
-    {
-        if (startTile == null || visited.Contains(startTile))
-            return int.MaxValue;
-
-        // Found a player
-        if (startTile.TilePlayerIDs.Count > 0)
-            return depth;
-
-        visited.Add(startTile);
-        int shortestPath = int.MaxValue;
-
-        foreach (Direction dir in startTile.GetAllAvailableDirections())
-        {
-            Tile nextTile = startTile.GetConnectedTile(dir);
-            int pathLength = FindShortestPathToPlayer(nextTile, visited, depth + 1);
-            shortestPath = Math.Min(shortestPath, pathLength);
-        }
-
-        visited.Remove(startTile);
-        return shortestPath;
+        // If no path to players found, return random direction
+        Direction random = availableDirections[UnityEngine.Random.Range(0, availableDirections.Count)];
+        Debug.Log($"No path to players found. Choosing random direction: {random}");
+        return random;
     }
 
     public List<Tile> HighlightPossibleTiles(Tile startTile, int steps)

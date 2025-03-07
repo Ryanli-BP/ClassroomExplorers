@@ -46,6 +46,7 @@ public class QuizDisplay : MonoBehaviour
 
     public void UpdateTimer(float timeRemaining)
     {
-        TimerText.GetComponent<TextMeshProUGUI>().text = $"Time: {timeRemaining:F2}"; // Display the timer
+        TimerText.GetComponent<TextMeshProUGUI>().text = $"{timeRemaining:F0}"; // Display the timer as an integer
     }
+
 }

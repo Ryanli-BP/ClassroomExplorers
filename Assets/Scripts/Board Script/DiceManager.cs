@@ -17,7 +17,8 @@ public class DiceManager : MonoBehaviourPun
     private List<Dice> liveDice = new List<Dice>();
     private int remainingDice;  // Tracks remaining dice to finish rolling
     private int totalDiceResult; // Tracks the total sum of dice rolls
-    private bool canRollDice = false; // Flag to control dice rollin
+    private bool canRollDice = false; // Flag to control dice rolling
+    private bool isInCombat = false; // Track if we're in combat
 
     private void Awake()
     {
@@ -38,15 +39,31 @@ public class DiceManager : MonoBehaviourPun
         GameManager.OnGameStateChanged -= OnGameStateChanged;
     }
 
+    private void Update()
+    {
+        // Update dice position when not in combat to follow the boardDiceSpot
+        if (PlatformUtils.IsRunningOnPC() && !isInCombat)
+        {
+            transform.position = CameraManager.Instance.GetboardDicePosition();
+        }
+    }
+
     private void OnGameStateChanged(GameState newState)
     {
-        if (newState == GameState.PlayerCombat)
+        isInCombat = (newState == GameState.PlayerCombat);
+        
+        // Update dice position based on game state
+        if (isInCombat)
         {
-            transform.position = ArenaManager.Instance.GetCombatDicePosition();
+            transform.position = CameraManager.Instance.GetCombatDicePosition();
         }
-        else
+        else 
         {
-            transform.position = ArenaManager.Instance.GetboardDicePosition();
+            // For non-AR/PC version, we'll update position in Update method
+            if (!PlatformUtils.IsRunningOnPC())
+            {
+                transform.position = CameraManager.Instance.GetboardDicePosition();
+            }
         }
     }
 
@@ -96,6 +113,20 @@ public class DiceManager : MonoBehaviourPun
             }
             liveDice.Clear();
 
+            // Force camera manager to update the dice position if it's on PC
+            if (PlatformUtils.IsRunningOnPC() && !isInCombat)
+            {
+                CameraManager.Instance.ForceUpdateDicePosition();
+            }
+
+            // Get the current dice position from the camera manager
+            Vector3 dicePosition = isInCombat ? 
+                CameraManager.Instance.GetCombatDicePosition() : 
+                CameraManager.Instance.GetboardDicePosition();
+
+            // Update our position to match
+            transform.position = dicePosition;
+
             // Instantiate and roll new dice
             for (int i = 0; i < numDice; i++)
             {
@@ -106,7 +137,6 @@ public class DiceManager : MonoBehaviourPun
                 diceLive.OnDiceFinishedRolling += HandleDiceFinishedRolling;  // Subscribe to dice finish event
             }
         }
-
     }
 
     private void HandleDiceFinishedRolling()

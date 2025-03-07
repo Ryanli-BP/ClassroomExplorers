@@ -24,6 +24,7 @@ public class Player : Entity, IPunObservable
     public int QuizStreak { get; set; } = 0;
     [SerializeField] private PlayerBuffs playerBuffs = new PlayerBuffs();
     public PlayerBuffs PlayerBuffs => playerBuffs;
+    public const float AboveTileOffset = 0.5f; // Offset to place player above the tile
 
     public int ReviveCounter { get; set; } = 0;
     void Awake()
@@ -35,6 +36,7 @@ public class Player : Entity, IPunObservable
             TrophyCount = 0;
             Health = MAX_HEALTH;
             Status = Status.Alive;
+            transform.Find("Cone").gameObject.SetActive(false);
 
             /*Buffs.AddBuff(BuffType.AttackUp, 2, 2); //for test
             Buffs.AddBuff(BuffType.DefenseUp, 1, 2); //for test
@@ -91,6 +93,18 @@ public class Player : Entity, IPunObservable
         // Fallback in case no matching player is found
         return $"Player {playerID}";
     }
+    void Update()
+    {
+        if(RoundManager.Instance.Turn == playerID && Status == Status.Alive)
+        {
+            transform.Find("Cone").gameObject.SetActive(true);
+        }
+        else
+        {
+            transform.Find("Cone").gameObject.SetActive(false);
+        }
+    }
+
     public IEnumerator InitializePlayerUI()
     {
         Debug.Log($"Initialize playerUI {playerID}");
@@ -243,10 +257,11 @@ private void InitializeCustomizationArrays()
         BuffType[] possibleBuffs = { BuffType.AttackUp, BuffType.DefenseUp, BuffType.EvadeUp };
         BuffType randomBuff = possibleBuffs[UnityEngine.Random.Range(0, possibleBuffs.Length)];
         AddBuff(randomBuff, 2, 100); // Value of 2, duration of 100 for "permanent" effect
+        AddBuff(randomBuff, 2, 100);
         Debug.Log($"Player {playerID} gained permanent {randomBuff} buff");
 
         //Gain 1 HP
-        MAX_HEALTH++;
+        MAX_HEALTH+= 2;
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 
@@ -294,7 +309,7 @@ private void InitializeCustomizationArrays()
     public override void TeleportTo(Vector3 position, Tile destinationTile)
     {
         // Adjust Y position for proper height above tile
-        Vector3 teleportPosition = new Vector3(position.x, position.y + 0.7f * ARBoardPlacement.worldScale, position.z);
+        Vector3 teleportPosition = new Vector3(position.x, position.y + (AboveTileOffset * BoardGenerator.BoardScale * ARBoardPlacement.worldScale), position.z);
         
         // Update player position
         transform.position = teleportPosition;

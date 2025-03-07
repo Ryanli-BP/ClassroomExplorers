@@ -43,6 +43,16 @@ public class Tile : MonoBehaviour
         else if (tileType == TileType.Home)
         {
             tileType = TileType.Normal;
+            // Update the material to match Normal tile
+            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            {
+                Material normalMaterial = FindFirstObjectByType<BoardGenerator>()?.normalTileMaterial;
+                if (normalMaterial != null)
+                {
+                    meshRenderer.material = normalMaterial;
+                }
+            }
         }
     }
 
