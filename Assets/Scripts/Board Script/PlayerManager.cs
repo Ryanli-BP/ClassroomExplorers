@@ -228,6 +228,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void StartPlayerMovement(int diceTotal)
     {
         Player currentPlayer = GetCurrentPlayer();
+        if (!photonView){
+            Debug.Log("No PhotonView");
+        }
         photonView.RPC("RPCStartPlayerMovement", RpcTarget.All, CurrentPlayerID, diceTotal);
 
     }
