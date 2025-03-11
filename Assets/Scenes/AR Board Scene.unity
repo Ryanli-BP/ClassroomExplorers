@@ -18589,7 +18589,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 501273283140271880, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 63.29
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 501273283140271880, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_LocalPosition.x
@@ -18605,7 +18605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 501273283140271880, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -141.985
+      value: -137.095
       objectReference: {fileID: 0}
     - target: {fileID: 501273283140271883, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_fontStyle
@@ -18681,7 +18681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 501273284260851874, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 501273284260851885, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_Pivot.x
@@ -18777,7 +18777,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1618999688108619070, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 213.63
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2822050977190391454, guid: fa8a1d7701871984badee3a10fc05240, type: 3}
       propertyPath: m_Color.b
@@ -19748,8 +19748,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 458.24255, y: -95.17}
-  m_SizeDelta: {x: 643.5149, y: 30.34}
+  m_AnchoredPosition: {x: 458.24255, y: -95.725}
+  m_SizeDelta: {x: 643.5149, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1935242093
 MonoBehaviour:
@@ -19785,10 +19785,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: hi
+  m_text: small reward
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 306670960bc9143518127a24073d4282, type: 2}
-  m_sharedMaterial: {fileID: 8790088664745791733, guid: 306670960bc9143518127a24073d4282, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
+  m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -19812,13 +19812,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
