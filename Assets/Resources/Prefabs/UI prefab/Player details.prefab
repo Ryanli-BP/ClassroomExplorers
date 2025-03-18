@@ -4398,7 +4398,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Dodge Bonus
+  m_text: 'Evade Bonus
 
 '
   m_isRightToLeft: 0
