@@ -215,9 +215,14 @@ public class TileManager : MonoBehaviourPun
                 break;
         }
 
-        OnTileActionComplete = true;
+        photonView.RPC("RPC_FinishTileAction", RpcTarget.All);
     }
 
+    [PunRPC]
+    public void RPC_FinishTileAction()
+    {
+        TileManager.Instance.OnTileActionComplete = true;
+    }
     public Direction GetDirectionTowardsPlayers(Tile startTile, List<Direction> availableDirections)
     {
         Dictionary<Tile, Direction> initialDirections = new Dictionary<Tile, Direction>();

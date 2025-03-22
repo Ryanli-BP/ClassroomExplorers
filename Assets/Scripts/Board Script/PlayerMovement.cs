@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviourPun
     private bool isMoving = false;
     private bool initialMove; //One time flag for avoiding some actions intially for movement
     private int remainingSteps = 0;
-    public event Action OnMovementComplete;
     private bool canFightPlayers;
     private bool canHealPlayers;
     private bool haveBoss;
@@ -279,7 +278,7 @@ public class PlayerMovement : MonoBehaviourPun
             yield return StartCoroutine(HandlePaths(availableDirections));
 
             remainingSteps--;
-
+            Debug.Log($"Remaining steps: {remainingSteps}");
             yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             yield return new WaitForSeconds(0.05f);
             photonView.RPC("RPC_StepSync", RpcTarget.Others, remainingSteps);
@@ -360,8 +359,9 @@ public class PlayerMovement : MonoBehaviourPun
     {
         this.isMoving = false;
         this.initialMove = true;
-        OnMovementComplete?.Invoke();
-    }
+        GameManager.Instance.HandleMovementComplete();
+        Debug.Log("Movement complete!");
+}
     
 
 }

@@ -225,8 +225,6 @@ public class GameManager : MonoBehaviourPun
     private void StartPlayerMovement()
     {
         Debug.Log("Starting player movement");
-        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
-        PlayerMovement.OnMovementComplete += OnPlayerMovementComplete;
         PlayerManager.Instance.StartPlayerMovement(DiceManager.Instance.GetTotalDiceResult());
     }
 
@@ -238,13 +236,7 @@ public class GameManager : MonoBehaviourPun
         BossManager.Instance.StartBossMovement(DiceManager.Instance.GetTotalDiceResult());
     }
 
-    private void OnPlayerMovementComplete()
-    {
-        Debug.Log("Player movement complete");
-        PlayerMovement PlayerMovement = PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>();
-        PlayerMovement.OnMovementComplete -= OnPlayerMovementComplete;
-        ChangeState(GameState.FinishedMoving);
-    }
+
 
     private void OnBossMovementComplete()
     {
@@ -310,6 +302,11 @@ public class GameManager : MonoBehaviourPun
         {
             ChangeState(GameState.PlayerTurnStart);
         }
+    }
+    public void HandleMovementComplete()
+    {
+        Debug.Log("Movement complete, changing state to FinishedMoving");
+        ChangeState(GameState.FinishedMoving);
     }
 
     public void HandleReroll()
