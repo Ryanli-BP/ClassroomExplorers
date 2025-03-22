@@ -32,10 +32,7 @@ public class PlayerMovement : MonoBehaviourPun
 
     public void MovePlayer(int diceroll)
     {
-        if (!photonView.IsMine) return; 
-        if (isMoving || currentTile == null)
-            return;
-
+        if (isMoving || currentTile == null || diceroll == 0 || photonView.IsMine == false) return;
         Debug.Log($"Rolled: {diceroll} steps");
         remainingSteps = diceroll;
         StartCoroutine(MoveStepByStep());
@@ -264,8 +261,10 @@ public class PlayerMovement : MonoBehaviourPun
             //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
-                UIManager.Instance.OffDiceDisplay(); // off remaining step display when stop moving
+            
+                photonView.RPC("RPC_OFFdiceDisplay", RpcTarget.All); // off remaining step display when stop moving
                 isMoving = false;
+                
             }
 
             if (!isMoving) break;
@@ -277,8 +276,10 @@ public class PlayerMovement : MonoBehaviourPun
             yield return StartCoroutine(HandlePaths(availableDirections));
 
             remainingSteps--;
+
             yield return StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
             yield return new WaitForSeconds(0.05f);
+            photonView.RPC("RPC_StepSync", RpcTarget.Others, remainingSteps);
 
             if (initialMove) //currently, initialMove is a condition for pvpencounter
             {
@@ -286,43 +287,10 @@ public class PlayerMovement : MonoBehaviourPun
             }
         }
 
-        isMoving = false;
-        initialMove = true;
-
-            OnMovementComplete?.Invoke();      
+        photonView.RPC("RPC_HandleMovementComplete", RpcTarget.All);
     }
 
-    [PunRPC]
-    private void RPC_SyncMove(int tileIndex)
-    {
-        // Only run this on remote clients.
-        if (photonView.IsMine)
-            return;
 
-        if (tileIndex < 0 || tileIndex >= TileManager.Instance.allTiles.Count)
-        {
-            Debug.LogError($"Invalid tile index received: {tileIndex}");
-            return;
-        }
-
-        Tile nextTile = TileManager.Instance.allTiles[tileIndex];
-        if (nextTile == null)
-        {
-            Debug.LogError($"No tile found at index {tileIndex}");
-            return;
-        }
-
-        // Update tile occupancy for the remote client.
-        if (currentTile != null)
-            currentTile.RemovePlayer(PlayerManager.Instance.CurrentPlayerID);
-
-        nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
-        currentTile = nextTile;
-
-        // Animate the remote player's movement.
-        MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
-        StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
-    }
 
     private IEnumerator MoveToNextTileCoroutine(Direction direction)
     {
@@ -338,14 +306,72 @@ public class PlayerMovement : MonoBehaviourPun
 
             nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
             currentTile = nextTile;
+            photonView.RPC("RPC_MovementBroadcast", RpcTarget.Others, direction, PlayerManager.Instance.CurrentPlayerID);
             MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
-            int tileIndex = TileManager.Instance.allTiles.IndexOf(nextTile);
-            photonView.RPC("RPC_SyncMove", RpcTarget.Others, tileIndex);
         }
         else
         {
             Debug.LogError($"No connected tile found in direction: {direction}");
         }
     }
+    // RPCS
+    [PunRPC]
+    private void RPC_MovementBroadcast(Direction direction, int playerID)
+    {
+        Player targetPlayer = PlayerManager.Instance.GetPlayerByID(playerID);
+        if (targetPlayer == null)
+        {
+            Debug.LogError($"Player with ID {playerID} not found.");
+            return;
+        }
+
+        PlayerMovement targetMovement = targetPlayer.GetComponent<PlayerMovement>();
+        Tile currentTile = targetMovement.CurrentTile;
+
+        if (currentTile == null)
+        {
+            Debug.LogError($"Current tile is null for player {playerID}.");
+            return;
+        }
+
+        Tile nextTile = currentTile.GetConnectedTile(direction);
+        if (nextTile == null)
+        {
+            Debug.LogError($"No connected tile found in direction: {direction}");
+            return;
+        }
+
+        currentTile.RemovePlayer(playerID);
+        nextTile.AddPlayer(playerID);
+        targetMovement.CurrentTile = nextTile;
+        MovementAnimation movementAnimation = targetPlayer.GetComponent<MovementAnimation>();
+        if (movementAnimation != null)
+        {
+            StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
+        }
+    }
+    [PunRPC]
+    private void RPC_StepSync(int steps)
+    {
+        remainingSteps = steps;
+        StartCoroutine(UIManager.Instance.DisplayRemainingDiceSteps(remainingSteps));
+        
+    }
+
+    [PunRPC]
+    private void RPC_OFFdiceDisplay()
+    {
+        UIManager.Instance.OffDiceDisplay();
+    }
+
+    [PunRPC]
+    private void RPC_HandleMovementComplete()
+    {
+        this.isMoving = false;
+        this.initialMove = true;
+        OnMovementComplete?.Invoke();
+    }
+    
+
 }

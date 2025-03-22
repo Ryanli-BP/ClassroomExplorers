@@ -60,6 +60,10 @@ MonoBehaviour:
   - RPCSyncRemainingSteps
   - RPC_SyncMove
   - RPCPlayerTileAction
+  - RPC_HandleMovementComplete
+  - RPC_MovementBroadcast
+  - RPC_OFFdiceDisplay
+  - RPC_StepSync
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
