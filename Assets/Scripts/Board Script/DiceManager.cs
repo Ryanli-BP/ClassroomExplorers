@@ -153,7 +153,7 @@ public class DiceManager : MonoBehaviourPun
     [PunRPC]
     public void RPC_HandleDiceResult(int diceResult)
     {
-        totalDiceResult += diceResult;
+        totalDiceResult += testDiceResult;
         Debug.Log($"[RPC] Dice result received: {diceResult} (Total: {totalDiceResult})");
 
     }

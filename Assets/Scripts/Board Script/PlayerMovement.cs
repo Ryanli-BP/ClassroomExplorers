@@ -306,7 +306,10 @@ public class PlayerMovement : MonoBehaviourPun
 
             nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
             currentTile = nextTile;
-            photonView.RPC("RPC_MovementBroadcast", RpcTarget.Others, direction, PlayerManager.Instance.CurrentPlayerID);
+            
+            // Pass the target tile's position directly
+            photonView.RPC("RPC_MovementBroadcast", RpcTarget.Others, nextTile.transform.position, PlayerManager.Instance.CurrentPlayerID);
+            
             MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
         }
@@ -315,42 +318,48 @@ public class PlayerMovement : MonoBehaviourPun
             Debug.LogError($"No connected tile found in direction: {direction}");
         }
     }
-    // RPCS
+
+        // RPCS
     [PunRPC]
-    private void RPC_MovementBroadcast(Direction direction, int playerID)
+    private void RPC_MovementBroadcast(Vector3 targetTilePosition, int playerID)
     {
+        // If this is the local player, skip the RPC since we've already moved locally.
+        if (playerID == PlayerManager.Instance.CurrentPlayerID)
+            return;
+
         Player targetPlayer = PlayerManager.Instance.GetPlayerByID(playerID);
         if (targetPlayer == null)
         {
             Debug.LogError($"Player with ID {playerID} not found.");
             return;
         }
-
+        
+        // Retrieve the tile using its position.
+        Tile targetTile = TileManager.Instance.GetTileAtPosition(targetTilePosition);
+        if (targetTile == null)
+        {
+            Debug.LogError("Tile not found at position " + targetTilePosition);
+            return;
+        }
+        
         PlayerMovement targetMovement = targetPlayer.GetComponent<PlayerMovement>();
-        Tile currentTile = targetMovement.CurrentTile;
 
-        if (currentTile == null)
+        if (targetMovement.CurrentTile != null)
         {
-            Debug.LogError($"Current tile is null for player {playerID}.");
-            return;
+            targetMovement.CurrentTile.RemovePlayer(playerID);
         }
-
-        Tile nextTile = currentTile.GetConnectedTile(direction);
-        if (nextTile == null)
-        {
-            Debug.LogError($"No connected tile found in direction: {direction}");
-            return;
-        }
-
-        currentTile.RemovePlayer(playerID);
-        nextTile.AddPlayer(playerID);
-        targetMovement.CurrentTile = nextTile;
+        
+        targetTile.AddPlayer(playerID);
+        targetMovement.CurrentTile = targetTile;
+        
         MovementAnimation movementAnimation = targetPlayer.GetComponent<MovementAnimation>();
         if (movementAnimation != null)
         {
-            StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
+            StartCoroutine(movementAnimation.HopTo(targetTile.transform.position));
         }
     }
+
+
     [PunRPC]
     private void RPC_StepSync(int steps)
     {
