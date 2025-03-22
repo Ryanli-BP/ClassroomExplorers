@@ -197,27 +197,30 @@ public class PlayerMovement : MonoBehaviourPun
 
     private IEnumerator HandlePaths(List<Direction> availableDirections)
     {
-        if (availableDirections.Count > 1)
+        if (photonView.IsMine)
         {
-            Debug.Log("At a crossroad! Waiting for player to choose a direction...");
-            List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
-            Direction? selectedDirection = null;
-            
-            yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
-                selectedDirection = direction;
-            }));
-
-            if (selectedDirection.HasValue)
+            if (availableDirections.Count > 1)
             {
-                yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
-            }
+                Debug.Log("At a crossroad! Waiting for player to choose a direction...");
+                List<Tile> highlightedTiles = TileManager.Instance.HighlightPossibleTiles(currentTile, remainingSteps);
+                Direction? selectedDirection = null;
+                
+                yield return StartCoroutine(PromptManager.Instance.HandleDirections(availableDirections, (direction) => {
+                    selectedDirection = direction;
+                }));
 
-            TileManager.Instance.ClearHighlightedTiles();
-        }
-        else
-        {
-            Direction nextDirection = availableDirections[0];
-            yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
+                if (selectedDirection.HasValue)
+                {
+                    yield return StartCoroutine(MoveToNextTileCoroutine(selectedDirection.Value));
+                }
+
+                TileManager.Instance.ClearHighlightedTiles();
+            }
+            else
+            {
+                Direction nextDirection = availableDirections[0];
+                yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
+            }
         }
     }
 
@@ -296,7 +299,7 @@ public class PlayerMovement : MonoBehaviourPun
     {
         _lastDirection = direction;
         Tile nextTile = currentTile.GetConnectedTile(direction);
-
+        
         if (nextTile != null)
         {
             if (currentTile != null)
@@ -306,11 +309,8 @@ public class PlayerMovement : MonoBehaviourPun
 
             nextTile.AddPlayer(PlayerManager.Instance.CurrentPlayerID);
             currentTile = nextTile;
-            
-            // Pass the target tile's position directly
-            photonView.RPC("RPC_MovementBroadcast", RpcTarget.Others, nextTile.transform.position, PlayerManager.Instance.CurrentPlayerID);
-            
             MovementAnimation movementAnimation = PlayerManager.Instance.GetCurrentPlayer().GetComponent<MovementAnimation>();
+            photonView.RPC("RPC_SyncPlayerMovement", RpcTarget.Others, currentTile.transform.position, nextTile.transform.position, PlayerManager.Instance.CurrentPlayerID);
             yield return StartCoroutine(movementAnimation.HopTo(nextTile.transform.position));
         }
         else
@@ -319,43 +319,24 @@ public class PlayerMovement : MonoBehaviourPun
         }
     }
 
-        // RPCS
+    //RPCS
     [PunRPC]
-    private void RPC_MovementBroadcast(Vector3 targetTilePosition, int playerID)
+    private void RPC_SyncPlayerMovement(Vector3 currentTilePos, Vector3 nextTilePos, int playerID)
     {
-        // If this is the local player, skip the RPC since we've already moved locally.
-        if (playerID == PlayerManager.Instance.CurrentPlayerID)
-            return;
+        // Get tiles by position
+        Tile currentTileRemote = TileManager.Instance.GetTileAtPosition(currentTilePos);
+        Tile nextTileRemote = TileManager.Instance.GetTileAtPosition(nextTilePos);
 
-        Player targetPlayer = PlayerManager.Instance.GetPlayerByID(playerID);
-        if (targetPlayer == null)
+        if (currentTileRemote != null)
         {
-            Debug.LogError($"Player with ID {playerID} not found.");
-            return;
+            currentTileRemote.RemovePlayer(playerID);
         }
-        
-        // Retrieve the tile using its position.
-        Tile targetTile = TileManager.Instance.GetTileAtPosition(targetTilePosition);
-        if (targetTile == null)
-        {
-            Debug.LogError("Tile not found at position " + targetTilePosition);
-            return;
-        }
-        
-        PlayerMovement targetMovement = targetPlayer.GetComponent<PlayerMovement>();
 
-        if (targetMovement.CurrentTile != null)
+        if (nextTileRemote != null)
         {
-            targetMovement.CurrentTile.RemovePlayer(playerID);
-        }
-        
-        targetTile.AddPlayer(playerID);
-        targetMovement.CurrentTile = targetTile;
-        
-        MovementAnimation movementAnimation = targetPlayer.GetComponent<MovementAnimation>();
-        if (movementAnimation != null)
-        {
-            StartCoroutine(movementAnimation.HopTo(targetTile.transform.position));
+            nextTileRemote.AddPlayer(playerID);
+            MovementAnimation movementAnimation = PlayerManager.Instance.GetPlayerByID(playerID).GetComponent<MovementAnimation>();
+            StartCoroutine(movementAnimation.HopTo(nextTileRemote.transform.position));
         }
     }
 
