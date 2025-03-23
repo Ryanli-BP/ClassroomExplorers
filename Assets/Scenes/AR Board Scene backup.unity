@@ -2943,26 +2943,49 @@ MonoBehaviour:
   - pointsBar: {fileID: 1959138604}
     levelText: {fileID: 603685447}
     healthBar: {fileID: 1786743345}
+    TrophyPanel: {fileID: 0}
+    TrophyText: {fileID: 0}
+    PlayerName: {fileID: 0}
   - pointsBar: {fileID: 1141740980}
     levelText: {fileID: 1116043228}
     healthBar: {fileID: 1772054920}
+    TrophyPanel: {fileID: 0}
+    TrophyText: {fileID: 0}
+    PlayerName: {fileID: 0}
   - pointsBar: {fileID: 1475199626}
     levelText: {fileID: 1835239918}
     healthBar: {fileID: 833338958}
+    TrophyPanel: {fileID: 0}
+    TrophyText: {fileID: 0}
+    PlayerName: {fileID: 0}
   - pointsBar: {fileID: 1155455095}
     levelText: {fileID: 1878088532}
     healthBar: {fileID: 467978191}
+    TrophyPanel: {fileID: 0}
+    TrophyText: {fileID: 0}
+    PlayerName: {fileID: 0}
   - pointsBar: {fileID: 1234963527}
     levelText: {fileID: 802998492}
     healthBar: {fileID: 1085532868}
+    TrophyPanel: {fileID: 0}
+    TrophyText: {fileID: 0}
+    PlayerName: {fileID: 0}
   - pointsBar: {fileID: 1044660577}
     levelText: {fileID: 713890680}
     healthBar: {fileID: 1084826098}
+    TrophyPanel: {fileID: 0}
+    TrophyText: {fileID: 0}
+    PlayerName: {fileID: 0}
   BossHealthBarPanel: {fileID: 1999475348}
   roundDisplayText: {fileID: 158698565}
   currentTurnText: {fileID: 1538874189}
   NotificationBar: {fileID: 1385985817}
   NotificationText: {fileID: 1047001188}
+  NotificationTitle: {fileID: 0}
+  NotificationReward: {fileID: 0}
+  BuffIcons: []
+  NotificationIcons: []
+  notificationIconDisplay: {fileID: 0}
   reviveCounterText: {fileID: 286134046}
   rollDiceButtonPanel: {fileID: 493656809}
   evadeButtonPanel: {fileID: 999839361}
@@ -2975,6 +2998,7 @@ MonoBehaviour:
   healButton: {fileID: 88663570}
   skipHealButton: {fileID: 1788659505}
   boardUI: {fileID: 761339815}
+  GameEndUI: {fileID: 0}
 --- !u!4 &450115972
 Transform:
   m_ObjectHideFlags: 0
@@ -3841,8 +3865,131 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8052266919237322423, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3727317921781199014}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2409924342312628677, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 504460176}
+    - targetCorrespondingSourceObject: {fileID: 523905020596339957, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 504460170}
+    - targetCorrespondingSourceObject: {fileID: 2405231074741402394, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 504460172}
+    - targetCorrespondingSourceObject: {fileID: 106051819798175243, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 504460175}
+    - targetCorrespondingSourceObject: {fileID: 2810192224237160438, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 621168160}
   m_SourcePrefab: {fileID: 100100000, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+--- !u!1 &504460169 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 523905020596339957, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+  m_PrefabInstance: {fileID: 504460168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &504460170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504460169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!1 &504460171 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2405231074741402394, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+  m_PrefabInstance: {fileID: 504460168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &504460172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504460171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!1 &504460173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 106051819798175243, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+  m_PrefabInstance: {fileID: 504460168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &504460174 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2409924342312628677, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+  m_PrefabInstance: {fileID: 504460168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &504460175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504460173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &504460176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504460174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 4
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &505113976
 GameObject:
   m_ObjectHideFlags: 0
@@ -5601,6 +5748,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 613862388}
   m_CullTransparentMesh: 1
+--- !u!1 &621168159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2810192224237160438, guid: c14ddb13c3aeec243989ff7351a2af69, type: 3}
+  m_PrefabInstance: {fileID: 504460168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &621168160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621168159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 6
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &645947493
 GameObject:
   m_ObjectHideFlags: 0
@@ -10748,8 +10922,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QuizUI: {fileID: 1906703913}
+  quizContent: {fileID: 0}
   slideSpeed: 1
   csvFile: {fileID: 4900000, guid: 0c015fce2000088458193c18efcc972d, type: 3}
+  timeRushQuestionCount: 5
 --- !u!114 &1159168369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10781,21 +10957,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb62eb8d8af16d49804d82f2dff0878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  answerBackBlue:
-  - {fileID: 2062077769}
-  - {fileID: 952218560}
-  - {fileID: 886382963}
-  - {fileID: 489411630}
-  answerBackGreen:
-  - {fileID: 1955688898}
-  - {fileID: 1417310860}
-  - {fileID: 939637666}
-  - {fileID: 577194157}
-  answerBackRed:
-  - {fileID: 1107006862}
-  - {fileID: 1236864113}
-  - {fileID: 2068351553}
-  - {fileID: 219954758}
   answerButtons:
   - {fileID: 854297272}
   - {fileID: 1175609810}
@@ -13887,7 +14048,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
+  currentQuizMode: 0
   _numOfPlayers: 2
+  _quizTimeLimit: 30
 --- !u!4 &1482619883
 Transform:
   m_ObjectHideFlags: 0
@@ -18451,6 +18614,10 @@ PrefabInstance:
     - target: {fileID: 2662838448224718620, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7550787122153504081, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
+      propertyPath: sceneViewId
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7969531133458972122, guid: 3a4da72b51161470cab9f0734985889e, type: 3}
       propertyPath: m_Name

@@ -27,13 +27,23 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public List<Player> DeadPlayers { get; set; } = new List<Player>();
 
+    private PhotonView photonView;
+
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            photonView = GetComponent<PhotonView>();
+            if (photonView == null)
+            {
+                Debug.LogError("PhotonView missing from PlayerManager!");
+            }
+        }
         else
+        {
             Destroy(gameObject);
-
+        }
     }
 
     IEnumerator Start()

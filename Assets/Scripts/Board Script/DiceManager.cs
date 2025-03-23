@@ -19,13 +19,22 @@ public class DiceManager : MonoBehaviourPun
     private int totalDiceResult; // Tracks the total sum of dice rolls
     private bool canRollDice = false; // Flag to control dice rolling
     private bool isInCombat = false; // Track if we're in combat
-
+    private PhotonView _photonView; 
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            _photonView = GetComponent<PhotonView>();
+            if (_photonView == null)
+            {
+                Debug.LogError("PhotonView missing from DiceManager!");
+            }
+        }
         else
-            PhotonNetwork.Destroy(gameObject);
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnEnable()
@@ -153,7 +162,7 @@ public class DiceManager : MonoBehaviourPun
     [PunRPC]
     public void RPC_HandleDiceResult(int diceResult)
     {
-        totalDiceResult += 6;
+        totalDiceResult += 5;
         Debug.Log($"[RPC] Dice result received: {diceResult} (Total: {totalDiceResult})");
 
     }

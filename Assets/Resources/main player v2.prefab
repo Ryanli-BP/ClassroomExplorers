@@ -2032,9 +2032,10 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 1
+  OwnershipTransfer: 2
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 2470740341755477651}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

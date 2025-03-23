@@ -13,14 +13,24 @@ public class PromptManager : MonoBehaviourPunCallbacks
 
     public static PromptManager Instance;
 
+    private PhotonView photonView;
+
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            photonView = GetComponent<PhotonView>();
+            if (photonView == null)
+            {
+                Debug.LogError("PhotonView missing from PromptManager!");
+            }
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
-
     public IEnumerator HandleHomeTile(Action<bool> onPlayerChoice)
     {
         bool? playerChoice = null;

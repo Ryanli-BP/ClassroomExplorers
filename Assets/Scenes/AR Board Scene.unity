@@ -21541,6 +21541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4114305183302367980}
   - component: {fileID: 4032613960432396135}
+  - component: {fileID: 4114305183302367981}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -22026,6 +22027,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8615960407400873012}
   - component: {fileID: 7535015540863432112}
+  - component: {fileID: 8615960407400873013}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -22080,6 +22082,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8746712896957456738}
   - component: {fileID: 7006338204906671127}
+  - component: {fileID: 8746712896957456739}
   m_Layer: 0
   m_Name: PromptManager
   m_TagString: Untagged
@@ -22256,6 +22259,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3266162705118629452}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4114305183302367981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523905020830234493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &4164753945944820055
 Transform:
   m_ObjectHideFlags: 0
@@ -22984,6 +23009,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3266162705118629452}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8615960407400873013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2409924342613606989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &8635268519597790185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23028,6 +23075,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3266162705118629452}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8746712896957456739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2810192223799997566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 1
+  OwnershipTransfer: 1
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 5
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &8771387739110001208
 Transform:
   m_ObjectHideFlags: 0
@@ -23105,11 +23174,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 1
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 23
+  sceneViewId: 4
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &9114893015664411394 stripped

@@ -334,10 +334,20 @@ public class PlayerMovement : MonoBehaviourPun
         if (nextTileRemote != null)
         {
             nextTileRemote.AddPlayer(playerID);
+            // Update the current tile for this player's movement component
+            Player player = PlayerManager.Instance.GetPlayerByID(playerID);
+            if (player != null)
+            {
+                PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    playerMovement.CurrentTile = nextTileRemote;
+                }
+            }
             MovementAnimation movementAnimation = PlayerManager.Instance.GetPlayerByID(playerID).GetComponent<MovementAnimation>();
             StartCoroutine(movementAnimation.HopTo(nextTileRemote.transform.position));
         }
-    }
+}
 
 
     [PunRPC]
@@ -360,6 +370,7 @@ public class PlayerMovement : MonoBehaviourPun
         this.isMoving = false;
         this.initialMove = true;
         GameManager.Instance.HandleMovementComplete();
+      
         
 }
     

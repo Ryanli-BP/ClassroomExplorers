@@ -19,13 +19,18 @@ public class TileManager : MonoBehaviourPun
     public GameObject anvilPrefab;
 
     private List<Tile> portalTiles = new List<Tile>(); // Add this field
+    private PhotonView _photonView; 
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            _photonView = GetComponent<PhotonView>();
+            if (_photonView == null)
+            {
+                Debug.LogError("PhotonView missing from TileManager!");
+            }
         }
         else
         {
@@ -96,10 +101,15 @@ public class TileManager : MonoBehaviourPun
             return 2;
         return 1;
     }
-
     
     public IEnumerator getPlayerTileAction(Tile tile)
     {
+        int currentActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;        
+        if (currentActorNumber != PlayerManager.Instance.CurrentPlayerID)
+        {
+            Debug.Log($"Not current player's turn. Local ActorNumber: {currentActorNumber}, CurrentPlayerID: {PlayerManager.Instance.CurrentPlayerID}");
+            yield break;
+        }        
         var currentPlayerID = PlayerManager.Instance.CurrentPlayerID;
         Player currentPlayer = PlayerManager.Instance.GetCurrentPlayer();
  
@@ -182,7 +192,7 @@ public class TileManager : MonoBehaviourPun
                 yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(currentPlayer.transform.position, damage));
                 break;
         }
-        photonView.RPC("RPC_FinishTileAction", RpcTarget.All);
+        photonView.RPC("RPC_FinishTileAction", RpcTarget.Others);
         OnTileActionComplete = true;
         yield break;
     }
@@ -190,7 +200,7 @@ public class TileManager : MonoBehaviourPun
     public IEnumerator getBossTileAction(Tile tile)
     {
         if (!PhotonNetwork.IsMasterClient) yield break;
-        
+
         Boss currentBoss = BossManager.Instance.activeBoss;
         
         switch (tile.GetTileType())

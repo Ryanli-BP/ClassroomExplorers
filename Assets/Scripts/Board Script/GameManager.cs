@@ -20,19 +20,54 @@ public class GameManager : MonoBehaviourPun
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            if (photonView == null)
+            {
+                Debug.LogError("PhotonView component missing from GameManager!");
+            }
+        }
         else
+        {
             Destroy(gameObject);
+        }
     }
+
     private void Start()
     {
-        ChangeState(GameState.GameSetup);
+        // Wait for PhotonView to be ready
+        if (PhotonNetwork.IsConnected)
+        {
+            ChangeState(GameState.GameSetup);
+        }
+        else
+        {
+            Debug.LogError("Not connected to Photon Network!");
+        }
     }
+    [PunRPC]
+    private void RPC_ChangeState(GameState newState)
+    {
+        Debug.Log($"Received state change RPC: {newState}");
+        // Update the local state first
+        currentState = newState;
+        // Then trigger state change handlers
+        OnStateChanged(newState);
+        // Notify any listeners
+        OnGameStateChanged?.Invoke(currentState);
+    }
+
     private void ChangeState(GameState newState)
     {
-        Debug.Log($"Changing state from {currentState} to {newState}");
-        currentState = newState;
-        OnStateChanged(newState);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log($"Master client broadcasting state change to {newState}");
+            photonView.RPC("RPC_ChangeState", RpcTarget.All, newState);
+        }
+        else
+        {
+            Debug.Log($"Non-master client attempted state change to {newState}");
+        }
     }
 
     private void OnStateChanged(GameState newState)
