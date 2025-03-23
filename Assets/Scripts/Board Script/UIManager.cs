@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UltimateClean;
 using System.Collections;
+using System.Text;  // Needed for StringBuilder
 
 [System.Serializable]
 public class PlayerStatsUI
@@ -47,6 +48,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject NotificationBar;
     [SerializeField] private TextMeshProUGUI NotificationText;
     [SerializeField] private TextMeshProUGUI NotificationTitle;
+    [SerializeField] private TextMeshProUGUI NotificationReward;
     [SerializeField] private List<Sprite> BuffIcons = new List<Sprite>();
     [SerializeField] private List<Sprite> NotificationIcons = new List<Sprite>();
     [SerializeField] private Image notificationIconDisplay;
@@ -68,6 +70,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button skipHealButton;
 
     [SerializeField] private GameObject boardUI;
+    [SerializeField] private GameObject GameEndUI;
 
     private Vector3 lastPos;
 
@@ -481,17 +484,90 @@ public class UIManager : MonoBehaviour
     {
         NotificationBar.SetActive(true);
         NotificationText.text = message;
-        NotificationTitle.text = $"{rewardTier} - {GetBuffTitle(buffType)}";
+        NotificationTitle.text = $"{GetBuffTitle(buffType)}";
+        NotificationReward.text = $"{rewardTier}";
 
         ChangeNotificationColor(buffType);
         yield return new WaitForSeconds(1.5f);
         NotificationBar.SetActive(false);
+        NotificationReward.text = "";
     }
 
     public void DisplayGameEnd()
     {
-        centreDisplayPanel.SetActive(true);
-        centreDisplayText.text = "Game Over!";
+        // Retrieve the list of players.
+        List<Player> playerList = PlayerManager.Instance.GetPlayerList();
+
+        // Activate the game end UI.
+        GameEndUI.SetActive(true);
+
+        // Sort players in descending order by TrophyCount.
+        // This will place the player with the highest trophy count at the top.
+        playerList.Sort((p1, p2) => p2.TrophyCount.CompareTo(p1.TrophyCount));
+
+        // Update the leaderboard UI text.
+        Transform container = GameEndUI.transform.Find("Leader board/content");
+        if (container != null)
+        {
+            TextMeshProUGUI contentText = container.GetComponent<TextMeshProUGUI>();
+            if (contentText != null)
+            {
+                // Build a string to display each player's name and trophy count.
+                StringBuilder sb = new StringBuilder();
+                foreach (Player player in playerList)
+                {
+                    sb.AppendLine($"Player {player.getPlayerID()} - {player.TrophyCount}");
+                }
+                contentText.text = sb.ToString();
+            }
+            else
+            {
+                Debug.LogError("Content GameObject is missing a TextMeshProUGUI component!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Leader board/Content GameObject not found in GameEndUI!");
+        }
+
+        // Find the winner (first player with trophy count equal to max trophy).
+        Player winner = playerList.Find(p => p.TrophyCount == Player.MAX_TROPHY);
+        Transform winnerTextTransform = GameEndUI.transform.Find("winner");
+        if (winnerTextTransform != null)
+        {
+            TextMeshProUGUI winnerText = winnerTextTransform.GetComponent<TextMeshProUGUI>();
+            //coop mode, no winner, display defeated boss or not
+            if (GameConfigManager.Instance.CurrentMode == GameMode.COOP){
+                if (BossManager.Instance.activeBoss.Status == Status.Dead){
+                    winnerText.text = "Boss is defeated! WELL DONE";
+                }
+                else{
+                    winnerText.text = "try again next time, great work!";
+                }
+            }
+            //ffa and team mode display
+            else{
+                if (winnerText != null)
+                {
+                    if (winner != null)
+                    {
+                        winnerText.text = "Winner: Player " + winner.getPlayerID();
+                    }
+                    else
+                    {
+                        winnerText.text = "No winner found";
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Winner GameObject is missing a TextMeshProUGUI component!");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("Winner GameObject not found in GameEndUI!");
+        }
     }
 
     public string GetBuffTitle(BuffType buffType)
