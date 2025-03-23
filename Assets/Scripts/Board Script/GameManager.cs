@@ -24,12 +24,10 @@ public class GameManager : MonoBehaviourPun
         else
             Destroy(gameObject);
     }
-
     private void Start()
     {
         ChangeState(GameState.GameSetup);
     }
-
     private void ChangeState(GameState newState)
     {
         Debug.Log($"Changing state from {currentState} to {newState}");
@@ -60,7 +58,7 @@ public class GameManager : MonoBehaviourPun
                 break;
 
             case GameState.RollingMovementDice:
-
+                Debug.Log("Rolling movement dice for next player");
                 if (isBossTurn)
                 {
                     DiceManager.Instance.EnableDiceRoll(true);
@@ -254,20 +252,23 @@ public class GameManager : MonoBehaviourPun
 
     private IEnumerator StartTileAction()
     {
+        Debug.Log("Starting tile action");
         TileManager.Instance.OnTileActionComplete = false;
 
         if(isBossTurn)
         {
-            TileManager.Instance.getBossTileAction(BossManager.Instance.activeBoss.Movement.CurrentTile);
+            yield return StartCoroutine(TileManager.Instance.getBossTileAction(
+                BossManager.Instance.activeBoss.Movement.CurrentTile));
         }
         else
         {
-            TileManager.Instance.getPlayerTileAction(PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile);
+            Debug.Log("Starting player tile action");
+            yield return StartCoroutine(TileManager.Instance.getPlayerTileAction(
+                PlayerManager.Instance.GetCurrentPlayer().GetComponent<PlayerMovement>().CurrentTile));
         }
 
         // Wait until the action completes
         yield return new WaitUntil(() => TileManager.Instance.OnTileActionComplete);
-   
 
         // Early break for special cases
         if (currentState == GameState.GameEnd || currentState == GameState.RollingMovementDice)

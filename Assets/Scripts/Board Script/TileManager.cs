@@ -182,12 +182,15 @@ public class TileManager : MonoBehaviourPun
                 yield return StartCoroutine(UIManager.Instance.DisplayDamageNumber(currentPlayer.transform.position, damage));
                 break;
         }
-
-            OnTileActionComplete = true;
+        photonView.RPC("RPC_FinishTileAction", RpcTarget.All);
+        OnTileActionComplete = true;
+        yield break;
     }
 
-    public void getBossTileAction(Tile tile)
+    public IEnumerator getBossTileAction(Tile tile)
     {
+        if (!PhotonNetwork.IsMasterClient) yield break;
+        
         Boss currentBoss = BossManager.Instance.activeBoss;
         
         switch (tile.GetTileType())
@@ -204,18 +207,18 @@ public class TileManager : MonoBehaviourPun
                     currentBoss.TeleportTo(destinationTile.transform.position, destinationTile);
                     tile.BossOnTile = false;
                     destinationTile.BossOnTile = true;
-                    //UIManager.Instance.DisplayTeleportEffect();
+                    yield return new WaitForSeconds(0.5f); // Wait for teleport animation
                 }
                 break;
         
             case TileType.Reroll:
-                Debug.Log("Reroll tile - Player gets another turn");
+                Debug.Log("Reroll tile - Boss gets another turn");
                 GameManager.Instance.HandleReroll();
-                //UIManager.Instance.DisplayRerollEffect(); // Optional visual feedback
                 break;
         }
 
         photonView.RPC("RPC_FinishTileAction", RpcTarget.All);
+        yield break;
     }
 
     [PunRPC]

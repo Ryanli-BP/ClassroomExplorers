@@ -360,7 +360,7 @@ public class PlayerMovement : MonoBehaviourPun
         this.isMoving = false;
         this.initialMove = true;
         GameManager.Instance.HandleMovementComplete();
-        Debug.Log("Movement complete!");
+        
 }
     
 
