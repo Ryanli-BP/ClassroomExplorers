@@ -33,7 +33,7 @@ public class ModeRules
 public class GameConfigManager : MonoBehaviour
 {
     // Serialized fields for Unity Inspector
-    [SerializeField] private GameMode currentMode = GameMode.FFA;
+    [SerializeField] private GameMode currentMode = GameMode.COOP;
     [SerializeField] private QuizMode currentQuizMode = QuizMode.NORMAL;
     [SerializeField] private int _numOfPlayers = 4; // Backing field for player count
     [SerializeField] private int _quizTimeLimit = 30; // Backing field for quiz time limit

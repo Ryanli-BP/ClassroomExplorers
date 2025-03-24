@@ -25,9 +25,8 @@ public class Player : Entity
     public const float AboveTileOffset = 0.5f; // Offset to place player above the tile
 
     public int ReviveCounter { get; set; } = 0;
-    IEnumerator Start()
+    void Start()
     {
-        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
 
         if (playerID <= GameConfigManager.Instance.numOfPlayers)
         {
