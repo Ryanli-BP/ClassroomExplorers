@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Boss : Entity
@@ -20,8 +21,10 @@ public class Boss : Entity
         Movement = GetComponent<BossMovement>();        
     }
 
-    private void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
+
         MAX_HEALTH = 20 * GameConfigManager.Instance.numOfPlayers - 20;
         Health = MAX_HEALTH;
         Status = Status.Alive;

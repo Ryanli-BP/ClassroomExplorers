@@ -39,7 +39,7 @@ public class GameInitializer : MonoBehaviour
                            isPlayerManagerReady && 
                            isTileManagerReady && 
                            isRoundManagerReady &&
-                           isQuizManagerReady; // Add this
+                           isQuizManagerReady;
                            
         if (AllComponentsReady)
             Debug.Log("All components initialized!");
@@ -94,14 +94,4 @@ public class GameInitializer : MonoBehaviour
     }
 }
 
-public static class PlatformUtils
-{
-    public static bool IsRunningOnPC()
-    {
-        return Application.platform == RuntimePlatform.WindowsPlayer ||
-               Application.platform == RuntimePlatform.OSXPlayer ||
-               Application.platform == RuntimePlatform.LinuxPlayer ||
-               Application.platform == RuntimePlatform.WindowsEditor ||
-               Application.platform == RuntimePlatform.OSXEditor;
-    }
-}
+

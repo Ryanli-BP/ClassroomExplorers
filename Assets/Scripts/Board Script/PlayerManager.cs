@@ -38,6 +38,7 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
         yield return new WaitUntil(() => GameInitializer.Instance.IsManagerReady("TileManager"));
 
 

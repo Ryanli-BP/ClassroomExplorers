@@ -53,8 +53,10 @@ public class QuizManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
+        
         quizDuration = GameConfigManager.Instance.quizTimeLimit;
         StartCoroutine(PreloadQuestions());
         GameInitializer.Instance.ConfirmManagerReady("QuizManager");
