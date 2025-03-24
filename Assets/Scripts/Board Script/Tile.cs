@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections;
 
 public enum Direction { North, East, South, West, None }
 
@@ -33,8 +34,9 @@ public class Tile : MonoBehaviour
     public bool BossOnTile { get; set; } = false;
 
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
 
         if(HomeplayerID != 0 && HomeplayerID <= GameConfigManager.Instance.numOfPlayers)
         {

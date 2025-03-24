@@ -16,8 +16,10 @@ public class PlayerMovement : MonoBehaviour
     private bool canHealPlayers;
     private bool haveBoss;
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
+        
         ModeRules currentRules = GameConfigManager.Instance.GetCurrentRules();
         canFightPlayers = currentRules.canFightPlayers;
         canHealPlayers = currentRules.canHealPlayers;

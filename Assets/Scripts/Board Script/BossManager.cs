@@ -22,8 +22,10 @@ public class BossManager : MonoBehaviour
         }
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
+        
         Initialize();
     }
 

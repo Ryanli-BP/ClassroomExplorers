@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
+using System;
 
 // Defines the available game modes
 public enum GameMode
@@ -32,32 +33,20 @@ public class ModeRules
 public class GameConfigManager : MonoBehaviour
 {
     // Serialized fields for Unity Inspector
-    [SerializeField] private GameMode currentMode = GameMode.FFA;
+    [SerializeField] private GameMode currentMode = GameMode.COOP;
     [SerializeField] private QuizMode currentQuizMode = QuizMode.NORMAL;
-    [SerializeField] private int _numOfPlayers = 2; // Backing field for player count
+    [SerializeField] private int _numOfPlayers = 4; // Backing field for player count
     [SerializeField] private int _quizTimeLimit = 30; // Backing field for quiz time limit
+    [SerializeField] private int boardNumber = 2; // Backing field for quiz time limit
 
-    // Properties for number of players with private setter
-    public int numOfPlayers
-    {
-        get => _numOfPlayers;
-        private set => _numOfPlayers = value;
-    }
-
-    // Properties for quiz time limit with private setter
-    public int quizTimeLimit
-    {
-        get => _quizTimeLimit;
-        private set => _quizTimeLimit = value;
-    }
+    // Public boolean to indicate if fetch operation is complete
+    public bool IsFetchComplete { get; private set; } = false;
 
     // Dictionary to store mode-specific rules
     private Dictionary<GameMode, ModeRules> modeRules;
 
-    // Singleton instance
     public static GameConfigManager Instance { get; private set; }
 
-    // Initialize singleton instance
     private void Awake()
     {
         if (Instance == null)
@@ -72,6 +61,26 @@ public class GameConfigManager : MonoBehaviour
         }
     }
 
+    public int numOfPlayers
+    {
+        get => _numOfPlayers;
+        private set => _numOfPlayers = value;
+    }
+
+    // Properties for quiz time limit
+    public int quizTimeLimit
+    {
+        get => _quizTimeLimit;
+        private set => _quizTimeLimit = value;
+    }
+
+    // Properties for board number
+    public int BoardNumber
+    {
+        get => boardNumber;
+        private set => boardNumber = value;
+    }
+
     // Properties for current game mode
     public GameMode CurrentMode
     {
@@ -84,6 +93,11 @@ public class GameConfigManager : MonoBehaviour
     {
         get => currentQuizMode;
         set => currentQuizMode = value;
+    }
+
+    public ModeRules GetCurrentRules()
+    {
+        return modeRules[currentMode];
     }
 
     // Initialize rules for each game mode
@@ -121,17 +135,6 @@ public class GameConfigManager : MonoBehaviour
         };
     }
 
-    // Get the current number of players
-    public int GetNumOfPlayers()
-    {
-        return numOfPlayers;
-    }
-
-    // Get the rules for the current game mode
-    public ModeRules GetCurrentRules()
-    {
-        return modeRules[currentMode];
-    }
 
     // Data class for deserializing API response
     [System.Serializable]
@@ -141,6 +144,7 @@ public class GameConfigManager : MonoBehaviour
         public GameMode teamMode;
         public int numberOfPlayers;
         public QuizMode quizMode;
+        public int boardNumber;
     }
 
     // Start fetching config data when the component starts
@@ -159,6 +163,7 @@ public class GameConfigManager : MonoBehaviour
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogWarning($"Error fetching config data: {request.error}");
+            IsFetchComplete = true;
         }
         else
         {
@@ -174,5 +179,19 @@ public class GameConfigManager : MonoBehaviour
         currentMode = configData.teamMode;
         numOfPlayers = configData.numberOfPlayers;
         currentQuizMode = configData.quizMode;
+        boardNumber = configData.boardNumber;
+        IsFetchComplete = true;
+    }
+}
+
+public static class PlatformUtils
+{
+    public static bool IsRunningOnPC()
+    {
+        return Application.platform == RuntimePlatform.WindowsPlayer ||
+               Application.platform == RuntimePlatform.OSXPlayer ||
+               Application.platform == RuntimePlatform.LinuxPlayer ||
+               Application.platform == RuntimePlatform.WindowsEditor ||
+               Application.platform == RuntimePlatform.OSXEditor;
     }
 }

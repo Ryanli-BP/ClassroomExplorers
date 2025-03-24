@@ -85,6 +85,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+
         if (GameInitializer.Instance.IsGameInitialized) //if game initialized, initialize UI immediately
         {
             InitializeUI();
@@ -112,6 +113,7 @@ public class UIManager : MonoBehaviour
     {
         // Wait for all required managers
         yield return new WaitUntil(() => GameInitializer.Instance.IsManagerReady("PlayerManager"));
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
 
         // Initialize UI elements
         GenereateUIList();
@@ -122,8 +124,12 @@ public class UIManager : MonoBehaviour
         {
             StartCoroutine(player.InitializePlayerUI());
         }
+        
+        if (GameConfigManager.Instance.CurrentMode == GameMode.COOP)
+        {
+            UpdateBossHealth(Boss.Instance.MAX_HEALTH);
+        }
 
-        UpdateBossHealth(Boss.Instance.MAX_HEALTH);
     }
 
     private void SetupButtonListeners()

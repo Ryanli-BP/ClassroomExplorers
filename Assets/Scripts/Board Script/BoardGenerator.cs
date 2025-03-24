@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 
 [Serializable]
 public class ArrowData
@@ -47,7 +48,7 @@ public class BoardGenerator : MonoBehaviour
     [Header("Arrow Prefab")]
     public GameObject arrowPrefab;
 
-    private const string BOARD_LAYOUT_PATH = "boardLayout";
+    private string boardLayoutPath;
     private const float BASE_TILE_SPACING = 1f;
     private const float BASE_Y_POSITION = -0.5f;  // Default Y position for all tiles
     private const float ARROW_Y_POSITION = 0f;  // Default Y position for all arrows
@@ -78,21 +79,36 @@ public class BoardGenerator : MonoBehaviour
         {"west", Direction.West}
     };
 
-    void Start()
+    IEnumerator Start()
     {
+        yield return new WaitUntil(() => GameConfigManager.Instance.IsFetchComplete);
+        
         scaledTileSpacing = BASE_TILE_SPACING * ARBoardPlacement.worldScale;
         scaledYPosition = BASE_Y_POSITION * ARBoardPlacement.worldScale;
 
+        // Get the board number from GameConfigManager
+        int boardNumber = GameConfigManager.Instance.BoardNumber;
+        boardLayoutPath = $"boardLayout{boardNumber}";
+        
+        Debug.Log($"Loading board layout: {boardLayoutPath}");
         GenerateBoardFromJSON();
     }
 
     void GenerateBoardFromJSON()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>(BOARD_LAYOUT_PATH);
+        TextAsset jsonFile = Resources.Load<TextAsset>(boardLayoutPath);
         if (jsonFile == null)
         {
-            Debug.LogError("Failed to load board layout JSON file!");
-            return;
+            Debug.LogError($"Failed to load board layout JSON file: {boardLayoutPath}! Falling back to boardLayout1.");
+            // Fallback to the default board layout if the specified one doesn't exist
+            boardLayoutPath = "boardLayout1";
+            jsonFile = Resources.Load<TextAsset>(boardLayoutPath);
+            
+            if (jsonFile == null)
+            {
+                Debug.LogError("Failed to load fallback board layout JSON file!");
+                return;
+            }
         }
 
         BoardData boardData = JsonUtility.FromJson<BoardData>(jsonFile.text);
@@ -194,6 +210,7 @@ public class BoardGenerator : MonoBehaviour
         tileContainer.transform.localScale = Vector3.one * BoardScale;
         tileContainer.transform.rotation = ARBoardPlacement.boardRotation * tileContainer.transform.rotation;
         BoardGenFinished = true;
+        Debug.Log($"Board generation completed using layout: {boardLayoutPath}");
     }
 
     private Vector2Int GetTargetPosition(Vector2Int current, Direction direction)
