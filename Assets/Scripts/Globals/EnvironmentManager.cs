@@ -10,7 +10,7 @@ public class EnvironmentManager : MonoBehaviour
     [SerializeField] private Material boardPlaneMaterial;
     [SerializeField] private GameObject quizUIObject;
     
-	// The both URLs will directly return the image file
+    // The both URLs will directly return the image file
     [SerializeField] private string boardPlaneMaterialUrl = "http://127.0.0.1:8000/api/v1.0.0/config/get-background-image/";
     [SerializeField] private string QuizUIImageUrl = "http://127.0.0.1:8000/api/v1.0.0/config/get-quiz-background-image/";
     private Image quizUIImage;
@@ -63,13 +63,11 @@ public class EnvironmentManager : MonoBehaviour
         bool uiImageDownloadComplete = false;
 
         // Download material texture
-        StartCoroutine(ProcessTextureResponse(boardPlaneMaterialUrl, true));
-        materialDownloadComplete = true;
-
+        StartCoroutine(ProcessTextureResponse(boardPlaneMaterialUrl, true, () => materialDownloadComplete = true));
+        
         // Download UI image
-        StartCoroutine(ProcessTextureResponse(QuizUIImageUrl, false));
-        uiImageDownloadComplete = true;
-
+        StartCoroutine(ProcessTextureResponse(QuizUIImageUrl, false, () => uiImageDownloadComplete = true));
+        
         // Wait for both downloads to complete
         while (!materialDownloadComplete || !uiImageDownloadComplete)
         {
@@ -79,7 +77,7 @@ public class EnvironmentManager : MonoBehaviour
         Debug.Log("Environment assets loaded successfully");
     }
 
-    private IEnumerator ProcessTextureResponse(string textureUrl, bool isMaterial)
+    private IEnumerator ProcessTextureResponse(string textureUrl, bool isMaterial, System.Action onComplete)
     {
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(textureUrl))
         {
@@ -88,22 +86,42 @@ public class EnvironmentManager : MonoBehaviour
             if (www.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogWarning($"Failed to process texture: {www.error}");
+                onComplete?.Invoke();
                 yield break;
             }
 
             Texture2D texture = DownloadHandlerTexture.GetContent(www);
 
-            if (isMaterial && boardPlaneMaterial != null)
+            if (isMaterial)
             {
-                boardPlaneMaterial.mainTexture = texture;
+                // Flip the texture vertically before using it for the material
+                Texture2D flippedTexture = FlipTexture(texture);
+                if (boardPlaneMaterial != null)
+                {
+                    boardPlaneMaterial.mainTexture = flippedTexture;
+                }
             }
-            else if (!isMaterial)
+            else
             {
+                // For the UI, use the texture as-is
                 downloadedSprite = Sprite.Create(texture, 
                     new Rect(0, 0, texture.width, texture.height),
                     new Vector2(0.5f, 0.5f));
                 textureDownloadComplete = true;
             }
         }
+        onComplete?.Invoke();
+    }
+    
+    // Helper method to flip a texture vertically
+    private Texture2D FlipTexture(Texture2D original)
+    {
+        Texture2D flipped = new Texture2D(original.width, original.height);
+        for (int y = 0; y < original.height; y++)
+        {
+            flipped.SetPixels(0, original.height - y - 1, original.width, 1, original.GetPixels(0, y, original.width, 1));
+        }
+        flipped.Apply();
+        return flipped;
     }
 }
