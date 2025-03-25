@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject homeObject;
     public List<Texture2D> flagTextures; // color same order as body color
 
-    [SerializeField] private List<int> PointsMilestone = new List<int> { 10, 25, 50, 100, 200 };
+    [SerializeField] private List<int> PointsMilestone = new List<int> { 5, 15, 30, 50, 100 };
 
     public int CurrentPlayerID { get; set; } = 1;
 

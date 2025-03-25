@@ -9,7 +9,7 @@ public class RoundManager : MonoBehaviour
     public static RoundManager Instance;
     private int round;
     public int Turn { get; set; } = 1;
-    [SerializeField] private List<int> roundPoints = new List<int> { 1, 2, 3, 5, 8 };
+    [SerializeField] private List<int> roundPoints = new List<int> { 1, 3, 5, 7, 10 };
     void Start()
     {
         round = 0;
