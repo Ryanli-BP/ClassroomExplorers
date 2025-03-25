@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using System;
+using System.Runtime.InteropServices;
 
 // Defines the available game modes
 public enum GameMode
@@ -85,14 +86,14 @@ public class GameConfigManager : MonoBehaviour
     public GameMode CurrentMode
     {
         get => currentMode;
-        set => currentMode = value;
+        private set => currentMode = value;
     }
 
     // Properties for current quiz mode
     public QuizMode CurrentQuizMode
     {
         get => currentQuizMode;
-        set => currentQuizMode = value;
+        private set => currentQuizMode = value;
     }
 
     public ModeRules GetCurrentRules()
@@ -176,7 +177,7 @@ public class GameConfigManager : MonoBehaviour
     private void ApplyConfigData(ConfigData configData)
     {
         quizTimeLimit = configData.timeLimit;
-        currentMode = configData.teamMode;
+        currentMode = GameMode.FFA;
         numOfPlayers = configData.numberOfPlayers;
         currentQuizMode = configData.quizMode;
         boardNumber = configData.boardNumber;
