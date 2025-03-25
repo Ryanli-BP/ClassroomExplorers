@@ -43,9 +43,12 @@ public class AvatarGenerator : MonoBehaviour
         Bounds bounds = playerRenderer.bounds;
 
         // Calculate best camera position (slightly in front)
-        Vector3 cameraPosition = bounds.center + new Vector3(0, 0f, -1.5f); // Adjust as needed
+        Vector3 cameraPosition = bounds.center + new Vector3(0, 0f, -1.5f * ARBoardPlacement.worldScale); // Adjust as needed
         avatarCamera.transform.position = cameraPosition;
+        // Rotate with board
         avatarCamera.transform.LookAt(bounds.center + Vector3.up * 0f); // Focus on upper body
+        avatarCamera.transform.rotation = ARBoardPlacement.boardRotation * avatarCamera.transform.rotation; 
+
 
         // Render the image
         RenderTexture.active = renderTexture;
