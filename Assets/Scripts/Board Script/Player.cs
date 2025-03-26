@@ -163,7 +163,18 @@ public class Player : Entity
     public override void Dies()
     {
         Status = Status.Dead;
-        PlayerManager.Instance.DeadPlayers.Add(this);
+        Debug.Log($"DeadPlayersBefore count: {PlayerManager.Instance.DeadPlayers.Count}");
+        // Check if this player is already in the dead players list before adding
+        if (!PlayerManager.Instance.DeadPlayers.Contains(this))
+        {
+            PlayerManager.Instance.DeadPlayers.Add(this);
+            Debug.Log($"Added Player {playerID} to DeadPlayers list");
+        }
+        else
+        {
+            Debug.Log($"Player {playerID} is already in DeadPlayers list, skipping add");
+        }
+        Debug.Log($"DeadPlayersAfter count: {PlayerManager.Instance.DeadPlayers.Count}");
         UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
 
         Points /= 2;
@@ -183,11 +194,12 @@ public class Player : Entity
     public void Revives()
     {
         ReviveCounter = 0;
+        UIManager.Instance.UpdateReviveCounter(playerID, 0);
         Status = Status.Alive;
         Health = MAX_HEALTH;
         PlayerManager.Instance.DeadPlayers.Remove(this);
-        UIManager.Instance.ClearReviveCounter(playerID);
         Debug.Log($"Player {playerID} has revived.");
+        Debug.Log($"ReviveCounter: {ReviveCounter}");
         UIManager.Instance.UpdatePlayerHealth(playerID, Health);
     }
 

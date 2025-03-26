@@ -690,31 +690,8 @@ public class UIManager : MonoBehaviour
             // Store reference to the game object
             playerReviveTextObjects[playerID] = textField.gameObject;
         }
-        else
-        {
-            // Just remove from dictionary, don't call ClearReviveCounter
-            playerReviveMessages.Remove(playerID);
-            
-            // Directly handle UI cleanup here instead of calling ClearReviveCounter
-            if (playerReviveTextObjects.ContainsKey(playerID))
-            {
-                Destroy(playerReviveTextObjects[playerID]);
-                playerReviveTextObjects.Remove(playerID);
-            }
-        }
     }
 
-    public void ClearReviveCounter(int playerID)
-    {
-        // Remove message from dictionary
-        playerReviveMessages.Remove(playerID);
-        
-        if (playerReviveTextObjects.ContainsKey(playerID))
-        {
-            Destroy(playerReviveTextObjects[playerID]);
-            playerReviveTextObjects.Remove(playerID);
-        }
-    }
 
 
     // Show direction choices at a crossroad

@@ -16242,7 +16242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMode: 2
   currentQuizMode: 0
-  _numOfPlayers: 3
+  _numOfPlayers: 2
   _quizTimeLimit: 30
   boardNumber: 2
 --- !u!4 &1482619883
