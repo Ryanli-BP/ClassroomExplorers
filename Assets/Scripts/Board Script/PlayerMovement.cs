@@ -196,7 +196,8 @@ public class PlayerMovement : MonoBehaviourPun
 
     private IEnumerator HandlePaths(List<Direction> availableDirections)
     {
-        if (photonView.IsMine)
+        int currentActorNumber = PhotonNetwork.LocalPlayer.ActorNumber;        
+        if (currentActorNumber == PlayerManager.Instance.CurrentPlayerID)
         {
             if (availableDirections.Count > 1)
             {
@@ -221,6 +222,13 @@ public class PlayerMovement : MonoBehaviourPun
                 yield return StartCoroutine(MoveToNextTileCoroutine(nextDirection));
             }
         }
+        else {
+            Debug.Log("Waiting for other players to move...");
+            while (isMoving)
+            {
+                yield return null;
+            }
+        }
     }
 
     private IEnumerator MoveStepByStep()
@@ -229,7 +237,7 @@ public class PlayerMovement : MonoBehaviourPun
         bool initialOnHome = true;
         initialMove = true;
 
-        while (remainingSteps >= 0)
+        while (remainingSteps > 0)
         {
 
             List<Direction> availableDirections = currentTile.GetAllAvailableDirections();
@@ -263,14 +271,9 @@ public class PlayerMovement : MonoBehaviourPun
             //Finishes handling all movement actions on final tile
             if (remainingSteps == 0)
             {
-            
-                photonView.RPC("RPC_OFFdiceDisplay", RpcTarget.All); // off remaining step display when stop moving
-                isMoving = false;
+                break;
                 
             }
-
-            if (!isMoving) break;
-
             yield return StartCoroutine(HandleHomeTile(initialOnHome));
             if (!isMoving) { break; }
             initialOnHome = false;
@@ -288,8 +291,10 @@ public class PlayerMovement : MonoBehaviourPun
                 initialMove = false;
             }
         }
-
-        photonView.RPC("RPC_HandleMovementComplete", RpcTarget.All);
+        isMoving = false;
+        initialMove = true;
+        photonView.RPC("RPC_HandleMovementComplete", RpcTarget.Others);
+        GameManager.Instance.HandleMovementComplete();
     }
 
 
@@ -358,18 +363,15 @@ public class PlayerMovement : MonoBehaviourPun
         
     }
 
-    [PunRPC]
-    private void RPC_OFFdiceDisplay()
-    {
-        UIManager.Instance.OffDiceDisplay();
-    }
+
 
     [PunRPC]
     private void RPC_HandleMovementComplete()
     {
-        this.isMoving = false;
-        this.initialMove = true;
+        isMoving = false;
+        initialMove = true;
         GameManager.Instance.HandleMovementComplete();
+        UIManager.Instance.OffDiceDisplay();
       
         
 }

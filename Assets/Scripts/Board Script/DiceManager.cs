@@ -97,6 +97,7 @@ public class DiceManager : MonoBehaviourPun
         }
 
         totalDiceResult = 0;
+        remainingDice = numDice;
         canRollDice = true;
         UIManager.Instance.SetRollDiceButtonVisibility(true);
     }
@@ -162,9 +163,14 @@ public class DiceManager : MonoBehaviourPun
     [PunRPC]
     public void RPC_HandleDiceResult(int diceResult)
     {
-        totalDiceResult += 5;
-        Debug.Log($"[RPC] Dice result received: {diceResult} (Total: {totalDiceResult})");
-
+    if (remainingDice == numDice)
+    {
+        totalDiceResult = 0;
+        Debug.Log("[RPC] New roll started - resetting total");
+    }
+    
+    totalDiceResult += diceResult;
+    Debug.Log($"[RPC] Dice result received: {diceResult} (Total: {totalDiceResult}, Remaining: {remainingDice})");
     }
 
     public int GetTotalDiceResult()

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
 using Photon.Pun;
-public class Dice : MonoBehaviour
+public class Dice : MonoBehaviourPun
 {
     public Transform[] dicefaces;
     public Rigidbody rb;
@@ -36,7 +36,7 @@ public class Dice : MonoBehaviour
         {
             rollfin = true;
             int randomResult = Random.Range(1, 7);
-            if (PhotonNetwork.IsMasterClient)
+            if (photonView.IsMine)
             {
                 DiceManager.Instance.photonView.RPC("RPC_HandleDiceResult", RpcTarget.All, randomResult);
             }
@@ -49,7 +49,7 @@ public class Dice : MonoBehaviour
             rb.angularVelocity.magnitude < ANGULAR_VELOCITY_THRESHOLD)
         {
             rollfin = true;
-            if (PhotonNetwork.IsMasterClient)
+            if (photonView.IsMine) 
                 {
                     DiceManager.Instance.photonView.RPC("RPC_HandleDiceResult", RpcTarget.All, currentTopFace + 1);
                 }
