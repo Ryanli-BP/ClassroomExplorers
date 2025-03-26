@@ -175,6 +175,8 @@ public class Player : Entity
     public void IncrementReviveCounter()
     {
         ReviveCounter++;
+    }
+    public void UpdateReviveUI(){
         UIManager.Instance.UpdateReviveCounter(playerID, REVIVAL_COUNT - ReviveCounter);
     }
 

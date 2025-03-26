@@ -55,6 +55,10 @@ public class RoundManager : MonoBehaviour
             {
                 player.Revives();
             }
+            else{
+                player.UpdateReviveUI();
+            }
+            
         }
     }
 

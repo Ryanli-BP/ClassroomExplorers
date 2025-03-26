@@ -71,6 +71,9 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject boardUI;
     [SerializeField] private GameObject GameEndUI;
+    [SerializeField] private TextMeshProUGUI reviveMessagePrefab;
+    [SerializeField] private Transform reviveCounterPanel; // Panel with VerticalLayoutGroup
+    private Dictionary<int, GameObject> playerReviveTextObjects = new Dictionary<int, GameObject>();
 
     private Vector3 lastPos;
 
@@ -667,28 +670,52 @@ public class UIManager : MonoBehaviour
 
     public void UpdateReviveCounter(int playerID, int reviveCounter)
     {
+            // Remove existing message object if it exists
+        if (playerReviveTextObjects.ContainsKey(playerID))
+        {
+            Destroy(playerReviveTextObjects[playerID]);
+            playerReviveTextObjects.Remove(playerID);
+        }
+
         if (reviveCounter > 0)
         {
-            string message = $"Player {playerID} Revives in: {reviveCounter} Rounds\n";
+            // Create new message
+            string message = $"Player {playerID} Revives in: {reviveCounter} Rounds";
             playerReviveMessages[playerID] = message;
+            
+            // Instantiate text field in the panel
+            TextMeshProUGUI textField = Instantiate(reviveMessagePrefab, reviveCounterPanel);
+            textField.text = message;
+            
+            // Store reference to the game object
+            playerReviveTextObjects[playerID] = textField.gameObject;
         }
         else
         {
+            // Just remove from dictionary, don't call ClearReviveCounter
             playerReviveMessages.Remove(playerID);
+            
+            // Directly handle UI cleanup here instead of calling ClearReviveCounter
+            if (playerReviveTextObjects.ContainsKey(playerID))
+            {
+                Destroy(playerReviveTextObjects[playerID]);
+                playerReviveTextObjects.Remove(playerID);
+            }
         }
-        UpdateReviveCounterText();
     }
 
     public void ClearReviveCounter(int playerID)
     {
+        // Remove message from dictionary
         playerReviveMessages.Remove(playerID);
-        UpdateReviveCounterText();
+        
+        if (playerReviveTextObjects.ContainsKey(playerID))
+        {
+            Destroy(playerReviveTextObjects[playerID]);
+            playerReviveTextObjects.Remove(playerID);
+        }
     }
 
-    private void UpdateReviveCounterText()
-    {
-        reviveCounterText.text = string.Join("\n", playerReviveMessages.Values);
-    }
 
     // Show direction choices at a crossroad
     public void ShowDirectionChoices(List<Direction> availableDirections, Action<Direction> onDirectionChosen)
