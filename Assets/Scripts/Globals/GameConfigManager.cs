@@ -141,9 +141,9 @@ public class GameConfigManager : MonoBehaviour
     private class ConfigData
     {
         public int timeLimit;
-        public GameMode teamMode;
+        public string teamMode;
         public int numberOfPlayers;
-        public QuizMode quizMode;
+        public string quizMode;
         public int boardNumber;
     }
 
@@ -176,9 +176,9 @@ public class GameConfigManager : MonoBehaviour
     private void ApplyConfigData(ConfigData configData)
     {
         quizTimeLimit = configData.timeLimit;
-        currentMode = configData.teamMode;
+        currentMode = (GameMode)Enum.Parse(typeof(GameMode), configData.teamMode);
         numOfPlayers = configData.numberOfPlayers;
-        currentQuizMode = configData.quizMode;
+        currentQuizMode = (QuizMode)Enum.Parse(typeof(QuizMode), configData.quizMode);
         boardNumber = configData.boardNumber;
         IsFetchComplete = true;
     }
