@@ -40,20 +40,21 @@ public class RoundManager : MonoBehaviour
 
         if(PlayerManager.Instance.DeadPlayers.Count > 0)
         {
-            IncrementReviveCounter();
-        }
-    }
+            Debug.Log($"DeadPlayers count: {PlayerManager.Instance.DeadPlayers.Count}");
+            var deadPlayersCopy = new List<Player>(PlayerManager.Instance.DeadPlayers);
 
-    public void IncrementReviveCounter()
-    {
-        var deadPlayersCopy = new List<Player>(PlayerManager.Instance.DeadPlayers);
-
-        foreach (var player in deadPlayersCopy)
-        {
-            player.IncrementReviveCounter();
-            if (player.ReviveCounter == Player.REVIVAL_COUNT)
+            foreach (var player in deadPlayersCopy)
             {
-                player.Revives();
+
+                player.IncrementReviveCounter();
+                if (player.ReviveCounter >= Player.REVIVAL_COUNT)
+                {
+                    player.Revives();
+                }
+                else{
+                    player.UpdateReviveUI();
+                }
+                
             }
         }
     }
