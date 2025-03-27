@@ -2441,8 +2441,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1576700477}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3691,6 +3691,8 @@ MonoBehaviour:
   skipHealButton: {fileID: 1788659505}
   boardUI: {fileID: 761339815}
   GameEndUI: {fileID: 1198328781}
+  reviveMessagePrefab: {fileID: 286134046}
+  reviveCounterPanel: {fileID: 1576700477}
 --- !u!4 &450115972
 Transform:
   m_ObjectHideFlags: 0
@@ -16738,6 +16740,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1576700477}
   - component: {fileID: 1576700479}
+  - component: {fileID: 1576700480}
   m_Layer: 5
   m_Name: ReviveCounterPanel
   m_TagString: Untagged
@@ -16773,6 +16776,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576700476}
   m_CullTransparentMesh: 1
+--- !u!114 &1576700480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576700476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 20
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1592930949
 GameObject:
   m_ObjectHideFlags: 0
