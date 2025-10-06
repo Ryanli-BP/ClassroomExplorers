@@ -1,5 +1,8 @@
 # IBM – Mixed Reality Board and Toy Games with Granite 3 SLMs
 
+## Project Website
+https://students.cs.ucl.ac.uk/2024/group9/
+
 ## Project Overview
 IBM, UCL, and MotionInput Games are collaborating to build a mixed reality board game engine for educational and family use. This project leverages various AI models from IBM Granite, all offline and embedded for use on devices. The game can host up to 6 players or teams and runs natively in Unity, supporting cross-platform play on mobiles, tablets, and laptops.
 
